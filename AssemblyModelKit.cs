@@ -40,13 +40,13 @@ namespace AssemblyActorCore
             switch (_mode)
             {
                 case EnumMode.Free:
-                    MoveForFree(direction, speed);
+                    VelocityFree(direction, speed);
                     break;
                 case EnumMode.ThirdPerson:
-                    MoveForThirdPerson(direction, speed);
+                    VelocityThirdPerson(direction, speed);
                     break;
                 case EnumMode.Platformer:
-                    MoveForPlatformer(direction, speed);
+                    VelocityPlatformer(direction, speed);
                     break;
             }
         }
@@ -63,18 +63,17 @@ namespace AssemblyActorCore
             }
 
             direction.Normalize();
-
             _mainTransform.position += direction * speed * Time.fixedDeltaTime;
         }
 
-        private void MoveForFree(Vector3 direction, float speed)
+        private void VelocityFree(Vector3 direction, float speed)
         {
             direction.Normalize();
 
             _mainTransform.position += direction * speed * _speedScale;
         }
 
-        private void MoveForThirdPerson(Vector3 direction, float speed)
+        private void VelocityThirdPerson(Vector3 direction, float speed)
         {
             direction.Normalize();
 
@@ -83,7 +82,7 @@ namespace AssemblyActorCore
             _rigidbody.AddForce(Physics.gravity * Gravity, ForceMode.Acceleration);
         }
 
-        private void MoveForPlatformer(Vector3 direction, float speed)
+        private void VelocityPlatformer(Vector3 direction, float speed)
         {
             direction.Normalize();
 
