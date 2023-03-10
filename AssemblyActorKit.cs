@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace AssemblyActorCore
 {
+    [Serializable]
     public class Actionable
     {
         public bool IsAction(Action action) => _action == action;
@@ -52,7 +54,11 @@ namespace AssemblyActorCore
             Action action = objectAction.GetComponent<Action>();
 
             // At the end of the Action, remove it from the Actor
-            if (action == _action) _action = null;
+            if (action == _action)
+            {
+                _action.Exit();
+                _action = null;
+            } 
 
             // If the Action is of type Uncanceling, make the GameObject inactive
             if (action.Type == Action.EnumType.Uncanceling) action.gameObject.SetActive(false);
@@ -61,7 +67,7 @@ namespace AssemblyActorCore
         // If the Action is empty, we can activate any other type
         // If the Action is of type Controller, we can replace it with any type other than Controller
         // If the Action is of a different type, only the Cancel type can replace it 
-        private bool _isReady => _isEmpty ? true : _action.Type == Action.EnumType.Controller ? _action.Type != Action.EnumType.Controller : _action.Type == Action.EnumType.Canceling;
+        private bool _isReady(Action action) => _isEmpty ? true : _action.Type == Action.EnumType.Controller ? action.Type != Action.EnumType.Controller : action.Type == Action.EnumType.Canceling;
         private bool _isEmpty => _action == null;
         private void InvokeActivate(GameObject objectAction, Action.EnumType type)
         {
@@ -70,10 +76,12 @@ namespace AssemblyActorCore
             action.Type = type;
 
             // If the Action is ready for execution, make it active
-            if (_isReady)
+            if (_isReady(action))
             {
+                if (_action != null) _action.Exit();
                 _action = action;
                 _action.gameObject.SetActive(true);
+                _action.Enter();
             }
 
             // If the Action is of type Uncanceling, then we do not replace the executing Action, but the one executed in the Check method 
@@ -118,10 +126,15 @@ namespace AssemblyActorCore
         }
 
         public void Activate() => _actionable.Activate(gameObject, Type);
-        public abstract void Initialization();
+        protected abstract void Initialization();
+  
         public abstract void CheckLoop();
+
+        public abstract void Enter();
         public abstract void UpdateLoop();
         public abstract void FixedLoop();
+        public abstract void Exit();
+
         public void Deactivate() => _actionable.Deactivate(gameObject);
 
         private void Update()

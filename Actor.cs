@@ -92,6 +92,8 @@ namespace AssemblyActorCore
 
             Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>() == null ? gameObject.AddComponent<Rigidbody>() : gameObject.GetComponent<Rigidbody>();
             rigidbody.freezeRotation = true;
+            rigidbody.useGravity = false;
+            rigidbody.isKinematic = false;
             rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
 
@@ -105,6 +107,7 @@ namespace AssemblyActorCore
 
             Rigidbody2D rigidbody = gameObject.GetComponent<Rigidbody2D>() == null ? gameObject.AddComponent<Rigidbody2D>() : gameObject.GetComponent<Rigidbody2D>();
             rigidbody.freezeRotation = true;
+            rigidbody.simulated = true;
             rigidbody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         }
 
