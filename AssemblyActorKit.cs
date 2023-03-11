@@ -13,12 +13,40 @@ namespace AssemblyActorCore
         private Action _action = null;
         private List<Action> _actions = new List<Action>();
 
-        public void AddActionToPool(GameObject objectAction)
+        public void WaitList()
         {
-            // Check the Action list for an equal
             foreach (Action item in _actions)
             {
-                // If it found an equal Action, destroy this GameObject
+                if (item != _action)
+                {
+                    item.WaitLoop();
+                }
+            }
+        }
+
+        public void UpdateLoop()
+        {
+            if (_action)
+            {
+                _action.UpdateLoop();
+            }
+        }
+
+        public void FixedLoop()
+        {
+            if (_action)
+            {
+                _action.FixedLoop();
+            }
+        }
+
+        // Check the Action list for an equal
+        // If it found an equal Action, destroy this GameObject
+        // If no equal Action is found, add it to the action pool
+        public void AddActionToPool(GameObject objectAction)
+        {    
+            foreach (Action item in _actions)
+            {
                 if (objectAction.name == item.gameObject.name)
                 {
                     UnityEngine.Object.Destroy(objectAction);
@@ -27,16 +55,16 @@ namespace AssemblyActorCore
                 }
             }
 
-            // If no equal Action is found, add it to the action pool
             _actions.Add(objectAction.GetComponent<Action>());
         }
 
+        // Check the Actions list for a ready-made Action
+        // If you find an equal GameObject Name, execute this Action
+        // If you don't find an equal Action, create a new one
         public void Activate(GameObject objectAction, Action.EnumType type)
-        {
-            // Check the Actions list for a ready-made Action
+        {   
             foreach (Action item in _actions)
-            {
-                // If you find an equal GameObject Name, execute this Action
+            {  
                 if (objectAction.name == item.gameObject.name)
                 {
                     InvokeActivate(objectAction, type);
@@ -44,24 +72,8 @@ namespace AssemblyActorCore
                     return;
                 }
             }
-
-            // If you don't find an equal Action, create a new one
+            
             CreateAction(objectAction, type);
-        }
-
-        public void Deactivate(GameObject objectAction)
-        {
-            Action action = objectAction.GetComponent<Action>();
-
-            // At the end of the Action, remove it from the Actor
-            if (action == _action)
-            {
-                _action.Exit();
-                _action = null;
-            } 
-
-            // If the Action is of type Uncanceling, make the GameObject inactive
-            if (action.Type == Action.EnumType.Uncanceling) action.gameObject.SetActive(false);
         }
 
         // If the Action is empty, we can activate any other type
@@ -75,19 +87,16 @@ namespace AssemblyActorCore
 
             action.Type = type;
 
-            // If the Action is ready for execution, make it active
             if (_isReady(action))
             {
-                if (_action != null) _action.Exit();
+                if (_action != null)
+                {
+                    _action.Exit();
+                } 
+
                 _action = action;
                 _action.gameObject.SetActive(true);
                 _action.Enter();
-            }
-
-            // If the Action is of type Uncanceling, then we do not replace the executing Action, but the one executed in the Check method 
-            if (type == Action.EnumType.Uncanceling)
-            {
-                action.gameObject.SetActive(true);
             }
         }
 
@@ -104,6 +113,18 @@ namespace AssemblyActorCore
 
             Debug.LogWarning("ADD INSTANTIATE");
         }
+
+        // At the end of the Action, remove it from the Actor
+        public void Deactivate(GameObject objectAction)
+        {
+            Action action = objectAction.GetComponent<Action>();
+
+            if (action == _action)
+            {
+                _action.Exit();
+                _action = null;
+            }
+        }
     }
 
     public abstract class Action : MonoBehaviour
@@ -112,49 +133,26 @@ namespace AssemblyActorCore
 
         public string Name = "Action";
         public EnumType Type;
-        protected Inputable Input => _actor.Input;
 
-        private Actionable _actionable => _actor.Actionable;
-        private Actor _actor;
+        protected Inputable input;
+        protected Actionable actionable;
 
         private void Awake()
         {
-            _actor = GetComponentInParent<Actor>();
-            _actionable.AddActionToPool(gameObject);
+            input = GetComponentInParent<Actor>().Input;
+            actionable = GetComponentInParent<Actor>().Actionable;
+            actionable.AddActionToPool(gameObject);
 
             Initialization();
         }
 
-        public void Activate() => _actionable.Activate(gameObject, Type);
         protected abstract void Initialization();
-  
-        public abstract void CheckLoop();
-
+        
+        public abstract void WaitLoop();
         public abstract void Enter();
         public abstract void UpdateLoop();
         public abstract void FixedLoop();
         public abstract void Exit();
-
-        public void Deactivate() => _actionable.Deactivate(gameObject);
-
-        private void Update()
-        {
-            if (_actionable.IsAction(this) == true)
-            {
-                UpdateLoop();
-            }
-            else
-            {
-                CheckLoop();
-            }
-        }
-
-        private void FixedUpdate()
-        {
-            if (_actionable.IsAction(this) == true) FixedLoop();
-        }
-
-        private void OnDisable() => Deactivate();
     }
 
     public class Inputable
@@ -191,7 +189,6 @@ namespace AssemblyActorCore
     public abstract class Input : MonoBehaviour
     {
         public Inputable GetInput => _actor.Input;
-        public EnumMode Mode => _actor.Mode;
 
         private Actor _actor;
 
