@@ -19,8 +19,30 @@ namespace AssemblyActorCore
 
             return gameObject.GetComponent<T>() == null ? gameObject.AddComponent<T>() : gameObject.GetComponent<T>();
         }
+        /*
+        public static Movable GetMovable(this GameObject gameObject)
+        {
+            Movable movable = null;
 
-        public static Rigidbody GetRigidbidyComponent(this GameObject gameObject) 
+            Actor actor = gameObject.GetComponentInParent<Actor>();
+
+            switch (actor.Mode)
+            {
+                case EnumMode.Free:
+                    movable = gameObject.GetActorModel<MovableFree>();
+                    break;
+                case EnumMode.ThirdPerson:
+                    movable = gameObject.GetActorModel<MovableThirdPerson>();
+                    break;
+                case EnumMode.Platformer:
+                    movable = gameObject.GetActorModel<MovablePlatformer>();
+                    break;
+            }
+
+            return movable;
+        }
+        */
+        public static Rigidbody GetRigidbodyComponent(this GameObject gameObject) 
         {
             SphereCollider sphereCollider = gameObject.GetActorComponent<SphereCollider>();
             sphereCollider.radius = 0.25f;
@@ -33,7 +55,7 @@ namespace AssemblyActorCore
             return rigidbody;
         }
 
-        public static Rigidbody2D GetRigidbidy2DComponent(this GameObject gameObject)
+        public static Rigidbody2D GetRigidbody2DDComponent(this GameObject gameObject)
         {
             CircleCollider2D circleCollider2D = gameObject.GetActorComponent<CircleCollider2D>();
             circleCollider2D.radius = 0.25f;
