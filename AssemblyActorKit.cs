@@ -32,12 +32,13 @@ namespace AssemblyActorCore
         }
     }
 
+    public enum ActionType { Controller, Interaction, Canceling, Uncanceling };
+
     public abstract class ActionBehaviour : MonoBehaviour
     {
-        public enum EnumType { Controller, Interaction, Canceling, Uncanceling };
-
         public string Name = "Action";
-        public EnumType Type;
+        public new ActionType GetType => type;
+        protected ActionType type;
 
         protected Inputable inputable;
         protected Actionable actionable;
