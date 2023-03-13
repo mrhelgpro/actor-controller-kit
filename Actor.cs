@@ -1,27 +1,14 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 
 namespace AssemblyActorCore
 {
-    public enum EnumMode { Free, ThirdPerson, Platformer }
+    public enum Preset { None, Free, ThirdPerson, Platformer }
 
     public class Actor : MonoBehaviour
     {
-        public EnumMode Mode = EnumMode.Free;
+        public Preset Preset = Preset.Free;
         public string Name = "Actor";
-        public Inputable Input = new Inputable();
-        public Actionable Actionable = new Actionable();
-
-        private void Update()
-        {
-            Actionable.WaitList();
-            Actionable.UpdateLoop();
-        }
-
-        private void FixedUpdate()
-        {
-            Actionable.FixedLoop();
-        }
     }
 
 #if UNITY_EDITOR
@@ -43,10 +30,7 @@ namespace AssemblyActorCore
             {
                 // Show Fields as text so that it is impossible to change the value
                 EditorGUILayout.LabelField("Name", myTarget.Name);
-                EditorGUILayout.LabelField("Mode", myTarget.Mode.ToString());
-
-                //if (myTarget.GetAction != null) EditorGUILayout.LabelField("Action", myTarget.GetAction.gameObject.name);
-                if (myTarget.Actionable.IsAction(null) == false) EditorGUILayout.LabelField("Action", myTarget.Actionable.GetName);
+                EditorGUILayout.LabelField("Preset", myTarget.Preset.ToString());
 
                 //Example();
             }
@@ -54,18 +38,23 @@ namespace AssemblyActorCore
             {
                 // Show Fields in Editor
                 myTarget.Name = EditorGUILayout.TextField("Name", myTarget.Name);
-                myTarget.Mode = (EnumMode)EditorGUILayout.EnumPopup("Mode", myTarget.Mode);
+                myTarget.Preset = (Preset)EditorGUILayout.EnumPopup("Preset", myTarget.Preset);
+
+                PresetDefault();
 
                 // Create the required Components
-                switch (myTarget.Mode)
+                switch (myTarget.Preset)
                 {
-                    case EnumMode.Free:
+                    case Preset.None:
+                        ClearAll();
+                        break;
+                    case Preset.Free:
                         PresetFree();
                         break;
-                    case EnumMode.ThirdPerson:
+                    case Preset.ThirdPerson:
                         PresetThirdPerson();
                         break;
-                    case EnumMode.Platformer:
+                    case Preset.Platformer:
                         PresetPlatformer();
                         break;
                 }
@@ -87,12 +76,19 @@ namespace AssemblyActorCore
             // EXAMPLE: To show a property - EditorGUILayout.PropertyField(new SerializedObject(target).FindProperty("Input")); 
         }
 
+        private void PresetDefault()
+        {
+            gameObject.AddThisComponent<Actionable>();
+            gameObject.AddThisComponent<Animatorable>();
+            gameObject.AddThisComponent<Inputable>();
+        }
+
         private void PresetFree()
         {
             ClearThirdPerson();
             ClearPlatformer();
 
-            gameObject.GetActorComponent<MovableFree>();
+            gameObject.AddThisComponent<MovableFree>();
         }
 
         private void PresetThirdPerson()
@@ -100,13 +96,13 @@ namespace AssemblyActorCore
             ClearFree();
             ClearPlatformer();
 
-            gameObject.GetActorComponent<MovableThirdPerson>();
+            gameObject.AddThisComponent<MovableThirdPerson>();
 
-            SphereCollider sphereCollider = gameObject.GetComponent<SphereCollider>() == null ? gameObject.AddComponent<SphereCollider>() : gameObject.GetComponent<SphereCollider>();
+            SphereCollider sphereCollider = gameObject.AddThisComponent<SphereCollider>();
             sphereCollider.radius = 0.25f;
             sphereCollider.center = new Vector3(0, sphereCollider.radius, 0);
 
-            Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>() == null ? gameObject.AddComponent<Rigidbody>() : gameObject.GetComponent<Rigidbody>();
+            Rigidbody rigidbody = gameObject.AddThisComponent<Rigidbody>();
             rigidbody.freezeRotation = true;
             rigidbody.useGravity = false;
             rigidbody.isKinematic = false;
@@ -118,13 +114,13 @@ namespace AssemblyActorCore
             ClearFree();
             ClearThirdPerson();
 
-            gameObject.GetActorComponent<MovablePlatformer>();
+            gameObject.AddThisComponent<MovablePlatformer>();
 
-            CircleCollider2D circleCollider2D = gameObject.GetComponent<CircleCollider2D>() == null ? gameObject.AddComponent<CircleCollider2D>() : gameObject.GetComponent<CircleCollider2D>();
+            CircleCollider2D circleCollider2D = gameObject.AddThisComponent<CircleCollider2D>();
             circleCollider2D.radius = 0.25f;
             circleCollider2D.offset = new Vector2(0, circleCollider2D.radius);
 
-            Rigidbody2D rigidbody = gameObject.GetComponent<Rigidbody2D>() == null ? gameObject.AddComponent<Rigidbody2D>() : gameObject.GetComponent<Rigidbody2D>();
+            Rigidbody2D rigidbody = gameObject.AddThisComponent<Rigidbody2D>();
             rigidbody.freezeRotation = true;
             rigidbody.simulated = true;
             rigidbody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
@@ -132,25 +128,37 @@ namespace AssemblyActorCore
 
         private void ClearFree()
         {
-            if (gameObject.GetComponent<MovableFree>() != null) DestroyImmediate(gameObject.GetComponent<MovableFree>());
+            gameObject.RemoveComponent<MovableFree>();
         }
 
         private void ClearThirdPerson()
         {
-            if (gameObject.GetComponent<MovableThirdPerson>() != null) DestroyImmediate(gameObject.GetComponent<MovableThirdPerson>());
-            if (gameObject.GetComponent<SphereCollider>() != null) DestroyImmediate(gameObject.GetComponent<SphereCollider>());
-            if (gameObject.GetComponent<Rigidbody>() != null) DestroyImmediate(gameObject.GetComponent<Rigidbody>());
+            gameObject.RemoveComponent<MovableThirdPerson>();
+            gameObject.RemoveComponent<SphereCollider>();
+            gameObject.RemoveComponent<Rigidbody>();
         }
 
         private void ClearPlatformer()
         {
-            if (gameObject.GetComponent<MovablePlatformer>() != null) DestroyImmediate(gameObject.GetComponent<MovablePlatformer>());
-            if (gameObject.GetComponent<CircleCollider2D>() != null) DestroyImmediate(gameObject.GetComponent<CircleCollider2D>());
-            if (gameObject.GetComponent<Rigidbody2D>() != null) DestroyImmediate(gameObject.GetComponent<Rigidbody2D>());
+            gameObject.RemoveComponent<MovablePlatformer>();
+            gameObject.RemoveComponent<CircleCollider2D>();
+            gameObject.RemoveComponent< Rigidbody2D >();
+        }
+
+        private void ClearAll()
+        {
+            gameObject.RemoveComponent<Actionable>();
+            gameObject.RemoveComponent<Animatorable>();
+            gameObject.RemoveComponent<Inputable>();
+
+            ClearFree();
+            ClearThirdPerson();
+            ClearPlatformer();
         }
     }
 #endif
 }
+
 
 namespace AssemblyActorCore
 {

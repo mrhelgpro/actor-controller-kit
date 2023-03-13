@@ -4,194 +4,67 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    [Serializable]
-    public class Actionable
+    public abstract class Movable : MonoBehaviour
     {
-        public bool IsAction(Action action) => _action == action;
-        public string GetName => _action.gameObject.name + " - " + _action.Name;
+        [Range(0, 1)] public float Slowing = 0;
+        [Range(0, 10)] public float Acceleration = 0;
+        [Range(-1, 1)] public float Gravity = 1;
 
-        private Action _action = null;
-        private List<Action> _actions = new List<Action>();
+        protected Transform mainTransform;
 
-        public void WaitList()
+        public float GetSpeedScale => _getAcceleration * _getSlowing * Time.fixedDeltaTime;
+        private float _getSlowing => Slowing > 0 ? (Slowing <= 1 ? 1 - Slowing : 0) : 1;
+        private float _getAcceleration => Acceleration > 0 ? Acceleration + 1 : 1;
+
+        protected void Awake() => mainTransform = transform;
+
+        public abstract void FreezAll();
+
+        public abstract void FreezRotation();
+
+        public abstract void MoveToDirection(Vector3 direction, float speed);
+
+        public void MoveToPosition(Vector3 direction, float speed)
         {
-            foreach (Action item in _actions)
-            {
-                if (item != _action)
-                {
-                    item.WaitLoop();
-                }
-            }
-        }
+            direction.Normalize();
 
-        public void UpdateLoop()
-        {
-            if (_action)
-            {
-                _action.UpdateLoop();
-            }
-        }
-
-        public void FixedLoop()
-        {
-            if (_action)
-            {
-                _action.FixedLoop();
-            }
-        }
-
-        // Check the Action list for an equal
-        // If it found an equal Action, destroy this GameObject
-        // If no equal Action is found, add it to the action pool
-        public void AddActionToPool(GameObject objectAction)
-        {    
-            foreach (Action item in _actions)
-            {
-                if (objectAction.name == item.gameObject.name)
-                {
-                    UnityEngine.Object.Destroy(objectAction);
-
-                    return;
-                }
-            }
-
-            _actions.Add(objectAction.GetComponent<Action>());
-        }
-
-        // Check the Actions list for a ready-made Action
-        // If you find an equal GameObject Name, execute this Action
-        // If you don't find an equal Action, create a new one
-        public void Activate(GameObject objectAction, Action.EnumType type)
-        {   
-            foreach (Action item in _actions)
-            {  
-                if (objectAction.name == item.gameObject.name)
-                {
-                    InvokeActivate(objectAction, type);
-
-                    return;
-                }
-            }
-            
-            CreateAction(objectAction, type);
-        }
-
-        // If the Action is empty, we can activate any other type
-        // If the Action is of type Controller, we can replace it with any type other than Controller
-        // If the Action is of a different type, only the Cancel type can replace it 
-        private bool _isReady(Action action) => _isEmpty ? true : _action.Type == Action.EnumType.Controller ? action.Type != Action.EnumType.Controller : action.Type == Action.EnumType.Canceling;
-        private bool _isEmpty => _action == null;
-        private void InvokeActivate(GameObject objectAction, Action.EnumType type)
-        {
-            Action action = objectAction.GetComponent<Action>();
-
-            action.Type = type;
-
-            if (_isReady(action))
-            {
-                if (_action != null)
-                {
-                    _action.Exit();
-                } 
-
-                _action = action;
-                _action.gameObject.SetActive(true);
-                _action.Enter();
-            }
-        }
-
-        private void CreateAction(GameObject objectAction, Action.EnumType type)
-        {
-            //GameObject instantiateAction = Instantiate(instantiateAction, new Vector3(0, 0, 0), Quaternion.identity);
-            // instantiateAction.name = objectAction.name;
-            //Instantiate(instantiateAction, new Vector3(0, 0, 0), Quaternion.identity);
-            //Action action = instantiateAction.GetComponent<Action>();
-            //AddActionToPool(action);
-            //instantiateAction.SetActive(true);
-
-            //InvokeActivate(objectAction, item, type);
-
-            Debug.LogWarning("ADD INSTANTIATE");
-        }
-
-        // At the end of the Action, remove it from the Actor
-        public void Deactivate(GameObject objectAction)
-        {
-            Action action = objectAction.GetComponent<Action>();
-
-            if (action == _action)
-            {
-                _action.Exit();
-                _action = null;
-            }
+            mainTransform.position += direction * speed * Time.fixedDeltaTime;
         }
     }
 
-    public abstract class Action : MonoBehaviour
+    public abstract class ActionBehaviour : MonoBehaviour
     {
         public enum EnumType { Controller, Interaction, Canceling, Uncanceling };
 
         public string Name = "Action";
         public EnumType Type;
 
-        protected Inputable input;
+        protected Inputable inputable;
         protected Actionable actionable;
+        protected Animatorable animatorable;
+        protected Movable movable;
 
-        private void Awake()
+        protected Transform mainTransform;
+
+        protected void Awake()
         {
-            input = GetComponentInParent<Actor>().Input;
-            actionable = GetComponentInParent<Actor>().Actionable;
+            inputable = GetComponentInParent<Inputable>();
+            actionable = GetComponentInParent<Actionable>();
+            animatorable = GetComponentInParent<Animatorable>();
+            movable = GetComponentInParent<Movable>();
+
             actionable.AddActionToPool(gameObject);
+
+            mainTransform = actionable.transform;
 
             Initialization();
         }
 
         protected abstract void Initialization();
-        
         public abstract void WaitLoop();
         public abstract void Enter();
         public abstract void UpdateLoop();
         public abstract void FixedLoop();
         public abstract void Exit();
-    }
-
-    public class Inputable
-    {
-        public enum Key { None, Down, Press, Click, DoubleClick }
-
-        public Key Menu = Key.None;
-
-        [Header("Key-PAD")]
-        public Key A = Key.None;
-        public Key B = Key.None;
-        public Key X = Key.None;
-        public Key Y = Key.None;
-
-        [Header("Stick")]
-        public Vector3 Direction;
-        public Vector3 Rotation;
-
-        [Header("Trigger")]
-        public Key LT = Key.None;
-        public Key RT = Key.None;
-
-        [Header("Bumper")]
-        public Key LB = Key.None;
-        public Key RB = Key.None;
-
-        [Header("D-PAD")]
-        public Key L = Key.None;
-        public Key R = Key.None;
-        public Key U = Key.None;
-        public Key D = Key.None;
-    }
-
-    public abstract class Input : MonoBehaviour
-    {
-        public Inputable GetInput => _actor.Input;
-
-        private Actor _actor;
-
-        private void Awake() => _actor = GetComponentInParent<Actor>();
     }
 }
