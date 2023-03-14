@@ -4,30 +4,32 @@ using UnityEditor;
 
 namespace AssemblyActorCore
 {
+    public enum ActionType { Controller, Interaction, Forced, Irreversible };
+
     public class Actionable : MonoBehaviour
     {
-        public string GetName => _action.gameObject.name + " - " + _action.Name;
-        public ActionBehaviour GetAction => _action;
+        public string GetName => _currentAction.gameObject.name + " - " + _currentAction.Name;
+        public ActionBehaviour GetAction => _currentAction;
 
-        private ActionBehaviour _action = null;
+        private ActionBehaviour _currentAction = null;
         private List<ActionBehaviour> _actions = new List<ActionBehaviour>();
 
         private void Update()
         {
             foreach (ActionBehaviour item in _actions)
             {
-                if (item != _action)
+                if (item != _currentAction)
                 {
                     item.WaitLoop();
                 }
             }
 
-            if (_action) _action.UpdateLoop();
+            if (_currentAction) _currentAction.UpdateLoop();
         }
 
         private void FixedUpdate()
         {
-            if (_action) _action.FixedLoop();
+            if (_currentAction) _currentAction.FixedLoop();
         }
 
         // Check the Action list for an equal
@@ -39,7 +41,7 @@ namespace AssemblyActorCore
             {
                 if (objectAction.name == item.gameObject.name)
                 {
-                    UnityEngine.Object.Destroy(objectAction);
+                    Destroy(objectAction);
 
                     return;
                 }
@@ -69,24 +71,20 @@ namespace AssemblyActorCore
         // If the Action is empty, we can activate any other type
         // If the Action is of type Controller, we can replace it with any type other than Controller
         // If the Action is of a different type, only the Cancel type can replace it 
-        private bool _isReady(ActionBehaviour action) => _isEmpty ? true : _action.GetType == ActionType.Controller ? action.GetType != ActionType.Controller : action.GetType == ActionType.Canceling;
-        private bool _isEmpty => _action == null;
+        private bool _isReady(ActionBehaviour action) => _isEmpty ? true : _currentAction.GetType == ActionType.Controller ? action.GetType != ActionType.Controller : action.GetType == ActionType.Forced;
+        // ADD Irreversible !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        private bool _isEmpty => _currentAction == null;
         private void InvokeActivate(GameObject objectAction)
         {
             ActionBehaviour action = objectAction.GetComponent<ActionBehaviour>();
 
-            //action.GetType = type;
-
             if (_isReady(action))
             {
-                if (_action != null)
-                {
-                    _action.Exit();
-                }
+                if (_currentAction != null) _currentAction.Exit();
 
-                _action = action;
-                _action.gameObject.SetActive(true);
-                _action.Enter();
+                _currentAction = action;
+                _currentAction.gameObject.SetActive(true);
+                _currentAction.Enter();
             }
         }
 
@@ -109,10 +107,10 @@ namespace AssemblyActorCore
         {
             ActionBehaviour action = objectAction.GetComponent<ActionBehaviour>();
 
-            if (action == _action)
+            if (action == _currentAction)
             {
-                _action.Exit();
-                _action = null;
+                _currentAction.Exit();
+                _currentAction = null;
             }
         }
     }

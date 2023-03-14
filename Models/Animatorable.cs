@@ -13,11 +13,11 @@ namespace AssemblyActorCore
             _animator = gameObject.GetComponentInChildren<Animator>();
         }
 
-        public void SetAnimation(string name, float speed)
+        public void Play(string name, float speed, float fade = 0.2f)
         {
             if (_animator)
             {
-                _animator.CrossFade(name, 0.2f);
+                _animator.CrossFade(name, fade);
                 _animator.SetFloat("Speed", speed);
             }
         }

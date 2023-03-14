@@ -142,7 +142,7 @@ namespace AssemblyActorCore
         {
             gameObject.RemoveComponent<MovablePlatformer>();
             gameObject.RemoveComponent<CircleCollider2D>();
-            gameObject.RemoveComponent< Rigidbody2D >();
+            gameObject.RemoveComponent<Rigidbody2D>();
         }
 
         private void ClearAll()
@@ -157,10 +157,4 @@ namespace AssemblyActorCore
         }
     }
 #endif
-}
-
-
-namespace AssemblyActorCore
-{
-
 }
