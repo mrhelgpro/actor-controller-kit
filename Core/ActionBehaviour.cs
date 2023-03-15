@@ -32,6 +32,11 @@ namespace AssemblyActorCore
             Initialization();
         }
 
+        public void InputHorizontal()
+        { 
+        
+        }
+
         protected abstract void Initialization();
         public abstract void WaitLoop();
         public abstract void Enter();

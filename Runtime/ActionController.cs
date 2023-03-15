@@ -22,7 +22,7 @@ namespace AssemblyActorCore
         public override void UpdateLoop()
         {
             _direction = inputable.Direction;
-            _speed = inputable.A == Inputable.Key.Press ? Shift : Speed;
+            _speed = inputable.KeyA.IsPress ? Shift : Speed;
         }
 
         public override void FixedLoop()

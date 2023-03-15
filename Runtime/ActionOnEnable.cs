@@ -2,20 +2,20 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class ActionEvent : ActionBehaviour
+    public class ActionOnEnable : ActionBehaviour
     {
         public ActionType Type = ActionType.Interaction;    
         public float Duration = 1;
         private float _speed => 1 / Duration;
         private float _timer = 0;
+
+        private void OnEnable() => actionable.Activate(myGameObject);
+
         protected override void Initialization() => type = Type;
 
-        public override void WaitLoop()
-        {
-            if (myGameObject.activeSelf) actionable.Activate(myGameObject);
-        }
+        public override void WaitLoop() => myGameObject.SetActive(false);
 
-        public override void Enter()
+        public override void Enter() 
         {
             movable.FreezAll();
             _timer = 0;
@@ -25,10 +25,7 @@ namespace AssemblyActorCore
         {
             _timer += Time.deltaTime;
 
-            if (_timer >= Duration)
-            {
-                actionable.Deactivate(myGameObject);
-            }
+            if (_timer >= Duration) actionable.Deactivate(myGameObject);
         }
 
         public override void FixedLoop()
@@ -39,8 +36,8 @@ namespace AssemblyActorCore
 
         public override void Exit()
         {
+            myGameObject.SetActive(false);
             movable.FreezAll();
-            gameObject.SetActive(false);
         }
     }
 }
