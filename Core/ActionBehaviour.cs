@@ -27,15 +27,14 @@ namespace AssemblyActorCore
 
             actionable.AddActionToPool(myGameObject);
 
+            inputable.Input += InputHandler;
+
             mainTransform = actionable.transform;
 
             Initialization();
         }
 
-        public void InputHorizontal()
-        { 
-        
-        }
+        public virtual void InputHandler() { }
 
         protected abstract void Initialization();
         public abstract void WaitLoop();
@@ -43,5 +42,10 @@ namespace AssemblyActorCore
         public abstract void UpdateLoop();
         public abstract void FixedLoop();
         public abstract void Exit();
+
+        private void OnDestroy()
+        {
+            inputable.Input -= InputHandler;
+        }
     }
 }

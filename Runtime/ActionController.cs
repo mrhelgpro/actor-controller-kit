@@ -17,12 +17,21 @@ namespace AssemblyActorCore
             if (myGameObject.activeSelf) actionable.Activate(myGameObject);
         }
 
+        public override void InputHandler()
+        {
+            if (inputable.KeyA.IsDown) Debug.Log("Down");
+            if (inputable.KeyA.IsHold) Debug.Log("Hold");
+            if (inputable.KeyA.IsClick) Debug.Log("Click");
+            if (inputable.KeyA.IsDoubleClick) Debug.Log("DoubleClick");
+            if (inputable.KeyA.IsNone) Debug.Log("None");
+        }
+
         public override void Enter() => movable.FreezRotation();
 
         public override void UpdateLoop()
         {
             _direction = inputable.Direction;
-            _speed = inputable.KeyA.IsPress ? Shift : Speed;
+            _speed = inputable.KeyA.IsHold ? Shift : Speed;
         }
 
         public override void FixedLoop()

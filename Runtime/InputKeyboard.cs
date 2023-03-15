@@ -27,7 +27,7 @@ public class InputKeyboard : MonoBehaviour
     {
         //float vertical = Input.GetAxis("Vertical");
         //float horizontal = Input.GetAxis("Horizontal");
-        float y = _inputable.KeyX.IsPress ? 1 : 0;
+        float y = _inputable.KeyX.IsHold ? 1 : 0;
 
         //_inputable.Direction = new Vector3(horizontal, y, vertical);
         //GetInput.Rotation = new Vector3(horizontal, vertical, 0);

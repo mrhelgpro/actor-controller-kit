@@ -8,40 +8,24 @@ namespace AssemblyActorCore
     [Serializable]
     public class Key
     {
-        public KeyState State = KeyState.None;
-        public bool IsDown => State == KeyState.Down;
-        public bool IsPress => State == KeyState.Press;
-        public bool IsUp => State == KeyState.Up;
-        public bool IsClick => State == KeyState.Click;
-        public bool IsDoubleClick => State == KeyState.DoubleClick;
+        public bool performed = false;
 
-        private KeyState _previousState = KeyState.None;
+        public bool IsNone => performed == false && IsClick == false;
+        public bool IsDown => performed == true && _lastDuration >= 0.25f;
+        public bool IsHold => performed == true && _duration >= 0.25f;
+        public bool IsClick => performed == false && _lastDuration <= 0.25f;
+        public bool IsDoubleClick => performed == true && _lastDuration <= 0.25f;
+
+        private float _preTime = 0;
         private float _lastTime = 0;
         private float _duration => Time.time - _lastTime;
+        private float _lastDuration => _lastTime - _preTime;
 
-        public void SetState(bool state)
+        public void SetPerformed(bool value)
         {
-            _previousState = State;
-
-            if (state == true)
-            {
-                if (_duration <= 0.25f)
-                {
-                    State = KeyState.DoubleClick;
-                }
-                else
-                {
-                    State = KeyState.Down;
-                }
-            }
-            else
-            {
-                State = KeyState.None;
-            }
-
-            if (State != _previousState && State != KeyState.None) Debug.Log(State + " - " + _duration);
-
-            if (State != _previousState) _lastTime = Time.time;
+            performed = value;
+            _preTime = _lastTime;
+            _lastTime = Time.time;
         }
     }
 
@@ -67,11 +51,13 @@ namespace AssemblyActorCore
         public Key KeyLB;
         public Key KeyRB;
 
-        public void SetState(Key key, bool value)
-        {
-            key.SetState(value);
+        public delegate void EventInputable();
+        public EventInputable Input;
 
-            //key.State = value == true ? KeyState.Down : KeyState.None;
+        public void InvokeInput(Key key, bool value)
+        {
+            key.SetPerformed(value);
+            Input?.Invoke();
         }
     }
 }
