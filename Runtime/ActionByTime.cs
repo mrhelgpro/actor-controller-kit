@@ -16,6 +16,7 @@ namespace AssemblyActorCore
         {
             movable.FreezAll();
             _timer = 0;
+            Debug.Log("ENTER " + myGameObject.name);
         }
 
         public override void UpdateLoop()
@@ -31,6 +32,10 @@ namespace AssemblyActorCore
             movable.MoveToDirection(Vector3.zero, 0);
         }
 
-        public override void Exit() => movable.FreezAll();
+        public override void Exit()
+        {
+            movable.FreezAll();
+            Debug.Log("EXIT " + myGameObject.name);
+        }
     }
 }

@@ -23,8 +23,8 @@ namespace AssemblyActorCore
 
         public override void FixedLoop()
         {
-            Vector3 direction = new Vector3(inputable.Direction.x, 0, inputable.Direction.y);
-            float speed = inputable.Shift ? Shift : Speed;
+            Vector3 direction = new Vector3(input.Direction.x, 0, input.Direction.y);
+            float speed = input.Shift ? Shift : Speed;
 
             animatorable.Play(Name, (direction * speed).magnitude);
             movable.MoveToDirection(direction, speed);

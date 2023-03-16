@@ -7,7 +7,8 @@ namespace AssemblyActorCore
         public ActionType Type;
         public string Name = "Action";
 
-        protected Inputable inputable;
+        protected Input input => _inputable.Input;
+
         protected Actionable actionable;
         protected Animatorable animatorable;
         protected Movable movable;
@@ -15,11 +16,13 @@ namespace AssemblyActorCore
         protected GameObject myGameObject;
         protected Transform mainTransform;
 
+        private Inputable _inputable;
+
         protected void Awake()
         {
             myGameObject = gameObject;
 
-            inputable = GetComponentInParent<Inputable>();
+            _inputable = GetComponentInParent<Inputable>();
             actionable = GetComponentInParent<Actionable>();
             animatorable = GetComponentInParent<Animatorable>();
             movable = GetComponentInParent<Movable>();
