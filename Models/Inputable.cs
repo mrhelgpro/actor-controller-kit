@@ -25,5 +25,17 @@ namespace AssemblyActorCore
         public bool ActionLeft;        // Left Mouse - Action A
         public bool Control;        // Left Ctrl - Aim
         public bool Shift;         // Left Shift - Sprint / Block / Evade
+
+        public bool IsEqual(Inputable input)
+        {
+            bool value = false;
+
+            if (Option) value = Option == input.Option;
+            if (Cancel) value = Cancel == input.Cancel;
+            if (Motion) value = Motion == input.Motion;
+            if (Interact) value = Interact == input.Interact;
+
+            return value;
+        }
     }
 }

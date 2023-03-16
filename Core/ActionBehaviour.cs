@@ -4,9 +4,8 @@ namespace AssemblyActorCore
 {
     public abstract class ActionBehaviour : MonoBehaviour
     {
+        public ActionType Type;
         public string Name = "Action";
-        public new ActionType GetType => type;
-        protected ActionType type;
 
         protected Inputable inputable;
         protected Actionable actionable;

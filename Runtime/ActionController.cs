@@ -7,7 +7,7 @@ namespace AssemblyActorCore
         public float Speed = 3;
         public float Shift = 5;
 
-        protected override void Initialization() => type = ActionType.Controller;
+        protected override void Initialization() { }
 
         public override void WaitLoop()
         {

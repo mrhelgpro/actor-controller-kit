@@ -10,10 +10,10 @@ namespace AssemblyActorCore
     {
         public string GetName => _currentAction.gameObject.name + " - " + _currentAction.Name;
         public ActionBehaviour GetAction => _currentAction;
-        public bool IsController => _currentAction == null ? false : _currentAction.GetType == ActionType.Controller;
-        public bool IsInteraction => _currentAction == null ? false : _currentAction.GetType == ActionType.Interaction;
-        public bool IsForced => _currentAction == null ? false :_currentAction.GetType == ActionType.Forced;
-        public bool IsIrreversible => _currentAction == null ? false : _currentAction.GetType == ActionType.Irreversible;
+        public bool IsController => _currentAction == null ? false : _currentAction.Type == ActionType.Controller;
+        public bool IsInteraction => _currentAction == null ? false : _currentAction.Type == ActionType.Interaction;
+        public bool IsForced => _currentAction == null ? false :_currentAction.Type == ActionType.Forced;
+        public bool IsIrreversible => _currentAction == null ? false : _currentAction.Type == ActionType.Irreversible;
 
         private ActionBehaviour _currentAction = null;
         private List<ActionBehaviour> _actions = new List<ActionBehaviour>();
@@ -87,7 +87,7 @@ namespace AssemblyActorCore
             {
                 if (IsIrreversible == false)
                 {
-                    ready = IsController ? action.GetType != ActionType.Controller : action.GetType == ActionType.Forced;
+                    ready = IsController ? action.Type != ActionType.Controller : action.Type == ActionType.Forced;
                 }
             }
 
