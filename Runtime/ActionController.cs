@@ -7,9 +7,6 @@ namespace AssemblyActorCore
         public float Speed = 3;
         public float Shift = 5;
 
-        private Vector3 _direction;
-        private float _speed;
-
         protected override void Initialization() => type = ActionType.Controller;
 
         public override void WaitLoop()
@@ -17,27 +14,20 @@ namespace AssemblyActorCore
             if (myGameObject.activeSelf) actionable.Activate(myGameObject);
         }
 
-        public override void InputHandler()
-        {
-            if (inputable.KeyA.IsDown) Debug.Log("Down");
-            if (inputable.KeyA.IsHold) Debug.Log("Hold");
-            if (inputable.KeyA.IsClick) Debug.Log("Click");
-            if (inputable.KeyA.IsDoubleClick) Debug.Log("DoubleClick");
-            if (inputable.KeyA.IsNone) Debug.Log("None");
-        }
-
         public override void Enter() => movable.FreezRotation();
 
         public override void UpdateLoop()
         {
-            _direction = inputable.Direction;
-            _speed = inputable.KeyA.IsHold ? Shift : Speed;
+
         }
 
         public override void FixedLoop()
         {
-            animatorable.Play(Name, (_direction * _speed).magnitude);
-            movable.MoveToDirection(_direction, _speed);
+            Vector3 direction = new Vector3(inputable.Direction.x, 0, inputable.Direction.y);
+            float speed = inputable.Shift ? Shift : Speed;
+
+            animatorable.Play(Name, (direction * speed).magnitude);
+            movable.MoveToDirection(direction, speed);
         }
 
         public override void Exit() => movable.FreezAll();
