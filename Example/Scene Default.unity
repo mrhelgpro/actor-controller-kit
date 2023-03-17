@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 149593517}
   - component: {fileID: 149593519}
   - component: {fileID: 149593520}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Attack Healy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -215,7 +215,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &265882233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -333,7 +333,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &330585544
 AudioListener:
   m_ObjectHideFlags: 0
@@ -923,8 +923,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 0
   Name: Move
-  Speed: 5
-  Shift: 8
+  MoveSpeed: 5
+  MoveShift: 8
+  JumpForce: 5
 --- !u!1 &2222537992132585934
 GameObject:
   m_ObjectHideFlags: 0
@@ -936,7 +937,7 @@ GameObject:
   - component: {fileID: 2222537992132585921}
   - component: {fileID: 2222537992132585923}
   - component: {fileID: 8555953505577501280}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Movement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -968,7 +969,7 @@ GameObject:
   - component: {fileID: 5301068961485116891}
   - component: {fileID: 5301068961485116892}
   - component: {fileID: 5301068961485116893}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Attack Side
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1067,7 +1068,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5301068961860523747}
   - component: {fileID: 5301068961860523749}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Damage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1147,7 +1148,7 @@ GameObject:
   - component: {fileID: 3921642166751866596}
   - component: {fileID: 7372630623161044283}
   - component: {fileID: 6775850509184779644}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player Default
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1183,7 +1184,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6950002642875083665}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Skin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1259,7 +1260,7 @@ GameObject:
   - component: {fileID: 6950002643236706475}
   - component: {fileID: 6950002643236706478}
   - component: {fileID: 6950002643236706473}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1298,7 +1299,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6950002643812834689}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1368,7 +1369,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6950002643889794380}
   - component: {fileID: 6950002643889794381}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Animator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1578,3 +1579,7 @@ MonoBehaviour:
   Slowing: 0
   Acceleration: 0
   Gravity: 1
+  IsGrounded: 0
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 1

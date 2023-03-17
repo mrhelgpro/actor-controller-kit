@@ -12,5 +12,10 @@ namespace AssemblyActorCore
         {
             mainTransform.position += direction * speed * GetSpeedScale;
         }
+
+        public override void Jump(float force)
+        {
+
+        }
     }
 }

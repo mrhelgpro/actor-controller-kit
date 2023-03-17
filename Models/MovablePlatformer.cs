@@ -37,5 +37,10 @@ namespace AssemblyActorCore
 
             _rigidbody.velocity = new Vector2(horizontal, vertical);
         }
+
+        public override void Jump(float force)
+        {
+
+        }
     }
 }
