@@ -9,9 +9,9 @@ namespace AssemblyActorCore
 
         public override void Enter() => movable.FreezRotation();
 
-        public override void UpdateLoop()
+        public override void UpdateLoop() 
         {
-
+            // ADD JUMP
         }
 
         public override void FixedLoop()

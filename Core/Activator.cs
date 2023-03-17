@@ -17,8 +17,6 @@ namespace AssemblyActorCore
 
             actionable = GetComponentInParent<Actionable>();
             _inputable = GetComponentInParent<Inputable>();
-
-            //actionable.AddActivatorToPool(this);
         }
 
         protected void TryToActivate() => actionable.TryToActivate(myGameObject);

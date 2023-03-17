@@ -9,13 +9,7 @@ namespace AssemblyActorCore
     public class Actionable : MonoBehaviour
     {
         public string GetName => _currentAction == null ? "None" : _currentAction.gameObject.name + " - " + _currentAction.Name;
-        public Action GetAction => _currentAction;
-
         public bool IsEmpty => _currentAction == null;
-        public bool IsController => _currentAction == null ? false : _currentAction.Type == ActionType.Controller;
-        public bool IsInteraction => _currentAction == null ? false : _currentAction.Type == ActionType.Interaction;
-        public bool IsForced => _currentAction == null ? false :_currentAction.Type == ActionType.Forced;
-        public bool IsIrreversible => _currentAction == null ? false : _currentAction.Type == ActionType.Irreversible;
 
         private Action _currentAction = null;
         private List<Action> _actions = new List<Action>();
@@ -23,11 +17,8 @@ namespace AssemblyActorCore
 
         private void Awake()
         {
-            Action[] actions = GetComponentsInChildren<Action>();
-            Activator[] activators = GetComponentsInChildren<Activator>();
-
-            foreach (Action action in actions) _actions.Add(action);
-            foreach (Activator activator in activators) _activators.Add(activator);
+            foreach (Action action in GetComponentsInChildren<Action>()) _actions.Add(action);
+            foreach (Activator activator in GetComponentsInChildren<Activator>()) _activators.Add(activator);
         }
 
         private void Update()
@@ -69,6 +60,8 @@ namespace AssemblyActorCore
         // If the Action is empty, we can activate any other type
         // If the Action is of type Controller, we can replace it with any type other than Controller
         // If the Action is of a different type, only the Cancel type can replace it 
+        private bool _isController => _currentAction == null ? false : _currentAction.Type == ActionType.Controller;
+        private bool _isIrreversible => _currentAction == null ? false : _currentAction.Type == ActionType.Irreversible;
         private bool _isReady(Action action)
         {
             bool ready = false;
@@ -79,9 +72,9 @@ namespace AssemblyActorCore
             }
             else
             {
-                if (IsIrreversible == false)
+                if (_isIrreversible == false)
                 {
-                    ready = IsController ? action.Type != ActionType.Controller : action.Type == ActionType.Forced;
+                    ready = _isController ? action.Type != ActionType.Controller : action.Type == ActionType.Forced;
                 }
             }
 

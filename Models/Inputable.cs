@@ -15,9 +15,9 @@ namespace AssemblyActorCore
 
         public bool Menu;            // Escape
 
-        public float MoveHorizontal; // WASD - Movement     Left Stick        Left Stick      Left Stick
-        public float MoveVertical;
-        
+        public float MoveHorizontal; // AD - Movement     Left Stick        Left Stick      Left Stick
+        public float MoveVertical;   // WS - Movement
+
         public float LookHorizontal; // Mouse - Look        Right Stick       Right Stick     Right Stick
         public float LookVertical;
 
@@ -35,6 +35,9 @@ namespace AssemblyActorCore
         {
             if (MoveHorizontal != 0 && input.MoveHorizontal != MoveHorizontal) return false;
             if (MoveVertical != 0 && input.MoveVertical != MoveVertical) return false;
+
+            if (LookHorizontal != 0 && input.LookHorizontal != LookHorizontal) return false;
+            if (LookVertical != 0 && input.LookVertical != LookVertical) return false;
 
             if (Option == true && input.Option == false) return false;
             if (Cancel == true && input.Cancel == false) return false;

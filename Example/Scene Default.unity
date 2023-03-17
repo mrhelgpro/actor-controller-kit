@@ -923,8 +923,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 0
   Name: Move
-  Speed: 3
-  Shift: 5
+  Speed: 5
+  Shift: 8
 --- !u!1 &2222537992132585934
 GameObject:
   m_ObjectHideFlags: 0

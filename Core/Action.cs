@@ -27,8 +27,6 @@ namespace AssemblyActorCore
             animatorable = GetComponentInParent<Animatorable>();
             movable = GetComponentInParent<Movable>();
 
-            //actionable.AddActionToPool(this);
-
             mainTransform = actionable.transform;
         }
 
