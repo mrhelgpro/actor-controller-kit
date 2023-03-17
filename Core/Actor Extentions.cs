@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public static class ExtentionComponents
+public static class ActorExtentionComponents
 {
     // Finds the required Component on <Actor> gets or instantiates
     public static T AddThisComponent<T>(this GameObject gameObject) where T : Component

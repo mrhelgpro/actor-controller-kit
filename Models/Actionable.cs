@@ -8,58 +8,52 @@ namespace AssemblyActorCore
 
     public class Actionable : MonoBehaviour
     {
-        public string GetName => _currentAction.gameObject.name + " - " + _currentAction.Name;
-        public ActionBehaviour GetAction => _currentAction;
+        public string GetName => _currentAction == null ? "None" : _currentAction.gameObject.name + " - " + _currentAction.Name;
+        public Action GetAction => _currentAction;
+
+        public bool IsEmpty => _currentAction == null;
         public bool IsController => _currentAction == null ? false : _currentAction.Type == ActionType.Controller;
         public bool IsInteraction => _currentAction == null ? false : _currentAction.Type == ActionType.Interaction;
         public bool IsForced => _currentAction == null ? false :_currentAction.Type == ActionType.Forced;
         public bool IsIrreversible => _currentAction == null ? false : _currentAction.Type == ActionType.Irreversible;
 
-        private ActionBehaviour _currentAction = null;
-        private List<ActionBehaviour> _actions = new List<ActionBehaviour>();
+        private Action _currentAction = null;
+        private List<Action> _actions = new List<Action>();
+        private List<Activator> _activators = new List<Activator>();
+
+        private void Awake()
+        {
+            Action[] actions = GetComponentsInChildren<Action>();
+            Activator[] activators = GetComponentsInChildren<Activator>();
+
+            foreach (Action action in actions) _actions.Add(action);
+            foreach (Activator activator in activators) _activators.Add(activator);
+        }
 
         private void Update()
         {
-            foreach (ActionBehaviour item in _actions)
+            foreach (Activator item in _activators)
             {
-                if (item != _currentAction)
+                if (item.gameObject != _currentAction?.gameObject)
                 {
-                    item.WaitLoop();
+                    item.UpdateActivate();
                 }
             }
 
-            if (_currentAction) _currentAction.UpdateLoop();
+            _currentAction?.UpdateLoop();
         }
 
         private void FixedUpdate()
         {
-            if (_currentAction) _currentAction.FixedLoop();
-        }
-
-        // Check the Action list for an equal
-        // If it found an equal Action, destroy this GameObject
-        // If no equal Action is found, add it to the action pool
-        public void AddActionToPool(GameObject objectAction)
-        {
-            foreach (ActionBehaviour item in _actions)
-            {
-                if (objectAction.name == item.gameObject.name)
-                {
-                    Destroy(objectAction);
-
-                    return;
-                }
-            }
-
-            _actions.Add(objectAction.GetComponent<ActionBehaviour>());
+            _currentAction?.FixedLoop();
         }
 
         // Check the Actions list for a ready-made Action
         // If you find an equal GameObject Name, execute this Action
         // If you don't find an equal Action, create a new one
-        public void Activate(GameObject objectAction)
+        public void TryToActivate(GameObject objectAction)
         {
-            foreach (ActionBehaviour item in _actions)
+            foreach (Action item in _actions)
             {
                 if (objectAction.name == item.gameObject.name)
                 {
@@ -75,11 +69,11 @@ namespace AssemblyActorCore
         // If the Action is empty, we can activate any other type
         // If the Action is of type Controller, we can replace it with any type other than Controller
         // If the Action is of a different type, only the Cancel type can replace it 
-        private bool _isReady(ActionBehaviour action)
+        private bool _isReady(Action action)
         {
             bool ready = false;
 
-            if (_isEmpty == true)
+            if (IsEmpty == true)
             {
                 ready = true;
             }
@@ -93,18 +87,17 @@ namespace AssemblyActorCore
 
             return ready;
         }
-        private bool _isEmpty => _currentAction == null;
         private void InvokeActivate(GameObject objectAction)
         {
-            ActionBehaviour action = objectAction.GetComponent<ActionBehaviour>();
+            Action action = objectAction.GetComponent<Action>();
 
             if (_isReady(action))
             {
-                if (_currentAction != null) _currentAction.Exit();
-
+                _currentAction?.Exit();
                 _currentAction = action;
-                _currentAction.gameObject.SetActive(true);
                 _currentAction.Enter();
+
+                Debug.Log(GetName);
             }
         }
 
@@ -125,7 +118,7 @@ namespace AssemblyActorCore
         // At the end of the Action, remove it from the Actor
         public void Deactivate(GameObject objectAction)
         {
-            ActionBehaviour action = objectAction.GetComponent<ActionBehaviour>();
+            Action action = objectAction.GetComponent<Action>();
 
             if (action == _currentAction)
             {
@@ -146,7 +139,7 @@ namespace AssemblyActorCore
         {
             myTarget = (Actionable)target;
 
-            EditorGUILayout.LabelField("Action", myTarget.GetAction == null ? "None" : myTarget.GetName);
+            EditorGUILayout.LabelField("Action", myTarget.GetName);
         }
     }
 #endif

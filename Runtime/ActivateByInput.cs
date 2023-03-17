@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace AssemblyActorCore
@@ -8,14 +6,9 @@ namespace AssemblyActorCore
     {
         public Input ActivateInput;
 
-        private void Update()
+        public override void UpdateActivate()
         {
-            if (ActivateInput.IsButtonPress(input)) Activate();
-        }
-
-        protected override void UpdateActivate()
-        { 
-        
+            if (ActivateInput.IsButtonPress(input)) TryToActivate();
         }
     }
 }

@@ -5,19 +5,24 @@ namespace AssemblyActorCore
     public abstract class Activator : MonoBehaviour
     {
         protected Input input => _inputable.Input;
+
+        protected GameObject myGameObject;
+        protected Actionable actionable;
+
         private Inputable _inputable;
-        private Actionable _actionable;
-        private GameObject _myGameObject;    
 
         private void Awake()
         {
-            _myGameObject = gameObject;
-            _actionable = GetComponentInParent<Actionable>();
+            myGameObject = gameObject;
+
+            actionable = GetComponentInParent<Actionable>();
             _inputable = GetComponentInParent<Inputable>();
+
+            //actionable.AddActivatorToPool(this);
         }
 
-        public void Activate() => _actionable.Activate(_myGameObject);
+        protected void TryToActivate() => actionable.TryToActivate(myGameObject);
 
-        protected abstract void UpdateActivate();
+        public abstract void UpdateActivate();
     }
 }

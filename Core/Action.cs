@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public abstract class ActionBehaviour : MonoBehaviour
+    public abstract class Action : MonoBehaviour
     {
         public ActionType Type;
         public string Name = "Action";
@@ -27,15 +27,11 @@ namespace AssemblyActorCore
             animatorable = GetComponentInParent<Animatorable>();
             movable = GetComponentInParent<Movable>();
 
-            actionable.AddActionToPool(myGameObject);
+            //actionable.AddActionToPool(this);
 
             mainTransform = actionable.transform;
-
-            Initialization();
         }
 
-        protected abstract void Initialization();
-        public abstract void WaitLoop();
         public abstract void Enter();
         public abstract void UpdateLoop();
         public abstract void FixedLoop();
