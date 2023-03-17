@@ -12,6 +12,7 @@ namespace AssemblyActorCore
         protected Actionable actionable;
         protected Animatorable animatorable;
         protected Movable movable;
+        protected Positionable positionable;
 
         protected GameObject myGameObject;
         protected Transform mainTransform;
@@ -26,6 +27,7 @@ namespace AssemblyActorCore
             actionable = GetComponentInParent<Actionable>();
             animatorable = GetComponentInParent<Animatorable>();
             movable = GetComponentInParent<Movable>();
+            positionable = GetComponentInParent<Positionable>();
 
             mainTransform = actionable.transform;
         }

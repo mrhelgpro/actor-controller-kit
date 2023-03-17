@@ -16,23 +16,27 @@ namespace AssemblyActorCore
 
         public override void UpdateLoop() 
         {
-            jumpInput();
-            jumpReady();
+            JumpInput();
         }
 
         public override void FixedLoop()
+        {
+            MoveHandler();
+            JumpHandler();
+        }
+
+        public override void Exit() => movable.FreezAll();
+
+        protected void MoveHandler()
         {
             Vector3 direction = new Vector3(input.MoveHorizontal, 0, input.MoveVertical);
             float speed = input.Shift ? MoveShift : MoveSpeed;
 
             animatorable.Play(Name, (direction * speed).magnitude);
             movable.MoveToDirection(direction, speed);
-            jumpHandler();
         }
 
-        private void jumpInput() => _isJumpPressed = input.Motion;
-
-        private void jumpHandler()
+        protected void JumpHandler()
         {
             if (_isJumpDone == false)
             {
@@ -44,17 +48,24 @@ namespace AssemblyActorCore
             }
         }
 
-        private void jumpReady()
+        protected void JumpInput()
         {
+            _isJumpPressed = input.Motion;
+
             if (_isJumpPressed == false)
             {
-               if (movable.IsGrounded)
-               { 
-                   _isJumpDone = false; 
-               }
+                if (positionable)
+                {
+                    if (positionable.IsGrounded)
+                    {
+                        _isJumpDone = false;
+                    }
+                }
+                else
+                {
+                    _isJumpDone = false;
+                }
             }
         }
-
-        public override void Exit() => movable.FreezAll();
     }
 }

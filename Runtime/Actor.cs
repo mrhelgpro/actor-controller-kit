@@ -3,7 +3,7 @@ using UnityEditor;
 
 namespace AssemblyActorCore
 {
-    public enum Preset { None, Free, ThirdPerson, Platformer }
+    public enum Preset { Free, ThirdPerson, Platformer }
 
     public class Actor : MonoBehaviour
     {
@@ -45,9 +45,6 @@ namespace AssemblyActorCore
                 // Create the required Components
                 switch (myTarget.Preset)
                 {
-                    case Preset.None:
-                        ClearAll();
-                        break;
                     case Preset.Free:
                         PresetFree();
                         break;
@@ -97,6 +94,7 @@ namespace AssemblyActorCore
             ClearPlatformer();
 
             gameObject.AddThisComponent<MovableThirdPerson>();
+            gameObject.AddThisComponent<PositionableThirdPerson>();
 
             SphereCollider sphereCollider = gameObject.AddThisComponent<SphereCollider>();
             sphereCollider.radius = 0.25f;
@@ -115,6 +113,7 @@ namespace AssemblyActorCore
             ClearThirdPerson();
 
             gameObject.AddThisComponent<MovablePlatformer>();
+            gameObject.AddThisComponent<PositionablePlatformer>();
 
             CircleCollider2D circleCollider2D = gameObject.AddThisComponent<CircleCollider2D>();
             circleCollider2D.radius = 0.25f;
@@ -134,6 +133,7 @@ namespace AssemblyActorCore
         private void ClearThirdPerson()
         {
             gameObject.RemoveComponent<MovableThirdPerson>();
+            gameObject.RemoveComponent<PositionableThirdPerson>();
             gameObject.RemoveComponent<SphereCollider>();
             gameObject.RemoveComponent<Rigidbody>();
         }
@@ -141,6 +141,7 @@ namespace AssemblyActorCore
         private void ClearPlatformer()
         {
             gameObject.RemoveComponent<MovablePlatformer>();
+            gameObject.RemoveComponent<PositionablePlatformer>();
             gameObject.RemoveComponent<CircleCollider2D>();
             gameObject.RemoveComponent<Rigidbody2D>();
         }

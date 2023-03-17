@@ -6,8 +6,6 @@ namespace AssemblyActorCore
     {
         private Rigidbody _rigidbody;
 
-        public LayerMask groundLayer;
-
         private new void Awake()
         {
             base.Awake();
@@ -51,11 +49,6 @@ namespace AssemblyActorCore
         {
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.AddForce(Vector3.up * force, ForceMode.Impulse);
-        }
-
-        private void Update()
-        {
-            IsGrounded = Physics.CheckSphere(transform.position, 0.25f, groundLayer); // LayerMask.NameToLayer("Default")
         }
     }
 }

@@ -2,29 +2,11 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    /*
-    public enum SurfaceType { None, Ground, Grass, Water };
-
-    public enum NormaleType { None, Straight, Stairs, Incline, Climb, Edge };
-
-    public abstract class Positionable : MonoBehaviour
-    {
-        public bool IsGrounded;
-    }
-    */
-
-    public class Surface
-    { 
-    
-    }
-
     public abstract class Movable : MonoBehaviour
     {
         [Range(0, 1)] public float Slowing = 0;
         [Range(0, 10)] public float Acceleration = 0;
         [Range(0, 2)] public float Gravity = 1;
-        
-        public bool IsGrounded;
 
         protected Transform mainTransform;
 
