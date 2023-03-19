@@ -32,7 +32,7 @@ namespace AssemblyActorCore
 
             float acceleration2D = 50;
 
-            float horizontal = direction.x * speed * GetSpeedScale * acceleration2D;
+            float horizontal = direction.x * speed * getSpeedScale * acceleration2D;
             float vertical = _rigidbody.velocity.y;
 
             _rigidbody.velocity = new Vector2(horizontal, vertical);

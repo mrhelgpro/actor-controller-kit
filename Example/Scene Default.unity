@@ -925,7 +925,10 @@ MonoBehaviour:
   Name: Move
   MoveSpeed: 5
   MoveShift: 8
-  JumpForce: 5
+  JumpHeight: 2
+  AmountOfJumps: 1
+  Levitation: 1
+  h: 0
 --- !u!1 &2222537992132585934
 GameObject:
   m_ObjectHideFlags: 0
@@ -1204,9 +1207,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02c6f8dcb17dc07418867b7a6642d67c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 0
   IsGrounded: 0
 --- !u!114 &6950002642489022723
 MonoBehaviour:
@@ -1223,6 +1223,8 @@ MonoBehaviour:
   Slowing: 0
   Acceleration: 0
   Gravity: 1
+  jumpForce: 3.181149
+  Height: 1
 --- !u!114 &6950002642489022724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1444,7 +1446,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6950002643889794383}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 101be9fc0273f7a4dbe58d66f49a7586, type: 2}
   m_CullingMode: 0
