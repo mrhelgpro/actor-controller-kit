@@ -4,33 +4,63 @@ namespace AssemblyActorCore
 {
     public class ActionMovement : Action
     {
-        [Range(1, 10)] public float MoveSpeed = 3;
-        [Range(1, 20)] public float MoveShift = 5;
+        [Range(1, 10)] public float MoveSpeed = 3f;
+        [Range(1, 20)] public float MoveShift = 5f;
         [Range(1, 5)]  public int JumpHeight = 2;
         [Range (0, 3)] public int AmountOfJumps = 1;
-        [Range(0, 1)] public float Levitation = 0.5f;
+        [Range(0, 1)] public float Levitation = 1f;
        
         private int _jumpCounter;
         private bool _isJumpPressed = false;
         private bool _isJumpDone = false;
 
-        public float h = 0;
+        #region LOGGER
+        public bool LogHeight = false;
+        private float _heightOfTheJump = 0; // To display the jump height
+        private void heightLog()
+        {
+            if (LogHeight)
+            {
+                if (positionable.IsGrounded) _heightOfTheJump = 0;
+
+                if (mainTransform.position.y > _heightOfTheJump)
+                {
+                    _heightOfTheJump = mainTransform.position.y;
+                    Debug.Log("Height of the jump = " + _heightOfTheJump + " (" + gameObject.name + ")");
+                }
+            }
+        }
+
+        public bool LogSpeed = false;
+        private Vector3 _lastPositionForSpeed = Vector3.zero;
+        private void speedLog()
+        {
+            if (LogSpeed)
+            {
+                Vector3 velocity = (mainTransform.position - _lastPositionForSpeed) / Time.deltaTime;
+                float speed = velocity.magnitude;
+
+                _lastPositionForSpeed = mainTransform.position;
+
+                Debug.Log("Movement speed = " + speed + " (" + gameObject.name + ")");
+            }
+        }
+        # endregion
 
         public override void Enter() => movable.FreezRotation();
 
         public override void UpdateLoop() 
         {
             JumpInput();
-
-            if (transform.position.y > h) { h = transform.position.y; }
-
-            Debug.Log(h);
         }
 
         public override void FixedLoop()
         {
             MoveHandler();
             JumpHandler();
+
+            heightLog();
+            speedLog();
         }
 
         public override void Exit() => movable.FreezAll();
@@ -50,7 +80,7 @@ namespace AssemblyActorCore
             {
                 if (_isJumpPressed == true)
                 {
-                    movable.Jump(movable.HeightToForce(JumpHeight));
+                    movable.Jump(JumpHeight.HeightToForce());
                     _jumpCounter--;
 
                     _isJumpDone = true;
@@ -72,8 +102,6 @@ namespace AssemblyActorCore
                     {
                         _isJumpDone = false;
                         _jumpCounter = AmountOfJumps;
-
-                        h = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     }
                     else
                     {

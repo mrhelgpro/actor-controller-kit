@@ -30,7 +30,7 @@ namespace AssemblyActorCore
 
             _rigidbody.gravityScale = Gravity;
 
-            float acceleration2D = 50;
+            float acceleration2D = 51;
 
             float horizontal = direction.x * speed * getSpeedScale * acceleration2D;
             float vertical = _rigidbody.velocity.y;
@@ -40,7 +40,8 @@ namespace AssemblyActorCore
 
         public override void Jump(float force)
         {
-
+            _rigidbody.velocity = Vector2.zero;
+            _rigidbody.AddForce(Vector3.up * force, ForceMode2D.Impulse);
         }
     }
 }

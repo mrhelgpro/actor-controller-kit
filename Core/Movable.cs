@@ -8,8 +8,6 @@ namespace AssemblyActorCore
         [Range(0, 10)] public float Acceleration = 0;
         [Range(0, 1f)] public float Gravity = 1;
 
-        public float jumpForce = 1;
-
         protected Transform mainTransform;
 
         protected float getSpeedScale => _getAcceleration * _getSlowing * Time.fixedDeltaTime;
@@ -29,39 +27,6 @@ namespace AssemblyActorCore
             direction.Normalize();
 
             mainTransform.position += direction * speed * Time.fixedDeltaTime;
-        }
-
-        public float HeightToForce(int height)
-        {
-            // force = 1 x = 4.528313f
-            // force = 2 x = 3.181149f
-            // force = 3 x = 2.590051f
-            // force = 4 x = 2.23927f
-            // force = 10 x = 1.410547
-            // force = 20 x = 1
-
-            float force = 0;
-
-            switch (height)
-            {
-                case 1:
-                    force = 4.528313f;
-                    break;
-                case 2:
-                    force = 3.181149f;
-                    break;
-                case 3:
-                    force = 2.590051f;
-                    break;
-                case 4:
-                    force = 2.23927f;
-                    break;
-                default:
-                    Debug.Log("Force on calculated for height " + force);
-                    break;
-            }
-
-            return force * height;
         }
     }
 }
