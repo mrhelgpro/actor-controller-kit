@@ -9,9 +9,16 @@ namespace AssemblyActorCore
     public abstract class Positionable : MonoBehaviour
     {
         public bool IsGrounded;
+        public string SurfaceType;
+        public float SurfaceAngle;
 
         protected LayerMask groundLayer;
+        protected Transform myTransform;
 
-        private void Awake() => groundLayer = LayerMask.GetMask("Default");
+        private void Awake()
+        {
+            groundLayer = LayerMask.GetMask("Default");
+            myTransform = transform;
+        }
     }
 }

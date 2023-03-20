@@ -6,7 +6,21 @@ namespace AssemblyActorCore
     {
         private void Update()
         {
-            IsGrounded = Physics.CheckSphere(transform.position, 0.25f, groundLayer);
+            IsGrounded = Physics.CheckSphere(myTransform.position, 0.1f, groundLayer);
+
+            SurfaceAngle = _getSurfaceAngle();
+        }
+
+        private float _getSurfaceAngle()
+        {
+            RaycastHit hit;
+
+            if (Physics.Raycast(myTransform.position, -Vector3.up, out hit, 1f))
+            {
+                return Vector3.Angle(hit.normal, Vector3.up);
+            }
+
+            return 0f;
         }
     }
 }
