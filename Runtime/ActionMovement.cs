@@ -90,30 +90,33 @@ namespace AssemblyActorCore
 
         protected void JumpInput()
         {
-            _isJumpPressed = input.Motion;
-
-            movable.Gravity = _isJumpPressed ? Levitation : 1;
-
-            if (_isJumpPressed == false)
+            if (positionable.StayOnTheGround == false)
             {
-                if (positionable)
+                _isJumpPressed = input.Motion;
+
+                movable.Gravity = _isJumpPressed ? Levitation : 1;
+
+                if (_isJumpPressed == false)
                 {
-                    if (positionable.IsGrounded)
+                    if (positionable)
                     {
-                        _isJumpDone = false;
-                        _jumpCounter = AmountOfJumps;
+                        if (positionable.IsGrounded)
+                        {
+                            _isJumpDone = false;
+                            _jumpCounter = AmountOfJumps;
+                        }
+                        else
+                        {
+                            if (_jumpCounter > 0)
+                            {
+                                _isJumpDone = false;
+                            }
+                        }
                     }
                     else
                     {
-                        if (_jumpCounter > 0)
-                        {
-                            _isJumpDone = false;
-                        }
+                        _isJumpDone = false;
                     }
-                }
-                else
-                {
-                    _isJumpDone = false;
                 }
             }
         }

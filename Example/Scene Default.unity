@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028355, g: 0.22571374, b: 0.30692255, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &147123788
 Transform:
   m_ObjectHideFlags: 0
@@ -250,7 +250,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &158087725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,14 +342,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 158087724}
-  m_LocalRotation: {x: 0.49075165, y: 0, z: 0, w: 0.87129956}
-  m_LocalPosition: {x: 0, y: 15, z: -2}
+  m_LocalRotation: {x: 0.25000006, y: 0.25000006, z: -0.06698733, w: 0.9330127}
+  m_LocalPosition: {x: -15.77, y: 8.4, z: -2.17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 58.78, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: 30, z: 0}
 --- !u!1 &191258159
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,7 +364,7 @@ GameObject:
   - component: {fileID: 191258161}
   m_Layer: 0
   m_Name: Plane (Angle 15)
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -466,7 +466,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &265882233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1129,7 +1129,7 @@ GameObject:
   - component: {fileID: 922214070}
   m_Layer: 0
   m_Name: Ground (Cube) (1)
-  m_TagString: Untagged
+  m_TagString: Finish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1141,7 +1141,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 922214068}
-  m_LocalRotation: {x: 0, y: 0, z: 0.13052616, w: 0.9914449}
+  m_LocalRotation: {x: -0, y: -0, z: 0.13052616, w: 0.9914449}
   m_LocalPosition: {x: 5, y: -0.5, z: 0}
   m_LocalScale: {x: 40, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2137,7 +2137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c20b2c6e1ab866e4eb781269208352b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Preset: 2
+  Preset: 1
   Name: Actor
 --- !u!1 &6950002642489022718
 GameObject:
@@ -2234,43 +2234,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71d6969a52b3ac54e9317698586b9fc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!50 &6950002642489022727
-Rigidbody2D:
-  serializedVersion: 4
+--- !u!54 &6950002642489022727
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6950002642489022718}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
+  serializedVersion: 2
   m_Mass: 1
-  m_LinearDrag: 0
+  m_Drag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_UseGravity: 0
+  m_IsKinematic: 0
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_Constraints: 112
   m_CollisionDetection: 1
-  m_Constraints: 4
---- !u!58 &6950002642489022728
-CircleCollider2D:
+--- !u!135 &6950002642489022728
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6950002642489022718}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 94cf69e6fcc1e824e935659b5f9a5dfe, type: 2}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.25}
+  m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.25
+  m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!114 &6950002642489022729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2280,12 +2272,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 6950002642489022718}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee5bd89d4a1b94e4bb69577886dbfede, type: 3}
+  m_Script: {fileID: 11500000, guid: 02c6f8dcb17dc07418867b7a6642d67c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   IsGrounded: 0
   SurfaceType: 
   SurfaceAngle: 0
+  StayOnTheGround: 0
 --- !u!114 &6950002642489022730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2295,7 +2288,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6950002642489022718}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecbb9a0e9e5880d43b1a74369293ec2e, type: 3}
+  m_Script: {fileID: 11500000, guid: 1afe73b36812b1c41a31f82428a59477, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Slowing: 0

@@ -4,10 +4,9 @@ namespace AssemblyActorCore
 {
     public class PositionableThirdPerson : Positionable
     {
-        private void Update()
+        protected override void GroundCheck()
         {
-            IsGrounded = Physics.CheckSphere(myTransform.position, 0.1f, groundLayer);
-
+            IsGrounded = Physics.CheckSphere(myTransform.position, radiusGroundCheck, groundLayer);
             SurfaceAngle = _getSurfaceAngle();
         }
 
@@ -15,9 +14,15 @@ namespace AssemblyActorCore
         {
             RaycastHit hit;
 
-            if (Physics.Raycast(myTransform.position, -Vector3.up, out hit, 1f))
+            if (Physics.Raycast(myTransform.position, -Vector3.up, out hit, radiusGroundCheck, groundLayer))
             {
+                SurfaceType = hit.collider.tag;
+
                 return Vector3.Angle(hit.normal, Vector3.up);
+            }
+            else
+            {
+                SurfaceType = "Air";
             }
 
             return 0f;

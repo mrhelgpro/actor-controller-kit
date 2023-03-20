@@ -18,13 +18,6 @@ public static class ActorExtentionMovements
 {
     public static float HeightToForce(this int height)
     {
-        // height = 1;  multiplication = 4.528313f; force = 4.531f; 
-        // height = 2;  multiplication = 3.181149f; force = 6.365f;
-        // height = 3;  multiplication = 2.590051f; force = 7.775f;
-        // height = 4;  multiplication = 2.23927f;  force = 8.961f;
-        // height = 5;  multiplication = 2.002f;    force = 10.01f;
-        // height = 10; multiplication = 1.410547;  force = 14.10547f;
-
         float force;
 
         switch (height)
