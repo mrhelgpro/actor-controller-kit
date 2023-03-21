@@ -14,39 +14,6 @@ namespace AssemblyActorCore
         private bool _isJumpPressed = false;
         private bool _isJumpDone = false;
 
-        #region LOGGER
-        public bool LogHeight = false;
-        private float _heightOfTheJump = 0; // To display the jump height
-        private void heightLog()
-        {
-            if (LogHeight)
-            {
-                if (positionable.IsGrounded) _heightOfTheJump = 0;
-
-                if (mainTransform.position.y > _heightOfTheJump)
-                {
-                    _heightOfTheJump = mainTransform.position.y;
-                    Debug.Log("Height of the jump = " + _heightOfTheJump + " (" + gameObject.name + ")");
-                }
-            }
-        }
-
-        public bool LogSpeed = false;
-        private Vector3 _lastPositionForSpeed = Vector3.zero;
-        private void speedLog()
-        {
-            if (LogSpeed)
-            {
-                Vector3 velocity = (mainTransform.position - _lastPositionForSpeed) / Time.deltaTime;
-                float speed = velocity.magnitude;
-
-                _lastPositionForSpeed = mainTransform.position;
-
-                Debug.Log("Movement speed = " + speed + " (" + gameObject.name + ")");
-            }
-        }
-        # endregion
-
         public override void Enter() => movable.FreezRotation();
 
         public override void UpdateLoop() 
@@ -58,9 +25,6 @@ namespace AssemblyActorCore
         {
             MoveHandler();
             JumpHandler();
-
-            heightLog();
-            speedLog();
         }
 
         public override void Exit() => movable.FreezAll();
@@ -71,7 +35,9 @@ namespace AssemblyActorCore
             float speed = input.Shift ? MoveShift : MoveSpeed;
 
             animatorable.Play(Name, (direction * speed).magnitude);
-            movable.MoveToDirection(direction, speed);
+            movable.MoveToDirection(positionable.Project(direction), speed);
+
+            Debug.DrawLine(mainTransform.position, mainTransform.position + positionable.Project(direction) * 5, Color.green, 0, false);
         }
 
         protected void JumpHandler()
@@ -90,33 +56,30 @@ namespace AssemblyActorCore
 
         protected void JumpInput()
         {
-            if (positionable.StayOnTheGround == false)
+            _isJumpPressed = input.Motion;
+
+            //movable.Gravity = _isJumpPressed ? Levitation : 1;
+
+            if (_isJumpPressed == false)
             {
-                _isJumpPressed = input.Motion;
-
-                movable.Gravity = _isJumpPressed ? Levitation : 1;
-
-                if (_isJumpPressed == false)
+                if (positionable)
                 {
-                    if (positionable)
+                    if (positionable.IsGrounded)
                     {
-                        if (positionable.IsGrounded)
-                        {
-                            _isJumpDone = false;
-                            _jumpCounter = AmountOfJumps;
-                        }
-                        else
-                        {
-                            if (_jumpCounter > 0)
-                            {
-                                _isJumpDone = false;
-                            }
-                        }
+                        _isJumpDone = false;
+                        _jumpCounter = AmountOfJumps;
                     }
                     else
                     {
-                        _isJumpDone = false;
+                        if (_jumpCounter > 0)
+                        {
+                            _isJumpDone = false;
+                        }
                     }
+                }
+                else
+                {
+                    _isJumpDone = false;
                 }
             }
         }

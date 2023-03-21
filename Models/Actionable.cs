@@ -137,3 +137,23 @@ namespace AssemblyActorCore
     }
 #endif
 }
+
+namespace AssemblyActorCore
+{
+    public class ActionEmptyExample : Action
+    {
+        public override void Enter() => movable.FreezRotation();
+
+        public override void UpdateLoop()
+        {
+
+        }
+
+        public override void FixedLoop()
+        {
+
+        }
+
+        public override void Exit() => movable.FreezAll();
+    }
+}

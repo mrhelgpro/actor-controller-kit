@@ -6,26 +6,25 @@ namespace AssemblyActorCore
     {
         protected override void GroundCheck()
         {
-            IsGrounded = Physics.CheckSphere(myTransform.position, radiusGroundCheck, groundLayer);
-            SurfaceAngle = _getSurfaceAngle();
+            IsGrounded = Physics.CheckSphere(mainTransform.position, radiusGroundCheck, groundLayer);
+            SurfaceType = _getSurfaceType();
         }
 
-        private float _getSurfaceAngle()
+        private string _getSurfaceType()
         {
             RaycastHit hit;
 
-            if (Physics.Raycast(myTransform.position, -Vector3.up, out hit, radiusGroundCheck, groundLayer))
-            {
-                SurfaceType = hit.collider.tag;
+            float height = 0.1f;
+            Vector3 origin = new Vector3(mainTransform.position.x, mainTransform.position.y + height, mainTransform.position.z);
 
-                return Vector3.Angle(hit.normal, Vector3.up);
-            }
-            else
+            if (Physics.Raycast(origin, -Vector3.up, out hit, radiusGroundCheck + height, groundLayer))
             {
-                SurfaceType = "Air";
+                return hit.collider.tag;
             }
 
-            return 0f;
+            return "None";
         }
+
+        private void OnCollisionEnter(Collision collision) => surfaceNormal = collision.contacts[0].normal;       
     }
 }

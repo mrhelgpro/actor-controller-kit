@@ -6,26 +6,25 @@ namespace AssemblyActorCore
     {
         protected override void GroundCheck()
         {
-            IsGrounded = Physics2D.OverlapCircle(myTransform.position, radiusGroundCheck, groundLayer);
-            SurfaceAngle = _getSurfaceAngle();
+            IsGrounded = Physics2D.OverlapCircle(mainTransform.position, radiusGroundCheck, groundLayer);
+            SurfaceType = _getSurfaceType();
         }
 
-        private float _getSurfaceAngle()
+        private string _getSurfaceType()
         {
-            RaycastHit2D hit = Physics2D.Raycast(myTransform.position, -Vector2.up, radiusGroundCheck, groundLayer);
+            float height = 0.1f;
+            Vector3 origin = new Vector3(mainTransform.position.x, mainTransform.position.y + height, mainTransform.position.z);
+
+            RaycastHit2D hit = Physics2D.Raycast(origin, -Vector2.up, radiusGroundCheck + height, groundLayer);
 
             if (hit.collider != null)
             {
-                SurfaceType = hit.collider.tag;
-
-                return Vector3.Angle(hit.normal, Vector2.up);
-            }
-            else
-            {
-                SurfaceType = "Air";
+                return hit.collider.tag;
             }
 
-            return 0f;
+            return "None";
         }
+
+        private void OnCollisionEnter2D(Collision2D collision) => surfaceNormal = collision.contacts[0].normal;
     }
 }
