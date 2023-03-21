@@ -30,7 +30,7 @@ namespace AssemblyActorCore
             _rigidbody.velocity = Vector3.zero;
         }
 
-        public override void MoveToDirection(Vector3 direction, float speed)
+        public override void MoveToDirection(Vector3 direction, float speed, bool isGrounded = false)
         {
             direction.Normalize();
 

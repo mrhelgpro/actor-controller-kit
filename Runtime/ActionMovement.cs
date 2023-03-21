@@ -35,7 +35,7 @@ namespace AssemblyActorCore
             float speed = input.Shift ? MoveShift : MoveSpeed;
 
             animatorable.Play(Name, (direction * speed).magnitude);
-            movable.MoveToDirection(positionable.Project(direction), speed);
+            movable.MoveToDirection(positionable.Project(direction), speed, positionable.IsGrounded);
 
             Debug.DrawLine(mainTransform.position, mainTransform.position + positionable.Project(direction) * 5, Color.green, 0, false);
         }

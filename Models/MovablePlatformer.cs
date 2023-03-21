@@ -7,6 +7,14 @@ namespace AssemblyActorCore
         protected const float acceleration2D = 51;
         private Rigidbody2D _rigidbody;
 
+        public float yVelocity;
+        public float yDirection;
+
+        public float Difference;
+
+        public float difMax = 4;
+        public float difMin = 4;
+
         private new void Awake()
         {
             base.Awake();
@@ -25,7 +33,7 @@ namespace AssemblyActorCore
             _rigidbody.freezeRotation = true;
         }
 
-        public override void MoveToDirection(Vector3 direction, float speed)
+        public override void MoveToDirection(Vector3 direction, float speed, bool isGrounded = false)
         {
             direction.Normalize();
 
@@ -36,9 +44,20 @@ namespace AssemblyActorCore
             else
             {
                 _rigidbody.gravityScale = Gravity;
+
+                yDirection = direction.y * speed * getSpeedScale * acceleration2D;
+                yVelocity = _rigidbody.velocity.y;
+
+                Difference = Mathf.Abs(yDirection - yVelocity);
+
+                bool range = Difference > difMax;
+
                 float horizontal = direction.x * speed * getSpeedScale * acceleration2D;
-                float vertical =  _rigidbody.velocity.y;
-                _rigidbody.velocity = new Vector2(horizontal, vertical);
+                float vertical = _rigidbody.velocity.y < 0 ? yVelocity : range ? yVelocity : yDirection;
+
+                Vector2 velocity = new Vector2(horizontal, vertical);
+
+                _rigidbody.velocity = velocity;
             }
         }
 
