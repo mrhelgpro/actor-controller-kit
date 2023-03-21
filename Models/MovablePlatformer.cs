@@ -7,14 +7,6 @@ namespace AssemblyActorCore
         protected const float acceleration2D = 51;
         private Rigidbody2D _rigidbody;
 
-        public float yVelocity;
-        public float yDirection;
-
-        public float Difference;
-
-        public float difMax = 4;
-        public float difMin = 4;
-
         private new void Awake()
         {
             base.Awake();
@@ -37,27 +29,23 @@ namespace AssemblyActorCore
         {
             direction.Normalize();
 
+            _rigidbody.gravityScale = Gravity;
+
+            IsFall = isGrounded == false && _rigidbody.velocity.y < 0;
+            IsJump = IsFall ? false : IsJump;
+
             if (direction == Vector3.zero && Gravity == 0)
             {
                 _rigidbody.velocity = Vector2.zero;
             }
             else
             {
-                _rigidbody.gravityScale = Gravity;
-
-                yDirection = direction.y * speed * getSpeedScale * acceleration2D;
-                yVelocity = _rigidbody.velocity.y;
-
-                Difference = Mathf.Abs(yDirection - yVelocity);
-
-                bool range = Difference > difMax;
-
                 float horizontal = direction.x * speed * getSpeedScale * acceleration2D;
-                float vertical = _rigidbody.velocity.y < 0 ? yVelocity : range ? yVelocity : yDirection;
+                float vertical = direction.y * speed * getSpeedScale * acceleration2D;             
 
-                Vector2 velocity = new Vector2(horizontal, vertical);
+                float gravity = isGrounded == false || IsFall || IsJump ? _rigidbody.velocity.y : vertical;
 
-                _rigidbody.velocity = velocity;
+                _rigidbody.velocity = new Vector2(horizontal, gravity);
             }
         }
 
@@ -65,6 +53,7 @@ namespace AssemblyActorCore
         {
             _rigidbody.velocity = Vector2.zero;
             _rigidbody.AddForce(Vector3.up * force, ForceMode2D.Impulse);
+            IsJump = true;
         }
     }
 }

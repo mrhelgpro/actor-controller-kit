@@ -22,6 +22,8 @@ namespace AssemblyActorCore
                 return hit.collider.tag;
             }
 
+            surfaceNormal = Vector3.zero;
+
             return "None";
         }
 

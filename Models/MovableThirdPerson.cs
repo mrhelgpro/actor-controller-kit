@@ -34,6 +34,9 @@ namespace AssemblyActorCore
         {
             direction.Normalize();
 
+            IsFall = isGrounded == false && _rigidbody.velocity.y < 0;
+            IsJump = IsFall ? false : IsJump;
+
             if (direction == Vector3.zero && Gravity == 0)
             {
                 _rigidbody.velocity = Vector3.zero;
@@ -49,6 +52,7 @@ namespace AssemblyActorCore
         {
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.AddForce(Vector3.up * force, ForceMode.Impulse);
+            IsJump = true;
         }
     }
 }

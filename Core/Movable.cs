@@ -8,6 +8,9 @@ namespace AssemblyActorCore
         [Range(0, 10)] public float Acceleration = 0;
         [Range(0, 1f)] public float Gravity = 1;
 
+        public bool IsFall = false;
+        public bool IsJump = false;
+
         protected Transform mainTransform;
 
         protected float getSpeedScale => _getAcceleration * _getSlowing * Time.fixedDeltaTime;

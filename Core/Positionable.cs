@@ -10,7 +10,7 @@ namespace AssemblyActorCore
         [Range(0, 90)] public float SurfaceAngle;
 
         protected Vector3 surfaceNormal;
-        protected const float radiusGroundCheck = 0.2f;
+        protected const float radiusGroundCheck = 0.25f;
         protected LayerMask groundLayer;
         protected Transform mainTransform;
 
