@@ -4,6 +4,7 @@ namespace AssemblyActorCore
 {
     public class MovablePlatformer : Movable
     {
+        protected const float acceleration2D = 51;
         private Rigidbody2D _rigidbody;
 
         private new void Awake()
@@ -28,14 +29,17 @@ namespace AssemblyActorCore
         {
             direction.Normalize();
 
-            _rigidbody.gravityScale = Gravity;
-
-            float acceleration2D = 51;
-
-            float horizontal = direction.x * speed * getSpeedScale * acceleration2D;
-            float vertical = _rigidbody.velocity.y;
-
-            _rigidbody.velocity = new Vector2(horizontal, vertical);
+            if (direction == Vector3.zero && Gravity == 0)
+            {
+                _rigidbody.velocity = Vector2.zero;
+            }
+            else
+            {
+                _rigidbody.gravityScale = Gravity;
+                float horizontal = direction.x * speed * getSpeedScale * acceleration2D;
+                float vertical =  _rigidbody.velocity.y;
+                _rigidbody.velocity = new Vector2(horizontal, vertical);
+            }
         }
 
         public override void Jump(float force)

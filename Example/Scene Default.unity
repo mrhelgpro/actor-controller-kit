@@ -250,7 +250,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &158087725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -466,7 +466,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &265882233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2086,7 +2086,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 0
   Name: Move
-  MoveSpeed: 2
+  MoveSpeed: 5
   MoveShift: 8
   JumpHeight: 1
   AmountOfJumps: 1
@@ -2292,16 +2292,16 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6950002642489022719}
+  - component: {fileID: 6950002642489022731}
   - component: {fileID: 6950002642489022716}
   - component: {fileID: 6775850509184779644}
   - component: {fileID: 6950002642489022726}
   - component: {fileID: 6950002642489022725}
   - component: {fileID: 6950002642489022724}
-  - component: {fileID: 6950002642489022730}
-  - component: {fileID: 6950002642489022729}
-  - component: {fileID: 6950002642489022728}
-  - component: {fileID: 6950002642489022727}
-  - component: {fileID: 6950002642489022731}
+  - component: {fileID: 6950002642489022735}
+  - component: {fileID: 6950002642489022734}
+  - component: {fileID: 6950002642489022733}
+  - component: {fileID: 6950002642489022732}
   m_Layer: 3
   m_Name: Player Default
   m_TagString: Untagged
@@ -2379,7 +2379,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71d6969a52b3ac54e9317698586b9fc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!54 &6950002642489022727
+--- !u!114 &6950002642489022731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6950002642489022718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3693299050d92b4aa1cf70d4d0f5288, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LogHeight: 0
+  LogSpeed: 0
+--- !u!54 &6950002642489022732
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2395,7 +2409,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
---- !u!135 &6950002642489022728
+--- !u!135 &6950002642489022733
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2408,7 +2422,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.25
   m_Center: {x: 0, y: 0.25, z: 0}
---- !u!114 &6950002642489022729
+--- !u!114 &6950002642489022734
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2423,8 +2437,7 @@ MonoBehaviour:
   IsGrounded: 0
   SurfaceType: 
   SurfaceAngle: 0
-  VerticalDirection: 0
---- !u!114 &6950002642489022730
+--- !u!114 &6950002642489022735
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2439,20 +2452,6 @@ MonoBehaviour:
   Slowing: 0
   Acceleration: 0
   Gravity: 1
---- !u!114 &6950002642489022731
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6950002642489022718}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3693299050d92b4aa1cf70d4d0f5288, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LogHeight: 0
-  LogSpeed: 0
 --- !u!1 &6950002642875083664
 GameObject:
   m_ObjectHideFlags: 0
