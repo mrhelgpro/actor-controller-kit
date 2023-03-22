@@ -10,7 +10,8 @@ namespace AssemblyActorCore
         [Range(0, 90)] public float SurfaceAngle;
 
         protected Vector3 surfaceNormal;
-        protected const float radiusGroundCheck = 0.25f;
+        protected const float radiusGroundCheck = 0.125f;
+        protected const float lengthRaycast = 1.0f;
         protected LayerMask groundLayer;
         protected Transform mainTransform;
 
@@ -27,7 +28,12 @@ namespace AssemblyActorCore
             SurfaceAngle = Vector3.Angle(surfaceNormal, Vector3.up);
         }
 
-        public Vector3 Project(Vector3 direction) => direction - Vector3.Dot(direction, surfaceNormal) * surfaceNormal;
+        public Vector3 Project(Vector3 direction)
+        {
+            Vector3 projection = direction - Vector3.Dot(direction, surfaceNormal) * surfaceNormal;
+
+            return projection == Vector3.zero || IsGrounded == false ? direction : projection;
+        }
 
         protected abstract void GroundCheck();
 

@@ -4,29 +4,16 @@ namespace AssemblyActorCore
 {
     public class PositionableThirdPerson : Positionable
     {
+        protected Collision groundCollision;
+
         protected override void GroundCheck()
         {
-            IsGrounded = Physics.CheckSphere(mainTransform.position, radiusGroundCheck, groundLayer);
-            SurfaceType = _getSurfaceType();
+            IsGrounded = groundCollision == null ? false : true;
+            SurfaceType = IsGrounded == true ? groundCollision.gameObject.tag : "None";
+            surfaceNormal = IsGrounded == true ? groundCollision.contacts[0].normal : Vector3.zero;
         }
 
-        private string _getSurfaceType()
-        {
-            RaycastHit hit;
-
-            float height = 0.1f;
-            Vector3 origin = new Vector3(mainTransform.position.x, mainTransform.position.y + height, mainTransform.position.z);
-
-            if (Physics.Raycast(origin, -Vector3.up, out hit, radiusGroundCheck + height, groundLayer))
-            {
-                return hit.collider.tag;
-            }
-
-            surfaceNormal = Vector3.zero;
-
-            return "None";
-        }
-
-        private void OnCollisionEnter(Collision collision) => surfaceNormal = collision.contacts[0].normal;       
+        private void OnCollisionStay(Collision collision) => groundCollision = collision;
+        private void OnCollisionExit(Collision collision) => groundCollision = null;
     }
 }

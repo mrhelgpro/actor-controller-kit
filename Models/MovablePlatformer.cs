@@ -4,7 +4,6 @@ namespace AssemblyActorCore
 {
     public class MovablePlatformer : Movable
     {
-        protected const float acceleration2D = 51;
         private Rigidbody2D _rigidbody;
 
         private new void Awake()
@@ -29,10 +28,18 @@ namespace AssemblyActorCore
         {
             direction.Normalize();
 
-            _rigidbody.gravityScale = Gravity;
+            _rigidbody.gravityScale = Gravity * 2;
 
-            IsFall = isGrounded == false && _rigidbody.velocity.y < 0;
-            IsJump = IsFall ? false : IsJump;
+            if (IsFall == true)
+            {
+                IsFall = isGrounded == true && _rigidbody.velocity.y >= 0 ? false : IsFall;
+            }
+            else
+            {
+                IsFall = isGrounded == false && _rigidbody.velocity.y < 0;
+            }
+
+            IsJump = IsFall || jumpTimeIsOver(isGrounded) ? false : IsJump;
 
             if (direction == Vector3.zero && Gravity == 0)
             {
@@ -40,10 +47,10 @@ namespace AssemblyActorCore
             }
             else
             {
+                float acceleration2D = 51;
                 float horizontal = direction.x * speed * getSpeedScale * acceleration2D;
                 float vertical = direction.y * speed * getSpeedScale * acceleration2D;             
-
-                float gravity = isGrounded == false || IsFall || IsJump ? _rigidbody.velocity.y : vertical;
+                float gravity = IsFall || IsJump ? _rigidbody.velocity.y : vertical;
 
                 _rigidbody.velocity = new Vector2(horizontal, gravity);
             }
@@ -51,9 +58,13 @@ namespace AssemblyActorCore
 
         public override void Jump(float force)
         {
+            float extraGravity = 0.6f * Gravity + 0.825f;
+
             _rigidbody.velocity = Vector2.zero;
-            _rigidbody.AddForce(Vector3.up * force, ForceMode2D.Impulse);
+            _rigidbody.AddForce(Vector3.up * force * extraGravity, ForceMode2D.Impulse);
+
             IsJump = true;
+            jumpTime = Time.time;
         }
     }
 }

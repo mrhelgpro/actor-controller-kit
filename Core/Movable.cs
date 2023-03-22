@@ -6,16 +6,20 @@ namespace AssemblyActorCore
     {
         [Range(0, 1)] public float Slowing = 0;
         [Range(0, 10)] public float Acceleration = 0;
-        [Range(0, 1f)] public float Gravity = 1;
+        [Range(0, 1)] public float Gravity = 1;
 
         public bool IsFall = false;
         public bool IsJump = false;
+
+        protected bool jumpTimeIsOver(bool isGrounded) => isGrounded && IsJump && Time.time - jumpTime > 0.05f;
+        protected float jumpTime = 0;
 
         protected Transform mainTransform;
 
         protected float getSpeedScale => _getAcceleration * _getSlowing * Time.fixedDeltaTime;
         private float _getSlowing => Slowing > 0 ? (Slowing <= 1 ? 1 - Slowing : 0) : 1;
         private float _getAcceleration => Acceleration > 0 ? Acceleration + 1 : 1;
+
 
         protected void Awake() => mainTransform = transform;
 

@@ -15,7 +15,7 @@ namespace AssemblyActorCore
             float height = 0.1f;
             Vector3 origin = new Vector3(mainTransform.position.x, mainTransform.position.y + height, mainTransform.position.z);
 
-            RaycastHit2D hit = Physics2D.Raycast(origin, -Vector2.up, radiusGroundCheck + height, groundLayer);
+            RaycastHit2D hit = Physics2D.Raycast(origin, -Vector2.up, lengthRaycast + height, groundLayer);
 
             if (hit.collider != null)
             {

@@ -34,8 +34,18 @@ namespace AssemblyActorCore
         {
             direction.Normalize();
 
-            IsFall = isGrounded == false && _rigidbody.velocity.y < 0;
-            IsJump = IsFall ? false : IsJump;
+            float gravityScale = Gravity;
+
+            if (IsFall == true)
+            {
+                IsFall = isGrounded == true && _rigidbody.velocity.y >= 0 ? false : IsFall;
+            }
+            else
+            {
+                IsFall = isGrounded == false && _rigidbody.velocity.y < 0;
+            }
+
+            IsJump = IsFall || jumpTimeIsOver(isGrounded) ? false : IsJump;
 
             if (direction == Vector3.zero && Gravity == 0)
             {
@@ -44,15 +54,21 @@ namespace AssemblyActorCore
             else
             {
                 _rigidbody.MovePosition(_rigidbody.position + direction * speed * getSpeedScale);
-                _rigidbody.AddForce(Physics.gravity * Gravity, ForceMode.Acceleration);
+                _rigidbody.AddForce(Physics.gravity * gravityScale, ForceMode.Acceleration);
             }
         }
 
         public override void Jump(float force)
         {
+            //float extraGravity = 0.6f * Gravity + 0.825f;
+
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.AddForce(Vector3.up * force, ForceMode.Impulse);
+
+            //_rigidbody.AddForce(Vector3.up * force * extraGravity, ForceMode.Impulse);
+
             IsJump = true;
+            jumpTime = Time.time;
         }
     }
 }
