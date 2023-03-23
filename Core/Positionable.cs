@@ -5,9 +5,9 @@ namespace AssemblyActorCore
     public abstract class Positionable : MonoBehaviour
     {
         public bool IsGrounded;
-        //public bool IsEdge;
         public string SurfaceType;
-        [Range(0, 90)] public float SurfaceAngle;
+        [Range(0, 90)] public float SurfaceAngle = 0;
+        [Range(0, 89)] public float MaxMovemenAngle = 60;
 
         protected Vector3 surfaceNormal;
         protected const float radiusGroundCheck = 0.125f;
@@ -15,7 +15,7 @@ namespace AssemblyActorCore
         protected LayerMask groundLayer;
         protected Transform mainTransform;
 
-        private void Awake()
+        protected void Awake()
         {
             groundLayer = LayerMask.GetMask("Default");
             mainTransform = transform;
@@ -32,33 +32,9 @@ namespace AssemblyActorCore
         {
             Vector3 projection = direction - Vector3.Dot(direction, surfaceNormal) * surfaceNormal;
 
-            return SurfaceAngle > 60 || projection == Vector3.zero || IsGrounded == false ? direction : projection;
+            return projection == Vector3.zero || IsGrounded == false ? direction : projection;
         }
 
         protected abstract void GroundCheck();
-
-        /*
-        public bool StayOnTheGround;
-        private Vector3 _lastGroundPosition;
-
-        private void stayOnTheGroung()
-        {
-            if (StayOnTheGround)
-            {
-                if (IsEdge == true)
-                {
-                    myTransform.position = _lastGroundPosition;
-
-                    Debug.Log("STAY ON THE GROUND!!!!!!!!!!!!!!!!!!!!");
-                }
-                else
-                {
-                    _lastGroundPosition = myTransform.position;
-                }
-
-                //_lastGroundPosition = IsEdge == false ? myTransform.position : _lastGroundPosition;
-            }
-        }
-        */
     }
 }

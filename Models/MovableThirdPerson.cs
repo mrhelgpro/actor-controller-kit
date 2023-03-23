@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class MovableThirdPerson : Movable
+    public sealed class MovableThirdPerson : Movable
     {
         private Rigidbody _rigidbody;
         private new void Awake()
@@ -29,14 +29,11 @@ namespace AssemblyActorCore
             _rigidbody.velocity = Vector3.zero;
         }
 
-        public override void MoveToDirection(Vector3 direction, float speed, bool isGrounded = false)
+        public override void MoveToDirection(Vector3 direction, float speed, bool isGrounded = true)
         {
-            direction.Normalize();
+            Vector3 velocity = direction.normalized * speed * getSpeedScale;
 
             float gravityScale = Gravity;
-
-            IsFall = isGrounded == false && _rigidbody.velocity.y <= 0;
-            IsJump = IsFall ? false : IsJump;
 
             if (direction == Vector3.zero && Gravity == 0)
             {
@@ -44,9 +41,14 @@ namespace AssemblyActorCore
             }
             else
             {
-                _rigidbody.MovePosition(_rigidbody.position + direction * speed * getSpeedScale);
+                IsFall = isGrounded == false && _rigidbody.velocity.y <= 0;
+                IsJump = IsFall ? false : IsJump;
+
+                _rigidbody.MovePosition(_rigidbody.position + velocity);
                 _rigidbody.AddForce(Physics.gravity * gravityScale, ForceMode.Acceleration);
             }
+
+            Debug.DrawLine(mainTransform.position, mainTransform.position + velocity * 5, Color.green, 0, false);
         }
 
         public override void Jump(float force)

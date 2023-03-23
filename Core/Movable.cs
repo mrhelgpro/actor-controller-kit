@@ -11,9 +11,6 @@ namespace AssemblyActorCore
         public bool IsFall = false;
         public bool IsJump = false;
 
-        //protected bool jumpTimeIsOver(bool isGrounded) => isGrounded && IsJump && Time.time - jumpTime > 0.05f;
-        //protected float jumpTime = 0;
-
         protected Transform mainTransform;
 
         protected float getSpeedScale => _getAcceleration * _getSlowing * Time.fixedDeltaTime;
@@ -25,7 +22,7 @@ namespace AssemblyActorCore
 
         public abstract void FreezAll();
         public abstract void FreezRotation();
-        public abstract void MoveToDirection(Vector3 direction, float speed, bool isGrounded = false);
+        public abstract void MoveToDirection(Vector3 direction, float speed, bool isGrounded = true);
         public abstract void Jump(float force);
         public void MoveToPosition(Vector3 direction, float speed) => mainTransform.position += direction.normalized * speed * Time.fixedDeltaTime;
     }

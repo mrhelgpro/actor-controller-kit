@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class MovablePlatformer : Movable
+    public sealed class MovablePlatformer : Movable
     {
         private Rigidbody2D _rigidbody;
 
@@ -24,14 +24,11 @@ namespace AssemblyActorCore
             _rigidbody.freezeRotation = true;
         }
 
-        public override void MoveToDirection(Vector3 direction, float speed, bool isGrounded = false)
+        public override void MoveToDirection(Vector3 direction, float speed, bool  isGrounded = true)
         {
-            direction.Normalize();
+            Vector3 velocity = direction.normalized * speed * getSpeedScale * 51; // 51 = acceleration2D 
 
             _rigidbody.gravityScale = Gravity;
-
-            IsFall = isGrounded == false && _rigidbody.velocity.y <= 0;
-            IsJump = IsFall ? false : IsJump;
 
             if (direction == Vector3.zero && Gravity == 0)
             {
@@ -39,13 +36,14 @@ namespace AssemblyActorCore
             }
             else
             {
-                float acceleration2D = 51;
-                float horizontal = direction.x * speed * getSpeedScale * acceleration2D;
-                float vertical = direction.y * speed * getSpeedScale * acceleration2D;             
-                float gravity = IsFall || IsJump ? _rigidbody.velocity.y : vertical;
+                IsFall = isGrounded == false && _rigidbody.velocity.y <= 0;
+                IsJump = IsFall ? false : IsJump;
 
-                _rigidbody.velocity = new Vector2(horizontal, gravity);
+                float gravity = IsFall || IsJump ? _rigidbody.velocity.y : velocity.y;
+                _rigidbody.velocity = new Vector2(velocity.x, gravity);
             }
+
+            Debug.DrawLine(mainTransform.position, mainTransform.position + velocity * 5, Color.green, 0, false);
         }
 
         public override void Jump(float force)
