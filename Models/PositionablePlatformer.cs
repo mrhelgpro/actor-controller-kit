@@ -4,29 +4,16 @@ namespace AssemblyActorCore
 {
     public class PositionablePlatformer : Positionable
     {
+        protected Collision2D groundCollision;
+
         protected override void GroundCheck()
         {
-            IsGrounded = Physics2D.OverlapCircle(mainTransform.position, radiusGroundCheck, groundLayer);
-            SurfaceType = _getSurfaceType();
+            IsGrounded = groundCollision == null ? false : true;
+            SurfaceType = IsGrounded == true ? groundCollision.gameObject.tag : "None";
+            surfaceNormal = IsGrounded == true ? groundCollision.contacts[0].normal : Vector3.zero;
         }
 
-        private string _getSurfaceType()
-        {
-            float height = 0.1f;
-            Vector3 origin = new Vector3(mainTransform.position.x, mainTransform.position.y + height, mainTransform.position.z);
-
-            RaycastHit2D hit = Physics2D.Raycast(origin, -Vector2.up, lengthRaycast + height, groundLayer);
-
-            if (hit.collider != null)
-            {
-                return hit.collider.tag;
-            }
-
-            surfaceNormal = Vector3.zero;
-
-            return "None";
-        }
-
-        private void OnCollisionEnter2D(Collision2D collision) => surfaceNormal = collision.contacts[0].normal;
+        private void OnCollisionStay2D(Collision2D collision) => groundCollision = collision;
+        private void OnCollisionExit2D(Collision2D collision) => groundCollision = null;
     }
 }

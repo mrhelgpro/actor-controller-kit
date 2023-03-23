@@ -28,18 +28,10 @@ namespace AssemblyActorCore
         {
             direction.Normalize();
 
-            _rigidbody.gravityScale = Gravity * 2;
+            _rigidbody.gravityScale = Gravity;
 
-            if (IsFall == true)
-            {
-                IsFall = isGrounded == true && _rigidbody.velocity.y >= 0 ? false : IsFall;
-            }
-            else
-            {
-                IsFall = isGrounded == false && _rigidbody.velocity.y < 0;
-            }
-
-            IsJump = IsFall || jumpTimeIsOver(isGrounded) ? false : IsJump;
+            IsFall = isGrounded == false && _rigidbody.velocity.y <= 0;
+            IsJump = IsFall ? false : IsJump;
 
             if (direction == Vector3.zero && Gravity == 0)
             {
@@ -58,13 +50,10 @@ namespace AssemblyActorCore
 
         public override void Jump(float force)
         {
-            float extraGravity = 0.6f * Gravity + 0.825f;
-
             _rigidbody.velocity = Vector2.zero;
-            _rigidbody.AddForce(Vector3.up * force * extraGravity, ForceMode2D.Impulse);
+            _rigidbody.AddForce(Vector3.up * force, ForceMode2D.Impulse);
 
             IsJump = true;
-            jumpTime = Time.time;
         }
     }
 }

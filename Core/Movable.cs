@@ -6,13 +6,13 @@ namespace AssemblyActorCore
     {
         [Range(0, 1)] public float Slowing = 0;
         [Range(0, 10)] public float Acceleration = 0;
-        [Range(0, 1)] public float Gravity = 1;
+        [Range(0, 2)] public float Gravity = 1;
 
         public bool IsFall = false;
         public bool IsJump = false;
 
-        protected bool jumpTimeIsOver(bool isGrounded) => isGrounded && IsJump && Time.time - jumpTime > 0.05f;
-        protected float jumpTime = 0;
+        //protected bool jumpTimeIsOver(bool isGrounded) => isGrounded && IsJump && Time.time - jumpTime > 0.05f;
+        //protected float jumpTime = 0;
 
         protected Transform mainTransform;
 

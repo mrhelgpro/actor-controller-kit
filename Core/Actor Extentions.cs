@@ -16,7 +16,7 @@ public static class ActorExtentionComponents
 
 public static class ActorExtentionMovements
 {
-    public static float HeightToForce(this int height)
+    public static float HeightToForce(this int height, float gravityScale = 1)
     {
         float force;
 
@@ -43,6 +43,8 @@ public static class ActorExtentionMovements
                 break;
         }
 
-        return force;
+        float gravity = 0.425f * gravityScale + 0.575f;
+
+        return force * gravity;
     }
 }

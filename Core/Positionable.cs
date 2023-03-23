@@ -32,7 +32,7 @@ namespace AssemblyActorCore
         {
             Vector3 projection = direction - Vector3.Dot(direction, surfaceNormal) * surfaceNormal;
 
-            return projection == Vector3.zero || IsGrounded == false ? direction : projection;
+            return SurfaceAngle > 60 || projection == Vector3.zero || IsGrounded == false ? direction : projection;
         }
 
         protected abstract void GroundCheck();

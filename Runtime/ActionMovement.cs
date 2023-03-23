@@ -34,6 +34,8 @@ namespace AssemblyActorCore
             Vector3 direction = new Vector3(input.MoveHorizontal, 0, input.MoveVertical);
             float speed = input.Shift ? MoveShift : MoveSpeed;
 
+            //speed = positionable.SurfaceAngle > 60 ? 0.5f : speed;
+
             animatorable.Play(Name, (direction * speed).magnitude);
             movable.MoveToDirection(positionable.Project(direction), speed, positionable.IsGrounded);
 
@@ -46,7 +48,7 @@ namespace AssemblyActorCore
             {
                 if (_isJumpPressed == true)
                 {
-                    movable.Jump(JumpHeight.HeightToForce());
+                    movable.Jump(JumpHeight.HeightToForce(movable.Gravity));
                     _jumpCounter--;
 
                     _isJumpDone = true;
