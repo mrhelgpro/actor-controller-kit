@@ -7,7 +7,8 @@ namespace AssemblyActorCore
         public bool IsGrounded;
         public string SurfaceType;
         [Range(0, 90)] public float CurrentSlope = 0;
-        [Range(0, 89)] public float MaxSlope = 60;
+        
+        public bool IsNormalSlope => CurrentSlope <= 60;
 
         protected Vector3 surfaceNormal;
         protected const float radiusGroundCheck = 0.125f;
