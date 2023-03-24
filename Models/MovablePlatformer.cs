@@ -43,7 +43,29 @@ namespace AssemblyActorCore
                 _rigidbody.velocity = new Vector2(velocity.x, gravity);
             }
 
+            checkFlip(direction);
+
             Debug.DrawLine(mainTransform.position, mainTransform.position + velocity * 5, Color.green, 0, false);
+        }
+
+        private void checkFlip(Vector3 direction)
+        {
+            if (mainTransform.localScale.z < 0 && direction.x > 0)
+            {
+                flip();
+            }
+            else if (mainTransform.localScale.z > 0 && direction.x < 0)
+            {
+                flip();
+            }
+        }
+
+        private void flip()
+        {
+            mainTransform.transform.eulerAngles = new Vector3(0, 90, 0);
+            Vector3 Scaler = mainTransform.localScale;
+            Scaler.z *= -1;
+            mainTransform.localScale = Scaler;
         }
 
         public override void Jump(float force)

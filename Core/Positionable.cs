@@ -6,8 +6,8 @@ namespace AssemblyActorCore
     {
         public bool IsGrounded;
         public string SurfaceType;
-        [Range(0, 90)] public float SurfaceAngle = 0;
-        [Range(0, 89)] public float MaxMovemenAngle = 60;
+        [Range(0, 90)] public float CurrentSlope = 0;
+        [Range(0, 89)] public float MaxSlope = 60;
 
         protected Vector3 surfaceNormal;
         protected const float radiusGroundCheck = 0.125f;
@@ -25,7 +25,7 @@ namespace AssemblyActorCore
         {
             GroundCheck();
 
-            SurfaceAngle = Vector3.Angle(surfaceNormal, Vector3.up);
+            CurrentSlope = Vector3.Angle(surfaceNormal, Vector3.up);
         }
 
         public Vector3 Project(Vector3 direction)

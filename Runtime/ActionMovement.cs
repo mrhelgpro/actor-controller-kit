@@ -4,8 +4,8 @@ namespace AssemblyActorCore
 {
     public class ActionMovement : Action
     {
-        [Range(1, 10)] public float MoveSpeed = 3f;
-        [Range(1, 20)] public float MoveShift = 5f;
+        [Range(1, 5)] public float MoveSpeed = 3f;
+        [Range(1, 10)] public float MoveShift = 5f;
         [Range(1, 5)]  public int JumpHeight = 2;
         [Range (0, 3)] public int AmountOfJumps = 1;
         [Range(0, 1)] public float Levitation = 1f;
@@ -34,7 +34,7 @@ namespace AssemblyActorCore
             Vector3 direction = new Vector3(input.MoveHorizontal, 0, input.MoveVertical);
             float speed = input.Shift ? MoveShift : MoveSpeed;
 
-            animatorable.Play(Name, (direction * speed).magnitude);
+            animatorable.Play(Name, movable.GetVelocity);
             movable.MoveToDirection(positionable.Project(direction), speed, positionable.IsGrounded);
         }
 

@@ -26,7 +26,7 @@ namespace AssemblyActorCore
             SurfaceType = IsGrounded == true ? _groundCollision.gameObject.tag : "None";
             surfaceNormal = IsGrounded == true ? _groundCollision.contacts[0].normal : Vector3.Lerp(surfaceNormal, Vector3.zero, Time.fixedDeltaTime);
 
-            _groundCollider.material = IsGrounded && SurfaceAngle <= MaxMovemenAngle ? _materialOnTheGround : _materialInTheAir;
+            _groundCollider.material = IsGrounded && CurrentSlope <= MaxSlope ? _materialOnTheGround : _materialInTheAir;
         }
 
         private void OnCollisionStay(Collision collision) => _groundCollision = collision;
