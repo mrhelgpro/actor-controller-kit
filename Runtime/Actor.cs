@@ -140,8 +140,9 @@ namespace AssemblyActorCore
             gameObject.AddThisComponent<MovableNavigation>();
 
             NavMeshAgent navMeshAgent = gameObject.AddThisComponent<NavMeshAgent>();
+            navMeshAgent.agentTypeID = 0;
             navMeshAgent.radius = 0.25f;
-            navMeshAgent.height = navMeshAgent.radius * 2;
+            navMeshAgent.height = 1.25f;
             navMeshAgent.acceleration = 100;
             navMeshAgent.angularSpeed = 10000;
         }

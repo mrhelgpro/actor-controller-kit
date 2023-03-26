@@ -47,8 +47,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 0
   Name: Move
-  Speed: 3
-  Shift: 5
+  MoveSpeed: 3
+  MoveShift: 5
+  JumpHeight: 2
+  AmountOfJumps: 1
+  Levitation: 1
 --- !u!114 &7471254912827622197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -300,6 +303,8 @@ GameObject:
   - component: {fileID: -6377210981956767823}
   - component: {fileID: 8593775044086287470}
   - component: {fileID: 5700229471665439785}
+  - component: {fileID: -3360154126170462315}
+  - component: {fileID: -8459162650951748081}
   m_Layer: 0
   m_Name: Player Default
   m_TagString: Untagged
@@ -406,6 +411,8 @@ MonoBehaviour:
   Slowing: 0
   Acceleration: 0
   Gravity: 1
+  IsFall: 0
+  IsJump: 0
 --- !u!135 &-6377210981956767823
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -447,6 +454,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f40dbd14eb6c5654292f7dc6c24869b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-3360154126170462315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8169738868058921387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecbb9a0e9e5880d43b1a74369293ec2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Slowing: 0
+  Acceleration: 0
+  Gravity: 1
+  IsFall: 0
+  IsJump: 0
+--- !u!114 &-8459162650951748081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8169738868058921387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee5bd89d4a1b94e4bb69577886dbfede, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsGrounded: 0
+  SurfaceType: 
+  CurrentSlope: 0
 --- !u!1 &8169738868478143173
 GameObject:
   m_ObjectHideFlags: 0

@@ -107,9 +107,9 @@ NavMeshSettings:
     serializedVersion: 2
     agentTypeID: 0
     agentRadius: 0.25
-    agentHeight: 0.5
+    agentHeight: 1.25
     agentSlope: 45
-    agentClimb: 0.4
+    agentClimb: 1.25
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     minRegionArea: 2
@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: c14cf9b77661b5145b096f830427e818, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 8c953bb5602ee984d8543fdb0d9cb84c, type: 2}
 --- !u!1 &66216025
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,7 +155,7 @@ Transform:
   - {fileID: 509048787}
   - {fileID: 1701501051}
   m_Father: {fileID: 277166513}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &114524546
 GameObject:
@@ -498,7 +498,7 @@ Transform:
   - {fileID: 1034664583}
   - {fileID: 1581721526}
   m_Father: {fileID: 277166513}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &159775669
 MeshRenderer:
@@ -677,8 +677,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 277166513}
+  - component: {fileID: 277166514}
   m_Layer: 0
-  m_Name: 2D / 3D Location
+  m_Name: Scene Default
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -696,7 +697,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 402793902}
   - {fileID: 1346413209}
   - {fileID: 66216026}
   - {fileID: 1413751414}
@@ -707,6 +707,35 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &277166514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277166512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.083333336
+  m_BuildHeightMesh: 0
+  m_NavMeshData: {fileID: 23800000, guid: 7237528db5342d14e987ffd0a9ed5403, type: 2}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -885,7 +914,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &402793902
 Transform:
   m_ObjectHideFlags: 0
@@ -902,8 +931,8 @@ Transform:
   - {fileID: 2134120224}
   - {fileID: 1997687218}
   - {fileID: 2058781113}
-  m_Father: {fileID: 277166513}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &410087039
 GameObject:
@@ -2253,14 +2282,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 777150956}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10, y: -1, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalPosition: {x: 10, y: 0, z: 0}
+  m_LocalScale: {x: 5, y: 2, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1615532421}
   - {fileID: 360905747}
   m_Father: {fileID: 277166513}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &777150958
 MeshRenderer:
@@ -2664,7 +2693,7 @@ Transform:
   m_Children:
   - {fileID: 1343878961}
   m_Father: {fileID: 277166513}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1211278703
 GameObject:
@@ -2795,8 +2824,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1343878960}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.61, y: -1.05, z: 0}
-  m_LocalScale: {x: 49.12, y: 5, z: 5}
+  m_LocalPosition: {x: 0.61, y: 0, z: 0}
+  m_LocalScale: {x: 10, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1464220047}
@@ -2887,7 +2916,7 @@ Transform:
   - {fileID: 1986750054}
   - {fileID: 2000430520}
   m_Father: {fileID: 277166513}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1346413210
 MeshRenderer:
@@ -3101,7 +3130,7 @@ Transform:
   - {fileID: 1799573004}
   - {fileID: 1770738133}
   m_Father: {fileID: 277166513}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1464220046
 GameObject:
@@ -3592,7 +3621,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28784
+  m_Name: pb_Mesh54762
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -10722,7 +10751,7 @@ Transform:
   m_Children:
   - {fileID: 929807025}
   m_Father: {fileID: 277166513}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2134120219
 GameObject:
@@ -11852,7 +11881,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6950002642489022718}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11863,8 +11892,8 @@ Transform:
   - {fileID: 5301068961485116889}
   - {fileID: 5301068961860523747}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6950002642489022724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11947,7 +11976,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 0.5
+  m_Height: 1.25
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
