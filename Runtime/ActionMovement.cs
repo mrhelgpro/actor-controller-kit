@@ -35,7 +35,7 @@ namespace AssemblyActorCore
             float speed = input.Shift ? MoveShift : MoveSpeed;
 
             animatorable.Play(Name, movable.GetVelocity);
-            movable.MoveToDirection(positionable.Project(direction), speed, positionable.IsGrounded);
+            movable.MoveToDirection(direction, speed);
         }
 
         protected void JumpHandler()

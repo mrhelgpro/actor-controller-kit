@@ -4,6 +4,7 @@ namespace AssemblyActorCore
 {
     public abstract class Positionable : MonoBehaviour
     {
+        //public enum Mode { Collision, Sphere}
         public bool IsGrounded;
         public string SurfaceType;
         [Range(0, 90)] public float CurrentSlope = 0;
@@ -11,8 +12,8 @@ namespace AssemblyActorCore
         public bool IsNormalSlope => CurrentSlope <= 60;
 
         protected Vector3 surfaceNormal;
-        protected const float radiusGroundCheck = 0.125f;
-        protected const float lengthRaycast = 1.0f;
+        //protected const float radiusGroundCheck = 0.125f;
+        //protected const float lengthRaycast = 1.0f;
         protected LayerMask groundLayer;
         protected Transform mainTransform;
 

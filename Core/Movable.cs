@@ -38,7 +38,7 @@ namespace AssemblyActorCore
 
         public abstract void FreezAll();
         public abstract void FreezRotation();
-        public abstract void MoveToDirection(Vector3 direction, float speed, bool isGrounded = true);
+        public abstract void MoveToDirection(Vector3 direction, float speed);
         public abstract void Jump(float force);
         public void MoveToPosition(Vector3 direction, float speed) => mainTransform.position += direction.normalized * speed * Time.fixedDeltaTime;
     }

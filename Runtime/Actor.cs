@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using UnityEngine.AI;
+using UnityEngine;
 using UnityEditor;
 
 namespace AssemblyActorCore
 {
-    public enum Preset { Free, ThirdPerson, Platformer }
+    public enum Preset { Free, Physic, Platformer, Navigation }
 
     public class Actor : MonoBehaviour
     {
@@ -18,8 +19,6 @@ namespace AssemblyActorCore
     {
         private Actor myTarget;
         private GameObject gameObject;
-
-        private bool foldoutInput = false;
 
         public override void OnInspectorGUI()
         {
@@ -48,17 +47,21 @@ namespace AssemblyActorCore
                     case Preset.Free:
                         PresetFree();
                         break;
-                    case Preset.ThirdPerson:
-                        PresetThirdPerson();
+                    case Preset.Physic:
+                        PresetPhysic();
                         break;
                     case Preset.Platformer:
                         PresetPlatformer();
+                        break;
+                    case Preset.Navigation:
+                        PresetNavigation();
                         break;
                 }
             }
         }
 
         // Examples of showing fields
+        private bool foldoutInput = false;
         private void Example()
         {
             // EXAMPLE: Example of how to hide some fields
@@ -84,17 +87,19 @@ namespace AssemblyActorCore
         {
             ClearThirdPerson();
             ClearPlatformer();
+            ClearNavigation();
 
             gameObject.AddThisComponent<MovableFree>();
         }
 
-        private void PresetThirdPerson()
+        private void PresetPhysic()
         {
             ClearFree();
             ClearPlatformer();
+            ClearNavigation();
 
-            gameObject.AddThisComponent<MovableThirdPerson>();
-            gameObject.AddThisComponent<PositionableThirdPerson>();
+            gameObject.AddThisComponent<MovablePhysic>();
+            gameObject.AddThisComponent<PositionablePhysic>();
 
             SphereCollider sphereCollider = gameObject.AddThisComponent<SphereCollider>();
             sphereCollider.radius = 0.25f;
@@ -111,6 +116,7 @@ namespace AssemblyActorCore
         {
             ClearFree();
             ClearThirdPerson();
+            ClearNavigation();
 
             gameObject.AddThisComponent<MovablePlatformer>();
             gameObject.AddThisComponent<PositionablePlatformer>();
@@ -125,6 +131,21 @@ namespace AssemblyActorCore
             rigidbody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         }
 
+        private void PresetNavigation()
+        {
+            ClearFree();
+            ClearThirdPerson();
+            ClearPlatformer();
+
+            gameObject.AddThisComponent<MovableNavigation>();
+
+            NavMeshAgent navMeshAgent = gameObject.AddThisComponent<NavMeshAgent>();
+            navMeshAgent.radius = 0.25f;
+            navMeshAgent.height = navMeshAgent.radius * 2;
+            navMeshAgent.acceleration = 100;
+            navMeshAgent.angularSpeed = 10000;
+        }
+
         private void ClearFree()
         {
             gameObject.RemoveComponent<MovableFree>();
@@ -132,8 +153,8 @@ namespace AssemblyActorCore
 
         private void ClearThirdPerson()
         {
-            gameObject.RemoveComponent<MovableThirdPerson>();
-            gameObject.RemoveComponent<PositionableThirdPerson>();
+            gameObject.RemoveComponent<MovablePhysic>();
+            gameObject.RemoveComponent<PositionablePhysic>();
             gameObject.RemoveComponent<SphereCollider>();
             gameObject.RemoveComponent<Rigidbody>();
         }
@@ -146,6 +167,12 @@ namespace AssemblyActorCore
             gameObject.RemoveComponent<Rigidbody2D>();
         }
 
+        private void ClearNavigation()
+        {
+            gameObject.RemoveComponent<MovableNavigation>();
+            gameObject.RemoveComponent<NavMeshAgent>();
+        }
+
         private void ClearAll()
         {
             gameObject.RemoveComponent<Actionable>();
@@ -155,6 +182,7 @@ namespace AssemblyActorCore
             ClearFree();
             ClearThirdPerson();
             ClearPlatformer();
+            ClearNavigation();
         }
     }
 #endif

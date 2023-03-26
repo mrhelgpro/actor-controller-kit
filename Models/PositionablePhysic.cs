@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public sealed class PositionableThirdPerson : Positionable
+    public sealed class PositionablePhysic : Positionable
     {
         private Collision _groundCollision;
         private SphereCollider _groundCollider;

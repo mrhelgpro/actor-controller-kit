@@ -4,13 +4,17 @@ namespace AssemblyActorCore
 {
     public sealed class MovablePlatformer : Movable
     {
+        private bool _isGrounded => _positionable.IsGrounded;
+
+        private Positionable _positionable;
         private Rigidbody2D _rigidbody;
 
         private new void Awake()
         {
             base.Awake();
 
-            _rigidbody = gameObject.GetComponent<Rigidbody2D>();
+            _positionable = GetComponent<Positionable>();
+            _rigidbody = GetComponent<Rigidbody2D>();
         }
 
         public override void FreezAll() 
@@ -24,9 +28,9 @@ namespace AssemblyActorCore
             _rigidbody.freezeRotation = true;
         }
 
-        public override void MoveToDirection(Vector3 direction, float speed, bool  isGrounded = true)
+        public override void MoveToDirection(Vector3 direction, float speed)
         {
-            Vector3 velocity = direction.normalized * speed * getSpeedScale * 51; // 51 = acceleration2D 
+            Vector3 velocity = _positionable.Project(direction).normalized * speed * getSpeedScale * 51; // 51 = acceleration2D 
 
             _rigidbody.gravityScale = Gravity;
 
@@ -36,7 +40,7 @@ namespace AssemblyActorCore
             }
             else
             {
-                IsFall = isGrounded == false && _rigidbody.velocity.y <= 0;
+                IsFall = _isGrounded == false && _rigidbody.velocity.y <= 0;
                 IsJump = IsFall ? false : IsJump;
 
                 float gravity = IsFall || IsJump ? _rigidbody.velocity.y : velocity.y;
