@@ -4,16 +4,13 @@ namespace AssemblyActorCore
 {
     public abstract class Positionable : MonoBehaviour
     {
-        //public enum Mode { Collision, Sphere}
         public bool IsGrounded;
         public string SurfaceType;
-        [Range(0, 90)] public float CurrentSlope = 0;
+        [Range(0, 90)] public float SurfaceSlope = 0;
         
-        public bool IsNormalSlope => CurrentSlope <= 60;
+        public bool IsNormalSlope => SurfaceSlope <= 45;
 
         protected Vector3 surfaceNormal;
-        //protected const float radiusGroundCheck = 0.125f;
-        //protected const float lengthRaycast = 1.0f;
         protected LayerMask groundLayer;
         protected Transform mainTransform;
 
@@ -27,12 +24,16 @@ namespace AssemblyActorCore
         {
             GroundCheck();
 
-            CurrentSlope = Vector3.Angle(surfaceNormal, Vector3.up);
+            SurfaceSlope = Vector3.Angle(surfaceNormal, Vector3.up);
         }
 
         public Vector3 Project(Vector3 direction)
         {
             Vector3 projection = direction - Vector3.Dot(direction, surfaceNormal) * surfaceNormal;
+
+            //Vector3 normal = projection == Vector3.zero || IsGrounded == false ? direction : projection;
+            //Vector3 slope = Vector3.down - Vector3.Dot(Vector3.down, surfaceNormal) * surfaceNormal;
+            //return IsNormalSlope ? normal : slope;
 
             return projection == Vector3.zero || IsGrounded == false ? direction : projection;
         }

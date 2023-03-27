@@ -22,6 +22,9 @@ public static class ActorExtentionMovements
 
         switch (height)
         {
+            case 0:
+                force = 0.0f;
+                break;
             case 1:
                 force = 4.532f;
                 break;

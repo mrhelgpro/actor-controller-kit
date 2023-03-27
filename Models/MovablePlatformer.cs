@@ -30,7 +30,7 @@ namespace AssemblyActorCore
 
         public override void MoveToDirection(Vector3 direction, float speed)
         {
-            Vector3 velocity = _positionable.Project(direction).normalized * speed * getSpeedScale * 51; // 51 = acceleration2D 
+            Vector3 velocity = GetDirection(_positionable.Project(direction).normalized * speed * getSpeedScale * 51); // 51 = acceleration2D 
 
             _rigidbody.gravityScale = Gravity;
 

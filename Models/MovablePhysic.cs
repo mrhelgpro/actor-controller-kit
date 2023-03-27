@@ -38,8 +38,8 @@ namespace AssemblyActorCore
 
         public override void MoveToDirection(Vector3 direction, float speed)
         {
-            Vector3 velocity = _positionable.Project(direction).normalized * speed * getSpeedScale;
-
+            Vector3 velocity = GetDirection(_positionable.Project(direction).normalized * speed * getSpeedScale);
+            
             float gravityScale = Gravity;
 
             if (direction == Vector3.zero && Gravity == 0)
@@ -57,7 +57,7 @@ namespace AssemblyActorCore
 
             //rotationToMoveDirection(direction, speed);
 
-            Debug.DrawLine(mainTransform.position, mainTransform.position + velocity * 5, Color.green, 0, false);
+            Debug.DrawLine(mainTransform.position, mainTransform.position + velocity * 100, Color.green, 0, false);
         }
 
         /*

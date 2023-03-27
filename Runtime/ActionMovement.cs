@@ -6,10 +6,10 @@ namespace AssemblyActorCore
     {
         [Range(1, 5)] public float MoveSpeed = 3f;
         [Range(1, 10)] public float MoveShift = 5f;
-        [Range(1, 5)]  public int JumpHeight = 2;
-        [Range (0, 3)] public int AmountOfJumps = 1;
+        [Range(0, 5)]  public int JumpHeight = 2;
+        [Range(0, 2)] public int ExtraJumps;
         [Range(0, 1)] public float Levitation = 1f;
-       
+      
         private int _jumpCounter;
         private bool _isJumpPressed = false;
         private bool _isJumpDone = false;
@@ -45,7 +45,11 @@ namespace AssemblyActorCore
                 if (_isJumpPressed == true)
                 {
                     movable.Jump(JumpHeight.HeightToForce(movable.Gravity));
-                    _jumpCounter--;
+
+                    if (positionable.IsGrounded == false)
+                    {
+                        _jumpCounter--;
+                    }
 
                     _isJumpDone = true;
                 }
@@ -65,7 +69,7 @@ namespace AssemblyActorCore
                     if (positionable.IsGrounded)
                     {
                         _isJumpDone = false;
-                        _jumpCounter = AmountOfJumps;
+                        _jumpCounter = ExtraJumps;
                     }
                     else
                     {
