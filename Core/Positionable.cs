@@ -8,7 +8,7 @@ namespace AssemblyActorCore
         public string SurfaceType;
         [Range(0, 90)] public float SurfaceSlope = 0;
         
-        public bool IsNormalSlope => SurfaceSlope <= 45;
+        public bool IsNormalSlope => SurfaceSlope <= 46;
 
         protected Vector3 surfaceNormal;
         protected LayerMask groundLayer;
