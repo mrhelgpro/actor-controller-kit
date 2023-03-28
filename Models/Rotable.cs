@@ -41,7 +41,7 @@ namespace AssemblyActorCore
 
         private void directionByMove()
         {
-            _currentDirection = new Vector3(_inputable.Input.MoveHorizontal, 0.0f, _inputable.Input.MoveVertical);
+            _currentDirection = new Vector3(_inputable.Input.Move.x, 0.0f, _inputable.Input.Move.y);
         }
 
         private void directionByLook()

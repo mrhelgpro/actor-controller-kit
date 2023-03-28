@@ -15,11 +15,11 @@ namespace AssemblyActorCore
 
         public bool Menu;            // Escape
 
-        public float MoveHorizontal; // AD - Movement     Left Stick        Left Stick      Left Stick
-        public float MoveVertical;   // WS - Movement
-
-        public float LookHorizontal; // Mouse - Look        Right Stick       Right Stick     Right Stick
-        public float LookVertical;
+        //public float MoveHorizontal; // AD - Movement     Left Stick        Left Stick      Left Stick
+        //public float MoveVertical;   // WS - Movement
+        
+        public Vector2 Move;         // WASD - Movement     Left Stick        Left Stick      Left Stick
+        public Vector2 Look;         // Mouse - Look        Right Stick       Right Stick     Right Stick
 
         public bool Option;          // Q                   Y                 Triangle        North
         public bool Cancel;          // Backspace / C       B                 Circle          East
@@ -33,11 +33,10 @@ namespace AssemblyActorCore
 
         public bool IsButtonPress(Input input)
         {
-            if (MoveHorizontal != 0 && input.MoveHorizontal != MoveHorizontal) return false;
-            if (MoveVertical != 0 && input.MoveVertical != MoveVertical) return false;
+            //if (MoveHorizontal != 0 && input.MoveHorizontal != MoveHorizontal) return false;
+            //if (MoveVertical != 0 && input.MoveVertical != MoveVertical) return false;
 
-            if (LookHorizontal != 0 && input.LookHorizontal != LookHorizontal) return false;
-            if (LookVertical != 0 && input.LookVertical != LookVertical) return false;
+            //if (Look != Vector2.zero && input.Look != Look) return false;
 
             if (Option == true && input.Option == false) return false;
             if (Cancel == true && input.Cancel == false) return false;

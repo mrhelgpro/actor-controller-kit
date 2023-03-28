@@ -45,7 +45,7 @@ namespace AssemblyActorCore
 
         protected void MoveHandler()
         {
-            Vector3 direction = new Vector3(input.MoveHorizontal, 0, input.MoveVertical);
+            Vector3 direction = new Vector3(input.Move.x, 0, input.Move.y);
             float speed = input.Shift ? MoveShift : MoveSpeed;
 
             movable.MoveToDirection(direction, speed);

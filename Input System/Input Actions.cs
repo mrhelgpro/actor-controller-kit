@@ -57,19 +57,19 @@ namespace AssemblyActorCore
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""LookHorizontal"",
+                    ""name"": ""Move"",
                     ""type"": ""Value"",
-                    ""id"": ""aff0e7b3-541f-41a8-8d61-a58bf01ed279"",
-                    ""expectedControlType"": ""Delta"",
+                    ""id"": ""aaf1e6e5-7c44-4906-bcde-fa5c9e498512"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""LookVertical"",
+                    ""name"": ""Look"",
                     ""type"": ""Value"",
-                    ""id"": ""02c932ed-c608-41dc-a43f-9ffa21ad5106"",
-                    ""expectedControlType"": ""Delta"",
+                    ""id"": ""cbfc269a-99fd-435e-bbb8-68bdc3932ca8"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -293,72 +293,6 @@ namespace AssemblyActorCore
                 },
                 {
                     ""name"": ""1D Axis"",
-                    ""id"": ""a9d3ce3f-125a-4d52-a1d2-c24b3f3eb7cd"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""LookVertical"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""88009514-41ea-4fc1-a705-92e15596ece6"",
-                    ""path"": ""<Mouse>/delta/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""LookVertical"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""08e3fc81-82ff-4712-891b-5a9cfd8bd811"",
-                    ""path"": ""<Mouse>/delta/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""LookVertical"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""1D Axis"",
-                    ""id"": ""3ed8150c-c972-4afd-b0c2-ec97f383c4ac"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""LookHorizontal"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""62b71f3a-1c9c-42e2-8da4-c1de7062af57"",
-                    ""path"": ""<Mouse>/delta/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""LookHorizontal"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""6c50f0a1-1551-48c3-b465-a922db51ccf3"",
-                    ""path"": ""<Mouse>/delta/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""LookHorizontal"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""1D Axis"",
                     ""id"": ""20c993ee-708d-4002-ab6c-de9cf16c2119"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
@@ -422,6 +356,72 @@ namespace AssemblyActorCore
                     ""action"": ""MoveHorizontal"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6eda2c4e-5d67-42ee-9746-15c18804870d"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": ""InvertVector2(invertX=false),ScaleVector2(x=0.05,y=0.05)"",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""c3929e07-0393-4787-857c-aa9a5b840bf7"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""bb243124-c9dd-433f-a7b3-59fd15a3ba8c"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""05085583-cc32-4f5e-80c5-37076958d848"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""687ab210-962f-40af-94bd-181ab2e15822"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""2f03d798-b2d7-4c02-a834-0bef2c930b06"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -461,8 +461,8 @@ namespace AssemblyActorCore
             m_Player_Menu = m_Player.FindAction("Menu", throwIfNotFound: true);
             m_Player_MoveHorizontal = m_Player.FindAction("MoveHorizontal", throwIfNotFound: true);
             m_Player_MoveVertical = m_Player.FindAction("MoveVertical", throwIfNotFound: true);
-            m_Player_LookHorizontal = m_Player.FindAction("LookHorizontal", throwIfNotFound: true);
-            m_Player_LookVertical = m_Player.FindAction("LookVertical", throwIfNotFound: true);
+            m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
+            m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
             m_Player_North = m_Player.FindAction("North", throwIfNotFound: true);
             m_Player_East = m_Player.FindAction("East", throwIfNotFound: true);
             m_Player_South = m_Player.FindAction("South", throwIfNotFound: true);
@@ -535,8 +535,8 @@ namespace AssemblyActorCore
         private readonly InputAction m_Player_Menu;
         private readonly InputAction m_Player_MoveHorizontal;
         private readonly InputAction m_Player_MoveVertical;
-        private readonly InputAction m_Player_LookHorizontal;
-        private readonly InputAction m_Player_LookVertical;
+        private readonly InputAction m_Player_Move;
+        private readonly InputAction m_Player_Look;
         private readonly InputAction m_Player_North;
         private readonly InputAction m_Player_East;
         private readonly InputAction m_Player_South;
@@ -552,8 +552,8 @@ namespace AssemblyActorCore
             public InputAction @Menu => m_Wrapper.m_Player_Menu;
             public InputAction @MoveHorizontal => m_Wrapper.m_Player_MoveHorizontal;
             public InputAction @MoveVertical => m_Wrapper.m_Player_MoveVertical;
-            public InputAction @LookHorizontal => m_Wrapper.m_Player_LookHorizontal;
-            public InputAction @LookVertical => m_Wrapper.m_Player_LookVertical;
+            public InputAction @Move => m_Wrapper.m_Player_Move;
+            public InputAction @Look => m_Wrapper.m_Player_Look;
             public InputAction @North => m_Wrapper.m_Player_North;
             public InputAction @East => m_Wrapper.m_Player_East;
             public InputAction @South => m_Wrapper.m_Player_South;
@@ -580,12 +580,12 @@ namespace AssemblyActorCore
                 @MoveVertical.started += instance.OnMoveVertical;
                 @MoveVertical.performed += instance.OnMoveVertical;
                 @MoveVertical.canceled += instance.OnMoveVertical;
-                @LookHorizontal.started += instance.OnLookHorizontal;
-                @LookHorizontal.performed += instance.OnLookHorizontal;
-                @LookHorizontal.canceled += instance.OnLookHorizontal;
-                @LookVertical.started += instance.OnLookVertical;
-                @LookVertical.performed += instance.OnLookVertical;
-                @LookVertical.canceled += instance.OnLookVertical;
+                @Move.started += instance.OnMove;
+                @Move.performed += instance.OnMove;
+                @Move.canceled += instance.OnMove;
+                @Look.started += instance.OnLook;
+                @Look.performed += instance.OnLook;
+                @Look.canceled += instance.OnLook;
                 @North.started += instance.OnNorth;
                 @North.performed += instance.OnNorth;
                 @North.canceled += instance.OnNorth;
@@ -623,12 +623,12 @@ namespace AssemblyActorCore
                 @MoveVertical.started -= instance.OnMoveVertical;
                 @MoveVertical.performed -= instance.OnMoveVertical;
                 @MoveVertical.canceled -= instance.OnMoveVertical;
-                @LookHorizontal.started -= instance.OnLookHorizontal;
-                @LookHorizontal.performed -= instance.OnLookHorizontal;
-                @LookHorizontal.canceled -= instance.OnLookHorizontal;
-                @LookVertical.started -= instance.OnLookVertical;
-                @LookVertical.performed -= instance.OnLookVertical;
-                @LookVertical.canceled -= instance.OnLookVertical;
+                @Move.started -= instance.OnMove;
+                @Move.performed -= instance.OnMove;
+                @Move.canceled -= instance.OnMove;
+                @Look.started -= instance.OnLook;
+                @Look.performed -= instance.OnLook;
+                @Look.canceled -= instance.OnLook;
                 @North.started -= instance.OnNorth;
                 @North.performed -= instance.OnNorth;
                 @North.canceled -= instance.OnNorth;
@@ -693,8 +693,8 @@ namespace AssemblyActorCore
             void OnMenu(InputAction.CallbackContext context);
             void OnMoveHorizontal(InputAction.CallbackContext context);
             void OnMoveVertical(InputAction.CallbackContext context);
-            void OnLookHorizontal(InputAction.CallbackContext context);
-            void OnLookVertical(InputAction.CallbackContext context);
+            void OnMove(InputAction.CallbackContext context);
+            void OnLook(InputAction.CallbackContext context);
             void OnNorth(InputAction.CallbackContext context);
             void OnEast(InputAction.CallbackContext context);
             void OnSouth(InputAction.CallbackContext context);

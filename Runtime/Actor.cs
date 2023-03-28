@@ -190,3 +190,8 @@ namespace AssemblyActorCore
     }
 #endif
 }
+
+namespace AssemblyActorCore
+{
+
+}
