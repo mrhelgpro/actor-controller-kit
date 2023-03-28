@@ -5,7 +5,7 @@ namespace AssemblyActorCore
 {
     public sealed class MovableNavigation : Movable
     {
-        //[Range(0, 5)] public int RotationSpeed = 3;
+        public override float GetVelocity => _navMeshAgent.velocity.magnitude;
 
         private NavMeshAgent _navMeshAgent;
 
@@ -30,23 +30,9 @@ namespace AssemblyActorCore
         public override void MoveToDirection(Vector3 direction, float speed)
         {
             _navMeshAgent.speed = speed;
+            _navMeshAgent.acceleration = Acceleration * 2;
             _navMeshAgent.SetDestination(mainTransform.position + direction.normalized);
-
-            //rotation(direction, speed);
         }
-
-        /*
-        private void rotation(Vector3 direction, float speed)
-        {
-            if (direction != Vector3.zero)
-            {
-                mainTransform.position += direction * 50 * speed * RotationSpeed * Time.fixedDeltaTime;
-
-                Vector3 lookAtPosition = mainTransform.position + new Vector3(direction.x, 0f, direction.z);
-                mainTransform.LookAt(lookAtPosition, Vector3.up);
-            }
-        }
-        */
 
         public override void Jump(float force)
         {

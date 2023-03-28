@@ -13,5 +13,10 @@ namespace AssemblyActorCore
             _animator?.CrossFade(name, fade);
             _animator?.SetFloat("Speed", speed);
         }
+
+        public void SetSpeed(float value) => _animator?.SetFloat("Speed", value);
+        public void SetJump(bool value) => _animator?.SetBool("Jump", value);
+        public void SetGrounded(bool value) => _animator?.SetBool("Grounded", value);
+        public void SetFall(bool value) => _animator?.SetBool("Fall", value);
     }
 }

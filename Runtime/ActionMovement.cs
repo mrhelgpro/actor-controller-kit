@@ -13,8 +13,13 @@ namespace AssemblyActorCore
         private int _jumpCounter;
         private bool _isJumpPressed = false;
         private bool _isJumpDone = false;
+        private bool _isLevitationPressed = false;
 
-        public override void Enter() => movable.FreezRotation();
+        public override void Enter()
+        {
+            movable.FreezRotation();
+            animatorable.Play(Name, movable.GetVelocity);
+        }
 
         public override void UpdateLoop() 
         {
@@ -24,17 +29,25 @@ namespace AssemblyActorCore
         public override void FixedLoop()
         {
             MoveHandler();
+            AnimationHandler();
             JumpHandler();
         }
 
         public override void Exit() => movable.FreezAll();
+
+        protected void AnimationHandler()
+        {
+            animatorable.SetSpeed(movable.GetVelocity);
+            animatorable.SetJump(movable.IsJump);
+            animatorable.SetFall(movable.IsFall);
+            if (positionable)  animatorable.SetGrounded(positionable.IsGrounded);
+        }
 
         protected void MoveHandler()
         {
             Vector3 direction = new Vector3(input.MoveHorizontal, 0, input.MoveVertical);
             float speed = input.Shift ? MoveShift : MoveSpeed;
 
-            animatorable.Play(Name, movable.GetVelocity);
             movable.MoveToDirection(direction, speed);
         }
 
@@ -45,13 +58,18 @@ namespace AssemblyActorCore
                 if (_isJumpPressed == true)
                 {
                     movable.Jump(JumpHeight.HeightToForce(movable.Gravity));
+                    movable.Gravity = movable.Gravity - Levitation;
 
-                    if (positionable.IsGrounded == false)
+                    if (positionable)
                     {
-                        _jumpCounter--;
+                        if (positionable.IsGrounded == false)
+                        {
+                            _jumpCounter--;
+                        }
                     }
 
                     _isJumpDone = true;
+                    _isLevitationPressed = true;
                 }
             }
         }
@@ -60,10 +78,14 @@ namespace AssemblyActorCore
         {
             _isJumpPressed = input.Motion;
 
-            //movable.Gravity = _isJumpPressed ? Levitation : 1;
-
             if (_isJumpPressed == false)
             {
+                if (_isLevitationPressed == true)
+                {
+                    movable.Gravity = movable.Gravity + Levitation;
+                    _isLevitationPressed = false;
+                }
+
                 if (positionable)
                 {
                     if (positionable.IsGrounded)

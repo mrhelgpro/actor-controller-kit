@@ -4,8 +4,6 @@ namespace AssemblyActorCore
 {
     public sealed class MovablePhysic : Movable
     {
-        //[Range (0, 5)] public int RotationSpeed = 3;
-
         private bool _isGrounded =>_positionable.IsGrounded;
 
         private Positionable _positionable;
@@ -54,23 +52,7 @@ namespace AssemblyActorCore
                 _rigidbody.MovePosition(_rigidbody.position + velocity);
                 _rigidbody.AddForce(Physics.gravity * gravityScale, ForceMode.Acceleration);
             }
-
-            //rotationToMoveDirection(direction, speed);
-
-            Debug.DrawLine(mainTransform.position, mainTransform.position + velocity * 100, Color.green, 0, false);
         }
-
-        /*
-        private void rotationToMoveDirection(Vector3 direction, float speed)
-        {
-            if (direction != Vector3.zero)
-            {
-                float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-                Quaternion targetRotation = Quaternion.Euler(0f, angle, 0f);
-                _rigidbody.MoveRotation(Quaternion.RotateTowards(_rigidbody.rotation, targetRotation, 50 * speed * RotationSpeed * Time.fixedDeltaTime));
-            }
-        }
-        */
 
         public override void Jump(float force)
         {

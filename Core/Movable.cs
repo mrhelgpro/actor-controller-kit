@@ -9,21 +9,20 @@ namespace AssemblyActorCore
         [Range(1, 10)] public float Acceleration = 10;
         [Range(0, 2)] public float Gravity = 1;
 
-        public bool IsFall = false;
-        public bool IsJump = false;
+        [HideInInspector] public bool IsFall = false;
+        [HideInInspector] public bool IsJump = false;
 
-        public float GetVelocity
+        public virtual float GetVelocity
         {
             get
             {
-                float velocity = ((mainTransform.position - _lastPositionForSpeed) / Time.deltaTime).magnitude;
+                float velocity = ((mainTransform.position - _lastPositionForSpeed) / Time.fixedDeltaTime).magnitude;
                 _lastPositionForSpeed = mainTransform.position;
 
                 return velocity;
             }
         }
-
-        public Vector3 GetDirection(Vector3 direction)
+        public virtual Vector3 GetDirection(Vector3 direction)
         {
             Vector3 currentDirection = Vector3.Lerp(_lastDirectionForAcceleration, direction, Time.fixedDeltaTime * Acceleration * 2);
 

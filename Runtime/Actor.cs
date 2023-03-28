@@ -78,9 +78,10 @@ namespace AssemblyActorCore
 
         private void PresetDefault()
         {
+            gameObject.AddThisComponent<Inputable>();
             gameObject.AddThisComponent<Actionable>();
             gameObject.AddThisComponent<Animatorable>();
-            gameObject.AddThisComponent<Inputable>();
+            gameObject.AddThisComponent<Rotable>();
         }
 
         private void PresetFree()
@@ -176,9 +177,10 @@ namespace AssemblyActorCore
 
         private void ClearAll()
         {
+            gameObject.RemoveComponent<Inputable>();
             gameObject.RemoveComponent<Actionable>();
             gameObject.RemoveComponent<Animatorable>();
-            gameObject.RemoveComponent<Inputable>();
+            gameObject.RemoveComponent<Rotable>();
 
             ClearFree();
             ClearThirdPerson();
