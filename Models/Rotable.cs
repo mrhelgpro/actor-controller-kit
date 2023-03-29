@@ -4,7 +4,7 @@ namespace AssemblyActorCore
 {
     public sealed class Rotable : MonoBehaviour
     {
-        public enum RotationMode { None, Move, Look, Flip }
+        public enum RotationMode { None, Move, Flip }
         public RotationMode Mode = RotationMode.Move;
         
         private Inputable _inputable;
@@ -28,10 +28,6 @@ namespace AssemblyActorCore
                     directionByMove();
                     lookAtDirection();
                     break;
-                case RotationMode.Look:
-                    directionByLook();
-                    lookAtDirection();
-                    break;
                 case RotationMode.Flip:
                     directionByMove();
                     checkFlip();
@@ -42,11 +38,6 @@ namespace AssemblyActorCore
         private void directionByMove()
         {
             _currentDirection = new Vector3(_inputable.Input.Move.x, 0.0f, _inputable.Input.Move.y);
-        }
-
-        private void directionByLook()
-        {
-
         }
 
         private void lookAtDirection()

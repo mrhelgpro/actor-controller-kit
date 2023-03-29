@@ -21,7 +21,7 @@ namespace AssemblyActorCore
         {
             _rigidbody.constraints = RigidbodyConstraints.FreezeAll;
             _rigidbody.useGravity = false;
-            _rigidbody.isKinematic = true;
+            _rigidbody.isKinematic = false;
             _rigidbody.velocity = Vector3.zero;
         }
 

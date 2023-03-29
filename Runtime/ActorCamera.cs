@@ -4,76 +4,97 @@ namespace AssemblyActorCore
 {
     public class ActorCamera : MonoBehaviour
     {
-        public enum FollowMode { None, ThirdPerson, Platformer }
-        public FollowMode Mode = FollowMode.Platformer;
+        public TargetForCamera CurrentTarget;
+        private TargetForCamera _previousTarget;
 
-        public float shoulder = 0;
-        public float height = 1;
-        public float distance = 5;  
-        public float _dampTime = 0.5f;
-
-        private Vector3 _velocity = Vector3.zero;
-        private Transform _targetPlayer;
+        private Vector3 _moveVelocity = Vector3.zero;
+        //private float _angleVelocity = 0;
         private Transform _mainTransform;
         private Camera _camera;
 
-        private Inputable _inputable;
-        private Vector2 _mouse;
-
+#if UNITY_EDITOR
         private void OnValidate()
         {
-            gameObject.name = "Actor Camera";
+            if (Application.isPlaying == false)
+            {
+                gameObject.name = "Actor Camera";
+                _mainTransform = transform;
 
-            try
-            {
-                _targetPlayer = GameObject.FindGameObjectWithTag("Player").transform;
-            }
-            catch
-            {
-                Debug.LogWarning("Player is not find");
+                if (CurrentTarget)
+                {
+                    CurrentTarget.ActorCamera = this;
+
+                    if (_previousTarget != null)
+                    {
+                        if (CurrentTarget != _previousTarget)
+                        {
+                            _previousTarget.ActorCamera = null;
+                            PreviewTheTarget(CurrentTarget);
+                        }
+                    }
+
+                    _previousTarget = CurrentTarget;
+                }
             }
         }
+#endif
 
         private void Awake()
         {
-            _targetPlayer = GameObject.FindGameObjectWithTag("Player").transform;
-            _inputable = _targetPlayer.GetComponent<Inputable>();
             _mainTransform = transform;
             _camera = GetComponent<Camera>();
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
-            switch (Mode)
+            if (CurrentTarget)
             {
-                case FollowMode.ThirdPerson:
-                    followTheThirdPerson(_targetPlayer);
-                    break;
-                case FollowMode.Platformer:
-                    followTheTarget(_targetPlayer);
-                    break;
+                followTheTarget(CurrentTarget);
             }
         }
 
-        public float rotationSpeed = 5.0f; // Ўвидк≥сть обертанн€ камери
-
-        private void followTheThirdPerson(Transform target)
+        public void PreviewTheTarget(TargetForCamera target)
         {
-            _mouse.x += _inputable.Input.Look.x * rotationSpeed;
-            _mouse.y += _inputable.Input.Look.y * rotationSpeed;
-
-            _mouse.y = Mathf.Clamp(_mouse.y, -30, 75);
-
-            _mainTransform.rotation = Quaternion.Euler(_mouse.y, _mouse.x, 0);
-            _mainTransform.position = _mainTransform.rotation * new Vector3(shoulder, height, -distance) + target.position;
+            try
+            {
+                _mainTransform.rotation = Quaternion.Euler(target.Angle, 0, 0);
+                _mainTransform.position = _mainTransform.rotation * new Vector3(0, target.Height, -target.Distance) + target.Transform.position;
+            }
+            catch { }
         }
 
-        private void followTheTarget(Transform target)
-        {
-            Vector3 delta = new Vector3(target.position.x, target.position.y + height, target.position.z) - _camera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, distance));
-            Vector3 destination = _mainTransform.position + delta;
 
-            _mainTransform.position = Vector3.SmoothDamp(_mainTransform.position, destination, ref _velocity, _dampTime);
+        private void followTheTarget(TargetForCamera target)
+        {
+            //float angle = Mathf.SmoothDamp(_mainTransform.eulerAngles.x, target.Angle, ref _angleVelocity, target.DampTime);
+            //Quaternion rotation = Quaternion.Euler(angle, 0, 0);
+
+            Quaternion rotation = Quaternion.Euler(target.Angle, 0, 0);
+
+            Vector3 position = rotation * new Vector3(0, target.Height, -target.Distance) + target.Transform.position;
+            Vector3 delta = new Vector3(target.Transform.position.x, target.Transform.position.y + target.Height, target.Transform.position.z) - _camera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, target.Distance));
+            Vector3 destination = position + delta;
+
+            //_mainTransform.rotation = rotation;
+            _mainTransform.rotation = Quaternion.Lerp(_mainTransform.rotation, rotation, target.AngleSpeed * Time.fixedDeltaTime);
+            _mainTransform.position = Vector3.SmoothDamp(_mainTransform.position, destination, ref _moveVelocity, target.DampTime);
         }
     }
 }
+
+/*
+public float shoulder = 0;
+public float rotationSpeed = 5.0f;
+private Inputable _inputable;
+private Vector2 _mouse;
+_inputable = _targetPlayer.GetComponentInParent<Inputable>();
+
+private void followTheThirdPerson(Transform target)
+{
+    _mouse.x += _inputable.Input.Look.x * rotationSpeed;
+    _mouse.y += _inputable.Input.Look.y * rotationSpeed;
+    _mouse.y = Mathf.Clamp(_mouse.y, -30, 75);
+    _mainTransform.rotation = Quaternion.Euler(_mouse.y, _mouse.x, 0);
+    _mainTransform.position = _mainTransform.rotation * new Vector3(shoulder, height, -distance) + target.position;
+}
+*/
