@@ -469,8 +469,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 265882232}
-  m_LocalRotation: {x: 0.52249855, y: 0, z: 0, w: 0.85264015}
-  m_LocalPosition: {x: 0, y: 14.710094, z: -6.372842}
+  m_LocalRotation: {x: 0.043619387, y: 0, z: 0, w: 0.99904823}
+  m_LocalPosition: {x: 0, y: 1.6062849, z: -6.886207}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -489,7 +489,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01ebc3f89f2c1a84f879e428a25677d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentTarget: {fileID: 0}
+  Target: {fileID: 9181049995066601511}
 --- !u!1 &277166512
 GameObject:
   m_ObjectHideFlags: 0
@@ -1523,7 +1523,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1185394549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1536,13 +1536,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ced2bc7da838a664796c132e46dc4469, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Angle: 10
-  Height: 0
-  Distance: 5
-  DampTime: 1
-  AngleSpeed: 0.5
+  Settings:
+    Angle: 36
+    Height: 1
+    Distance: 5
+    MoveTime: 0.5
+    RotationTime: 0.5
   Transform: {fileID: 1185394552}
-  ActorCamera: {fileID: 0}
 --- !u!23 &1185394550
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3372,13 +3372,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ced2bc7da838a664796c132e46dc4469, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Angle: 63
-  Height: 1
-  Distance: 16
-  DampTime: 0.5
-  AngleSpeed: 0.5
+  Settings:
+    Angle: 5
+    Height: 1
+    Distance: 7
+    MoveTime: 0.5
+    RotationTime: 0.5
   Transform: {fileID: 9181049995066601505}
-  ActorCamera: {fileID: 265882237}
 --- !u!1 &9181049995452089166
 GameObject:
   m_ObjectHideFlags: 0
