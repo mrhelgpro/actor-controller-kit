@@ -47,7 +47,7 @@ namespace AssemblyActorCore
             else
             {
                 IsFall = _isGrounded == false && _rigidbody.velocity.y <= 0;
-                IsJump = IsFall ? false : IsJump;
+                IsJump = IsJump == true && _rigidbody.velocity.y <= 0 ? false : IsJump;
 
                 _rigidbody.MovePosition(_rigidbody.position + velocity);
                 _rigidbody.AddForce(Physics.gravity * gravityScale, ForceMode.Acceleration);

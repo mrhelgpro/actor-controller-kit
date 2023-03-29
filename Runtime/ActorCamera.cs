@@ -18,13 +18,7 @@ namespace AssemblyActorCore
             _camera = GetComponent<Camera>();
         }
 
-        private void FixedUpdate()
-        {
-            if (Target)
-            {
-                followTheTarget();
-            }
-        }
+        private void Update() => followTheTarget();
 
         public void PreviewTheTarget()
         {

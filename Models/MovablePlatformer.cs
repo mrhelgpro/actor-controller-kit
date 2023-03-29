@@ -5,6 +5,7 @@ namespace AssemblyActorCore
     public sealed class MovablePlatformer : Movable
     {
         private bool _isGrounded => _positionable.IsGrounded;
+        private bool _iSlope => _positionable.IsNormalSlope == false;
 
         private Positionable _positionable;
         private Rigidbody2D _rigidbody;
@@ -41,9 +42,9 @@ namespace AssemblyActorCore
             else
             {
                 IsFall = _isGrounded == false && _rigidbody.velocity.y <= 0;
-                IsJump = IsFall ? false : IsJump;
+                IsJump = IsJump == true && _rigidbody.velocity.y <= 0 ? false : IsJump;
 
-                float gravity = IsFall || IsJump ? _rigidbody.velocity.y : velocity.y;
+                float gravity = IsFall || IsJump || _iSlope ? _rigidbody.velocity.y : velocity.y;
                 _rigidbody.velocity = new Vector2(velocity.x, gravity);
             }
         }
