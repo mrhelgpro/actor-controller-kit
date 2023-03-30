@@ -5,6 +5,9 @@ namespace AssemblyActorCore
 {
     public class ActorCamera : MonoBehaviour
     {
+        public enum UpdateMode { Fixed, Update }
+        public UpdateMode Mode = UpdateMode.Fixed;
+
         public TargetForCamera Target;
 
         private Vector3 _moveVelocity = Vector3.zero;
@@ -18,7 +21,15 @@ namespace AssemblyActorCore
             _camera = GetComponent<Camera>();
         }
 
-        private void Update() => followTheTarget();
+        private void FixedUpdate()
+        {
+            if (Mode == UpdateMode.Fixed) followTheTarget();
+        }
+
+        private void Update()
+        {
+            if (Mode == UpdateMode.Update) followTheTarget();
+        }
 
         public void PreviewTheTarget()
         {
@@ -100,6 +111,7 @@ namespace AssemblyActorCore
         }
     }
 #endif
+
 }
 
 /*

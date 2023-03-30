@@ -126,13 +126,11 @@ namespace AssemblyActorCore
     [CustomEditor(typeof(Actionable))]
     public class ActionableEditor : Editor
     {
-        private Actionable myTarget;
-
         public override void OnInspectorGUI()
         {
-            myTarget = (Actionable)target;
-
+            Actionable myTarget = (Actionable)target;
             EditorGUILayout.LabelField("Action", myTarget.GetName);
+            EditorUtility.SetDirty(target);
         }
     }
 #endif

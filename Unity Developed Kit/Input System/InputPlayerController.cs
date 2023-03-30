@@ -42,9 +42,6 @@ public class InputPlayerController : MonoBehaviour
 
     private void Update()
     {
-        //_input.MoveHorizontal = _inputActions.Player.MoveHorizontal.ReadValue<float>();
-        //_input.MoveVertical = _inputActions.Player.MoveVertical.ReadValue<float>();
-
         _input.Move = _inputActions.Player.Move.ReadValue<Vector2>();
         _input.Look = _inputActions.Player.Look.ReadValue<Vector2>();
     }

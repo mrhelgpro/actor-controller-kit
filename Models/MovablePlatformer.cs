@@ -46,6 +46,8 @@ namespace AssemblyActorCore
 
                 float gravity = IsFall || IsJump || _iSlope ? _rigidbody.velocity.y : velocity.y;
                 _rigidbody.velocity = new Vector2(velocity.x, gravity);
+
+                Debug.DrawLine(mainTransform.position, mainTransform.position + velocity * 50, Color.white, 0, false);
             }
         }
 

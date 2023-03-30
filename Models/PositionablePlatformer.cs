@@ -10,6 +10,8 @@ namespace AssemblyActorCore
         private PhysicsMaterial2D _materialOnTheGround;
         private PhysicsMaterial2D _materialInTheAir;
 
+        public int maxCount = 0;
+
         private new void Awake()
         {
             base.Awake();
@@ -22,9 +24,20 @@ namespace AssemblyActorCore
 
         protected override void GroundCheck()
         {
-            IsGrounded = _groundCollision == null ? false : true;
-            SurfaceType = IsGrounded == true ? _groundCollision.gameObject.tag : "None";
-            surfaceNormal = IsGrounded == true ? _groundCollision.contacts[0].normal : Vector3.zero;
+            bool isGroundedCollision = _groundCollision == null ? false : true;
+            bool isGroundedPhysics = Physics.CheckSphere(mainTransform.position, 0.2f, groundLayer);
+
+            if (IsGrounded)
+            {
+                IsGrounded = isGroundedPhysics;
+            }
+            else
+            {
+                IsGrounded = isGroundedCollision && isGroundedPhysics;
+            }         
+
+            SurfaceType = IsGrounded == true && _groundCollision != null ? _groundCollision.gameObject.tag : "None";
+            surfaceNormal = IsGrounded == true && _groundCollision != null ? _groundCollision.contacts[0].normal : Vector3.zero;
 
             _groundCollider.sharedMaterial = IsGrounded && IsNormalSlope ? _materialOnTheGround : _materialInTheAir;
         }

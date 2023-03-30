@@ -5,7 +5,7 @@ namespace AssemblyActorCore
     public abstract class Positionable : MonoBehaviour
     {
         public bool IsGrounded;
-        public string SurfaceType;
+        public string SurfaceType = "None";
         [Range(0, 90)] public float SurfaceSlope = 0;
         
         public bool IsNormalSlope => SurfaceSlope <= 46;
@@ -35,7 +35,7 @@ namespace AssemblyActorCore
             //Vector3 slope = Vector3.down - Vector3.Dot(Vector3.down, surfaceNormal) * surfaceNormal;
             //return IsNormalSlope ? normal : slope;
 
-            return projection == Vector3.zero || IsGrounded == false ? direction : projection;
+            return projection == Vector3.zero || IsGrounded == false || IsNormalSlope == false ? direction : projection;
         }
 
         protected abstract void GroundCheck();

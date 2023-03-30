@@ -18,7 +18,7 @@ namespace AssemblyActorCore
     {
         [Range(0, 90)] public int Angle = 0;
         [Range(0, 5)] public float Height = 1;
-        [Range(1, 20)] public int Distance = 5;
+        [Range(1, 15)] public int Distance = 5;
         [Range(0.1f, 1)] public float MoveTime = 0.5f;
         [Range(0.1f, 1)] public float RotationTime = 0.5f;
     }
