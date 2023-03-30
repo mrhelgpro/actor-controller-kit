@@ -30,11 +30,6 @@ namespace AssemblyActorCore
         public Vector3 Project(Vector3 direction)
         {
             Vector3 projection = direction - Vector3.Dot(direction, surfaceNormal) * surfaceNormal;
-
-            //Vector3 normal = projection == Vector3.zero || IsGrounded == false ? direction : projection;
-            //Vector3 slope = Vector3.down - Vector3.Dot(Vector3.down, surfaceNormal) * surfaceNormal;
-            //return IsNormalSlope ? normal : slope;
-
             return projection == Vector3.zero || IsGrounded == false || IsNormalSlope == false ? direction : projection;
         }
 
