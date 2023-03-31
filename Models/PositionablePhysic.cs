@@ -52,8 +52,6 @@ namespace AssemblyActorCore
             Physics.Raycast(origin, direction, out _hitObstacle, distance);
 
             IsObstacle = _hitObstacle.collider != null ? true : false;
-
-            Debug.DrawLine(origin, origin + direction * distance, Color.red, 0, false);
         }
 
         private void materialCheck()

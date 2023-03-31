@@ -33,9 +33,9 @@ namespace AssemblyActorCore
 
         public override void MoveToDirection(Vector3 direction, float speed)
         {
-            
-            float currentSpeed = _isSliding ? getSpeedSliding : speed * getSpeedScale * 51;
-            Vector2 velocity = GetDirection(_positionable.Project(direction).normalized * currentSpeed); // 51 = acceleration2D 
+            float velocityCoefficient2D = 51.0f;
+            float currentSpeed = _isSliding ? getSpeedSliding(_positionable.SurfaceSlope) : speed * getSpeedScale;
+            Vector2 velocity = GetDirection(_positionable.Project(direction).normalized * currentSpeed * velocityCoefficient2D);
             
             _rigidbody.gravityScale = Gravity;
 
@@ -43,21 +43,50 @@ namespace AssemblyActorCore
             IsJump = (IsJump == true && _rigidbody.velocity.y <= 0) || _isSliding == true ? false : IsJump;
 
             _timerGrounded = _isGrounded ? _timerGrounded + Time.deltaTime : 0;
-            float slowing = _timerGrounded > 0.2f ? 1 : _isGrounded == false ? 1 : 0.1f;
+
+            if (_timerGrounded > 0.2f)
+            {
+                movement(velocity);
+            }
+            else
+            {
+                if (_isGrounded == true)
+                {
+                    _rigidbody.velocity = Vector2.zero;
+                }
+                else
+                {
+                    movement(velocity);
+                }
+            }
+
+            /*
+            _timerGrounded = _isGrounded ? _timerGrounded + Time.deltaTime : 0;
+            float slowing = _timerGrounded > 0.25f ? 1 : _isGrounded == false ? 1 : 0.01f;
 
             float gravity = IsFall || IsJump ? _rigidbody.velocity.y : velocity.y;
             _rigidbody.velocity = new Vector2(velocity.x * slowing, gravity);
+            */
 
             Vector3 end = velocity;
-            Debug.DrawLine(mainTransform.position, mainTransform.position + end * 50, Color.red, 0, false);
+            Debug.DrawLine(mainTransform.position, mainTransform.position + end * 500, Color.red, 0, false);
+        }
+
+        private void movement(Vector2 velocity)
+        {
+            float gravity = IsFall || IsJump ? _rigidbody.velocity.y : velocity.y;
+            _rigidbody.velocity = new Vector2(velocity.x, gravity);
         }
 
         public override void Jump(float force)
         {
-            _rigidbody.velocity = Vector2.zero;
-            _rigidbody.AddForce(Vector3.up * force, ForceMode2D.Impulse);
+            if (_isSliding == false)
+            {
+                _rigidbody.velocity = Vector2.zero;
+                _rigidbody.AddForce(Vector3.up * force, ForceMode2D.Impulse);
 
-            IsJump = true;
+                IsJump = true;
+            }
         }
     }
 }

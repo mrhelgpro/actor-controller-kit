@@ -50,15 +50,14 @@ namespace AssemblyActorCore
             RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, layerMask);
             float slope = Vector2.Angle(hit.normal, Vector3.up);
             bool isNotSliding = slope > 75;
+            //bool isObstacleSurfce = SurfaceSlope > 75;
 
-            IsObstacle = hit.collider != null ? isNotSliding: false;
-
-            Debug.DrawLine(origin, origin + direction * distance, Color.red, 0, false);
+            IsObstacle = hit.collider != null ? isNotSliding : false;
         }
 
         private void materialCheck()
         {
-            _groundCollider.sharedMaterial = IsGrounded && IsSliding == false ? _materialOnTheGround : _materialInTheAir;
+            _groundCollider.sharedMaterial = IsGrounded && IsSliding == false && IsObstacle == false ? _materialOnTheGround : _materialInTheAir;
         }
 
         private void OnCollisionStay2D(Collision2D collision) => _groundCollision = collision;

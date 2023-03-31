@@ -36,7 +36,7 @@ namespace AssemblyActorCore
 
         protected Transform mainTransform;
 
-        protected float getSpeedSliding => 5 * Time.fixedDeltaTime;
+        protected float getSpeedSliding(float slope = 45.0f) => slope * 0.1f * Time.fixedDeltaTime;
         protected float getSpeedScale => _getBoost * _getSlowing * Time.fixedDeltaTime;
         private float _getSlowing => Slowing > 0 ? (Slowing <= 1 ? 1 - Slowing : 0) : 1;
         private float _getBoost => Boost > 0 ? Boost + 1 : 1;
