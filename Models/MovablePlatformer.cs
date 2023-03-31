@@ -5,6 +5,7 @@ namespace AssemblyActorCore
     public sealed class MovablePlatformer : Movable
     {
         private bool _isGrounded => _positionable.IsGrounded;
+        private bool _isSliding => _positionable.IsSliding;
 
         private Positionable _positionable;
         private Rigidbody2D _rigidbody;
@@ -32,18 +33,23 @@ namespace AssemblyActorCore
 
         public override void MoveToDirection(Vector3 direction, float speed)
         {
-            Vector3 velocity = GetDirection(_positionable.Project(direction).normalized * speed * getSpeedScale * 51); // 51 = acceleration2D 
-
-            _timerGrounded = _isGrounded ? _timerGrounded + Time.deltaTime : 0;
+            
+            float currentSpeed = _isSliding ? getSpeedSliding : speed * getSpeedScale * 51;
+            Vector2 velocity = GetDirection(_positionable.Project(direction).normalized * currentSpeed); // 51 = acceleration2D 
+            
             _rigidbody.gravityScale = Gravity;
 
             IsFall = _isGrounded == false && _rigidbody.velocity.y <= 0;
-            IsJump = IsJump == true && _rigidbody.velocity.y <= 0 ? false : IsJump;
+            IsJump = (IsJump == true && _rigidbody.velocity.y <= 0) || _isSliding == true ? false : IsJump;
+
+            _timerGrounded = _isGrounded ? _timerGrounded + Time.deltaTime : 0;
+            float slowing = _timerGrounded > 0.2f ? 1 : _isGrounded == false ? 1 : 0.1f;
 
             float gravity = IsFall || IsJump ? _rigidbody.velocity.y : velocity.y;
-            float grounding = _timerGrounded > 0.25f ? 1 : _isGrounded == false ? 1 : 0.1f;
+            _rigidbody.velocity = new Vector2(velocity.x * slowing, gravity);
 
-            _rigidbody.velocity = new Vector2(velocity.x, gravity) * grounding;
+            Vector3 end = velocity;
+            Debug.DrawLine(mainTransform.position, mainTransform.position + end * 50, Color.red, 0, false);
         }
 
         public override void Jump(float force)

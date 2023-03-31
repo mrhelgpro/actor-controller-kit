@@ -9,9 +9,10 @@ namespace AssemblyActorCore
         [Range(1, 10)] public float Acceleration = 10;
         [Range(0, 2)] public float Gravity = 1;
 
-        //[HideInInspector] 
+        //[HideInInspector] public bool IsFall = false;
+        //[HideInInspector] public bool IsJump = false;
+
         public bool IsFall = false;
-        //[HideInInspector] 
         public bool IsJump = false;
 
         public virtual float GetVelocity
@@ -35,6 +36,7 @@ namespace AssemblyActorCore
 
         protected Transform mainTransform;
 
+        protected float getSpeedSliding => 5 * Time.fixedDeltaTime;
         protected float getSpeedScale => _getBoost * _getSlowing * Time.fixedDeltaTime;
         private float _getSlowing => Slowing > 0 ? (Slowing <= 1 ? 1 - Slowing : 0) : 1;
         private float _getBoost => Boost > 0 ? Boost + 1 : 1;
