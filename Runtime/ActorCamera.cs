@@ -19,6 +19,8 @@ namespace AssemblyActorCore
         {
             _mainTransform = transform;
             _camera = GetComponent<Camera>();
+
+            if (Target == null) FindTarget();
         }
 
         private void FixedUpdate()
@@ -53,6 +55,25 @@ namespace AssemblyActorCore
 
                 _mainTransform.rotation = rotation;
                 _mainTransform.position = Vector3.SmoothDamp(_mainTransform.position, destination, ref _moveVelocity, Target.Settings.MoveTime);
+            }
+        }
+
+        public void FindTarget()
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+            if (player)
+            {
+                Target = player.GetComponentInChildren<TargetForCamera>();
+            }
+            else
+            {
+                Target = FindObjectOfType<TargetForCamera>();
+
+                if (Target == null)
+                {
+                    Debug.LogWarning("<TargetForCamera> not found");
+                }
             }
         }
     }
@@ -91,21 +112,7 @@ namespace AssemblyActorCore
             {
                 if (GUILayout.Button("Find"))
                 {
-                    GameObject player = GameObject.FindGameObjectWithTag("Player");
-
-                    if (player)
-                    {
-                        myTarget.Target = player.GetComponentInChildren<TargetForCamera>();
-                    }
-                    else
-                    {
-                        myTarget.Target = FindObjectOfType<TargetForCamera>();
-
-                        if (myTarget.Target == null)
-                        {
-                            Debug.LogWarning("<TargetForCamera> not found");
-                        }
-                    }
+                    myTarget.FindTarget();
                 }
             }
         }

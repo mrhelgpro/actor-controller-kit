@@ -4,12 +4,12 @@ using AssemblyActorCore;
 public class InputPlayerController : MonoBehaviour
 {
     private InputActions _inputActions;
-    private Inputable _inputable;
-    private AssemblyActorCore.Input _input => _inputable.Input;
+    protected Inputable inputable;
+    private AssemblyActorCore.Input _input => inputable.Input;
 
     private void Awake()
     {
-        _inputable = gameObject.GetComponentInParent<Inputable>();
+        inputable = gameObject.GetComponentInParent<Inputable>();
         _inputActions = new InputActions();
 
         _inputActions.Player.Menu.performed += context => _input.Menu = true;

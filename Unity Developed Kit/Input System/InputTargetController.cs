@@ -5,15 +5,15 @@ using AssemblyActorCore;
 public class InputTargetController : MonoBehaviour
 {
     public List<string> InteractionTagList;
-    private Targetable _targetable;
-    private Inputable _inputable;
-    private AssemblyActorCore.Input _input => _inputable.Input;
+    protected Targetable targetable;
+    protected Inputable inputable;
+    private AssemblyActorCore.Input _input => inputable.Input;
     private Transform _mainTransform;
 
     private void Awake()
     {
-        _targetable = gameObject.GetComponentInParent<Targetable>();
-        _inputable = gameObject.GetComponentInParent<Inputable>();
+        targetable = gameObject.GetComponentInParent<Targetable>();
+        inputable = gameObject.GetComponentInParent<Inputable>();
         _mainTransform = transform;
     }
 
@@ -25,9 +25,9 @@ public class InputTargetController : MonoBehaviour
 
     private void inputToTarget()
     {
-        if (_targetable.IsPosition)
+        if (targetable.IsPosition)
         {
-            Vector2 targetPosition = new Vector2(_targetable.GetPosition.x, _targetable.GetPosition.z);
+            Vector2 targetPosition = new Vector2(targetable.GetPosition.x, targetable.GetPosition.z);
             Vector2 currentPosition = new Vector2(_mainTransform.position.x, _mainTransform.position.z);
             Vector2 direction = targetPosition - currentPosition;
 
@@ -56,17 +56,17 @@ public class InputTargetController : MonoBehaviour
                 {
                     if (hit.collider.tag == tag)
                     {
-                        _targetable.AddTarget(hit.collider.transform);
+                        targetable.AddTarget(hit.collider.transform);
 
                         return;
                     }
                 }
 
-                _targetable.AddTarget(hit.point);
+                targetable.AddTarget(hit.point);
             }
             else
             {
-                _targetable.Clear();
+                targetable.Clear();
             }
         }
 

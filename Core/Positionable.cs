@@ -8,7 +8,7 @@ namespace AssemblyActorCore
         public bool IsObstacle;
         public bool IsSliding;
         public string SurfaceType = "None";
-        public const float MaxSlope = 45;
+        public const float MaxSlope = 46;
 
         public float SurfaceSlope => Vector3.Angle(surfaceNormal, Vector3.up);
 
