@@ -3233,13 +3233,13 @@ GameObject:
   - component: {fileID: 2195226178534690256}
   - component: {fileID: 2195226178534690259}
   - component: {fileID: 9181049995066601514}
-  - component: {fileID: 9181049995066601522}
-  - component: {fileID: 9181049995066601521}
   - component: {fileID: 9181049995066601520}
   - component: {fileID: 9181049995066601519}
-  - component: {fileID: 9181049995066601525}
-  - component: {fileID: 9181049995066601524}
+  - component: {fileID: 9181049995066601518}
+  - component: {fileID: 9181049995066601517}
   - component: {fileID: 9181049995066601523}
+  - component: {fileID: 9181049995066601522}
+  - component: {fileID: 9181049995066601521}
   m_Layer: 3
   m_Name: Player Default
   m_TagString: Player
@@ -3632,7 +3632,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01f739e96cee8f04280f407648526631, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &9181049995066601519
+--- !u!114 &9181049995066601517
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3645,7 +3645,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Mode: 1
---- !u!114 &9181049995066601520
+--- !u!114 &9181049995066601518
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3657,7 +3657,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db5f0e5d6c98ec844a4407fc492bb1ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &9181049995066601521
+--- !u!114 &9181049995066601519
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3669,7 +3669,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71d6969a52b3ac54e9317698586b9fc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &9181049995066601522
+--- !u!114 &9181049995066601520
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3693,7 +3693,7 @@ MonoBehaviour:
     ActionLeft: 0
     Control: 0
     Shift: 0
---- !u!195 &9181049995066601523
+--- !u!195 &9181049995066601521
 NavMeshAgent:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3715,7 +3715,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &9181049995066601524
+--- !u!114 &9181049995066601522
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3724,14 +3724,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2195226178534690257}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b75038a94758322419ff358a2c2ba619, type: 3}
+  m_Script: {fileID: 11500000, guid: ca5a3706b18e95a47893f44d18ee3e52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   IsGrounded: 0
   IsObstacle: 0
   IsSliding: 0
   SurfaceType: None
---- !u!114 &9181049995066601525
+--- !u!114 &9181049995066601523
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
