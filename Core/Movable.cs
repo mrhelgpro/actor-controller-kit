@@ -9,11 +9,8 @@ namespace AssemblyActorCore
         [Range(1, 10)] public float Acceleration = 10;
         [Range(0, 2)] public float Gravity = 1;
 
-        //[HideInInspector] public bool IsFall = false;
-        //[HideInInspector] public bool IsJump = false;
-
-        public bool IsFall = false;
-        public bool IsJump = false;
+        [HideInInspector] public bool IsFall = false;
+        [HideInInspector] public bool IsJump = false;
 
         public virtual float GetVelocity
         {
