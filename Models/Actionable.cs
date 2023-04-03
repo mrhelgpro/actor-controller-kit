@@ -48,7 +48,7 @@ namespace AssemblyActorCore
             {
                 if (objectAction.name == item.gameObject.name)
                 {
-                    InvokeActivate(objectAction);
+                    InvokeActivate(item.gameObject);
 
                     return;
                 }

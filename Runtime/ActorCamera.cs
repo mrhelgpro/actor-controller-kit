@@ -11,7 +11,7 @@ namespace AssemblyActorCore
         public TargetForCamera Target;
 
         private Vector3 _moveVelocity = Vector3.zero;
-        private float _angleVelocity = 0;
+        private Vector2 _angleVelocity = Vector2.zero;
         private Transform _mainTransform;
         private Camera _camera;
 
@@ -37,7 +37,7 @@ namespace AssemblyActorCore
         {
             if (Target)
             {
-                transform.rotation = Quaternion.Euler(Target.Settings.Angle, 0, 0);
+                transform.rotation = Quaternion.Euler(Target.Settings.Vertical, Target.Settings.Horizontal, 0);
                 transform.position = transform.rotation * new Vector3(0, Target.Settings.Height, -Target.Settings.Distance) + Target.Transform.position;
             }
         }
@@ -46,8 +46,8 @@ namespace AssemblyActorCore
         {
             if (Target)
             {
-                float angle = Mathf.SmoothDamp(_mainTransform.eulerAngles.x, Target.Settings.Angle, ref _angleVelocity, Target.Settings.RotationTime);
-                Quaternion rotation = Quaternion.Euler(angle, 0, 0);
+                Vector2 look = Vector2.SmoothDamp(new Vector2(_mainTransform.eulerAngles.x, _mainTransform.eulerAngles.y), new Vector2 (Target.Settings.Vertical, Target.Settings.Horizontal), ref _angleVelocity, Target.Settings.RotationTime);
+                Quaternion rotation = Quaternion.Euler(look.x, look.y, 0);
 
                 Vector3 position = rotation * new Vector3(0, Target.Settings.Height, -Target.Settings.Distance) + Target.Transform.position;
                 Vector3 delta = new Vector3(Target.Transform.position.x, Target.Transform.position.y + Target.Settings.Height, Target.Transform.position.z) - _camera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, Target.Settings.Distance));

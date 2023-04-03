@@ -1,33 +1,17 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public sealed class PositionablePhysic : Positionable
+    public class PositionableFree : Positionable
     {
-        private SphereCollider _groundCollider;
         private RaycastHit _hitGround;
         private RaycastHit _hitObstacle;
 
-        private PhysicMaterial _materialOnTheGround;
-        private PhysicMaterial _materialInTheAir;
-
-        private new void Awake()
-        {
-            base.Awake();
-
-            _groundCollider = GetComponent<SphereCollider>();
-
-            _materialInTheAir = Resources.Load<PhysicMaterial>("Physic/Player In The Air");
-            _materialOnTheGround = Resources.Load<PhysicMaterial>("Physic/Player On The Ground");
-        }
-
         protected override void UpdatePosition()
         {
-            groundCheck();  
+            groundCheck();
             surfaceCheck();
             obstacleCheck();
-            materialCheck();
         }
 
         private void groundCheck()
@@ -37,7 +21,7 @@ namespace AssemblyActorCore
 
         private void surfaceCheck()
         {
-            float length = 0.5f;
+            float length = 0.45f;
             Vector3 origin = new Vector3(mainTransform.position.x, mainTransform.position.y + 0.25f, mainTransform.position.z);
             Physics.Raycast(origin, Vector3.down, out _hitGround, length);
 
@@ -53,11 +37,6 @@ namespace AssemblyActorCore
             Physics.Raycast(origin, direction, out _hitObstacle, length);
 
             IsObstacle = _hitObstacle.collider == null ? false : _hitObstacle.collider.isTrigger ? false : true;
-        }
-
-        private void materialCheck()
-        {
-            _groundCollider.material = IsGrounded && IsSliding == false && IsObstacle == false ? _materialOnTheGround : _materialInTheAir;
         }
     }
 }

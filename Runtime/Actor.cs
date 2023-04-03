@@ -4,7 +4,7 @@ using UnityEditor;
 
 namespace AssemblyActorCore
 {
-    public enum Preset { Free, Physic, Platformer, Navigation }
+    public enum Preset { Free, Physic, Platformer, Navigation, None }
 
     public class Actor : MonoBehaviour
     {
@@ -19,6 +19,7 @@ namespace AssemblyActorCore
     {
         private Actor myTarget;
         private GameObject gameObject;
+        private Preset _previousPreset;
 
         public override void OnInspectorGUI()
         {
@@ -30,8 +31,6 @@ namespace AssemblyActorCore
                 // Show Fields as text so that it is impossible to change the value
                 EditorGUILayout.LabelField("Name", myTarget.Name);
                 EditorGUILayout.LabelField("Preset", myTarget.Preset.ToString());
-
-                //Example();
             }
             else
             {
@@ -39,24 +38,32 @@ namespace AssemblyActorCore
                 myTarget.Name = EditorGUILayout.TextField("Name", myTarget.Name);
                 myTarget.Preset = (Preset)EditorGUILayout.EnumPopup("Preset", myTarget.Preset);
 
-                PresetDefault();
-
-                // Create the required Components
-                switch (myTarget.Preset)
+                if (myTarget.Preset != _previousPreset)
                 {
-                    case Preset.Free:
-                        PresetFree();
-                        break;
-                    case Preset.Physic:
-                        PresetPhysic();
-                        break;
-                    case Preset.Platformer:
-                        PresetPlatformer();
-                        break;
-                    case Preset.Navigation:
-                        PresetNavigation();
-                        break;
+                    PresetDefault();
+
+                    // Create the required Components
+                    switch (myTarget.Preset)
+                    {
+                        case Preset.Free:
+                            PresetFree();
+                            break;
+                        case Preset.Physic:
+                            PresetPhysic();
+                            break;
+                        case Preset.Platformer:
+                            PresetPlatformer();
+                            break;
+                        case Preset.Navigation:
+                            PresetNavigation();
+                            break;
+                        case Preset.None:
+                            ClearAll();
+                            break;
+                    }
                 }
+
+                _previousPreset = myTarget.Preset;
             }
         }
 
@@ -91,6 +98,7 @@ namespace AssemblyActorCore
             ClearNavigation();
 
             gameObject.AddThisComponent<MovableFree>();
+            gameObject.AddThisComponent<PositionableFree>();
         }
 
         private void PresetPhysic()
@@ -102,15 +110,18 @@ namespace AssemblyActorCore
             gameObject.AddThisComponent<MovablePhysic>();
             gameObject.AddThisComponent<PositionablePhysic>();
 
-            SphereCollider sphereCollider = gameObject.AddThisComponent<SphereCollider>();
-            sphereCollider.radius = 0.25f;
-            sphereCollider.center = new Vector3(0, sphereCollider.radius, 0);
+            SphereCollider collider = gameObject.AddThisComponent<SphereCollider>();
+            collider.radius = 0.25f;
+            collider.center = new Vector3(0, collider.radius, 0);
 
             Rigidbody rigidbody = gameObject.AddThisComponent<Rigidbody>();
-            rigidbody.freezeRotation = true;
+            rigidbody.mass = 1;
+            rigidbody.drag = 0;
+            rigidbody.angularDrag = 0.05f;
             rigidbody.useGravity = false;
             rigidbody.isKinematic = false;
             rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+            rigidbody.freezeRotation = true;
         }
 
         private void PresetPlatformer()
@@ -122,14 +133,21 @@ namespace AssemblyActorCore
             gameObject.AddThisComponent<MovablePlatformer>();
             gameObject.AddThisComponent<PositionablePlatformer>();
 
-            CircleCollider2D circleCollider2D = gameObject.AddThisComponent<CircleCollider2D>();
-            circleCollider2D.radius = 0.25f;
-            circleCollider2D.offset = new Vector2(0, circleCollider2D.radius);
+            CircleCollider2D collider = gameObject.AddThisComponent<CircleCollider2D>();
+            collider.isTrigger = false;
+            collider.radius = 0.25f;
+            collider.offset = new Vector2(0, collider.radius);
 
             Rigidbody2D rigidbody = gameObject.AddThisComponent<Rigidbody2D>();
-            rigidbody.freezeRotation = true;
+            rigidbody.bodyType = RigidbodyType2D.Dynamic;
             rigidbody.simulated = true;
+            rigidbody.useAutoMass = false;
+            rigidbody.mass = 1;
+            rigidbody.drag = 0;
+            rigidbody.angularDrag = 0.05f;
+            rigidbody.gravityScale = 1;
             rigidbody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+            rigidbody.freezeRotation = true;
         }
 
         private void PresetNavigation()
@@ -139,13 +157,21 @@ namespace AssemblyActorCore
             ClearPlatformer();
 
             gameObject.AddThisComponent<MovableNavigation>();
+            gameObject.AddThisComponent<PositionableFree>();
 
             NavMeshAgent navMeshAgent = gameObject.AddThisComponent<NavMeshAgent>();
             navMeshAgent.agentTypeID = 0;
+            navMeshAgent.baseOffset = 0;
+            navMeshAgent.speed = 2f;
+            navMeshAgent.angularSpeed = 10000;
+            navMeshAgent.acceleration = 100;
+            navMeshAgent.stoppingDistance = 0;
+            navMeshAgent.autoBraking = true;
             navMeshAgent.radius = 0.25f;
             navMeshAgent.height = navMeshAgent.radius * 2;
-            navMeshAgent.acceleration = 100;
-            navMeshAgent.angularSpeed = 10000;
+            navMeshAgent.avoidancePriority = 50;
+            navMeshAgent.autoTraverseOffMeshLink = true;
+            navMeshAgent.autoRepath = true;
         }
 
         private void ClearFree()
@@ -172,6 +198,7 @@ namespace AssemblyActorCore
         private void ClearNavigation()
         {
             gameObject.RemoveComponent<MovableNavigation>();
+            gameObject.RemoveComponent<PositionableFree>();
             gameObject.RemoveComponent<NavMeshAgent>();
         }
 

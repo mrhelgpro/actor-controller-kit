@@ -40,7 +40,7 @@ namespace AssemblyActorCore
             animatorable.SetSpeed(movable.GetVelocity);
             animatorable.SetJump(movable.IsJump);
             animatorable.SetFall(movable.IsFall);
-            if (positionable)  animatorable.SetGrounded(positionable.IsGrounded);
+            animatorable.SetGrounded(positionable.IsGrounded);
         }
 
         protected void MoveHandler()
@@ -49,6 +49,8 @@ namespace AssemblyActorCore
             float speed = input.Shift ? MoveShift : MoveSpeed;
 
             movable.MoveToDirection(direction, speed);
+            rotable.UpdateModel(direction);
+            positionable.UpdateModel();
         }
 
         protected void JumpHandler()
@@ -86,24 +88,17 @@ namespace AssemblyActorCore
                     _isLevitationPressed = false;
                 }
 
-                if (positionable)
+                if (positionable.IsGrounded)
                 {
-                    if (positionable.IsGrounded)
-                    {
-                        _isJumpDone = false;
-                        _jumpCounter = ExtraJumps;
-                    }
-                    else
-                    {
-                        if (_jumpCounter > 0)
-                        {
-                            _isJumpDone = false;
-                        }
-                    }
+                    _isJumpDone = false;
+                    _jumpCounter = ExtraJumps;
                 }
                 else
                 {
-                    _isJumpDone = false;
+                    if (_jumpCounter > 0)
+                    {
+                        _isJumpDone = false;
+                    }
                 }
             }
         }

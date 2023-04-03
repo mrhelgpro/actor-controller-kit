@@ -7,17 +7,15 @@ namespace AssemblyActorCore
         public enum RotationMode { None, Move, Flip }
         public RotationMode Mode = RotationMode.Move;
         
-        private Inputable _inputable;
         private Transform _mainTransform;
         private Vector3 _currentDirection;
 
         private void Awake()
         {
             _mainTransform = transform;
-            _inputable = GetComponent<Inputable>();
         }
 
-        private void FixedUpdate()
+        public void UpdateModel(Vector3 move, Vector3 look = new Vector3())
         {
             switch (Mode)
             {
@@ -25,27 +23,24 @@ namespace AssemblyActorCore
                     _mainTransform.transform.eulerAngles = Vector3.zero;
                     break;
                 case RotationMode.Move:
-                    directionByMove();
+                    directionByMove(move);
                     lookAtDirection();
                     break;
                 case RotationMode.Flip:
-                    directionByMove();
+                    directionByMove(move);
                     checkFlip();
                     break;
             }
         }
 
-        private void directionByMove()
-        {
-            _currentDirection = new Vector3(_inputable.Input.Move.x, 0.0f, _inputable.Input.Move.y);
-        }
+        private void directionByMove(Vector3 move) => _currentDirection = move;
 
         private void lookAtDirection()
         {
             if (_currentDirection.magnitude > 0)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(new Vector3(_currentDirection.x, _currentDirection.y, _currentDirection.z), Vector3.up);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 25);
+                _mainTransform.rotation = Quaternion.Slerp(_mainTransform.rotation, targetRotation, Time.deltaTime * 25);
             }
         }
 

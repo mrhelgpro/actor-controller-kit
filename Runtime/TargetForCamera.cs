@@ -16,7 +16,8 @@ namespace AssemblyActorCore
     [Serializable]
     public class ActorCameraSettings
     {
-        [Range(0, 90)] public int Angle = 0;
+        [Range(0, 90)] public int Vertical = 0;
+        [Range(0, 360)] public int Horizontal = 0;
         [Range(0, 5)] public float Height = 1;
         [Range(1, 15)] public int Distance = 5;
         [Range(0.1f, 1)] public float MoveTime = 0.5f;

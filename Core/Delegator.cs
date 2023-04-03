@@ -4,6 +4,6 @@ namespace AssemblyActorCore
 {
     public class Delegator : MonoBehaviour
     {
-        // Invokes an action in another <Actionable>
+        protected void TryToActivate(Actionable actionable, GameObject action) => actionable.TryToActivate(action);
     }
 }

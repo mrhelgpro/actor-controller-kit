@@ -27,7 +27,7 @@ namespace AssemblyActorCore
             mainTransform = transform;
         }
 
-        private void FixedUpdate()
+        public void UpdateModel()
         {
             UpdatePosition();
 
