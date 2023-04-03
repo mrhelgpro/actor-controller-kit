@@ -20,12 +20,13 @@ namespace AssemblyActorCore
             _materialOnTheGround = Resources.Load<PhysicsMaterial2D>("Physic2D/Player On The Ground");
         }
 
-        protected override void UpdatePosition()
+        public override void UpdateModel()
         {
             groundCheck();
             surfaceCheck();
             obstacleCheck();
             materialCheck();
+            slidingCheck();
         }
 
         private void groundCheck()

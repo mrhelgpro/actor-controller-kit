@@ -16,7 +16,6 @@ namespace AssemblyActorCore
         protected LayerMask groundLayer;
         protected int layerMask;
         protected Transform mainTransform;
-        protected Vector3 mainDirection => mainTransform.TransformDirection(Vector3.forward);
 
         private float _timerSliding = 0;
 
@@ -27,14 +26,9 @@ namespace AssemblyActorCore
             mainTransform = transform;
         }
 
-        public void UpdateModel()
-        {
-            UpdatePosition();
+        public abstract void UpdateModel();
 
-            slidingCheck();
-        }
-
-        private void slidingCheck()
+        protected void slidingCheck()
         {
             float startTime = 0.1f;
             float endTime = 0.2f;
@@ -62,8 +56,6 @@ namespace AssemblyActorCore
             Vector3 slope = Vector3.down - Vector3.Dot(Vector3.down, surfaceNormal) * surfaceNormal;
 
             return IsSliding ? SurfaceSlope > 75 ? direction : slope : normal;
-        }
-
-        protected abstract void UpdatePosition();
+        }  
     }
 }
