@@ -14,9 +14,11 @@ namespace AssemblyActorCore
         private Action _currentAction = null;
         private List<Action> _actions = new List<Action>();
         private List<Activator> _activators = new List<Activator>();
+        private Transform _mainTransform;
 
         private void Awake()
         {
+            _mainTransform = transform;
             foreach (Action action in GetComponentsInChildren<Action>()) _actions.Add(action);
             foreach (Activator activator in GetComponentsInChildren<Activator>()) _activators.Add(activator);
         }
@@ -96,16 +98,13 @@ namespace AssemblyActorCore
 
         private void CreateAction(GameObject objectAction)
         {
-            //GameObject instantiateAction = Instantiate(instantiateAction, new Vector3(0, 0, 0), Quaternion.identity);
-            // instantiateAction.name = objectAction.name;
-            //Instantiate(instantiateAction, new Vector3(0, 0, 0), Quaternion.identity);
-            //Action action = instantiateAction.GetComponent<Action>();
-            //AddActionToPool(action);
-            //instantiateAction.SetActive(true);
+            GameObject instantiateAction = Instantiate(objectAction, _mainTransform);
+            instantiateAction.name = objectAction.name;
+            instantiateAction.transform.localPosition = Vector3.zero;
+            instantiateAction.transform.localRotation = Quaternion.identity;
+            _actions.Add(instantiateAction.GetComponent<Action>());
 
-            //InvokeActivate(objectAction, item, type);
-
-            Debug.LogWarning("ADD INSTANTIATE");
+            InvokeActivate(instantiateAction);
         }
 
         // At the end of the Action, remove it from the Actor

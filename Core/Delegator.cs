@@ -1,9 +1,28 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class Delegator : MonoBehaviour
-    {
-        protected void TryToActivate(Actionable actionable, GameObject action) => actionable.TryToActivate(action);
-    }
+	public class Delegator : MonoBehaviour
+	{
+		public GameObject Prefab;
+
+		private void Awake()
+		{
+			if (Prefab == null)
+			{
+				gameObject.SetActive(false);
+			}
+		}
+
+		protected void TryToActivate(Actionable actionable) => actionable.TryToActivate(Prefab);
+		
+		protected void TryToActivate(List<Actionable> actionables)
+		{
+			foreach (Actionable actionable in actionables)
+			{
+				actionable.TryToActivate(Prefab);
+			}
+		}
+	}
 }

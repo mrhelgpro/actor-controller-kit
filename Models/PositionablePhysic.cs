@@ -36,7 +36,7 @@ namespace AssemblyActorCore
 
         private void surfaceCheck()
         {
-            float length = 0.45f;
+            float length = 2.0f;
             RaycastHit hit;
             Vector3 origin = new Vector3(mainTransform.position.x, mainTransform.position.y + 0.25f, mainTransform.position.z);
             Physics.Raycast(origin, Vector3.down, out hit, length);
@@ -47,7 +47,7 @@ namespace AssemblyActorCore
 
         private void obstacleCheck()
         {
-            float length = 0.275f;
+            float length = 0.3f;
             RaycastHit hit;
             Vector3 origin = new Vector3(mainTransform.position.x, mainTransform.position.y + 0.25f, mainTransform.position.z);
             Physics.Raycast(origin, mainTransform.TransformDirection(Vector3.forward), out hit, length);

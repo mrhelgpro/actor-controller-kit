@@ -45,7 +45,7 @@ namespace AssemblyActorCore
 
         private void obstacleCheck()
         {
-            float length = 0.275f;
+            float length = 0.3f;
             Vector3 origin = new Vector3(mainTransform.position.x, mainTransform.position.y + 0.25f, mainTransform.position.z);
             Vector3 direction = mainTransform.TransformDirection(Vector3.forward);
             RaycastHit2D hit = Physics2D.Raycast(origin, direction, length, layerMask);

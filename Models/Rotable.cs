@@ -6,7 +6,8 @@ namespace AssemblyActorCore
     {
         public enum RotationMode { None, Move, Flip }
         public RotationMode Mode = RotationMode.Move;
-        
+        [Range (0, 10)] public int Rate = 5;
+
         private Transform _mainTransform;
         private Vector3 _currentDirection;
 
@@ -40,7 +41,7 @@ namespace AssemblyActorCore
             if (_currentDirection.magnitude > 0)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(new Vector3(_currentDirection.x, _currentDirection.y, _currentDirection.z), Vector3.up);
-                _mainTransform.rotation = Quaternion.Slerp(_mainTransform.rotation, targetRotation, Time.deltaTime * 25);
+                _mainTransform.rotation = Quaternion.Slerp(_mainTransform.rotation, targetRotation, Time.deltaTime * 2.5f * Rate);
             }
         }
 
