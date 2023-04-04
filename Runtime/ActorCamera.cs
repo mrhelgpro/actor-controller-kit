@@ -38,7 +38,7 @@ namespace AssemblyActorCore
             if (Target)
             {
                 transform.rotation = Quaternion.Euler(Target.Settings.Vertical, Target.Settings.Horizontal, 0);
-                transform.position = transform.rotation * new Vector3(0, Target.Settings.Height, -Target.Settings.Distance) + Target.Transform.position;
+                transform.position = transform.rotation * new Vector3(Target.Settings.Shoulder, Target.Settings.Height, -Target.Settings.Distance) + Target.Transform.position;
             }
         }
 
@@ -46,10 +46,11 @@ namespace AssemblyActorCore
         {
             if (Target)
             {
-                Vector2 look = Vector2.SmoothDamp(new Vector2(_mainTransform.eulerAngles.x, _mainTransform.eulerAngles.y), new Vector2 (Target.Settings.Vertical, Target.Settings.Horizontal), ref _angleVelocity, Target.Settings.RotationTime);
-                Quaternion rotation = Quaternion.Euler(look.x, look.y, 0);
+                float horizontal = Mathf.SmoothDampAngle(_mainTransform.eulerAngles.x, Target.Settings.Vertical, ref _angleVelocity.y, Target.Settings.RotationTime);
+                float vertical = Mathf.SmoothDampAngle(_mainTransform.eulerAngles.y, Target.Settings.Horizontal, ref _angleVelocity.x, Target.Settings.RotationTime);
+                Quaternion rotation = Quaternion.Euler(horizontal, vertical, 0);
 
-                Vector3 position = rotation * new Vector3(0, Target.Settings.Height, -Target.Settings.Distance) + Target.Transform.position;
+                Vector3 position = rotation * new Vector3(Target.Settings.Shoulder * 2, Target.Settings.Height, -Target.Settings.Distance) + Target.Transform.position;
                 Vector3 delta = new Vector3(Target.Transform.position.x, Target.Transform.position.y + Target.Settings.Height, Target.Transform.position.z) - _camera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, Target.Settings.Distance));
                 Vector3 destination = position + delta;
 
@@ -103,9 +104,10 @@ namespace AssemblyActorCore
                     myTarget.PreviewTheTarget();
                 }
 
-                if (GUILayout.Button("Clear"))
+                if (GUILayout.Button("Refresh"))
                 {
                     myTarget.Target = null;
+                    myTarget.FindTarget();
                 }
             }
             else

@@ -16,13 +16,5 @@ namespace AssemblyActorCore
 		}
 
 		protected void TryToActivate(Actionable actionable) => actionable.TryToActivate(Prefab);
-		
-		protected void TryToActivate(List<Actionable> actionables)
-		{
-			foreach (Actionable actionable in actionables)
-			{
-				actionable.TryToActivate(Prefab);
-			}
-		}
 	}
 }

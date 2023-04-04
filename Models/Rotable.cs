@@ -4,19 +4,18 @@ namespace AssemblyActorCore
 {
     public sealed class Rotable : MonoBehaviour
     {
-        public enum RotationMode { None, Move, Flip }
+        public enum RotationMode { None, Move, Look, Flip }
         public RotationMode Mode = RotationMode.Move;
         [Range (0, 10)] public int Rate = 5;
 
         private Transform _mainTransform;
-        private Vector3 _currentDirection;
 
         private void Awake()
         {
             _mainTransform = transform;
         }
 
-        public void UpdateModel(Vector3 move, Vector3 look = new Vector3())
+        public void UpdateModel(Vector3 move, float look = 0)
         {
             switch (Mode)
             {
@@ -24,34 +23,42 @@ namespace AssemblyActorCore
                     _mainTransform.transform.eulerAngles = Vector3.zero;
                     break;
                 case RotationMode.Move:
-                    directionByMove(move);
-                    lookAtDirection();
+                    lookAtDirection(move);
+                    break;
+                case RotationMode.Look:
+                    directionByLook(move, look);
                     break;
                 case RotationMode.Flip:
-                    directionByMove(move);
-                    checkFlip();
+                    checkFlip(move);
                     break;
             }
         }
 
-        private void directionByMove(Vector3 move) => _currentDirection = move;
-
-        private void lookAtDirection()
+        private void directionByLook(Vector3 move, float look)
         {
-            if (_currentDirection.magnitude > 0)
+            if (move.z != 0)
             {
-                Quaternion targetRotation = Quaternion.LookRotation(new Vector3(_currentDirection.x, _currentDirection.y, _currentDirection.z), Vector3.up);
+                Quaternion targetRotation = Quaternion.Euler(0, look, 0);
                 _mainTransform.rotation = Quaternion.Slerp(_mainTransform.rotation, targetRotation, Time.deltaTime * 2.5f * Rate);
             }
         }
 
-        private void checkFlip()
+        private void lookAtDirection(Vector3 move)
         {
-            if (_mainTransform.localScale.z < 0 && _currentDirection.x > 0)
+            if (move.magnitude > 0)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(new Vector3(move.x, move.y, move.z), Vector3.up);
+                _mainTransform.rotation = Quaternion.Slerp(_mainTransform.rotation, targetRotation, Time.deltaTime * 2.5f * Rate);
+            }
+        }
+
+        private void checkFlip(Vector3 move)
+        {
+            if (_mainTransform.localScale.z < 0 && move.x > 0)
             {
                 flip();
             }
-            else if (_mainTransform.localScale.z > 0 && _currentDirection.x < 0)
+            else if (_mainTransform.localScale.z > 0 && move.x < 0)
             {
                 flip();
             }

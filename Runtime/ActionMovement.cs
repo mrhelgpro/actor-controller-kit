@@ -43,13 +43,24 @@ namespace AssemblyActorCore
             animatorable.SetGrounded(positionable.IsGrounded);
         }
 
+        public Vector3 Direction;
         protected void MoveHandler()
         {
             Vector3 direction = new Vector3(input.Move.x, 0, input.Move.y);
+            Direction = direction;
             float speed = input.Shift ? MoveShift : MoveSpeed;
 
+            /*
+            Vector3 moveDirection = direction.normalized;
+            Vector3 lookDirection = new Vector3(Camera.main.transform.forward.x, 0f, Camera.main.transform.forward.z).normalized;
+            Vector3 projectedLookDirection = Vector3.ProjectOnPlane(lookDirection, Vector3.up);
+            Vector3 movement = projectedLookDirection * moveDirection.z + Camera.main.transform.right * moveDirection.x;
+            movement.y = 0f;
+            movable.MoveToDirection(movement, speed);
+            */
+
             movable.MoveToDirection(direction, speed);
-            rotable.UpdateModel(direction);
+            rotable.UpdateModel(direction, input.Look.x);
             positionable.UpdateModel();
         }
 

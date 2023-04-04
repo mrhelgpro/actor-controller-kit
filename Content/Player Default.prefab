@@ -241,59 +241,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Settings:
-    Angle: 60
+    Vertical: 0
+    Horizontal: 0
     Height: 0
-    Distance: 15
+    Distance: 10
     MoveTime: 0.5
     RotationTime: 0.5
   Transform: {fileID: 5385621822346272240}
---- !u!1 &6377887079887837111
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6377887079887837110}
-  - component: {fileID: 6377887079887837104}
-  m_Layer: 3
-  m_Name: Damage
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6377887079887837110
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6377887079887837111}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8169738868058921386}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6377887079887837104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6377887079887837111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b045949ba0f3794a85d15817fd5c228, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Type: 2
-  Name: Move
-  Duration: 1
 --- !u!1 &8169738868058921387
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,11 +258,11 @@ GameObject:
   m_Component:
   - component: {fileID: 8169738868058921386}
   - component: {fileID: 8169738868058921385}
+  - component: {fileID: 1188414774944441424}
   - component: {fileID: 8925078287962978862}
   - component: {fileID: 8925078287962978848}
   - component: {fileID: 8925078287962978849}
   - component: {fileID: 3728518674999288111}
-  - component: {fileID: 1188414774944441424}
   - component: {fileID: 1188414774944441428}
   - component: {fileID: 1188414774944441431}
   - component: {fileID: 1188414774944441430}
@@ -337,7 +291,6 @@ Transform:
   - {fileID: 5074288993645382567}
   - {fileID: 1138260774520645780}
   - {fileID: 1230574116288175352}
-  - {fileID: 6377887079887837110}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
@@ -355,6 +308,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Preset: 1
   Name: Actor
+--- !u!114 &1188414774944441424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8169738868058921387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01f739e96cee8f04280f407648526631, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8925078287962978862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -416,18 +381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Mode: 1
---- !u!114 &1188414774944441424
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8169738868058921387}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01f739e96cee8f04280f407648526631, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  Rate: 5
 --- !u!114 &1188414774944441428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -589,6 +543,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlayerArmature
+      objectReference: {fileID: 0}
+    - target: {fileID: 612186356747480483, guid: 2b21d0d498af25b48bdc196c24a51080,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 612186356747480483, guid: 2b21d0d498af25b48bdc196c24a51080,
         type: 3}
