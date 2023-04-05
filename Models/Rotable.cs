@@ -36,7 +36,7 @@ namespace AssemblyActorCore
 
         private void directionByLook(Vector3 move, float look)
         {
-            if (move.z != 0)
+            if (move.magnitude > 0)
             {
                 Quaternion targetRotation = Quaternion.Euler(0, look, 0);
                 _mainTransform.rotation = Quaternion.Slerp(_mainTransform.rotation, targetRotation, Time.deltaTime * 2.5f * Rate);

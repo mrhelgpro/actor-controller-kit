@@ -127,9 +127,12 @@ namespace AssemblyActorCore
     {
         public override void OnInspectorGUI()
         {
-            Actionable myTarget = (Actionable)target;
-            EditorGUILayout.LabelField("Action", myTarget.GetName);
-            EditorUtility.SetDirty(target);
+            if (Application.isPlaying)
+            {
+                Actionable myTarget = (Actionable)target;
+                EditorGUILayout.LabelField("Action", myTarget.GetName);
+                EditorUtility.SetDirty(target);
+            }
         }
     }
 #endif

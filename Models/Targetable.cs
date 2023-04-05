@@ -50,19 +50,24 @@ namespace AssemblyActorCore
         {
             Targetable myTarget = (Targetable)target;
 
-            if (Application.isPlaying == false) myTarget.Clear();
-
-            if (myTarget.IsTarget)
+            if (Application.isPlaying)
             {
-                EditorGUILayout.LabelField("Target Tag: " + myTarget.GetTag);
-                EditorGUILayout.Vector3Field("", myTarget.GetPosition);
+                if (myTarget.IsTarget)
+                {
+                    EditorGUILayout.LabelField("Target Tag: " + myTarget.GetTag);
+                    EditorGUILayout.Vector3Field("", myTarget.GetPosition);
+                }
+                else
+                {
+                    EditorGUILayout.LabelField("Target - Null");
+                }
+
+                EditorUtility.SetDirty(target);
             }
             else
             {
-                EditorGUILayout.LabelField("Target - Null");
+                myTarget.Clear();
             }
-
-            EditorUtility.SetDirty(target);
         }
     }
 #endif

@@ -4,13 +4,32 @@ using UnityEditor;
 
 namespace AssemblyActorCore
 {
-    [ExecuteInEditMode]
     public class TargetForCamera : MonoBehaviour
     {
-        public ActorCameraSettings Settings = new ActorCameraSettings();
-        [HideInInspector] public Transform Transform;
+        public ActorCameraSettings Settings;
+        public Transform Transform;
 
-        protected void Awake() => Transform = transform;
+        protected Input input => _inputable.Input;
+        private Inputable _inputable;
+
+        private void Awake()
+        {
+            Transform = transform;
+            _inputable = GetComponentInParent<Inputable>();
+        }
+
+        private void Update()
+        {
+            if (_inputable)
+            {
+                if (_inputable.FreezLook == false)
+                {
+                    Settings.Horizontal = input.Look.Value.x;
+                    Settings.Vertical = input.Look.Value.y;
+                    Settings.Vertical = Mathf.Clamp(Settings.Vertical, -30, 85);
+                }
+            }
+        }
     }
 
     [Serializable]
@@ -18,11 +37,11 @@ namespace AssemblyActorCore
     {
         [Range(-30, 90)] public float Vertical = 0;
         [Range(-180, 180)] public float Horizontal = 0;
-        [Range(0, 5)] public float Height = 1;
+        [Range(-5, 5)] public float Height = 1;
         [Range(-1, 1)] public float Shoulder = 0;
         [Range(1, 15)] public int Distance = 5;
-        [Range(0.1f, 1.0f)] public float MoveTime = 0.5f;
-        [Range(0.1f, 1.0f)] public float RotationTime = 0.5f;
+        [Range(0.01f, 1.0f)] public float MoveTime = 0.5f;
+        [Range(0.05f, 1.0f)] public float RotationTime = 0.5f;
     }
 
 #if UNITY_EDITOR

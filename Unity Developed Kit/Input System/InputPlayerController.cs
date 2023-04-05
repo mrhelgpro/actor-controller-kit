@@ -4,12 +4,12 @@ using AssemblyActorCore;
 public class InputPlayerController : MonoBehaviour
 {
     private InputActions _inputActions;
-    protected Inputable inputable;
-    private AssemblyActorCore.Input _input => inputable.Input;
+    private Inputable _inputable;
+    private AssemblyActorCore.Input _input => _inputable.Input;
 
     private void Awake()
     {
-        inputable = gameObject.GetComponentInParent<Inputable>();
+        _inputable = gameObject.GetComponentInParent<Inputable>();
         _inputActions = new InputActions();
 
         _inputActions.Player.Menu.performed += context => _input.Menu = true;
@@ -38,12 +38,20 @@ public class InputPlayerController : MonoBehaviour
 
         _inputActions.Player.BumperLeft.performed += context => _input.Shift = true;
         _inputActions.Player.BumperLeft.canceled += context => _input.Shift = false;
+
+        // Add Mode enum LookMode { Camera, Mouse}
+        Debug.Log("ADD LOOK AT MOUSE POSITION");
     }
 
     private void Update()
     {
         _input.Move = _inputActions.Player.Move.ReadValue<Vector2>();
-        _input.Look += _inputActions.Player.Look.ReadValue<Vector2>();
+        _input.Look.Delta = _inputActions.Player.Look.ReadValue<Vector2>();
+
+        if (_inputable.FreezLook == false)
+        {
+            _input.Look.Value += _input.Look.Delta;
+        }
     }
 
     private void OnEnable() => _inputActions.Enable();

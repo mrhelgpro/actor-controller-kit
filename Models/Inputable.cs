@@ -6,6 +6,14 @@ namespace AssemblyActorCore
     public class Inputable : MonoBehaviour
     {
         public Input Input;
+        public bool FreezLook;
+    }
+
+    [Serializable]
+    public class InputVector
+    {
+        public Vector2 Value;
+        public Vector2 Delta;
     }
 
     [Serializable]
@@ -14,12 +22,11 @@ namespace AssemblyActorCore
                                      // KEYBOARD           X-BOX              DUALSHOCK       GAMEPAD
 
         public bool Menu;            // Escape
-
-        //public float MoveHorizontal; // AD - Movement     Left Stick        Left Stick      Left Stick
-        //public float MoveVertical;   // WS - Movement
-        
+      
         public Vector2 Move;         // WASD - Movement     Left Stick        Left Stick      Left Stick
-        public Vector2 Look;         // Mouse - Look        Right Stick       Right Stick     Right Stick
+        public InputVector Look;
+        //public Vector2 Look;         // Mouse - Look        Right Stick       Right Stick     Right Stick
+        //public Vector2 DeltaLook;    // Mouse - Look        Right Stick       Right Stick     Right Stick
 
         public bool Option;          // Q                   Y                 Triangle        North
         public bool Cancel;          // Backspace / C       B                 Circle          East
@@ -33,11 +40,6 @@ namespace AssemblyActorCore
 
         public bool IsButtonPress(Input input)
         {
-            //if (MoveHorizontal != 0 && input.MoveHorizontal != MoveHorizontal) return false;
-            //if (MoveVertical != 0 && input.MoveVertical != MoveVertical) return false;
-
-            //if (Look != Vector2.zero && input.Look != Look) return false;
-
             if (Option == true && input.Option == false) return false;
             if (Cancel == true && input.Cancel == false) return false;
             if (Motion == true && input.Motion == false) return false;
