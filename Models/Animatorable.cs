@@ -8,7 +8,7 @@ namespace AssemblyActorCore
 
         private void Start() => _animator = gameObject.GetComponentInChildren<Animator>();
 
-        public void Play(string name, float speed, float fade = 0.2f)
+        public void Play(string name, float speed = 1.0f, float fade = 0.2f)
         {
             _animator?.CrossFade(name, fade);
             _animator?.SetFloat("Speed", speed);

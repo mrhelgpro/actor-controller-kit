@@ -25,8 +25,6 @@ namespace AssemblyActorCore
       
         public Vector2 Move;         // WASD - Movement     Left Stick        Left Stick      Left Stick
         public InputVector Look;
-        //public Vector2 Look;         // Mouse - Look        Right Stick       Right Stick     Right Stick
-        //public Vector2 DeltaLook;    // Mouse - Look        Right Stick       Right Stick     Right Stick
 
         public bool Option;          // Q                   Y                 Triangle        North
         public bool Cancel;          // Backspace / C       B                 Circle          East

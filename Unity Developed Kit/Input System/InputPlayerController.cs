@@ -38,9 +38,6 @@ public class InputPlayerController : MonoBehaviour
 
         _inputActions.Player.BumperLeft.performed += context => _input.Shift = true;
         _inputActions.Player.BumperLeft.canceled += context => _input.Shift = false;
-
-        // Add Mode enum LookMode { Camera, Mouse}
-        Debug.Log("ADD LOOK AT MOUSE POSITION");
     }
 
     private void Update()
