@@ -4,8 +4,6 @@ using UnityEditor;
 
 namespace AssemblyActorCore
 {
-    public enum ActionType { Controller, Interaction, Forced, Irreversible };
-
     public class Actionable : MonoBehaviour
     {
         public string GetName => _currentAction == null ? "None" : _currentAction.gameObject.name + " - " + _currentAction.Name;
@@ -66,21 +64,27 @@ namespace AssemblyActorCore
         private bool _isIrreversible => _currentAction == null ? false : _currentAction.Type == ActionType.Irreversible;
         private bool _isReady(Action action)
         {
-            bool ready = false;
-
             if (IsEmpty == true)
             {
-                ready = true;
+                return true;
             }
             else
             {
-                if (_isIrreversible == false)
+                if (_currentAction.Type != ActionType.Required)
                 {
-                    ready = _isController ? action.Type != ActionType.Controller : action.Type == ActionType.Forced;
+                    if (action.Type == ActionType.Required)
+                    {
+                        return true;
+                    }
+
+                    if (_isIrreversible == false)
+                    {
+                        return _isController ? action.Type != ActionType.Controller : action.Type == ActionType.Forced;
+                    }
                 }
             }
 
-            return ready;
+            return false;
         }
         private void InvokeActivate(GameObject objectAction)
         {

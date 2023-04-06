@@ -2,6 +2,8 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
+    public enum ActionType { Controller, Interaction, Forced, Irreversible, Required };
+
     public abstract class Action : MonoBehaviour
     {
         public ActionType Type;
@@ -35,9 +37,11 @@ namespace AssemblyActorCore
             mainTransform = actionable.transform;
         }
 
+        protected void TryToActivate() => actionable.TryToActivate(myGameObject);
+
         public abstract void Enter();
         public abstract void UpdateLoop();
         public abstract void FixedLoop();
-        public abstract void Exit();
+        public abstract void Exit();       
     }
 }

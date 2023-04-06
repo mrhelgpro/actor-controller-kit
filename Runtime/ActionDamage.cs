@@ -1,11 +1,8 @@
-using UnityEngine;
-
 namespace AssemblyActorCore
 {
-    public class ActionDamage : Action
+    public class ActionDamage : ActionInteraction
     {
         private Healthable _healthable;
-        private bool _isDeath;
 
         protected new void Awake()
         {
@@ -14,30 +11,44 @@ namespace AssemblyActorCore
             _healthable = mainTransform.gameObject.AddThisComponent<Healthable>();
         }
 
-        public void TakeDamage(float value, string name = "Damage")
+        private void OnEnable() => _healthable.EventDamage += DamageHandler;
+
+        protected virtual void DamageHandler()
         {
-            _healthable.TakeDamage(value);
+            if (_healthable.IsDead == false)
+            {
+                TryToActivate();
+            }
+            else
+            {
+                TakeKill();
+            }
         }
 
-        public void TakeDeath(string name = "Death")
+        public void TakeKill(string name = "Death")
         {
-            _isDeath = true;
-            Type = ActionType.Irreversible;
-            animatorable.Play(name);
-        }
+            Name = name;
+            Type = ActionType.Required;
+            _healthable.TakeKill();
 
-        public override void Enter() => movable.FreezRotation();
+            TryToActivate();
+        }
 
         public override void UpdateLoop()
         {
-
+            if (_healthable.IsDead == false)
+            {
+                base.UpdateLoop();
+            }
         }
 
-        public override void FixedLoop()
+        public override void Exit()
         {
-
+            movable.FreezAll();
+            Type = ActionType.Forced;
+            Name = "Damage";
         }
 
-        public override void Exit() => movable.FreezAll();
+        private void OnDisable() => _healthable.EventDamage -= DamageHandler;
     }
 }

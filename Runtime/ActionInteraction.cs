@@ -11,6 +11,7 @@ namespace AssemblyActorCore
         public override void Enter()
         {
             movable.FreezAll();
+            animatorable.Play(Name, _speed);
             _timer = 0;
         }
 
@@ -25,8 +26,7 @@ namespace AssemblyActorCore
         }
 
         public override void FixedLoop()
-        {
-            animatorable.Play(Name, _speed);
+        {       
             movable.MoveToDirection(Vector3.zero, 0);
         }
 
