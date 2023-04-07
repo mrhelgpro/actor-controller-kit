@@ -3,35 +3,22 @@ using UnityEditor;
 
 namespace AssemblyActorCore
 {
-    public class ActionDamage : ActionInteraction
+    public class ActionDamage : ActionTemporary
     {
+        public float Damage = 1.0f;
         private Healthable _healthable;
 
-        protected new void Awake()
+        public override void Enter()
         {
-            base.Awake();
+            base.Enter();
 
-            Type = ActionType.Forced;
-            Name = "Damage";
-            Duration = 0.25f;
+            _healthable = mainTransform.GetComponent<Healthable>();
+            _healthable.TakeDamage(Damage);
 
-            _healthable = mainTransform.gameObject.AddThisComponent<Healthable>();
-        }
-
-        private void OnEnable() => _healthable.EventDamage += DamageHandler;
-
-        protected virtual void DamageHandler()
-        {
-            if (_healthable.IsDead == false)
-            {
-                TryToActivate();
-            }
-            else
+            if (_healthable.IsDead)
             {
                 Name = "Death";
                 Type = ActionType.Required;
-
-                TryToActivate();
             }
         }
 
@@ -42,8 +29,6 @@ namespace AssemblyActorCore
                 base.UpdateLoop();
             }
         }
-
-        private void OnDisable() => _healthable.EventDamage -= DamageHandler;
     }
 
 #if UNITY_EDITOR

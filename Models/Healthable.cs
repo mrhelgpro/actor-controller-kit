@@ -4,9 +4,6 @@ namespace AssemblyActorCore
 {
     public class Healthable : MonoBehaviour
     {
-        public delegate void HealthableDamage();
-        public HealthableDamage EventDamage;
-
         public float GetHealth => _currentHealth;
         public bool IsDead => _currentHealth <= 0;
 
@@ -25,8 +22,6 @@ namespace AssemblyActorCore
         {
             float health = _currentHealth - Mathf.Abs(value);
             _currentHealth = health < 0 ? 0 : health;
-
-            EventDamage?.Invoke();
         }
 
         public void TakeHealing(float value)
@@ -38,8 +33,6 @@ namespace AssemblyActorCore
         public void TakeKill()
         {
             _currentHealth = 0;
-
-            EventDamage?.Invoke();
         }
     }
 }

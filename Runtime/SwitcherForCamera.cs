@@ -12,6 +12,8 @@ namespace AssemblyActorCore
         {
 			_actorCamera = FindObjectOfType<ActorCamera>();
 			_targetForCamera = GetComponent<TargetForCamera>();
+
+			Tag = "Player";
         }
 
         public override void OnTargetEnter(GameObject target)

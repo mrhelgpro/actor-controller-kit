@@ -6,7 +6,8 @@ namespace AssemblyActorCore
     {
         private Collider _bodyCollider;
         private Actionable _actionable;
-        private Healthable _healthable;
+
+        public GameObject GetRootObject => _actionable.gameObject;
 
         protected void Start()
         {
@@ -20,14 +21,12 @@ namespace AssemblyActorCore
             {
                 _bodyCollider.isTrigger = true;
                 _actionable = GetComponentInParent<Actionable>();
-                _healthable = GetComponentInParent<Healthable>();
 
-                gameObject.tag = _healthable.transform.tag;
+                gameObject.tag = _actionable.transform.tag;
                 gameObject.layer = LayerMask.NameToLayer("Damagable");
             }
         }
 
-        public void TakeDamage(float value) => _healthable.TakeDamage(value);
         public void TakeAction(GameObject action) => _actionable.TryToActivate(action);
     }
 }
