@@ -4,7 +4,7 @@ namespace AssemblyActorCore
 {
     public enum ActionType { Controller, Interaction, Forced, Irreversible, Required };
 
-    public abstract class Action : MonoBehaviour
+    public abstract class Action : Model
     {
         public ActionType Type;
         public string Name = "Action";
@@ -17,15 +17,11 @@ namespace AssemblyActorCore
         protected Movable movable;
         protected Positionable positionable;
 
-
-        protected GameObject myGameObject;
-        protected Transform mainTransform;
-
         private Inputable _inputable;
 
-        protected void Awake()
+        protected new void Awake()
         {
-            myGameObject = gameObject;
+            base.Awake();
 
             _inputable = GetComponentInParent<Inputable>();
             actionable = GetComponentInParent<Actionable>();
@@ -33,11 +29,9 @@ namespace AssemblyActorCore
             rotable = GetComponentInParent<Rotable>();
             movable = GetComponentInParent<Movable>();
             positionable = GetComponentInParent<Positionable>();
-
-            mainTransform = actionable.transform;
         }
 
-        protected void TryToActivate() => actionable.TryToActivate(myGameObject);
+        protected void TryToActivate() => actionable.TryToActivate(myTransform);
 
         public abstract void Enter();
         public abstract void UpdateLoop();

@@ -13,11 +13,11 @@ namespace AssemblyActorCore
             Tag = Tag == "" ? "Any" : Tag;
         }
 
-        private void targetCheck(GameObject target, bool enter)
+        private void targetCheck(Transform target, bool enter)
         {
             if (Tag == "Any" ? true : Tag == target.tag)
             {
-                if ((Layer.value & (1 << target.layer)) != 0)
+                if ((Layer.value & (1 << target.gameObject.layer)) != 0)
                 {
                     if (enter == true)
                     {
@@ -31,12 +31,12 @@ namespace AssemblyActorCore
             }
         }
 
-        public abstract void OnTargetEnter(GameObject target);
-        public abstract void OnTargetExit(GameObject target);
+        public abstract void OnTargetEnter(Transform target);
+        public abstract void OnTargetExit(Transform target);
 
-        private void OnTriggerEnter(Collider collider) => targetCheck(collider.gameObject, true);
-        private void OnTriggerEnter2D(Collider2D collider) => targetCheck(collider.gameObject, true);
-        private void OnTriggerExit(Collider collider) => targetCheck(collider.gameObject, false);
-        private void OnTriggerExit2D(Collider2D collider) => targetCheck(collider.gameObject, false);
+        private void OnTriggerEnter(Collider collider) => targetCheck(collider.transform, true);
+        private void OnTriggerEnter2D(Collider2D collider) => targetCheck(collider.transform, true);
+        private void OnTriggerExit(Collider collider) => targetCheck(collider.transform, false);
+        private void OnTriggerExit2D(Collider2D collider) => targetCheck(collider.transform, false);
     }
 }

@@ -21,7 +21,7 @@ namespace AssemblyActorCore
 
             if (_timer >= Duration)
             {
-                actionable.Deactivate(myGameObject);
+                actionable.Deactivate(myTransform);
             }
         }
 

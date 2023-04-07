@@ -4,7 +4,7 @@ using UnityEditor;
 
 namespace AssemblyActorCore
 {
-    public class Actionable : MonoBehaviour
+    public class Actionable : Model
     {
         public string GetName => _currentAction == null ? "None" : _currentAction.gameObject.name + " - " + _currentAction.Name;
         public bool IsEmpty => _currentAction == null;
@@ -12,11 +12,11 @@ namespace AssemblyActorCore
         private Action _currentAction = null;
         private List<Action> _actions = new List<Action>();
         private List<Activator> _activators = new List<Activator>();
-        private Transform _mainTransform;
 
-        private void Awake()
+        private new  void Awake()
         {
-            _mainTransform = transform;
+            base.Awake();
+
             foreach (Action action in GetComponentsInChildren<Action>()) _actions.Add(action);
             foreach (Activator activator in GetComponentsInChildren<Activator>()) _activators.Add(activator);
         }
@@ -42,13 +42,13 @@ namespace AssemblyActorCore
         // Check the Actions list for a ready-made Action
         // If you find an equal GameObject Name, execute this Action
         // If you don't find an equal Action, create a new one
-        public void TryToActivate(GameObject objectAction)
+        public void TryToActivate(Transform objectAction)
         {
             foreach (Action item in _actions)
             {
-                if (objectAction.name == item.gameObject.name)
+                if (objectAction.name == item.transform.name)
                 {
-                    InvokeActivate(item.gameObject);
+                    InvokeActivate(item.transform);
 
                     return;
                 }
@@ -86,8 +86,10 @@ namespace AssemblyActorCore
 
             return false;
         }
-        private void InvokeActivate(GameObject objectAction)
+        private void InvokeActivate(Transform objectAction)
         {
+            //Action action = objectAction.GetComponent<Action>();
+
             Action action = objectAction.GetComponent<Action>();
 
             if (_isReady(action))
@@ -100,19 +102,19 @@ namespace AssemblyActorCore
             }
         }
 
-        private void CreateAction(GameObject objectAction)
+        private void CreateAction(Transform objectAction)
         {
-            GameObject instantiateAction = Instantiate(objectAction, _mainTransform);
+            GameObject instantiateAction = Instantiate(objectAction.gameObject, mainTransform);
             instantiateAction.name = objectAction.name;
             instantiateAction.transform.localPosition = Vector3.zero;
             instantiateAction.transform.localRotation = Quaternion.identity;
             _actions.Add(instantiateAction.GetComponent<Action>());
 
-            InvokeActivate(instantiateAction);
+            InvokeActivate(instantiateAction.transform);
         }
 
         // At the end of the Action, remove it from the Actor
-        public void Deactivate(GameObject objectAction)
+        public void Deactivate(Transform objectAction)
         {
             Action action = objectAction.GetComponent<Action>();
 

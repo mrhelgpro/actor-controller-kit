@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,30 +7,36 @@ namespace AssemblyActorCore
     {
 		public float Value = 1;
 
-		private List<GameObject> _targets;
+		private List<Transform> _targets = new List<Transform>();
 
 		private void Awake() => Layer = LayerMask.GetMask("Damagable");
 
-		public override void OnTargetEnter(GameObject target)
+		public override void OnTargetEnter(Transform target)
 		{
-			Debug.Log(target.name + " DAMAGABLE");
-
 			Damagable damagable = target.GetComponent<Damagable>();
-			target = damagable.GetRootObject;
 
-			foreach (GameObject gameObject in _targets)
+			if (damagable == null)
 			{
-				if (gameObject == target)
-				{
-					return;
-				}
+				return;
 			}
+			else
+			{
+				target = damagable.GetRoot;
 
-			_targets.Add(target);
-			//damagable.TakeDamage(Value);
+				foreach (Transform transform in _targets)
+				{
+					if (transform == target)
+					{
+						return;
+					}
+				}
+
+				_targets.Add(target);
+				damagable.TakeDamage(Value);
+			}
 		}
 
-		public override void OnTargetExit(GameObject target)
+		public override void OnTargetExit(Transform target)
 		{
 
 		}

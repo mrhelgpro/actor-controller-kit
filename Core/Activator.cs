@@ -2,24 +2,23 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public abstract class Activator : MonoBehaviour
+    public abstract class Activator : Model
     {
         protected Input input => _inputable.Input;
 
-        protected GameObject myGameObject;
         protected Actionable actionable;
 
         private Inputable _inputable;
 
-        private void Awake()
+        private new void Awake()
         {
-            myGameObject = gameObject;
+            base.Awake();
 
             actionable = GetComponentInParent<Actionable>();
             _inputable = GetComponentInParent<Inputable>();
         }
 
-        protected void TryToActivate() => actionable.TryToActivate(myGameObject);
+        protected void TryToActivate() => actionable.TryToActivate(myTransform);
 
         public abstract void UpdateActivate();
     }

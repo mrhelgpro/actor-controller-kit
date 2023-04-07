@@ -2,31 +2,26 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class Damagable : MonoBehaviour
+    public class DamagablePhysic : Damagable
     {
         private Collider _bodyCollider;
-        private Actionable _actionable;
 
-        public GameObject GetRootObject => _actionable.gameObject;
-
-        protected void Start()
+        private void Start()
         {
             _bodyCollider = GetComponent<Collider>();
 
             if (_bodyCollider == null)
             {
                 gameObject.SetActive(false);
+                Debug.LogWarning(gameObject.name + " - Damagable: <Collider> is not found");
             }
             else
             {
                 _bodyCollider.isTrigger = true;
-                _actionable = GetComponentInParent<Actionable>();
 
-                gameObject.tag = _actionable.transform.tag;
+                gameObject.tag = mainTransform.tag;
                 gameObject.layer = LayerMask.NameToLayer("Damagable");
             }
         }
-
-        public void TakeAction(GameObject action) => _actionable.TryToActivate(action);
     }
 }

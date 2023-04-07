@@ -16,13 +16,13 @@ namespace AssemblyActorCore
 			Tag = "Player";
         }
 
-        public override void OnTargetEnter(GameObject target)
+        public override void OnTargetEnter(Transform target)
 		{
 			_playerForCamera = target.GetComponentInChildren<TargetForCamera>();
 			_actorCamera.Target = _targetForCamera;
 		}
 
-		public override void OnTargetExit(GameObject target)
+		public override void OnTargetExit(Transform target)
 		{
 			_actorCamera.Target = _playerForCamera;
 			_playerForCamera = null;
