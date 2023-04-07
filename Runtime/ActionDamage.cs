@@ -1,3 +1,6 @@
+using UnityEngine;
+using UnityEditor;
+
 namespace AssemblyActorCore
 {
     public class ActionDamage : ActionInteraction
@@ -7,6 +10,10 @@ namespace AssemblyActorCore
         protected new void Awake()
         {
             base.Awake();
+
+            Type = ActionType.Forced;
+            Name = "Damage";
+            Duration = 0.25f;
 
             _healthable = mainTransform.gameObject.AddThisComponent<Healthable>();
         }
@@ -21,17 +28,11 @@ namespace AssemblyActorCore
             }
             else
             {
-                TakeKill();
+                Name = "Death";
+                Type = ActionType.Required;
+
+                TryToActivate();
             }
-        }
-
-        public void TakeKill(string name = "Death")
-        {
-            Name = name;
-            Type = ActionType.Required;
-            _healthable.TakeKill();
-
-            TryToActivate();
         }
 
         public override void UpdateLoop()
@@ -42,13 +43,18 @@ namespace AssemblyActorCore
             }
         }
 
-        public override void Exit()
-        {
-            movable.FreezAll();
-            Type = ActionType.Forced;
-            Name = "Damage";
-        }
-
         private void OnDisable() => _healthable.EventDamage -= DamageHandler;
     }
+
+#if UNITY_EDITOR
+    [ExecuteInEditMode]
+    [CustomEditor(typeof(ActionDamage))]
+    public class ActionDamageEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            EditorGUILayout.LabelField("Default <Action> - to deal damage");
+        }
+    }
+#endif
 }
