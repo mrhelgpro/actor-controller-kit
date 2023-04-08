@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public abstract class Movable : MonoBehaviour
+    public abstract class Movable : Model
     {
         [Range(0, 1)] public float Slowing = 0;
         [Range(0, 2)] public float Boost = 0;
@@ -31,8 +31,6 @@ namespace AssemblyActorCore
             return currentDirection;
         }
 
-        protected Transform mainTransform;
-
         protected float getSpeedSliding(float slope = 45.0f) => slope * 0.1f * Time.fixedDeltaTime;
         protected float getSpeedScale => _getBoost * _getSlowing * Time.fixedDeltaTime;
         private float _getSlowing => Slowing > 0 ? (Slowing <= 1 ? 1 - Slowing : 0) : 1;
@@ -41,9 +39,10 @@ namespace AssemblyActorCore
         private Vector3 _lastPositionForSpeed = Vector3.zero;
         private Vector3 _lastDirectionForAcceleration = Vector3.zero;
 
-        protected void Awake()
+        protected new void Awake()
         {
-            mainTransform = transform;
+            base.Awake();
+
             _lastPositionForSpeed = mainTransform.position;
         }
 

@@ -1,14 +1,17 @@
 using UnityEngine;
 
-public class Soundable : MonoBehaviour
+namespace AssemblyActorCore
 {
-    public void OnFootstep()
-    { 
-    
-    }
-
-    public void OnLand()
+    public class Soundable : Model
     {
+        public void OnFootstep()
+        {
 
+        }
+
+        public void OnLand()
+        {
+
+        }
     }
 }

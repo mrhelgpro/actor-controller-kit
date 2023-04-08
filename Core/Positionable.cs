@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public abstract class Positionable : MonoBehaviour
+    public abstract class Positionable : Model
     {
         public bool IsGrounded;
         public bool IsObstacle;
@@ -15,12 +15,13 @@ namespace AssemblyActorCore
         protected Vector3 surfaceNormal;
         protected LayerMask groundLayer;
         protected int layerMask;
-        protected Transform mainTransform;
 
         private float _timerSliding = 0;
 
-        protected void Awake()
+        protected new void Awake()
         {
+            base.Awake();
+
             groundLayer = LayerMask.GetMask("Default");
             layerMask = ~(1 << LayerMask.NameToLayer("Actor"));
             mainTransform = transform;

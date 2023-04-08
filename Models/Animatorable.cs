@@ -2,11 +2,16 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class Animatorable : MonoBehaviour
+    public class Animatorable : Model
     {
         private Animator _animator;
 
-        private void Start() => _animator = gameObject.GetComponentInChildren<Animator>();
+        private new void Awake()
+        {
+            base.Awake();
+
+            _animator = mainTransform.GetComponentInChildren<Animator>();
+        }
 
         public void Play(string name, float speed = 1.0f, float fade = 0.2f)
         {

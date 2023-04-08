@@ -4,7 +4,7 @@ using UnityEditor;
           
 namespace AssemblyActorCore
 {
-    public class Targetable : MonoBehaviour
+    public class Targetable : Model
     {
         public bool IsTarget => _target != null;
         public bool IsPosition => IsTarget && _target.IsPosition;

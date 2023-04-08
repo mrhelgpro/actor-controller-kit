@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class Inputable : MonoBehaviour
+    public class Inputable : Model
     {
         public Input Input;
         public bool FreezLook;
