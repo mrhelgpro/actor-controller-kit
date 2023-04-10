@@ -1,0 +1,17 @@
+{
+	"name": "com.mrhelgpro.actor-controller-kit",
+	"version": "1.0.0",
+	"displayName": "Actor Controller Kit",
+	"description": "The main task of this collection is the development of game characters",
+	"unity": "2021.1",
+	"dependencies": {},
+	"keywords": ["character", "controller", "mvc"],
+	"autor": {
+		"name": "Kolisnichenko Oleh",
+		"email": "mrhelgpro@gmail.com"
+	},
+	"repository": {
+    "url": "https://github.com/mrhelgpro/actor-controller-kit",
+    "type": "git"
+	}	
+}
