@@ -2,18 +2,36 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class ActionMovement : Action
+    public class MovementController : Controller
     {
         [Range(1, 5)] public float MoveSpeed = 3f;
         [Range(1, 10)] public float MoveShift = 5f;
         [Range(0, 5)]  public int JumpHeight = 2;
         [Range(0, 2)] public int ExtraJumps;
         [Range(0, 1)] public float Levitation = 1f;
-      
+
         private int _jumpCounter;
         private bool _isJumpPressed = false;
         private bool _isJumpDone = false;
         private bool _isLevitationPressed = false;
+
+        protected Animatorable animatorable;
+        protected Rotable rotable;
+        protected Movable movable;
+        protected Positionable positionable;
+        protected Input input => _inputable.Input;
+        private Inputable _inputable;
+
+        protected new void Awake()
+        {
+            base.Awake();
+
+            _inputable = GetComponentInParent<Inputable>();
+            animatorable = GetComponentInParent<Animatorable>();
+            rotable = GetComponentInParent<Rotable>();
+            movable = GetComponentInParent<Movable>();
+            positionable = GetComponentInParent<Positionable>();
+        }
 
         public override void Enter()
         {

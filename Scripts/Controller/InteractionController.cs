@@ -2,15 +2,23 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class ActionInteraction : Action
+    public class InteractionController : Controller
     {
         public float Duration = 1;
         private float _speed => 1 / Duration;
         private float _timer = 0;
 
+        protected Animatorable animatorable;
+
+        protected new void Awake()
+        {
+            base.Awake();
+
+            animatorable = GetComponentInParent<Animatorable>();
+        }
+
         public override void Enter()
         {
-            movable.FreezAll();
             animatorable.Play(Name, _speed);
             _timer = 0;
         }
@@ -21,18 +29,12 @@ namespace AssemblyActorCore
 
             if (_timer >= Duration)
             {
-                actionable.Deactivate(myTransform);
+                controllerMachine.Deactivate(gameObject);
             }
         }
 
-        public override void FixedLoop()
-        {       
-            movable.MoveToDirection(Vector3.zero, 0);
-        }
+        public override void FixedLoop() { }
 
-        public override void Exit()
-        {
-            movable.FreezAll();
-        }
+        public override void Exit() { }
     }
 }

@@ -1,14 +1,15 @@
-﻿using UnityEngine.AI;
+﻿using System.Collections.Generic;
+using UnityEngine.AI;
 using UnityEngine;
 using UnityEditor;
 
 namespace AssemblyActorCore
 {
-    public enum Preset { Free, Physic, Platformer, Navigation, None }
+    public enum Preset { Physic, Platformer, Navigation, None }
 
     public class Actor : MonoBehaviour
     {
-        public Preset Preset = Preset.Free;
+        public Preset Preset = Preset.Physic;
         public string Name = "Actor";
     }
 
@@ -45,9 +46,6 @@ namespace AssemblyActorCore
                     // Create the required Components
                     switch (myTarget.Preset)
                     {
-                        case Preset.Free:
-                            PresetFree();
-                            break;
                         case Preset.Physic:
                             PresetPhysic();
                             break;
@@ -86,24 +84,12 @@ namespace AssemblyActorCore
         private void PresetDefault()
         {
             gameObject.AddThisComponent<Inputable>();
-            gameObject.AddThisComponent<Actionable>();
             gameObject.AddThisComponent<Animatorable>();
             gameObject.AddThisComponent<Rotable>();
         }
 
-        private void PresetFree()
-        {
-            ClearThirdPerson();
-            ClearPlatformer();
-            ClearNavigation();
-
-            gameObject.AddThisComponent<MovableFree>();
-            gameObject.AddThisComponent<PositionableFree>();
-        }
-
         private void PresetPhysic()
         {
-            ClearFree();
             ClearPlatformer();
             ClearNavigation();
 
@@ -126,7 +112,6 @@ namespace AssemblyActorCore
 
         private void PresetPlatformer()
         {
-            ClearFree();
             ClearThirdPerson();
             ClearNavigation();
 
@@ -152,12 +137,11 @@ namespace AssemblyActorCore
 
         private void PresetNavigation()
         {
-            ClearFree();
             ClearThirdPerson();
             ClearPlatformer();
 
             gameObject.AddThisComponent<MovableNavigation>();
-            gameObject.AddThisComponent<PositionableFree>();
+            gameObject.AddThisComponent<PositionableNavigation>();
 
             NavMeshAgent navMeshAgent = gameObject.AddThisComponent<NavMeshAgent>();
             navMeshAgent.agentTypeID = 0;
@@ -172,11 +156,6 @@ namespace AssemblyActorCore
             navMeshAgent.avoidancePriority = 50;
             navMeshAgent.autoTraverseOffMeshLink = true;
             navMeshAgent.autoRepath = true;
-        }
-
-        private void ClearFree()
-        {
-            gameObject.RemoveComponent<MovableFree>();
         }
 
         private void ClearThirdPerson()
@@ -198,18 +177,16 @@ namespace AssemblyActorCore
         private void ClearNavigation()
         {
             gameObject.RemoveComponent<MovableNavigation>();
-            gameObject.RemoveComponent<PositionableFree>();
+            gameObject.RemoveComponent<PositionableNavigation>();
             gameObject.RemoveComponent<NavMeshAgent>();
         }
 
         private void ClearAll()
         {
             gameObject.RemoveComponent<Inputable>();
-            gameObject.RemoveComponent<Actionable>();
             gameObject.RemoveComponent<Animatorable>();
             gameObject.RemoveComponent<Rotable>();
 
-            ClearFree();
             ClearThirdPerson();
             ClearPlatformer();
             ClearNavigation();
@@ -218,7 +195,54 @@ namespace AssemblyActorCore
 #endif
 }
 
-namespace AssemblyActorCore
+public static class ActorExtentionComponents
 {
+    // Finds the required Component on <Actor> gets or instantiates
+    public static T AddThisComponent<T>(this GameObject gameObject) where T : Component
+    {
+        return gameObject.GetComponent<T>() == null ? gameObject.AddComponent<T>() : gameObject.GetComponent<T>();
+    }
 
+    public static void RemoveComponent<T>(this GameObject gameObject) where T : Component
+    {
+        if (gameObject.GetComponent<T>() != null) Object.DestroyImmediate(gameObject.GetComponent<T>());
+    }
+}
+
+public static class ActorExtentionMovements
+{
+    public static float HeightToForce(this int height, float gravityScale = 1)
+    {
+        float force;
+
+        switch (height)
+        {
+            case 0:
+                force = 0.0f;
+                break;
+            case 1:
+                force = 4.532f;
+                break;
+            case 2:
+                force = 6.375f;
+                break;
+            case 3:
+                force = 7.777f;
+                break;
+            case 4:
+                force = 8.965f;
+                break;
+            case 5:
+                force = 10.01f;
+                break;
+            default:
+                force = height * 2;
+                Debug.Log("Force not calculated for height " + height);
+                break;
+        }
+
+        float gravity = 0.425f * gravityScale + 0.575f;
+
+        return force * gravity;
+    }
 }

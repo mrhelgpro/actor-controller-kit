@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class PositionableFree : Positionable
+    public class PositionableNavigation : Positionable
     {
         public override void UpdateModel()
         {

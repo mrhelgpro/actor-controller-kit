@@ -2,11 +2,10 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public abstract class Activator : Model
+    public class ActivateByInput : Activator
     {
+        public Input ActivateInput;
         protected Input input => _inputable.Input;
-
-        protected Actionable actionable;
 
         private Inputable _inputable;
 
@@ -14,12 +13,12 @@ namespace AssemblyActorCore
         {
             base.Awake();
 
-            actionable = GetComponentInParent<Actionable>();
             _inputable = GetComponentInParent<Inputable>();
         }
 
-        protected void TryToActivate() => actionable.TryToActivate(myTransform);
-
-        public abstract void UpdateActivate();
+        public override void UpdateActivate()
+        {
+            if (ActivateInput.IsButtonPress(input)) TryToActivate();
+        }
     }
 }
