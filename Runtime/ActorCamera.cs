@@ -90,10 +90,13 @@ namespace AssemblyActorCore
         {
             myTarget = (ActorCamera)target;
 
+            myTarget.gameObject.name = "Actor Camera";
+            myTarget.gameObject.tag = "MainCamera";
+
             DrawDefaultInspector();
 
             if (myTarget.Target)
-            {
+            { 
                 SerializedObject serializedObject = new SerializedObject(myTarget.Target);
                 SerializedProperty settingsProperty = serializedObject.FindProperty("Settings");
                 EditorGUILayout.PropertyField(settingsProperty);
@@ -122,20 +125,3 @@ namespace AssemblyActorCore
 #endif
 
 }
-
-/*
-public float shoulder = 0;
-public float rotationSpeed = 5.0f;
-private Inputable _inputable;
-private Vector2 _mouse;
-_inputable = _targetPlayer.GetComponentInParent<Inputable>();
-
-private void followTheThirdPerson(Transform target)
-{
-    _mouse.x += _inputable.Input.Look.x * rotationSpeed;
-    _mouse.y += _inputable.Input.Look.y * rotationSpeed;
-    _mouse.y = Mathf.Clamp(_mouse.y, -30, 75);
-    _mainTransform.rotation = Quaternion.Euler(_mouse.y, _mouse.x, 0);
-    _mainTransform.position = _mainTransform.rotation * new Vector3(shoulder, height, -distance) + target.position;
-}
-*/

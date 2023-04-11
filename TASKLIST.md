@@ -1,0 +1,6 @@
+- <ActorCamera> - Fix the transition from one camera setting to another (make it smooth)
+- <Soundable> - Make footsteps sound
+- <Positionable> - Fix sliding
+- <Movable> - Fix the transition to an inclined surface
+- <ActivateByInput> - Add Check "Move, Look"
+- <InputPlayer> - Add Mode enum LookMode { Camera, Mouse }
