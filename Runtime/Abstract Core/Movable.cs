@@ -46,8 +46,8 @@ namespace AssemblyActorCore
             _lastPositionForSpeed = mainTransform.position;
         }
 
-        public abstract void FreezAll();
-        public abstract void FreezRotation();
+        public abstract void StartMovement();
+        public abstract void StopMovement();
         public abstract void MoveToDirection(Vector3 direction, float speed);
         public abstract void Jump(float force);
         public void MoveToPosition(Vector3 direction, float speed) => mainTransform.position += direction.normalized * speed * Time.fixedDeltaTime;

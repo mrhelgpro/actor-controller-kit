@@ -4,7 +4,9 @@
 	"displayName": "Actor Controller Kit",
 	"description": "The main task of this collection is the development of game characters",
 	"unity": "2021.1",
-	"dependencies": {},
+	"dependencies": {
+		"com.unity.inputsystem": "1.5.0"
+	},
 	"keywords": ["character", "controller", "mvc"],
 	"autor": {
 		"name": "Kolisnichenko Oleh",

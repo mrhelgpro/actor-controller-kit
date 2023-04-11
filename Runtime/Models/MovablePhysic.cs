@@ -18,23 +18,30 @@ namespace AssemblyActorCore
 
             _positionable = GetComponent<Positionable>();
             _rigidbody = gameObject.GetComponent<Rigidbody>();
-        }
 
-        public override void FreezAll()
-        {
-            _rigidbody.constraints = RigidbodyConstraints.FreezeAll;
-            _rigidbody.useGravity = false;
-            _rigidbody.isKinematic = false;
-            _rigidbody.velocity = Vector3.zero;
-        }
-
-        public override void FreezRotation()
-        {
             _rigidbody.constraints = RigidbodyConstraints.None;
             _rigidbody.freezeRotation = true;
             _rigidbody.useGravity = false;
             _rigidbody.isKinematic = false;
             _rigidbody.velocity = Vector3.zero;
+        }
+
+        public override void StartMovement()
+        {
+            _rigidbody.MovePosition(_rigidbody.position);
+            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.constraints = RigidbodyConstraints.None;
+            _rigidbody.freezeRotation = true;
+            _rigidbody.useGravity = false;
+            _rigidbody.isKinematic = false;
+        }
+
+        public override void StopMovement()
+        {
+            _rigidbody.MovePosition(_rigidbody.position);
+            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+            _rigidbody.isKinematic = true;
         }
 
         public override void MoveToDirection(Vector3 direction, float speed)

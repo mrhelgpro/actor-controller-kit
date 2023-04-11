@@ -35,8 +35,8 @@ namespace AssemblyActorCore
 
         public override void Enter()
         {
-            movable.FreezRotation();
             animatorable.Play(Name, movable.GetVelocity);
+            movable.StartMovement();
         }
 
         public override void UpdateLoop() 
@@ -51,7 +51,7 @@ namespace AssemblyActorCore
             JumpHandler();
         }
 
-        public override void Exit() => movable.FreezAll();
+        public override void Exit() => movable.StopMovement();
 
         protected void AnimationHandler()
         {

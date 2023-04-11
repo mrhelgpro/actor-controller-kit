@@ -17,12 +17,12 @@ namespace AssemblyActorCore
             _navMeshAgent.updateRotation = false;
         }
 
-        public override void FreezAll()
+        public override void StartMovement()
         {
 
         }
 
-        public override void FreezRotation()
+        public override void StopMovement()
         {
 
         }
@@ -34,9 +34,6 @@ namespace AssemblyActorCore
             _navMeshAgent.SetDestination(mainTransform.position + direction.normalized);
         }
 
-        public override void Jump(float force)
-        {
-            //IsJump = true;
-        }
+        public override void Jump(float force) { }
     }
 }

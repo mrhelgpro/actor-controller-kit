@@ -18,17 +18,24 @@ namespace AssemblyActorCore
 
             _positionable = GetComponent<Positionable>();
             _rigidbody = GetComponent<Rigidbody2D>();
-        }
 
-        public override void FreezAll() 
-        {
-            _rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
-        }
-
-        public override void FreezRotation() 
-        {
             _rigidbody.constraints = RigidbodyConstraints2D.None;
             _rigidbody.freezeRotation = true;
+        }
+
+        public override void StartMovement()
+        {
+            _rigidbody.MovePosition(_rigidbody.position);
+            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.constraints = RigidbodyConstraints2D.None;
+            _rigidbody.freezeRotation = true;
+        }
+
+        public override void StopMovement()
+        {
+            _rigidbody.MovePosition(_rigidbody.position);
+            _rigidbody.velocity = Vector2.zero;
+            _rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
         }
 
         public override void MoveToDirection(Vector3 direction, float speed)
@@ -59,17 +66,6 @@ namespace AssemblyActorCore
                     movement(velocity);
                 }
             }
-
-            /*
-            _timerGrounded = _isGrounded ? _timerGrounded + Time.deltaTime : 0;
-            float slowing = _timerGrounded > 0.25f ? 1 : _isGrounded == false ? 1 : 0.01f;
-
-            float gravity = IsFall || IsJump ? _rigidbody.velocity.y : velocity.y;
-            _rigidbody.velocity = new Vector2(velocity.x * slowing, gravity);
-            */
-
-            Vector3 end = velocity;
-            Debug.DrawLine(mainTransform.position, mainTransform.position + end * 500, Color.red, 0, false);
         }
 
         private void movement(Vector2 velocity)
