@@ -127,6 +127,15 @@ namespace AssemblyActorCore
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Any"",
+                    ""type"": ""Button"",
+                    ""id"": ""405e2e7e-0e08-42ef-af50-79d33dadd86d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -470,6 +479,28 @@ namespace AssemblyActorCore
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2bf12d39-968d-4908-b971-86d4888be6bd"",
+                    ""path"": ""<Keyboard>/anyKey"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Any"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2cbf3a98-4852-4058-a3d7-00a1e15135e7"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Any"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -517,6 +548,7 @@ namespace AssemblyActorCore
             m_Player_TriggerRight = m_Player.FindAction("TriggerRight", throwIfNotFound: true);
             m_Player_BumperLeft = m_Player.FindAction("BumperLeft", throwIfNotFound: true);
             m_Player_BumperRight = m_Player.FindAction("BumperRight", throwIfNotFound: true);
+            m_Player_Any = m_Player.FindAction("Any", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -589,6 +621,7 @@ namespace AssemblyActorCore
         private readonly InputAction m_Player_TriggerRight;
         private readonly InputAction m_Player_BumperLeft;
         private readonly InputAction m_Player_BumperRight;
+        private readonly InputAction m_Player_Any;
         public struct PlayerActions
         {
             private @InputActions m_Wrapper;
@@ -604,6 +637,7 @@ namespace AssemblyActorCore
             public InputAction @TriggerRight => m_Wrapper.m_Player_TriggerRight;
             public InputAction @BumperLeft => m_Wrapper.m_Player_BumperLeft;
             public InputAction @BumperRight => m_Wrapper.m_Player_BumperRight;
+            public InputAction @Any => m_Wrapper.m_Player_Any;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -646,6 +680,9 @@ namespace AssemblyActorCore
                 @BumperRight.started += instance.OnBumperRight;
                 @BumperRight.performed += instance.OnBumperRight;
                 @BumperRight.canceled += instance.OnBumperRight;
+                @Any.started += instance.OnAny;
+                @Any.performed += instance.OnAny;
+                @Any.canceled += instance.OnAny;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -683,6 +720,9 @@ namespace AssemblyActorCore
                 @BumperRight.started -= instance.OnBumperRight;
                 @BumperRight.performed -= instance.OnBumperRight;
                 @BumperRight.canceled -= instance.OnBumperRight;
+                @Any.started -= instance.OnAny;
+                @Any.performed -= instance.OnAny;
+                @Any.canceled -= instance.OnAny;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -731,6 +771,7 @@ namespace AssemblyActorCore
             void OnTriggerRight(InputAction.CallbackContext context);
             void OnBumperLeft(InputAction.CallbackContext context);
             void OnBumperRight(InputAction.CallbackContext context);
+            void OnAny(InputAction.CallbackContext context);
         }
     }
 }
