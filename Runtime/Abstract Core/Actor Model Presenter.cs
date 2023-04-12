@@ -18,16 +18,16 @@ namespace AssemblyActorCore
         }
     }
 
-    public abstract class Controller : MonoBehaviour
+    public abstract class Presenter : MonoBehaviour
     {
-        public ControllerType Type;
-        public string Name = "Controller";
+        public PresenterType Type;
+        public string Name = "Presenter";
 
-        protected ControllerMachine controllerMachine;
+        protected PresenterMachine presenterMachine;
 
-        protected void Awake() => controllerMachine = GetComponentInParent<ControllerMachine>();
+        protected void Awake() => presenterMachine = GetComponentInParent<PresenterMachine>();
 
-        protected void TryToActivate() => controllerMachine.TryToActivate(gameObject);
+        protected void TryToActivate() => presenterMachine.TryToActivate(gameObject);
 
         public abstract void Enter();
         public abstract void UpdateLoop();

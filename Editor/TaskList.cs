@@ -6,6 +6,7 @@ namespace AssemblyActorCore
 {
     public class TaskList : MonoBehaviour { }
 
+#if UNITY_EDITOR
     [CustomEditor(typeof(TaskList))]
     public class TaskListInspector : Editor
     {
@@ -46,4 +47,5 @@ namespace AssemblyActorCore
             }
         }
     }
+#endif
 }

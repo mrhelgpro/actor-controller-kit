@@ -1,43 +1,60 @@
+using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem.Users;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine;
-using AssemblyActorCore;
-using System.Collections.Generic;
 
-public class InputOpenMenu : MonoBehaviour
+namespace AssemblyActorCore
 {
-    public GameObject Menu;
-    public Text Device;
-
-    private EventSystem _eventSystem;
-    private InputActions _inputActions;
-
-    private void Awake()
+    public class InputOpenMenu : MonoBehaviour
     {
-        _inputActions = new InputActions();
+        public GameObject Menu;
+        public Text Device;
+        public bool MouseVisable = false;
 
-        _inputActions.Player.Menu.performed += context => checkMenu(true);
-        _inputActions.Player.Menu.canceled += context => checkMenu(false);
-        _inputActions.Player.Any.performed += context => checkDevice();
+        private bool _isGamepad = false;
+        private EventSystem _eventSystem;
+        private PlayerInput _playerInput;
 
-        _eventSystem = FindObjectOfType<EventSystem>();
+        private void Awake()
+        {
+            Time.timeScale = 1;
+
+            ActorExtention.MouseVisibility(MouseVisable);
+
+            _playerInput = GetComponent<PlayerInput>();
+            _eventSystem = FindObjectOfType<EventSystem>();
+        }
+
+        public void OnControlsChanged()
+        {
+            if (_playerInput)
+            {
+                _isGamepad = _playerInput.currentControlScheme == "Gamepad" ? true : false;
+                Device.text = _isGamepad == true ? "Option (Gamepad)" : "Esc (Keyboard)";
+
+                ActorExtention.MouseVisibility(_isGamepad ? false : MouseVisable);
+            }
+        }
+
+        public void OnMenu()
+        {
+            bool state = Menu.activeSelf ? false : true;
+
+            Time.timeScale = state == true ? 0 : 1;
+            Menu.SetActive(state);
+            _eventSystem.SetSelectedGameObject(_eventSystem.firstSelectedGameObject);
+
+            ActorExtention.MouseVisibility(_isGamepad ? false : state);
+        }
+
+        public void LoadSceneByName(string name) => SceneManager.LoadScene(name);
+
+        public void Quit()
+        {
+            Debug.Log("Quitting game...");
+
+            Application.Quit();
+        }
     }
-
-    private void checkDevice()
-    {
-        Debug.Log("ANY BUTTON");
-    }
-
-    private void checkMenu(bool state)
-    {
-        Time.timeScale = state == true ? 0 : 1;
-        Menu.SetActive(state);
-        _eventSystem.SetSelectedGameObject(_eventSystem.firstSelectedGameObject);
-    }
-
-    private void OnEnable() => _inputActions.Enable();
-
-    private void OnDisable() => _inputActions.Disable();
 }

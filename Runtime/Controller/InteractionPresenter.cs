@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class InteractionController : Controller
+    public class InteractionPresenter : Presenter
     {
         public float Duration = 1;
         private float _speed => 1 / Duration;
@@ -29,7 +29,7 @@ namespace AssemblyActorCore
 
             if (_timer >= Duration)
             {
-                controllerMachine.Deactivate(gameObject);
+                presenterMachine.Deactivate(gameObject);
             }
         }
 

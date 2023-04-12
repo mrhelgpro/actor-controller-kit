@@ -195,7 +195,7 @@ namespace AssemblyActorCore
 #endif
 }
 
-public static class ActorExtentionComponents
+public static class ActorExtention
 {
     // Finds the required Component on <Actor> gets or instantiates
     public static T AddThisComponent<T>(this GameObject gameObject) where T : Component
@@ -207,10 +207,7 @@ public static class ActorExtentionComponents
     {
         if (gameObject.GetComponent<T>() != null) Object.DestroyImmediate(gameObject.GetComponent<T>());
     }
-}
 
-public static class ActorExtentionMovements
-{
     public static float HeightToForce(this int height, float gravityScale = 1)
     {
         float force;
@@ -244,5 +241,11 @@ public static class ActorExtentionMovements
         float gravity = 0.425f * gravityScale + 0.575f;
 
         return force * gravity;
+    }
+
+    public static void MouseVisibility(bool state)
+    {
+        Cursor.lockState = state == true ? CursorLockMode.None : CursorLockMode.Locked;
+        Cursor.visible = state;
     }
 }
