@@ -2,12 +2,9 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public sealed class MovablePhysic : Movable
+    public sealed class MovablePhysic : MovablePreset
     {
-        private bool _isGrounded =>_positionable.IsGrounded;
-        private bool _isSliding => _positionable.IsSliding;
-
-        private Positionable _positionable;
+        private PositionablePreset _positionable;
         private Rigidbody _rigidbody;
 
         private float _timerGrounded = 0;
@@ -16,7 +13,7 @@ namespace AssemblyActorCore
         {
             base.Awake();
 
-            _positionable = GetComponent<Positionable>();
+            _positionable = GetComponent<PositionablePreset>();
             _rigidbody = gameObject.GetComponent<Rigidbody>();
 
             _rigidbody.constraints = RigidbodyConstraints.None;
@@ -46,16 +43,16 @@ namespace AssemblyActorCore
 
         public override void MoveToDirection(Vector3 direction, float speed)
         {
-            Vector3 velocity = GetDirection(_positionable.Project(direction).normalized * speed * getSpeedScale);
+            Vector3 velocity = VectorAcceleration(_positionable.Project(direction).normalized * speed * getSpeedScale);
            
             float gravityScale = Gravity;
 
-            IsFall = _isGrounded == false && _rigidbody.velocity.y <= 0;
+            IsFall = _positionable.IsGrounded == false && _rigidbody.velocity.y <= 0;
             IsJump = IsJump == true && _rigidbody.velocity.y <= 0 ? false : IsJump;
 
-            _timerGrounded = _isGrounded ? _timerGrounded + Time.deltaTime : 0;
-            float grounding = _timerGrounded > 0.2f ? 1 : _isGrounded == false ? 1 : 0.1f; // Slowing during grounding
-            float slowing = _isSliding == false ? grounding : 0.25f;                       // Speed during grounding
+            _timerGrounded = _positionable.IsGrounded ? _timerGrounded + Time.deltaTime : 0;
+            float grounding = _timerGrounded > 0.2f ? 1 : _positionable.IsGrounded == false ? 1 : 0.1f; // Slowing during grounding
+            float slowing = _positionable.IsSliding == false ? grounding : 0.25f;                       // Speed during grounding
 
             _rigidbody.MovePosition(_rigidbody.position + velocity * slowing);
             _rigidbody.AddForce(Physics.gravity * gravityScale, ForceMode.Acceleration);

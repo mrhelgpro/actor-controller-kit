@@ -15,7 +15,7 @@ namespace AssemblyActorCore
         private List<Presenter> _presenters = new List<Presenter>();
         private List<Activator> _activators = new List<Activator>();
 
-        private void Awake()
+        private void Start()
         {
             foreach (Presenter presenter in GetComponentsInChildren<Presenter>()) _presenters.Add(presenter);
             foreach (Activator activator in GetComponentsInChildren<Activator>()) _activators.Add(activator);

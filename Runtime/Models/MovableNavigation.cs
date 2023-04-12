@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public sealed class MovableNavigation : Movable
+    public sealed class MovableNavigation : MovablePreset
     {
         public override float GetVelocity => _navMeshAgent.velocity.magnitude;
 
@@ -17,15 +17,9 @@ namespace AssemblyActorCore
             _navMeshAgent.updateRotation = false;
         }
 
-        public override void StartMovement()
-        {
+        public override void StartMovement() { }
 
-        }
-
-        public override void StopMovement()
-        {
-
-        }
+        public override void StopMovement() { }
 
         public override void MoveToDirection(Vector3 direction, float speed)
         {

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class PositionableNavigation : Positionable
+    public class PositionableNavigation : PositionablePreset
     {
         public override void UpdateModel()
         {
@@ -25,6 +25,7 @@ namespace AssemblyActorCore
 
             SurfaceType = hit.collider != null ? hit.collider.tag : "None";
             surfaceNormal = hit.collider != null ? hit.normal : Vector3.zero;
+            SurfaceSlope = Vector3.Angle(surfaceNormal, Vector3.up);
         }
 
         private void obstacleCheck()

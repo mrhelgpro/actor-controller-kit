@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class MovementPresenter : Presenter
+    public class MovementPresenter : PresenterPreset
     {
         [Range(1, 5)] public float MoveSpeed = 3f;
         [Range(1, 10)] public float MoveShift = 5f;
@@ -14,24 +14,6 @@ namespace AssemblyActorCore
         private bool _isJumpPressed = false;
         private bool _isJumpDone = false;
         private bool _isLevitationPressed = false;
-
-        protected Animatorable animatorable;
-        protected Rotable rotable;
-        protected Movable movable;
-        protected Positionable positionable;
-        protected Input input => _inputable.Input;
-        private Inputable _inputable;
-
-        protected new void Awake()
-        {
-            base.Awake();
-
-            _inputable = GetComponentInParent<Inputable>();
-            animatorable = GetComponentInParent<Animatorable>();
-            rotable = GetComponentInParent<Rotable>();
-            movable = GetComponentInParent<Movable>();
-            positionable = GetComponentInParent<Positionable>();
-        }
 
         public override void Enter()
         {

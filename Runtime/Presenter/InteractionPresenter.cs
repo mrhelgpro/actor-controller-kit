@@ -2,20 +2,11 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class InteractionPresenter : Presenter
+    public class InteractionPresenter : PresenterPreset
     {
         public float Duration = 1;
         private float _speed => 1 / Duration;
         private float _timer = 0;
-
-        protected Animatorable animatorable;
-
-        protected new void Awake()
-        {
-            base.Awake();
-
-            animatorable = GetComponentInParent<Animatorable>();
-        }
 
         public override void Enter()
         {

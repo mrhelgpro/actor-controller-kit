@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public abstract class Movable : Model
+    public class Movable : Model
     {
         [Range(0, 1)] public float Slowing = 0;
         [Range(0, 2)] public float Boost = 0;
@@ -22,7 +22,7 @@ namespace AssemblyActorCore
                 return velocity;
             }
         }
-        public virtual Vector3 GetDirection(Vector3 direction)
+        public virtual Vector3 VectorAcceleration(Vector3 direction)
         {
             Vector3 currentDirection = Vector3.Lerp(_lastDirectionForAcceleration, direction, Time.fixedDeltaTime * Acceleration * 2);
 
@@ -31,7 +31,6 @@ namespace AssemblyActorCore
             return currentDirection;
         }
 
-        protected float getSpeedSliding(float slope = 45.0f) => slope * 0.1f * Time.fixedDeltaTime;
         protected float getSpeedScale => _getBoost * _getSlowing * Time.fixedDeltaTime;
         private float _getSlowing => Slowing > 0 ? (Slowing <= 1 ? 1 - Slowing : 0) : 1;
         private float _getBoost => Boost > 0 ? Boost + 1 : 1;
@@ -45,11 +44,5 @@ namespace AssemblyActorCore
 
             _lastPositionForSpeed = mainTransform.position;
         }
-
-        public abstract void StartMovement();
-        public abstract void StopMovement();
-        public abstract void MoveToDirection(Vector3 direction, float speed);
-        public abstract void Jump(float force);
-        public void MoveToPosition(Vector3 direction, float speed) => mainTransform.position += direction.normalized * speed * Time.fixedDeltaTime;
     }
 }

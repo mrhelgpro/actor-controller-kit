@@ -321,7 +321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Mode: 0
-  Target: {fileID: 84273927}
+  Target: {fileID: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -3313,6 +3313,7 @@ MonoBehaviour:
   IsObstacle: 0
   IsSliding: 0
   SurfaceType: None
+  SurfaceSlope: 0
 --- !u!135 &8145935960122582245
 SphereCollider:
   m_ObjectHideFlags: 0

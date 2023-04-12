@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine.AI;
+﻿using UnityEngine.AI;
 using UnityEngine;
 using UnityEditor;
 
@@ -31,7 +30,11 @@ namespace AssemblyActorCore
             {
                 // Show Fields as text so that it is impossible to change the value
                 EditorGUILayout.LabelField("Name", myTarget.Name);
-                EditorGUILayout.LabelField("Preset", myTarget.Preset.ToString());
+
+                if (myTarget.Preset != Preset.None)
+                {
+                    EditorGUILayout.LabelField("Preset", myTarget.Preset.ToString());
+                }
             }
             else
             {

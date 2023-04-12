@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public sealed class PositionablePlatformer : Positionable
+    public sealed class PositionablePlatformer : PositionablePreset
     {
         private Collision2D _groundCollision;
         private CircleCollider2D _groundCollider;
@@ -41,6 +41,7 @@ namespace AssemblyActorCore
         {
             SurfaceType = IsGrounded == true && _groundCollision != null ? _groundCollision.gameObject.tag : "None";
             surfaceNormal = IsGrounded == true && _groundCollision != null ? _groundCollision.contacts[0].normal : Vector3.zero;
+            SurfaceSlope = Vector3.Angle(surfaceNormal, Vector3.up);
         }
 
         private void obstacleCheck()

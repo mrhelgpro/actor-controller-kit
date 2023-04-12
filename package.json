@@ -1,20 +1,24 @@
 {
-	"name": "com.mrhelgpro.actor-controller-kit",
-	"version": "1.0.0",
-	"displayName": "Actor Controller Kit",
-	"description": "The main task of this collection is the development of game characters",
-	"unity": "2021.1",
-	"documentationUrl": "https://mrhelgpro.gitbook.io/actor-controller-kit/",
-	"dependencies": {
-		"com.unity.inputsystem": "1.5.0"
-	},
-	"keywords": ["character", "controller", "mvp"],
-	"autor": {
-		"name": "Kolisnichenko Oleh",
-		"email": "mrhelgpro@gmail.com"
-	},
-	"repository": {
+  "name": "com.mrhelgpro.actor-controller-kit",
+  "version": "1.0.2",
+  "displayName": "Actor Controller Kit",
+  "description": "The main task of this collection is the development of game characters",
+  "unity": "2021.1",
+  "documentationUrl": "https://mrhelgpro.gitbook.io/actor-controller-kit/",
+  "dependencies": {
+    "com.unity.inputsystem": "1.5.0"
+  },
+  "keywords": [
+    "character",
+    "controller",
+    "mvp"
+  ],
+  "autor": {
+    "name": "Kolisnichenko Oleh",
+    "email": "mrhelgpro@gmail.com"
+  },
+  "repository": {
     "url": "https://github.com/mrhelgpro/actor-controller-kit",
     "type": "git"
-	}	
+  }
 }
