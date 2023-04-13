@@ -8,3 +8,6 @@ All notable changes to this project will be documented in this file.
 
 ## [1.0.2] - 2023-04-12
 - Small fixes
+
+## [1.0.3] - 2023-04-13
+- Third-person camera fixes
