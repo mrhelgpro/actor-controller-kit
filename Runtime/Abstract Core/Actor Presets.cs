@@ -12,40 +12,7 @@ namespace AssemblyActorCore
 
     public class PositionablePreset : Positionable
     {
-        public const float MaxSlope = 46;
-        private float _timerSliding = 0;
-
         public virtual void UpdateModel() { }
-
-        protected void slidingCheck()
-        {
-            float startTime = 0.1f;
-            float endTime = 0.2f;
-
-            if (IsGrounded == false) _timerSliding = startTime;
-
-            if (IsSliding)
-            {
-                _timerSliding = SurfaceSlope < MaxSlope ? _timerSliding - Time.fixedDeltaTime : endTime;
-                IsSliding = _timerSliding <= 0.0f ? false : true;
-                _timerSliding = IsSliding == false ? 0.0f : _timerSliding;
-            }
-            else
-            {
-                _timerSliding = SurfaceSlope > MaxSlope && SurfaceSlope < 75 ? _timerSliding + Time.fixedDeltaTime : 0.0f;
-                IsSliding = _timerSliding > startTime ? true : false;
-                _timerSliding = IsSliding ? endTime : _timerSliding;
-            }
-        }
-
-        public Vector3 Project(Vector3 direction)
-        {
-            Vector3 projection = direction - Vector3.Dot(direction, surfaceNormal) * surfaceNormal;
-            Vector3 normal = projection == Vector3.zero || IsGrounded == false || SurfaceSlope > 75 ? direction : projection;
-            Vector3 slope = Vector3.down - Vector3.Dot(Vector3.down, surfaceNormal) * surfaceNormal;
-
-            return IsSliding ? SurfaceSlope > 75 ? direction : slope : normal;
-        }
     }
 
     public class PresenterPreset : Presenter

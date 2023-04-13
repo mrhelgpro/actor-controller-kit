@@ -7,20 +7,12 @@ namespace AssemblyActorCore
         private PositionablePreset _positionable;
         private Rigidbody _rigidbody;
 
-        private float _timerGrounded = 0;
-
         private new void Awake()
         {
             base.Awake();
 
             _positionable = GetComponent<PositionablePreset>();
-            _rigidbody = gameObject.GetComponent<Rigidbody>();
-
-            _rigidbody.constraints = RigidbodyConstraints.None;
-            _rigidbody.freezeRotation = true;
-            _rigidbody.useGravity = false;
-            _rigidbody.isKinematic = false;
-            _rigidbody.velocity = Vector3.zero;
+            _rigidbody = GetComponent<Rigidbody>();
         }
 
         public override void StartMovement()
@@ -43,18 +35,14 @@ namespace AssemblyActorCore
 
         public override void MoveToDirection(Vector3 direction, float speed)
         {
-            Vector3 velocity = VectorAcceleration(_positionable.Project(direction).normalized * speed * getSpeedScale);
+            Vector3 velocity = VectorAcceleration(_positionable.ProjectOntoSurface(direction).normalized * speed * getSpeedScale);
            
             float gravityScale = Gravity;
 
             IsFall = _positionable.IsGrounded == false && _rigidbody.velocity.y <= 0;
             IsJump = IsJump == true && _rigidbody.velocity.y <= 0 ? false : IsJump;
 
-            _timerGrounded = _positionable.IsGrounded ? _timerGrounded + Time.deltaTime : 0;
-            float grounding = _timerGrounded > 0.2f ? 1 : _positionable.IsGrounded == false ? 1 : 0.1f; // Slowing during grounding
-            float slowing = _positionable.IsSliding == false ? grounding : 0.25f;                       // Speed during grounding
-
-            _rigidbody.MovePosition(_rigidbody.position + velocity * slowing);
+            _rigidbody.MovePosition(_rigidbody.position + velocity);
             _rigidbody.AddForce(Physics.gravity * gravityScale, ForceMode.Acceleration);
         }
 

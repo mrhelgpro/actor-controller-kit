@@ -26,7 +26,6 @@ namespace AssemblyActorCore
             surfaceCheck();
             obstacleCheck();
             materialCheck();
-            slidingCheck();
         }
 
         private void groundCheck()
@@ -56,7 +55,7 @@ namespace AssemblyActorCore
 
         private void materialCheck()
         {
-            _groundCollider.sharedMaterial = IsGrounded && IsSliding == false && IsObstacle == false ? _materialOnTheGround : _materialInTheAir;
+            _groundCollider.sharedMaterial = IsGrounded && IsObstacle == false ? _materialOnTheGround : _materialInTheAir;
         }
 
         private void OnCollisionStay2D(Collision2D collision) => _groundCollision = collision;

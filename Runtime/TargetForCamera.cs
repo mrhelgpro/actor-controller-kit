@@ -25,8 +25,8 @@ namespace AssemblyActorCore
                 if (_inputable.FreezLook == false)
                 {
                     Settings.Horizontal = input.Look.Value.x;
+                    input.Look.Value.y = Mathf.Clamp(input.Look.Value.y, -30, 85);
                     Settings.Vertical = input.Look.Value.y;
-                    Settings.Vertical = Mathf.Clamp(Settings.Vertical, -30, 85);
                 }
             }
         }
