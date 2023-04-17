@@ -38,8 +38,24 @@ namespace AssemblyActorCore
     public abstract class Activator : MonoBehaviour
     {
         protected PresenterMachine presenterMachine;
-        protected void Awake() => presenterMachine = GetComponentInParent<PresenterMachine>();
+        protected Presenter presenter;
+        protected void Awake()
+        {
+            presenter = GetComponent<Presenter>();
+
+            if (presenter == null)
+            {
+                gameObject.SetActive(false);
+
+                Debug.LogWarning(gameObject.name + " - <Presenter> is not found");
+            }
+            else
+            {
+                presenterMachine = GetComponentInParent<PresenterMachine>();
+            }
+        }
         protected void TryToActivate() => presenterMachine.TryToActivate(gameObject);
+
         public abstract void UpdateActivate();
     }
 }
