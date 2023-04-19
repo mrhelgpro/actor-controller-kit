@@ -45,16 +45,12 @@ namespace AssemblyActorCore
 
         protected void MoveHandler()
         {
-            Vector3 inputDirection = new Vector3(input.Move.x, 0, input.Move.y);
             float speed = input.Shift ? MoveShift : MoveSpeed;
 
-            Vector3 lookDirection = new Vector3(Camera.main.transform.forward.x, 0f, Camera.main.transform.forward.z).normalized;
-            Vector3 projectedLookDirection = Vector3.ProjectOnPlane(lookDirection, Vector3.up);
-            Vector3 movementDirection = projectedLookDirection * inputDirection.z + Camera.main.transform.right * inputDirection.x;
-            
-            movable.MoveToDirection(movementDirection, speed);
-            rotable.UpdateModel(movementDirection, input.Look.Value.x);
-            positionable.UpdateModel();
+            directable.UpdateData(input.Move, input.Look.Value);
+            positionable.UpdateData();
+
+            movable.MoveToDirection(directable.Move, speed);       
         }
 
         protected void JumpHandler()

@@ -12,13 +12,13 @@ namespace AssemblyActorCore
 
     public class PositionablePreset : Positionable
     {
-        public virtual void UpdateModel() { }
+        public virtual void UpdateData() { }
     }
 
     public class PresenterPreset : Presenter
     {
         protected Animatorable animatorable;
-        protected Rotable rotable;
+        protected Directable directable;
         protected MovablePreset movable;
         protected PositionablePreset positionable;
         protected Input input => _inputable.Input;
@@ -30,7 +30,7 @@ namespace AssemblyActorCore
 
             Actor actor = GetComponentInParent<Actor>();
 
-            if (actor?.Preset == Preset.None)
+            if (actor?.Preset == Preset.Clear)
             {
                 gameObject.SetActive(false);
 
@@ -40,7 +40,7 @@ namespace AssemblyActorCore
             {
                 _inputable = GetComponentInParent<Inputable>();
                 animatorable = GetComponentInParent<Animatorable>();
-                rotable = GetComponentInParent<Rotable>();
+                directable = GetComponentInParent<Directable>();
                 movable = GetComponentInParent<MovablePreset>();
                 positionable = GetComponentInParent<PositionablePreset>();
             }

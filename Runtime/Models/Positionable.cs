@@ -7,9 +7,9 @@ namespace AssemblyActorCore
         public bool IsGrounded;
         public bool IsObstacle;
         public string SurfaceType = "None";
-        public float SurfaceSlope;
+        public Vector3 SurfaceNormal;
+        public float SurfaceSlope => Vector3.Angle(SurfaceNormal, Vector3.up);
 
-        protected Vector3 surfaceNormal;
         protected LayerMask groundLayer;
         protected int layerMask;
 
@@ -23,7 +23,7 @@ namespace AssemblyActorCore
 
         public Vector3 ProjectOntoSurface(Vector3 direction)
         {
-            Vector3 projection = direction - Vector3.Dot(direction, surfaceNormal) * surfaceNormal;
+            Vector3 projection = Vector3.ProjectOnPlane(direction, SurfaceNormal);
             return projection == Vector3.zero || IsGrounded == false ? direction : projection;
         }
     }

@@ -4,7 +4,7 @@ using UnityEditor;
 
 namespace AssemblyActorCore
 {
-    public enum Preset { Physic, Platformer, Navigation, None }
+    public enum Preset { Physic, Platformer, Navigation, Clear }
 
     public class Actor : MonoBehaviour
     {
@@ -31,7 +31,7 @@ namespace AssemblyActorCore
                 // Show Fields as text so that it is impossible to change the value
                 EditorGUILayout.LabelField("Name", myTarget.Name);
 
-                if (myTarget.Preset != Preset.None)
+                if (myTarget.Preset != Preset.Clear)
                 {
                     EditorGUILayout.LabelField("Preset", myTarget.Preset.ToString());
                 }
@@ -58,7 +58,7 @@ namespace AssemblyActorCore
                         case Preset.Navigation:
                             PresetNavigation();
                             break;
-                        case Preset.None:
+                        case Preset.Clear:
                             ClearAll();
                             break;
                     }
@@ -88,7 +88,7 @@ namespace AssemblyActorCore
         {
             gameObject.AddThisComponent<Inputable>();
             gameObject.AddThisComponent<Animatorable>();
-            gameObject.AddThisComponent<Rotable>();
+            gameObject.AddThisComponent<Directable>();
         }
 
         private void PresetPhysic()
@@ -188,7 +188,7 @@ namespace AssemblyActorCore
         {
             gameObject.RemoveComponent<Inputable>();
             gameObject.RemoveComponent<Animatorable>();
-            gameObject.RemoveComponent<Rotable>();
+            gameObject.RemoveComponent<Directable>();
 
             ClearThirdPerson();
             ClearPlatformer();
@@ -210,6 +210,11 @@ public static class ActorExtention
     {
         if (gameObject.GetComponent<T>() != null) Object.DestroyImmediate(gameObject.GetComponent<T>());
     }
+
+    public static Vector3 GetVector3Horizontal(this Vector2 vector) => new Vector3(vector.x, 0, vector.y);
+    public static Vector3 GetVector3Vertical(this Vector2 vector) => new Vector3(vector.x, vector.y, 0);
+    public static Vector2 GetVector2Horizontal(this Vector3 vector) => new Vector2(vector.x, vector.z);
+    public static Vector2 GetVector2Vertical(this Vector3 vector) => new Vector2(vector.x, vector.y);
 
     public static float HeightToForce(this int height, float gravityScale = 1)
     {

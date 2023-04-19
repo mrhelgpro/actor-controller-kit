@@ -20,7 +20,7 @@ namespace AssemblyActorCore
             _materialOnTheGround = Resources.Load<PhysicsMaterial2D>("Physic2D/Player On The Ground");
         }
 
-        public override void UpdateModel()
+        public override void UpdateData()
         {
             groundCheck();
             surfaceCheck();
@@ -39,13 +39,12 @@ namespace AssemblyActorCore
         private void surfaceCheck()
         {
             SurfaceType = IsGrounded == true && _groundCollision != null ? _groundCollision.gameObject.tag : "None";
-            surfaceNormal = IsGrounded == true && _groundCollision != null ? _groundCollision.contacts[0].normal : Vector3.zero;
-            SurfaceSlope = Vector3.Angle(surfaceNormal, Vector3.up);
+            SurfaceNormal = IsGrounded == true && _groundCollision != null ? _groundCollision.contacts[0].normal : Vector3.zero;
         }
 
         private void obstacleCheck()
         {
-            float length = 0.3f;
+            float length = 0.35f;
             Vector3 origin = new Vector3(mainTransform.position.x, mainTransform.position.y + 0.25f, mainTransform.position.z);
             Vector3 direction = mainTransform.TransformDirection(Vector3.forward);
             RaycastHit2D hit = Physics2D.Raycast(origin, direction, length, layerMask);

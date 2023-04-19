@@ -6,7 +6,7 @@ namespace AssemblyActorCore
     {
         public bool LogHeight = false;
         public bool LogSpeed = false;
-        //public bool LogDirection = false;
+        public bool LogCameraDirection = false;
 
         protected Transform mainTransform;
         protected Positionable positionable;
@@ -22,12 +22,16 @@ namespace AssemblyActorCore
         {
             heightLog();
             speedLog();
-            directionLog();
+            directionCameraLog();
         }
 
-        private void directionLog()
+        private void directionCameraLog()
         {
-            //Debug.DrawLine(mainTransform.position, mainTransform.position + positionable.surfaceNormal * 5, Color.white, 0, false);
+            if (LogCameraDirection)
+            {
+                Vector3 cameraDirection = new Vector3(Camera.main.transform.forward.x, 0f, Camera.main.transform.forward.z).normalized;
+                Debug.DrawLine(transform.position, transform.position + cameraDirection.normalized * 3, Color.green, 0, false);
+            }
         }
 
 
