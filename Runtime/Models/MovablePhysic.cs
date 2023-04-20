@@ -37,13 +37,11 @@ namespace AssemblyActorCore
         {
             Vector3 velocity = VectorAcceleration(_positionable.ProjectOntoSurface(direction).normalized * speed * getSpeedScale);
            
-            float gravityScale = Gravity;
-
             IsFall = _positionable.IsGrounded == false && _rigidbody.velocity.y <= 0;
             IsJump = IsJump == true && _rigidbody.velocity.y <= 0 ? false : IsJump;
 
             _rigidbody.MovePosition(_rigidbody.position + velocity);
-            _rigidbody.AddForce(Physics.gravity * gravityScale, ForceMode.Acceleration);
+            _rigidbody.AddForce(Physics.gravity * Gravity, ForceMode.Acceleration);
         }
 
         public override void Jump(float force)

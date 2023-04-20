@@ -21,8 +21,7 @@ namespace AssemblyActorCore
         protected Directable directable;
         protected MovablePreset movable;
         protected PositionablePreset positionable;
-        protected Input input => _inputable.Input;
-        private Inputable _inputable;
+        protected Input input;
 
         protected new void Awake()
         {
@@ -38,7 +37,7 @@ namespace AssemblyActorCore
             }
             else
             {
-                _inputable = GetComponentInParent<Inputable>();
+                input = GetComponentInParent<Inputable>().Input;
                 animatorable = GetComponentInParent<Animatorable>();
                 directable = GetComponentInParent<Directable>();
                 movable = GetComponentInParent<MovablePreset>();

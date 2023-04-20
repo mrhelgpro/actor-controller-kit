@@ -10,12 +10,14 @@ namespace AssemblyActorCore
 
         protected Transform mainTransform;
         protected Positionable positionable;
+        protected Directable directable;
 
         private void Awake()
         {
             mainTransform = transform;
 
             positionable = GetComponentInParent<Positionable>();
+            directable = GetComponentInParent<Directable>();
         }
 
         private void FixedUpdate()
@@ -29,8 +31,23 @@ namespace AssemblyActorCore
         {
             if (LogCameraDirection)
             {
-                Vector3 cameraDirection = new Vector3(Camera.main.transform.forward.x, 0f, Camera.main.transform.forward.z).normalized;
-                Debug.DrawLine(transform.position, transform.position + cameraDirection.normalized * 3, Color.green, 0, false);
+                float length = 1000;
+                Vector3 origin = Camera.main.transform.position;
+                Vector3 direction = Camera.main.transform.forward.normalized;
+                
+                RaycastHit hit;
+                Physics.Raycast(origin, direction, out hit, length);
+
+                if (hit.collider == null)
+                {
+                    Debug.DrawLine(origin, origin + direction * length, Color.white, 0, false);
+                }
+                else
+                {
+                    float distance = Vector3.Distance(origin, hit.point);
+                    Debug.DrawLine(origin, origin + direction * distance, Color.white, 0, false);
+                    Debug.DrawLine(hit.point, hit.point + direction * 1, Color.red, 0, false);
+                }
             }
         }
 

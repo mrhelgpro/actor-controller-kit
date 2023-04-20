@@ -7,13 +7,27 @@ namespace AssemblyActorCore
         public Vector3 Camera;
         public Vector3 Body;
         public Vector3 Move;
-        public Vector2 Strafe;
+        public Vector3 Shift;
 
-        public enum Mode { None, DirectionOfMovement, DirectionOfLook, Flip }
+        public enum Mode { None, DirectionOfMovement, DirectionOfLook, Flip2D }
         public Mode RotationMode = Mode.DirectionOfMovement;
         [Range (0, 10)] public int RotationRate = 5;
 
         private Transform _camera;
+        private float _previousPositionY;
+        private Vector3 getShift(Vector3 move, Vector3 body)
+        {
+            float positionY = mainTransform.position.y;
+            bool difference = Mathf.Abs(positionY - _previousPositionY) > 0.01f;
+
+            float x = Mathf.Round(Vector3.Cross(move.GetVector2Horizontal(), body.GetVector2Horizontal()).z);
+            float z = Mathf.Round(Vector3.Dot(move, body));
+            float y = positionY > _previousPositionY ? 1 : difference ? -1 : 0;
+
+            _previousPositionY = positionY;
+
+            return new Vector3(x, y, z);
+        }
 
         private new void Awake()
         {
@@ -24,13 +38,15 @@ namespace AssemblyActorCore
 
         public void UpdateData(Vector2 inputMove, Vector2 inputLook)
         {
-            Camera = new Vector3(_camera.forward.x, 0f, _camera.forward.z).normalized;
-            Body = mainTransform.TransformDirection(Vector3.forward).normalized;
-            Move = (Camera * inputMove.y + _camera.right * inputMove.x).normalized; // Get direction relative to Camera
-            Strafe = new Vector2(Mathf.Round(Vector3.Cross(Move.GetVector2Horizontal(), Body.GetVector2Horizontal()).z), Mathf.Round(Vector3.Dot(Move, Body)));
+            Camera = _camera.forward.normalized; //Vector3.ProjectOnPlane(Camera, Vector3.up);
 
-            Debug.DrawLine(transform.position, transform.position + Camera.normalized * 5, Color.white, 0, false);
-            Debug.DrawLine(mainTransform.position, mainTransform.position + Move.normalized * 2, Color.yellow, 0, false);
+            Body = mainTransform.TransformDirection(Vector3.forward).normalized;
+            Move = (new Vector3(Camera.x, 0, Camera.z) * inputMove.y + _camera.right * inputMove.x).normalized; // Get direction relative to Camera
+            Shift = getShift(Move, Body);
+
+            //Debug.DrawLine(transform.position, transform.position + Camera.normalized * 1000, Color.white, 0, false);
+            //Debug.DrawLine(_camera.position, _camera.position + Camera.normalized * 1000, Color.white, 0, false);
+            //Debug.DrawLine(mainTransform.position, mainTransform.position + Move.normalized * 2, Color.yellow, 0, false);
 
             switch (RotationMode)
             {
@@ -43,7 +59,7 @@ namespace AssemblyActorCore
                 case Mode.DirectionOfLook:
                     directionByLook(inputLook);
                     break;
-                case Mode.Flip:
+                case Mode.Flip2D:
                     checkFlip();
                     break;
             }
