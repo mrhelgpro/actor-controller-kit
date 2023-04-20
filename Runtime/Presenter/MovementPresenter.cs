@@ -14,6 +14,7 @@ namespace AssemblyActorCore
         private bool _isJumpPressed = false;
         private bool _isJumpDone = false;
         private bool _isLevitationPressed = false;
+        private bool _previousGrounded;
 
         public override void Enter()
         {
@@ -37,10 +38,16 @@ namespace AssemblyActorCore
 
         protected void AnimationHandler()
         {
-            animatorable.SetSpeed(movable.GetVelocity);
-            animatorable.SetJump(movable.IsJump);
-            animatorable.SetFall(movable.IsFall);
-            animatorable.SetGrounded(positionable.IsGrounded);
+            animatorable.SetFloat("Speed", movable.GetVelocity);
+            animatorable.SetFloat("DirectionX", directable.Shift.x, 0.1f);
+            animatorable.SetFloat("DirectionZ", directable.Shift.z, 0.1f);
+
+            if (_previousGrounded != positionable.IsGrounded)
+            {
+                animatorable.Play(positionable.IsGrounded ? Name : "Fall");
+            }
+
+            _previousGrounded = positionable.IsGrounded;
         }
 
         protected void MoveHandler()

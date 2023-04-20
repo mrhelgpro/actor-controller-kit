@@ -13,15 +13,13 @@ namespace AssemblyActorCore
             _animator = mainTransform.GetComponentInChildren<Animator>();
         }
 
-        public void Play(string name, float speed = 1.0f, float fade = 0.2f)
+        public void Play(string name, float speed = 1.0f, float fade = 0.025f)
         {
             _animator?.CrossFade(name, fade);
             _animator?.SetFloat("Speed", speed);
         }
 
-        public void SetSpeed(float value) => _animator?.SetFloat("Speed", value);
-        public void SetJump(bool value) => _animator?.SetBool("Jump", value);
-        public void SetGrounded(bool value) => _animator?.SetBool("Grounded", value);
-        public void SetFall(bool value) => _animator?.SetBool("Fall", value);
+        public void SetFloat(string name, float value) => _animator?.SetFloat(name, value);
+        public void SetFloat(string name, float value, float dampTime) => _animator?.SetFloat(name, value, dampTime, Time.deltaTime);
     }
 }

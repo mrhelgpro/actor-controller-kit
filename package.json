@@ -1,6 +1,6 @@
 {
   "name": "com.mrhelgpro.actor-controller-kit",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "displayName": "Actor Controller Kit",
   "description": "The main task of this collection is the development of game characters",
   "unity": "2021.1",

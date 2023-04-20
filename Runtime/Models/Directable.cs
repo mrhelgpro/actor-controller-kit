@@ -38,15 +38,11 @@ namespace AssemblyActorCore
 
         public void UpdateData(Vector2 inputMove, Vector2 inputLook)
         {
-            Camera = _camera.forward.normalized; //Vector3.ProjectOnPlane(Camera, Vector3.up);
+            Camera = _camera.forward.normalized;
 
             Body = mainTransform.TransformDirection(Vector3.forward).normalized;
-            Move = (new Vector3(Camera.x, 0, Camera.z) * inputMove.y + _camera.right * inputMove.x).normalized; // Get direction relative to Camera
-            Shift = getShift(Move, Body);
-
-            //Debug.DrawLine(transform.position, transform.position + Camera.normalized * 1000, Color.white, 0, false);
-            //Debug.DrawLine(_camera.position, _camera.position + Camera.normalized * 1000, Color.white, 0, false);
-            //Debug.DrawLine(mainTransform.position, mainTransform.position + Move.normalized * 2, Color.yellow, 0, false);
+            Move = (Vector3.ProjectOnPlane(Camera, Vector3.up) * inputMove.y + _camera.right * inputMove.x).normalized; // Get direction relative to Camera
+            Shift = Move.magnitude > 0 ? getShift(Move, Body) : Shift;
 
             switch (RotationMode)
             {
