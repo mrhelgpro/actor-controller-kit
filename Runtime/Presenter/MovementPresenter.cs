@@ -14,6 +14,8 @@ namespace AssemblyActorCore
         [Range(0, 2)] public int ExtraJumps;
         [Range(0, 1)] public float Levitation = 1f;
 
+        private float _force;
+
         private int _jumpCounter;
         private bool _isJumpPressed = false;
         private bool _isJumpDone = false;
@@ -43,7 +45,7 @@ namespace AssemblyActorCore
         public override void Enter()
         {
             animatorable.Play(Name, movable.GetVelocity());
-            movable.SetMoving(true);           
+            movable.Enable(true);           
         }
 
         public override void UpdateLoop() 
@@ -58,7 +60,7 @@ namespace AssemblyActorCore
             JumpHandler();
         }
 
-        public override void Exit() => movable.SetMoving(false);
+        public override void Exit() => movable.Enable(false);
 
         protected void AnimationHandler()
         {
@@ -77,7 +79,8 @@ namespace AssemblyActorCore
             directable.UpdateData(inputable.Move, Rate);
             rotable.UpdateData(RotationMode, directable.GetMove, inputable.Look.Value, Rate);
             positionable.UpdateData();
-            movable.Horizontal(positionable.ProjectOntoSurface(directable.GetMove).normalized, inputable.Shift ? MoveShift : MoveSpeed, Rate, Gravity);       
+            movable.UpdateData(positionable.ProjectOntoSurface(directable.GetMove).normalized, inputable.Shift ? MoveShift : MoveSpeed, Rate, Gravity, ref _force);
+            //movable.Horizontal(positionable.ProjectOntoSurface(directable.GetMove).normalized, inputable.Shift ? MoveShift : MoveSpeed, Rate, Gravity);       
         }
 
         protected void JumpHandler()
@@ -86,7 +89,8 @@ namespace AssemblyActorCore
             {
                 if (_isJumpPressed == true)
                 {
-                    movable.Vertical(JumpHeight.HeightToForce(Gravity));
+                    //movable.Force(JumpHeight.HeightToForce(Gravity));
+                    _force = JumpHeight.HeightToForce(Gravity);
                     Gravity = Gravity - Levitation;
 
                     if (positionable)

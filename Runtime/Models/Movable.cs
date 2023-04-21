@@ -6,9 +6,9 @@ namespace AssemblyActorCore
     {
         //public float GetMoveSpeed;
         //public Vector3 GetVectorVelocity => _velocity;
-        public float GetSpeedScale => _speedScale < 0 ? 0 : _speedScale * Time.fixedDeltaTime;
+        public float GetSpeedScale => speedScale < 0 ? 0 : speedScale * Time.fixedDeltaTime;
 
-        public void ChangeSpeed(float value) => _speedScale += value;
+        public void ChangeSpeed(float value) => speedScale += value;
 
         public virtual float GetVelocity()
         {
@@ -25,9 +25,12 @@ namespace AssemblyActorCore
             return new Vector3(smoothDirection.x, direction.y, smoothDirection.z);
         }
 
-        private float _moveSpeed;
-        private Vector3 _velocity;
-        private float _speedScale = 1;
+        protected Vector3 direction;
+        protected float speed;  
+        protected float rate;
+        protected float gravity;
+        protected Vector3 velocity;
+        protected float speedScale = 1;
         private Vector3 _lastPositionForSpeed = Vector3.zero;
         private Vector3 _lastDirectionForAcceleration = Vector3.zero;
 
@@ -38,27 +41,25 @@ namespace AssemblyActorCore
             _lastPositionForSpeed = mainTransform.position;
         }
 
-        /*
-        public virtual void Enable(bool state)
+        public void UpdateData(Vector3 direction, float speed, float rate, float gravity, ref float force)
         {
+            this.direction = direction;
+            this.speed = speed;
+            this.rate = rate;
+            this.gravity = gravity;
 
+            velocity = GetVelocity(direction, rate) * speed * GetSpeedScale;
+
+            Move();
+
+            if (force > 0)
+            {
+                Force(ref force);
+            } 
         }
 
-
-        public virtual void Update(Vector3 direction, float speed, float rate, float gravity)
-        {
-            _moveSpeed = speed * GetSpeedScale;
-            _velocity = GetVelocity(direction, rate) * _moveSpeed;
-        }
-
-        public virtual void Force(Vector3 force)
-        {
-
-        }
-        */
-
-        public abstract void SetMoving(bool state);
-        public abstract void Horizontal(Vector3 direction, float speed, float rate, float gravity);
-        public abstract void Vertical(float speed);
+        public abstract void Enable(bool state);
+        protected abstract void Move();
+        protected abstract void Force(ref float force);
     }
 }

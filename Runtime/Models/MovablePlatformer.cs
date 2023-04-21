@@ -19,7 +19,7 @@ namespace AssemblyActorCore
             _rigidbody = GetComponent<Rigidbody2D>();
         }
 
-        public override void SetMoving(bool state)
+        public override void Enable(bool state)
         {
             if (state == true)
             {
@@ -36,6 +36,7 @@ namespace AssemblyActorCore
             }
         }
 
+        /*
         public override void Horizontal(Vector3 direction, float speed, float rate, float gravity)
         {
             Vector3 velocity = GetVelocity(direction, rate) * speed * GetSpeedScale * 51.0f;
@@ -65,15 +66,26 @@ namespace AssemblyActorCore
                 }
             }
         }
+        */
+        protected override void Move()
+        {
 
-        public override void Vertical(float force)
+        }
+
+        protected override void Force(ref float force) 
+        { 
+        
+        }
+
+        /*
+        public override void Force(float force)
         {
             _rigidbody.velocity = Vector2.zero;
             _rigidbody.AddForce(Vector3.up * force, ForceMode2D.Impulse);
 
             _isJump = true;
         }
-
+        */
         private void movement(Vector2 velocity)
         {
             float gravity = _isFall || _isJump ? _rigidbody.velocity.y : velocity.y;

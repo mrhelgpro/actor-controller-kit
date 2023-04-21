@@ -13,7 +13,7 @@ namespace AssemblyActorCore
             _rigidbody = GetComponent<Rigidbody>();
         }
 
-        public override void SetMoving(bool state)
+        public override void Enable(bool state)
         {
             if (state == true)
             {
@@ -33,18 +33,18 @@ namespace AssemblyActorCore
             }
         }
 
-        public override void Horizontal(Vector3 direction, float speed, float rate, float gravity)
+        protected override void Move()
         {
-            Vector3 velocity = GetVelocity(direction, rate) * speed * GetSpeedScale;
-            
             _rigidbody.MovePosition(_rigidbody.position + velocity);
             _rigidbody.AddForce(Physics.gravity * gravity, ForceMode.Acceleration);
         }
 
-        public override void Vertical(float force)
+        protected override void Force(ref float force) 
         {
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.AddForce(Vector3.up * force, ForceMode.Impulse);
+
+            force = 0;
         }
     }
 }

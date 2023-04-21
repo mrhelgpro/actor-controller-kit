@@ -17,16 +17,25 @@ namespace AssemblyActorCore
             _navMeshAgent.updateRotation = false;
         }
 
-        public override void SetMoving(bool state) { }
+        public override void Enable(bool state) { }
 
-
+        /*
         public override void Horizontal(Vector3 direction, float speed, float rate, float gravity)
         {
             _navMeshAgent.speed = speed;
             _navMeshAgent.acceleration = rate * 2;
             _navMeshAgent.SetDestination(mainTransform.position + direction.normalized);
         }
+        */
 
-        public override void Vertical(float force) { }
+        protected override void Move()
+        {
+            _navMeshAgent.speed = speed;
+            _navMeshAgent.acceleration = rate * 2;
+            _navMeshAgent.SetDestination(mainTransform.position + direction.normalized);
+        }
+
+        protected override void Force(ref float force) { }
+        //public override void Force(float force) { }
     }
 }

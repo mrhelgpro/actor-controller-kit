@@ -29,7 +29,7 @@ namespace AssemblyActorCore
 
         public override void Enter()
         {
-            movable.SetMoving(false);
+            movable.Enable(false);
             animatorable.Play(Name, _speed);
             _timer = 0;
         }
