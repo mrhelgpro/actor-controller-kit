@@ -7,7 +7,7 @@ public class InputTargetController : MonoBehaviour
     public List<string> InteractionTagList;
     protected Targetable targetable;
     protected Inputable inputable;
-    private AssemblyActorCore.Input _input => inputable.Input;
+
     private Transform _mainTransform;
 
     private void Awake()
@@ -33,11 +33,11 @@ public class InputTargetController : MonoBehaviour
 
             bool isReady = direction.magnitude > 0.1f;
 
-            _input.Move = isReady ? direction.normalized : Vector2.zero;
+            inputable.Move = isReady ? direction.normalized : Vector2.zero;
         }
         else
         {
-            _input.Move = Vector2.zero;
+            inputable.Move = Vector2.zero;
         }
     }
 
@@ -45,7 +45,7 @@ public class InputTargetController : MonoBehaviour
     {
         if (UnityEngine.Input.GetMouseButtonDown(0))
         {
-            _input.ActionLeft = true;
+            inputable.ActionLeft = true;
 
             Ray ray = Camera.main.ScreenPointToRay(UnityEngine.Input.mousePosition);
             RaycastHit hit;
@@ -72,7 +72,7 @@ public class InputTargetController : MonoBehaviour
 
         if (UnityEngine.Input.GetMouseButtonUp(0))
         {
-            _input.ActionLeft = false;
+            inputable.ActionLeft = false;
         }
     }
 }

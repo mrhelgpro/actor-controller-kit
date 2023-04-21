@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class PositionableNavigation : PositionablePreset
+    public sealed class PositionableNavigation : Positionable
     {
         public override void UpdateData()
         {
@@ -13,7 +13,7 @@ namespace AssemblyActorCore
 
         private void groundCheck()
         {
-            IsGrounded = Physics.CheckSphere(mainTransform.position, 0.2f, groundLayer);
+            isGrounded = Physics.CheckSphere(mainTransform.position, 0.2f, groundLayer);
         }
 
         private void surfaceCheck()
@@ -23,8 +23,8 @@ namespace AssemblyActorCore
             Vector3 origin = new Vector3(mainTransform.position.x, mainTransform.position.y + 0.25f, mainTransform.position.z);
             Physics.Raycast(origin, Vector3.down, out hit, length);
 
-            SurfaceType = hit.collider != null ? hit.collider.tag : "None";
-            SurfaceNormal = hit.collider != null ? hit.normal : Vector3.zero;
+            surfaceType = hit.collider != null ? hit.collider.tag : "None";
+            surfaceNormal = hit.collider != null ? hit.normal : Vector3.zero;
         }
 
         private void obstacleCheck()
@@ -34,7 +34,7 @@ namespace AssemblyActorCore
             Vector3 origin = new Vector3(mainTransform.position.x, mainTransform.position.y + 0.25f, mainTransform.position.z);
             Physics.Raycast(origin, mainTransform.TransformDirection(Vector3.forward), out hit, length);
 
-            IsObstacle = hit.collider == null ? false : hit.collider.isTrigger ? false : true;
+            isObstacle = hit.collider == null ? false : hit.collider.isTrigger ? false : true;
         }
     }
 }

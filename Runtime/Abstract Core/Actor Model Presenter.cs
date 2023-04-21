@@ -9,6 +9,7 @@ namespace AssemblyActorCore
         protected Transform myTransform;
         protected Transform mainTransform;
 
+
         protected void Awake()
         {
             Actor actor = GetComponentInParent<Actor>();
@@ -18,14 +19,19 @@ namespace AssemblyActorCore
         }
     }
 
-    public abstract class Presenter : MonoBehaviour
+    public abstract class Presenter : Model
     {
         public PresenterType Type;
         public string Name = "Presenter";
 
         protected PresenterMachine presenterMachine;
 
-        protected void Awake() => presenterMachine = GetComponentInParent<PresenterMachine>();
+        protected new void Awake()
+        {
+            base.Awake();
+
+            presenterMachine = GetComponentInParent<PresenterMachine>();
+        }
 
         protected void TryToActivate() => presenterMachine.TryToActivate(gameObject);
 
@@ -35,12 +41,14 @@ namespace AssemblyActorCore
         public abstract void Exit();
     }
 
-    public abstract class Activator : MonoBehaviour
+    public abstract class Activator : Model
     {
         protected PresenterMachine presenterMachine;
         protected Presenter presenter;
-        protected void Awake()
+        protected new void Awake()
         {
+            base.Awake();
+
             presenter = GetComponent<Presenter>();
 
             if (presenter == null)

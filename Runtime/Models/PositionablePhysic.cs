@@ -2,10 +2,9 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public sealed class PositionablePhysic : PositionablePreset
+    public sealed class PositionablePhysic : Positionable
     {
         private SphereCollider _groundCollider;
-
         private PhysicMaterial _materialOnTheGround;
         private PhysicMaterial _materialInTheAir;
 
@@ -29,7 +28,7 @@ namespace AssemblyActorCore
 
         private void groundCheck()
         {
-            IsGrounded = Physics.CheckSphere(mainTransform.position, 0.2f, groundLayer);
+            isGrounded = Physics.CheckSphere(mainTransform.position, 0.2f, groundLayer);
         }
 
         private void surfaceCheck()
@@ -39,8 +38,8 @@ namespace AssemblyActorCore
             Vector3 origin = new Vector3(mainTransform.position.x, mainTransform.position.y + 0.25f, mainTransform.position.z);
             Physics.Raycast(origin, Vector3.down, out hit, length);
 
-            SurfaceType = hit.collider != null ? hit.collider.tag : "None";
-            SurfaceNormal = hit.collider != null ? hit.normal : Vector3.zero;
+            surfaceType = hit.collider != null ? hit.collider.tag : "None";
+            surfaceNormal = hit.collider != null ? hit.normal : Vector3.zero;
         }
 
         private void obstacleCheck()
@@ -50,12 +49,12 @@ namespace AssemblyActorCore
             Vector3 origin = new Vector3(mainTransform.position.x, mainTransform.position.y + 0.25f, mainTransform.position.z);
             Physics.Raycast(origin, mainTransform.TransformDirection(Vector3.forward), out hit, length);
 
-            IsObstacle = hit.collider == null ? false : hit.collider.isTrigger ? false : true;
+            isObstacle = hit.collider == null ? false : hit.collider.isTrigger ? false : true;
         }
 
         private void materialCheck()
         {
-            _groundCollider.material = IsGrounded && IsObstacle == false ? _materialOnTheGround : _materialInTheAir;
+            _groundCollider.material = isGrounded && isObstacle == false ? _materialOnTheGround : _materialInTheAir;
         }
     }
 }

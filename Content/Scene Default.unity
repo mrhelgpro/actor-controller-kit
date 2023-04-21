@@ -984,6 +984,7 @@ GameObject:
   - component: {fileID: 1158141294763497761}
   - component: {fileID: 1158141294763497760}
   - component: {fileID: 1158141294763497766}
+  - component: {fileID: 1158141294763497769}
   - component: {fileID: 1158141294763497765}
   - component: {fileID: 1158141294763497764}
   - component: {fileID: 1158141294763497763}
@@ -1051,21 +1052,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4598168c7e50f146ab6ae4bb45f2ec5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Input:
-    Menu: 0
-    Move: {x: 0, y: 0}
-    Look:
-      Value: {x: 0, y: 0}
-      Delta: {x: 0, y: 0}
-    Option: 0
-    Cancel: 0
-    Motion: 0
-    Interact: 0
-    ActionRight: 0
-    ActionLeft: 0
-    Control: 0
-    Shift: 0
-  FreezLook: 0
+  Menu: 0
+  Move: {x: 0, y: 0}
+  Look:
+    Value: {x: 0, y: 0}
+    Delta: {x: 0, y: 0}
+    Freez: 0
+  Option: 0
+  Cancel: 0
+  Motion: 0
+  Interact: 0
+  ActionRight: 0
+  ActionLeft: 0
+  Control: 0
+  Shift: 0
 --- !u!54 &1158141294763497762
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1107,10 +1107,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02c6f8dcb17dc07418867b7a6642d67c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsGrounded: 0
-  IsObstacle: 0
-  SurfaceType: None
-  SurfaceNormal: {x: 0, y: 0, z: 0}
 --- !u!114 &1158141294763497765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1123,12 +1119,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1afe73b36812b1c41a31f82428a59477, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Slowing: 0
-  Boost: 0
-  Acceleration: 10
-  Gravity: 1
-  IsFall: 0
-  IsJump: 0
 --- !u!114 &1158141294763497766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1141,12 +1131,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a336229baa692c448ab5e184f3e76999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Camera: {x: 0, y: 0, z: 0}
-  Body: {x: 0, y: 0, z: 0}
-  Move: {x: 0, y: 0, z: 0}
-  Shift: {x: 0, y: 0, z: 0}
-  RotationMode: 2
-  RotationRate: 5
 --- !u!114 &1158141294763497767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1159,9 +1143,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3693299050d92b4aa1cf70d4d0f5288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LogHeight: 0
-  LogSpeed: 0
-  LogCameraDirection: 1
+  Height: 0
+  Speed: 0
+  RayCameraDirection: 0
+  RayMoveDirection: 0
+  RayTraceTime: 0
+--- !u!114 &1158141294763497769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1158141294763497752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d42899dea5b5624fb78f51f8585728c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RotationMode: 1
 --- !u!4 &2817366176385207060
 Transform:
   m_ObjectHideFlags: 0
@@ -1210,12 +1209,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 0
-  Name: Strafe
-  MoveSpeed: 3
-  MoveShift: 6
+  Name: Move
+  MoveSpeed: 4
+  MoveShift: 8
+  Rate: 10
+  Gravity: 1
   JumpHeight: 2
-  ExtraJumps: 1
-  Levitation: 0
+  ExtraJumps: 2
+  Levitation: 0.75
 --- !u!4 &7978653736658282535
 Transform:
   m_ObjectHideFlags: 0

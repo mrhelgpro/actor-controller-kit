@@ -2,46 +2,52 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public sealed class MovablePlatformer : MovablePreset
+    public sealed class MovablePlatformer : Movable
     {
-        private PositionablePreset _positionable;
+        private Positionable _positionable;
         private Rigidbody2D _rigidbody;
 
+        public bool _isFall = false;
+        public bool _isJump = false;
         private float _timerGrounded = 0;
 
         private new void Awake()
         {
             base.Awake();
 
-            _positionable = GetComponent<PositionablePreset>();
+            _positionable = GetComponent<Positionable>();
             _rigidbody = GetComponent<Rigidbody2D>();
         }
 
-        public override void StartMovement()
+        public override void SetMoving(bool state)
         {
-            _rigidbody.MovePosition(_rigidbody.position);
-            _rigidbody.velocity = Vector2.zero;
-            _rigidbody.constraints = RigidbodyConstraints2D.None;
-            _rigidbody.freezeRotation = true;
+            if (state == true)
+            {
+                _rigidbody.MovePosition(_rigidbody.position);
+                _rigidbody.velocity = Vector2.zero;
+                _rigidbody.constraints = RigidbodyConstraints2D.None;
+                _rigidbody.freezeRotation = true;
+            }
+            else
+            {
+                _rigidbody.MovePosition(_rigidbody.position);
+                _rigidbody.velocity = Vector2.zero;
+                _rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+            }
         }
 
-        public override void StopMovement()
+        public override void Horizontal(Vector3 direction, float speed, float rate, float gravity)
         {
-            _rigidbody.MovePosition(_rigidbody.position);
-            _rigidbody.velocity = Vector2.zero;
-            _rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
-        }
+            Vector3 velocity = GetVelocity(direction, rate) * speed * GetSpeedScale * 51.0f;
 
-        public override void MoveToDirection(Vector3 direction, float speed)
-        {
-            Vector2 velocity = VectorAcceleration(_positionable.ProjectOntoSurface(direction).normalized * speed * getSpeedScale * 51.0f);
-            
-            _rigidbody.gravityScale = Gravity;
+            _rigidbody.gravityScale = gravity;
 
-            IsFall = _positionable.IsGrounded == false && _rigidbody.velocity.y <= 0;
-            IsJump = IsJump == true && _rigidbody.velocity.y <= 0 ? false : IsJump;
+            _isFall = _positionable.IsGrounded == false && _rigidbody.velocity.y <= 0;
+            _isJump = _isJump == true && _rigidbody.velocity.y <= 0 ? false : _isJump;
 
             _timerGrounded = _positionable.IsGrounded ? _timerGrounded + Time.deltaTime : 0;
+
+            Debug.DrawLine(mainTransform.position, mainTransform.position + velocity * 5, Color.green, 0, true);
 
             if (_timerGrounded > 0.1f)
             {
@@ -60,17 +66,17 @@ namespace AssemblyActorCore
             }
         }
 
-        public override void Jump(float force)
+        public override void Vertical(float force)
         {
             _rigidbody.velocity = Vector2.zero;
             _rigidbody.AddForce(Vector3.up * force, ForceMode2D.Impulse);
 
-            IsJump = true;
+            _isJump = true;
         }
 
         private void movement(Vector2 velocity)
         {
-            float gravity = IsFall || IsJump ? _rigidbody.velocity.y : velocity.y;
+            float gravity = _isFall || _isJump ? _rigidbody.velocity.y : velocity.y;
             _rigidbody.velocity = new Vector2(velocity.x, gravity);
         }
     }

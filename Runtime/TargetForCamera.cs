@@ -9,7 +9,6 @@ namespace AssemblyActorCore
         public ActorCameraSettings Settings;
         public Transform Transform;
 
-        protected Input input => _inputable.Input;
         private Inputable _inputable;
 
         private void Awake()
@@ -22,11 +21,11 @@ namespace AssemblyActorCore
         {
             if (_inputable)
             {
-                if (_inputable.FreezLook == false)
+                if (_inputable.Look.Freez == false)
                 {
-                    Settings.Horizontal = input.Look.Value.x;
-                    input.Look.Value.y = Mathf.Clamp(input.Look.Value.y, -30, 85);
-                    Settings.Vertical = input.Look.Value.y;
+                    Settings.Horizontal = _inputable.Look.Value.x;
+                    _inputable.Look.Value.y = Mathf.Clamp(_inputable.Look.Value.y, -30, 85);
+                    Settings.Vertical = _inputable.Look.Value.y;
                 }
             }
         }

@@ -1,11 +1,10 @@
 using UnityEngine;
 using AssemblyActorCore;
 
-public class InputPlayerController : MonoBehaviour
+public sealed class InputPlayerController : MonoBehaviour
 {
     private InputActions _inputActions;
     private Inputable _inputable;
-    private AssemblyActorCore.Input _input => _inputable.Input;
 
     private void Awake()
     {
@@ -21,43 +20,43 @@ public class InputPlayerController : MonoBehaviour
         {
             _inputActions = new InputActions();
 
-            _inputActions.Player.Menu.performed += context => _input.Menu = true;
-            _inputActions.Player.Menu.canceled += context => _input.Menu = false;
+            _inputActions.Player.Menu.performed += context => _inputable.Menu = true;
+            _inputActions.Player.Menu.canceled += context => _inputable.Menu = false;
 
-            _inputActions.Player.North.performed += context => _input.Option = true;
-            _inputActions.Player.North.canceled += context => _input.Option = false;
+            _inputActions.Player.North.performed += context => _inputable.Option = true;
+            _inputActions.Player.North.canceled += context => _inputable.Option = false;
 
-            _inputActions.Player.East.performed += context => _input.Cancel = true;
-            _inputActions.Player.East.canceled += context => _input.Cancel = false;
+            _inputActions.Player.East.performed += context => _inputable.Cancel = true;
+            _inputActions.Player.East.canceled += context => _inputable.Cancel = false;
 
-            _inputActions.Player.South.performed += context => _input.Motion = true;
-            _inputActions.Player.South.canceled += context => _input.Motion = false;
+            _inputActions.Player.South.performed += context => _inputable.Motion = true;
+            _inputActions.Player.South.canceled += context => _inputable.Motion = false;
 
-            _inputActions.Player.West.performed += context => _input.Interact = true;
-            _inputActions.Player.West.canceled += context => _input.Interact = false;
+            _inputActions.Player.West.performed += context => _inputable.Interact = true;
+            _inputActions.Player.West.canceled += context => _inputable.Interact = false;
 
-            _inputActions.Player.TriggerRight.performed += context => _input.ActionRight = true;
-            _inputActions.Player.TriggerRight.canceled += context => _input.ActionRight = false;
+            _inputActions.Player.TriggerRight.performed += context => _inputable.ActionRight = true;
+            _inputActions.Player.TriggerRight.canceled += context => _inputable.ActionRight = false;
 
-            _inputActions.Player.BumperRight.performed += context => _input.ActionLeft = true;
-            _inputActions.Player.BumperRight.canceled += context => _input.ActionLeft = false;
+            _inputActions.Player.BumperRight.performed += context => _inputable.ActionLeft = true;
+            _inputActions.Player.BumperRight.canceled += context => _inputable.ActionLeft = false;
 
-            _inputActions.Player.TriggerLeft.performed += context => _input.Control = true;
-            _inputActions.Player.TriggerLeft.canceled += context => _input.Control = false;
+            _inputActions.Player.TriggerLeft.performed += context => _inputable.Control = true;
+            _inputActions.Player.TriggerLeft.canceled += context => _inputable.Control = false;
 
-            _inputActions.Player.BumperLeft.performed += context => _input.Shift = true;
-            _inputActions.Player.BumperLeft.canceled += context => _input.Shift = false;
+            _inputActions.Player.BumperLeft.performed += context => _inputable.Shift = true;
+            _inputActions.Player.BumperLeft.canceled += context => _inputable.Shift = false;
         }
     }
 
     private void Update()
     {
-        _input.Move = _inputActions.Player.Move.ReadValue<Vector2>();
-        _input.Look.Delta = _inputActions.Player.Look.ReadValue<Vector2>();
+        _inputable.Move = _inputActions.Player.Move.ReadValue<Vector2>();
+        _inputable.Look.Delta = _inputActions.Player.Look.ReadValue<Vector2>();
 
-        if (_inputable.FreezLook == false)
+        if (_inputable.Look.Freez == false)
         {
-            _input.Look.Value += _input.Look.Delta;
+            _inputable.Look.Value += _inputable.Look.Delta;
         }
     }
 

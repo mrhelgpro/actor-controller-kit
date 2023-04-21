@@ -2,10 +2,14 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class MovementPresenter : PresenterPreset
+    public class MovementPresenter : Presenter
     {
+        [Header("Movement")]
+        public RotationMode RotationMode = RotationMode.DirectionOfMovement;
         [Range(1, 5)] public float MoveSpeed = 3f;
         [Range(1, 10)] public float MoveShift = 5f;
+        [Range(1, 10)] public int Rate = 10;
+        [Range(0, 2)] public float Gravity = 1;
         [Range(0, 5)]  public int JumpHeight = 2;
         [Range(0, 2)] public int ExtraJumps;
         [Range(0, 1)] public float Levitation = 1f;
@@ -14,12 +18,32 @@ namespace AssemblyActorCore
         private bool _isJumpPressed = false;
         private bool _isJumpDone = false;
         private bool _isLevitationPressed = false;
-        private bool _previousGrounded;
+
+        private FlagBool _groundFlag;
+
+        protected Animatorable animatorable;
+        protected Directable directable;
+        protected Rotable rotable;
+        protected Movable movable;
+        protected Positionable positionable;
+        protected Inputable inputable;
+
+        protected new void Awake()
+        {
+            base.Awake();
+
+            inputable = GetComponentInParent<Inputable>();
+            animatorable = GetComponentInParent<Animatorable>();
+            directable = GetComponentInParent<Directable>();
+            rotable = GetComponentInParent<Rotable>();
+            movable = GetComponentInParent<Movable>();
+            positionable = GetComponentInParent<Positionable>();
+        }
 
         public override void Enter()
         {
-            animatorable.Play(Name, movable.GetVelocity);
-            movable.StartMovement();
+            animatorable.Play(Name, movable.GetVelocity());
+            movable.SetMoving(true);           
         }
 
         public override void UpdateLoop() 
@@ -34,30 +58,26 @@ namespace AssemblyActorCore
             JumpHandler();
         }
 
-        public override void Exit() => movable.StopMovement();
+        public override void Exit() => movable.SetMoving(false);
 
         protected void AnimationHandler()
         {
-            animatorable.SetFloat("Speed", movable.GetVelocity);
-            animatorable.SetFloat("DirectionX", directable.Shift.x, 0.1f);
-            animatorable.SetFloat("DirectionZ", directable.Shift.z, 0.1f);
+            animatorable.SetFloat("Speed", movable.GetVelocity());
+            animatorable.SetFloat("DirectionX", directable.GetLocal.x); //animatorable.SetFloat("DirectionX", directable.GetLocal.x, 0.1f);
+            animatorable.SetFloat("DirectionZ", directable.GetLocal.z); //animatorable.SetFloat("DirectionZ", directable.GetLocal.z, 0.1f);
 
-            if (_previousGrounded != positionable.IsGrounded)
+            if (_groundFlag.IsChange(positionable.IsGrounded))
             {
                 animatorable.Play(positionable.IsGrounded ? Name : "Fall");
             }
-
-            _previousGrounded = positionable.IsGrounded;
         }
 
         protected void MoveHandler()
         {
-            float speed = input.Shift ? MoveShift : MoveSpeed;
-
-            directable.UpdateData(input.Move, input.Look.Value);
+            directable.UpdateData(inputable.Move, Rate);
+            rotable.UpdateData(RotationMode, directable.GetMove, inputable.Look.Value, Rate);
             positionable.UpdateData();
-
-            movable.MoveToDirection(directable.Move, speed);       
+            movable.Horizontal(positionable.ProjectOntoSurface(directable.GetMove).normalized, inputable.Shift ? MoveShift : MoveSpeed, Rate, Gravity);       
         }
 
         protected void JumpHandler()
@@ -66,8 +86,8 @@ namespace AssemblyActorCore
             {
                 if (_isJumpPressed == true)
                 {
-                    movable.Jump(JumpHeight.HeightToForce(movable.Gravity));
-                    movable.Gravity = movable.Gravity - Levitation;
+                    movable.Vertical(JumpHeight.HeightToForce(Gravity));
+                    Gravity = Gravity - Levitation;
 
                     if (positionable)
                     {
@@ -85,13 +105,13 @@ namespace AssemblyActorCore
 
         protected void JumpInput()
         {
-            _isJumpPressed = input.Motion;
+            _isJumpPressed = inputable.Motion;
 
             if (_isJumpPressed == false)
             {
                 if (_isLevitationPressed == true)
                 {
-                    movable.Gravity = movable.Gravity + Levitation;
+                    Gravity = Gravity + Levitation;
                     _isLevitationPressed = false;
                 }
 

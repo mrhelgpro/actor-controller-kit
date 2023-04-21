@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public sealed class PositionablePlatformer : PositionablePreset
+    public sealed class PositionablePlatformer : Positionable
     {
         private Collision2D _groundCollision;
         private CircleCollider2D _groundCollider;
@@ -33,13 +33,13 @@ namespace AssemblyActorCore
             bool isGroundedCollision = _groundCollision == null ? false : true;
             bool isGroundedPhysics = Physics.CheckSphere(mainTransform.position, 0.2f, groundLayer);
 
-            IsGrounded = IsGrounded == true ? isGroundedPhysics : isGroundedCollision && isGroundedPhysics;
+            isGrounded = IsGrounded == true ? isGroundedPhysics : isGroundedCollision && isGroundedPhysics;
         }
 
         private void surfaceCheck()
         {
-            SurfaceType = IsGrounded == true && _groundCollision != null ? _groundCollision.gameObject.tag : "None";
-            SurfaceNormal = IsGrounded == true && _groundCollision != null ? _groundCollision.contacts[0].normal : Vector3.zero;
+            surfaceType = IsGrounded == true && _groundCollision != null ? _groundCollision.gameObject.tag : "None";
+            surfaceNormal = IsGrounded == true && _groundCollision != null ? _groundCollision.contacts[0].normal : Vector3.zero;
         }
 
         private void obstacleCheck()
@@ -49,12 +49,12 @@ namespace AssemblyActorCore
             Vector3 direction = mainTransform.TransformDirection(Vector3.forward);
             RaycastHit2D hit = Physics2D.Raycast(origin, direction, length, layerMask);
 
-            IsObstacle = hit.collider == null ? false : hit.collider.isTrigger ? false : true;
+            isObstacle = hit.collider == null ? false : hit.collider.isTrigger ? false : true;
         }
 
         private void materialCheck()
         {
-            _groundCollider.sharedMaterial = IsGrounded && IsObstacle == false ? _materialOnTheGround : _materialInTheAir;
+            _groundCollider.sharedMaterial = isGrounded && isObstacle == false ? _materialOnTheGround : _materialInTheAir;
         }
 
         private void OnCollisionStay2D(Collision2D collision) => _groundCollision = collision;

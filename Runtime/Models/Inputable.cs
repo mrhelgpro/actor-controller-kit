@@ -5,24 +5,10 @@ namespace AssemblyActorCore
 {
     public class Inputable : Model
     {
-        public Input Input;
-        public bool FreezLook;
-    }
-
-    [Serializable]
-    public class InputVector
-    {
-        public Vector2 Value;
-        public Vector2 Delta;
-    }
-
-    [Serializable]
-    public class Input
-    {
-                                     // KEYBOARD           X-BOX              DUALSHOCK       GAMEPAD
+        // KEYBOARD           X-BOX              DUALSHOCK       GAMEPAD
 
         public bool Menu;            // Escape
-      
+
         public Vector2 Move;         // WASD - Movement     Left Stick        Left Stick      Left Stick
         public InputVector Look;
 
@@ -36,7 +22,7 @@ namespace AssemblyActorCore
         public bool Control;         // Left Ctrl           Left Trigget      L2              Left Trigget
         public bool Shift;           // Left Shift          Left Bumper       L1              Left Shoulder
 
-        public bool IsButtonPress(Input input)
+        public bool IsButtonPress(Inputable input)
         {
             if (Option == true && input.Option == false) return false;
             if (Cancel == true && input.Cancel == false) return false;
@@ -50,5 +36,19 @@ namespace AssemblyActorCore
 
             return true;
         }
+    }
+
+    [Serializable]
+    public class InputVector
+    {
+        public Vector2 Value;
+        public Vector2 Delta;
+        public bool Freez;
+    }
+
+    [Serializable]
+    public class Input
+    {
+
     }
 }
