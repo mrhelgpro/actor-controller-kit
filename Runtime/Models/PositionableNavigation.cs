@@ -4,7 +4,7 @@ namespace AssemblyActorCore
 {
     public sealed class PositionableNavigation : Positionable
     {
-        public override void UpdateData()
+        public override void UpdateParametres()
         {
             groundCheck();
             surfaceCheck();

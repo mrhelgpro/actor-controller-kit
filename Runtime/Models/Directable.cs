@@ -37,7 +37,7 @@ namespace AssemblyActorCore
             _cameraTransform = UnityEngine.Camera.main.transform;
         }
 
-        public void UpdateData(Vector2 inputMove, float rate)
+        public void UpdateParametres(Vector2 inputMove, float rate)
         {
             _cameraDirection = _cameraTransform.forward.normalized;
             _bodyDirection = mainTransform.TransformDirection(Vector3.forward).normalized;

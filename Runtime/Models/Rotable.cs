@@ -8,7 +8,7 @@ namespace AssemblyActorCore
 
     public class Rotable : Model
     {
-        public void UpdateData(RotationMode mode, Vector3 moveDirection, Vector2 inputLook, float rate)
+        public void UpdateParametres(RotationMode mode, Vector3 moveDirection, Vector2 inputLook, float rate)
         {
             switch (mode)
             {

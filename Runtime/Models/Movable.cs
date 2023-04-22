@@ -4,55 +4,40 @@ namespace AssemblyActorCore
 {
     public abstract class Movable : Model
     {
-        //public float GetMoveSpeed;
-        //public Vector3 GetVectorVelocity => _velocity;
-
-        public virtual float GetVelocity()
-        {
-            float velocity = ((mainTransform.position - _lastPositionForSpeed) / Time.fixedDeltaTime).magnitude;
-            _lastPositionForSpeed = mainTransform.position;
-
-            return velocity;
-        }
+        public float GetCurrentSpeed => currentSpeed;
 
         protected Vector3 direction;
-        protected float speed;  
-        protected float rate;
-        protected float gravity;
+        protected float maxSpeed;
+        protected float currentSpeed;
+        protected float rate = 10;
+        protected float gravity = 1;
         protected Vector3 velocity;
-        protected float speedScale = 1;
+        
+        private float _speedScale = 1;
+        private Vector3 _previousPosition = Vector3.zero;
+        private Vector3 _previousDirection = Vector3.zero;
 
-        private Vector3 _lastPositionForSpeed = Vector3.zero;
-        private Vector3 _lastDirectionForAcceleration = Vector3.zero;
-        private float _getSpeedScale => speedScale < 0 ? 0 : speedScale * Time.fixedDeltaTime;
-        private Vector3 _getVelocity(Vector3 direction, float rate)
-        {
-            Vector3 smoothDirection = Vector3.Lerp(_lastDirectionForAcceleration, direction, Time.fixedDeltaTime * rate);
-            _lastDirectionForAcceleration = smoothDirection;
-            return new Vector3(smoothDirection.x, direction.y, smoothDirection.z);
-        }
+        public void ChangeSpeed(float value) => _speedScale += value;
 
-        protected new void Awake()
-        {
-            base.Awake();
-
-            _lastPositionForSpeed = mainTransform.position;
-        }
-
-        public void ChangeSpeed(float value) => speedScale += value;
-
-        public void UpdateData(Vector3 direction, float speed, float rate, float gravity, ref float force)
+        public void UpdateParametres(Vector3 direction, float maxSpeed, float rate, float gravity, ref Vector3 force)
         {
             this.direction = direction;
-            this.speed = speed;
+            this.maxSpeed = maxSpeed;
             this.rate = rate;
             this.gravity = gravity;
 
-            velocity = _getVelocity(direction, rate) * speed * _getSpeedScale;
+            float speedScale = _speedScale < 0 ? 0 : _speedScale * Time.fixedDeltaTime;
+
+            Vector3 smoothDirection = Vector3.Lerp(_previousDirection, direction, Time.fixedDeltaTime * rate);
+            velocity = new Vector3(smoothDirection.x, direction.y, smoothDirection.z) * maxSpeed * speedScale;
+            _previousDirection = smoothDirection;
+
+            currentSpeed = ((mainTransform.position - _previousPosition) / Time.fixedDeltaTime).magnitude;
+            _previousPosition = mainTransform.position;
 
             Move();
 
-            if (force > 0)
+            if (force.magnitude > 0)
             {
                 Force(ref force);
             } 
@@ -60,6 +45,6 @@ namespace AssemblyActorCore
 
         public abstract void Enable(bool state);
         protected abstract void Move();
-        protected abstract void Force(ref float force);
+        protected abstract void Force(ref Vector3 force);
     }
 }

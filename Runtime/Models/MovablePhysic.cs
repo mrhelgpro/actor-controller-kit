@@ -39,12 +39,11 @@ namespace AssemblyActorCore
             _rigidbody.AddForce(Physics.gravity * gravity, ForceMode.Acceleration);
         }
 
-        protected override void Force(ref float force) 
+        protected override void Force(ref Vector3 force) 
         {
             _rigidbody.velocity = Vector3.zero;
-            _rigidbody.AddForce(Vector3.up * force, ForceMode.Impulse);
-
-            force = 0;
+            _rigidbody.AddForce(force, ForceMode.Impulse);
+            force = Vector3.zero;
         }
     }
 }

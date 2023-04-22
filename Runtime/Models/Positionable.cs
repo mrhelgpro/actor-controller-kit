@@ -31,6 +31,6 @@ namespace AssemblyActorCore
             return projection == Vector3.zero || isGrounded == false ? direction : projection;
         }
 
-        public virtual void UpdateData() { }
+        public virtual void UpdateParametres() { }
     }
 }

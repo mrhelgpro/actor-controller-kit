@@ -14,7 +14,7 @@ namespace AssemblyActorCore
         [Range(0, 2)] public int ExtraJumps;
         [Range(0, 1)] public float Levitation = 1f;
 
-        private float _force;
+        private Vector3 _force;
 
         private int _jumpCounter;
         private bool _isJumpPressed = false;
@@ -44,7 +44,7 @@ namespace AssemblyActorCore
 
         public override void Enter()
         {
-            animatorable.Play(Name, movable.GetVelocity());
+            animatorable.Play(Name, movable.GetCurrentSpeed);
             movable.Enable(true);           
         }
 
@@ -64,7 +64,7 @@ namespace AssemblyActorCore
 
         protected void AnimationHandler()
         {
-            animatorable.SetFloat("Speed", movable.GetVelocity());
+            animatorable.SetFloat("Speed", movable.GetCurrentSpeed);
             animatorable.SetFloat("DirectionX", directable.GetLocal.x); //animatorable.SetFloat("DirectionX", directable.GetLocal.x, 0.1f);
             animatorable.SetFloat("DirectionZ", directable.GetLocal.z); //animatorable.SetFloat("DirectionZ", directable.GetLocal.z, 0.1f);
 
@@ -82,12 +82,10 @@ namespace AssemblyActorCore
             Vector3 moveDirection = directable.GetMove;
             Vector3 projectOntoSurface = positionable.ProjectOntoSurface(moveDirection).normalized;
 
-            directable.UpdateData(inputMove, Rate);
-            rotable.UpdateData(RotationMode, moveDirection, inputLook, Rate);
-            positionable.UpdateData();
-            movable.UpdateData(projectOntoSurface, speed, Rate, Gravity, ref _force);
-
-            // Add movable.Move and movable.Force
+            directable.UpdateParametres(inputMove, Rate);
+            rotable.UpdateParametres(RotationMode, moveDirection, inputLook, Rate);
+            positionable.UpdateParametres();
+            movable.UpdateParametres(projectOntoSurface, speed, Rate, Gravity, ref _force);
         }
 
         protected void JumpHandler()
@@ -96,8 +94,8 @@ namespace AssemblyActorCore
             {
                 if (_isJumpPressed == true)
                 {
-                    //movable.Force(JumpHeight.HeightToForce(Gravity));
-                    _force = JumpHeight.HeightToForce(Gravity);
+                    //movable.Force(Vector3.up * JumpHeight.HeightToForce(Gravity));
+                    _force = Vector3.up * JumpHeight.HeightToForce(Gravity);
                     Gravity = Gravity - Levitation;
 
                     if (positionable)

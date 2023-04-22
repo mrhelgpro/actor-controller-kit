@@ -72,7 +72,7 @@ namespace AssemblyActorCore
 
         }
 
-        protected override void Force(ref float force) 
+        protected override void Force(ref Vector3 force) 
         { 
         
         }
