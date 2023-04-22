@@ -76,11 +76,18 @@ namespace AssemblyActorCore
 
         protected void MoveHandler()
         {
-            directable.UpdateData(inputable.Move, Rate);
-            rotable.UpdateData(RotationMode, directable.GetMove, inputable.Look.Value, Rate);
+            Vector2 inputMove = inputable.Move;
+            Vector2 inputLook = inputable.Look.Value;
+            float speed = inputable.Shift ? MoveShift : MoveSpeed;
+            Vector3 moveDirection = directable.GetMove;
+            Vector3 projectOntoSurface = positionable.ProjectOntoSurface(moveDirection).normalized;
+
+            directable.UpdateData(inputMove, Rate);
+            rotable.UpdateData(RotationMode, moveDirection, inputLook, Rate);
             positionable.UpdateData();
-            movable.UpdateData(positionable.ProjectOntoSurface(directable.GetMove).normalized, inputable.Shift ? MoveShift : MoveSpeed, Rate, Gravity, ref _force);
-            //movable.Horizontal(positionable.ProjectOntoSurface(directable.GetMove).normalized, inputable.Shift ? MoveShift : MoveSpeed, Rate, Gravity);       
+            movable.UpdateData(projectOntoSurface, speed, Rate, Gravity, ref _force);
+
+            // Add movable.Move and movable.Force
         }
 
         protected void JumpHandler()
