@@ -33,17 +33,16 @@ namespace AssemblyActorCore
             }
         }
 
-        protected override void Move()
-        {
-            _rigidbody.MovePosition(_rigidbody.position + velocity);
-            _rigidbody.AddForce(Physics.gravity * gravity, ForceMode.Acceleration);
-        }
-
-        protected override void Force(ref Vector3 force) 
+        public override void SetForce(Vector3 force) 
         {
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.AddForce(force, ForceMode.Impulse);
-            force = Vector3.zero;
+        }
+
+        protected override void Move()
+        {
+            _rigidbody.MovePosition(_rigidbody.position + Velocity * Time.fixedDeltaTime);
+            _rigidbody.AddForce(Physics.gravity * gravity, ForceMode.Acceleration);
         }
     }
 }

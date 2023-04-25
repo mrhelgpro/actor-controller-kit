@@ -8,9 +8,6 @@ namespace AssemblyActorCore
 
     public class PresenterMachine : MonoBehaviour
     {
-        public string GetName => _currentPresenter == null ? "None" : _currentPresenter.gameObject.name + " - " + _currentPresenter.Name;
-        public bool IsEmpty => _currentPresenter == null;
-
         private Presenter _currentPresenter = null;
         private List<Presenter> _presenters = new List<Presenter>();
         private List<Activator> _activators = new List<Activator>();
@@ -20,24 +17,20 @@ namespace AssemblyActorCore
             foreach (Presenter presenter in GetComponentsInChildren<Presenter>()) _presenters.Add(presenter);
             foreach (Activator activator in GetComponentsInChildren<Activator>()) _activators.Add(activator);
         }
-
         private void Update()
         {
-            foreach (Activator item in _activators)
-            {
-                if (item.gameObject != _currentPresenter?.gameObject)
-                {
-                    item.UpdateActivate();
-                }
-            }
+            foreach (Activator activator in _activators) activator.UpdateActivate();
 
             _currentPresenter?.UpdateLoop();
         }
-
         private void FixedUpdate()
         {
             _currentPresenter?.FixedLoop();
         }
+
+        public Presenter GetPresenter => _currentPresenter;
+        public string GetName => _currentPresenter == null ? "None" : _currentPresenter.gameObject.name + " - " + _currentPresenter.Name;
+        public bool IsEmpty => _currentPresenter == null;
 
         // Check the Actions list for a ready-made Action
         // If you find an equal GameObject Name, execute this Action
@@ -55,6 +48,18 @@ namespace AssemblyActorCore
             }
 
             CreateAction(objectPresenter);
+        }
+
+        // At the end of the Action, remove it from the Actor
+        public void Deactivate(GameObject objectPresenter)
+        {
+            Presenter presenter = objectPresenter.GetComponent<Presenter>();
+
+            if (presenter == _currentPresenter)
+            {
+                _currentPresenter.Exit();
+                _currentPresenter = null;
+            }
         }
 
         // If the Action is empty, we can activate any other type
@@ -79,7 +84,7 @@ namespace AssemblyActorCore
 
                     if (_isIrreversible == false)
                     {
-                        return _isController ? presenter.Type != PresenterType.Controller : presenter.Type == PresenterType.Forced;
+                        return _isController ? true : presenter.Type == PresenterType.Forced;
                     }
                 }
             }
@@ -109,18 +114,6 @@ namespace AssemblyActorCore
             _presenters.Add(instantiatePresenter.GetComponent<Presenter>());
 
             InvokeActivate(instantiatePresenter);
-        }
-
-        // At the end of the Action, remove it from the Actor
-        public void Deactivate(GameObject objectPresenter)
-        {
-            Presenter presenter = objectPresenter.GetComponent<Presenter>();
-
-            if (presenter == _currentPresenter)
-            {
-                _currentPresenter.Exit();
-                _currentPresenter = null;
-            }
         }
     }
 }

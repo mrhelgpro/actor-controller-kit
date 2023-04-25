@@ -16,3 +16,6 @@ All notable changes to this project will be documented in this file.
 - Add folder Character
 - Add Directable
 - Add Animation Humanoid
+
+## [1.0.5] - 2023-04-25
+- Add Followable

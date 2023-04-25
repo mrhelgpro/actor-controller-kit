@@ -6,16 +6,17 @@ namespace AssemblyActorCore
 {
     public class Targetable : Model
     {
+        private Target _target = null;
+
         public bool IsTarget => _target != null;
         public bool IsPosition => IsTarget && _target.IsPosition;
         public bool IsInteraction => IsTarget && _target.IsInteraction;
         public Vector3 GetPosition => IsTarget ? _target.GetPosition : Vector3.zero;
         public string GetTag => IsTarget ? _target.GetTag : "None";
+
         public void AddTarget(Vector3 position) => _target = new Target(position);
         public void AddTarget(Transform transform) => _target = new Target(transform);
         public void Clear() => _target = null;
-
-        private Target _target = null;
     }
 
     [Serializable]

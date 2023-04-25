@@ -34,7 +34,7 @@ namespace AssemblyActorCore
             directionMoveLog();
             directionTraceLog();
 
-            _lastPositionForSpeed = mainTransform.position;
+            _lastPositionForSpeed = RootTransform.position;
         }
 
         private void heightLog()
@@ -43,9 +43,9 @@ namespace AssemblyActorCore
             {
                 if (positionable.IsGrounded) Height = 0;
 
-                if (mainTransform.position.y > Height)
+                if (RootTransform.position.y > Height)
                 {
-                    Height = Mathf.Round(mainTransform.position.y * 100f) / 100f;
+                    Height = Mathf.Round(RootTransform.position.y * 100f) / 100f;
                 }
             }
             else
@@ -57,7 +57,7 @@ namespace AssemblyActorCore
 
         private void speedLog()
         {
-            Vector3 velocity = (mainTransform.position - _lastPositionForSpeed) / Time.deltaTime;
+            Vector3 velocity = (RootTransform.position - _lastPositionForSpeed) / Time.deltaTime;
             Speed = Mathf.Round(velocity.magnitude * 100f) / 100f;
         }
 
@@ -83,7 +83,7 @@ namespace AssemblyActorCore
                     Debug.DrawLine(hit.point, hit.point + direction * 1, Color.red, 0, true);
                 }
 
-                Debug.DrawLine(mainTransform.position, mainTransform.position + Vector3.ProjectOnPlane(direction, Vector3.up) * 10, Color.white, 0, true);
+                Debug.DrawLine(RootTransform.position, RootTransform.position + Vector3.ProjectOnPlane(direction, Vector3.up) * 10, Color.white, 0, true);
             }
         }
 
@@ -93,7 +93,7 @@ namespace AssemblyActorCore
             {
                 if (directable)
                 {
-                    Debug.DrawLine(mainTransform.position, mainTransform.position + directable.GetMove * 2, Color.blue, 0, true);
+                    Debug.DrawLine(RootTransform.position, RootTransform.position + directable.Move * 2, Color.blue, 0, true);
                 }
                 else
                 {
@@ -106,10 +106,10 @@ namespace AssemblyActorCore
         {
             if (RayTraceTime > 0)
             {
-                Vector3 direction = mainTransform.position - _lastPositionForSpeed;
-                float distance = Vector3.Distance(mainTransform.position, _lastPositionForSpeed);
+                Vector3 direction = RootTransform.position - _lastPositionForSpeed;
+                float distance = Vector3.Distance(RootTransform.position, _lastPositionForSpeed);
 
-                Debug.DrawLine(mainTransform.position, mainTransform.position + direction.normalized * distance, Color.red, RayTraceTime, true);
+                Debug.DrawLine(RootTransform.position, RootTransform.position + direction.normalized * distance, Color.red, RayTraceTime, true);
             }
         }
     }

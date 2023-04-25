@@ -4,18 +4,16 @@ namespace AssemblyActorCore
 {
     public abstract class Model : MonoBehaviour
     {
-        public Transform GetRoot => mainTransform;
-
-        protected Transform myTransform;
-        protected Transform mainTransform;
+        public Transform RootTransform { get; private set; }
+        public Transform ThisTransform { get; private set; }
 
 
         protected void Awake()
         {
             Actor actor = GetComponentInParent<Actor>();
 
-            mainTransform = actor == null ? transform : actor.transform;
-            myTransform = transform;
+            RootTransform = actor == null ? transform : actor.transform;
+            ThisTransform = transform;
         }
     }
 
@@ -45,6 +43,7 @@ namespace AssemblyActorCore
     {
         protected PresenterMachine presenterMachine;
         protected Presenter presenter;
+
         protected new void Awake()
         {
             base.Awake();
@@ -62,8 +61,11 @@ namespace AssemblyActorCore
                 presenterMachine = GetComponentInParent<PresenterMachine>();
             }
         }
-        protected void TryToActivate() => presenterMachine.TryToActivate(gameObject);
 
         public abstract void UpdateActivate();
+
+        protected void TryToActivate() => presenterMachine.TryToActivate(gameObject);
+        protected void Deactivate() => presenterMachine.Deactivate(gameObject);
+        protected bool isCurrentPresenter => presenterMachine.GetPresenter == null ? false : gameObject == presenterMachine.GetPresenter.gameObject;
     }
 }

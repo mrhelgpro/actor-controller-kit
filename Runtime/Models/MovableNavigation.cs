@@ -21,11 +21,9 @@ namespace AssemblyActorCore
         {
             _navMeshAgent.speed = maxSpeed;
             _navMeshAgent.acceleration = rate * 2;
-            _navMeshAgent.SetDestination(mainTransform.position + direction.normalized);
-            currentSpeed = _navMeshAgent.velocity.magnitude;
-
+            _navMeshAgent.SetDestination(RootTransform.position + direction.normalized);
         }
 
-        protected override void Force(ref Vector3 force) { }
+        public override void SetForce(Vector3 force) { }
     }
 }

@@ -10,7 +10,7 @@ namespace AssemblyActorCore
         {
             base.Awake();
 
-            _animator = mainTransform.GetComponentInChildren<Animator>();
+            _animator = RootTransform.GetComponentInChildren<Animator>();
         }
 
         public void Play(string name, float speed = 1.0f, float fade = 0.025f)

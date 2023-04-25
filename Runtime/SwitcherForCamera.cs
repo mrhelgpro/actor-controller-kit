@@ -5,20 +5,20 @@ namespace AssemblyActorCore
 	public class SwitcherForCamera : DetectedByTrigger
 	{
 		private ActorCamera _actorCamera;
-		private TargetForCamera _targetForCamera;
-		private TargetForCamera _playerForCamera;
+		private Followable _targetForCamera;
+		private Followable _playerForCamera;
 
         private void Awake()
         {
 			_actorCamera = FindObjectOfType<ActorCamera>();
-			_targetForCamera = GetComponent<TargetForCamera>();
+			_targetForCamera = GetComponent<Followable>();
 
 			Tag = "Player";
         }
 
         public override void OnTargetEnter(Transform target)
 		{
-			_playerForCamera = target.GetComponentInChildren<TargetForCamera>();
+			_playerForCamera = target.GetComponentInChildren<Followable>();
 			_actorCamera.Target = _targetForCamera;
 		}
 

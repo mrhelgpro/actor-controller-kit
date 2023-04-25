@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 public static class ActorExtention
@@ -60,6 +61,32 @@ public static class ActorExtention
     {
         Cursor.lockState = state == true ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = state;
+    }
+
+    public static bool FieldsAreEqual(object obj1, object obj2)
+    {
+        Type type1 = obj1.GetType();
+        Type type2 = obj2.GetType();
+
+        if (type1 != type2)
+        {
+            return false;
+        }
+
+        FieldInfo[] fields = type1.GetFields(BindingFlags.Public | BindingFlags.Instance);
+
+        foreach (FieldInfo field in fields)
+        {
+            object value1 = field.GetValue(obj1);
+            object value2 = field.GetValue(obj2);
+
+            if (!value1.Equals(value2))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
 
