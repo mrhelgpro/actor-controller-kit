@@ -1,17 +1,21 @@
+using System;
 using UnityEngine;
 
 namespace AssemblyActorCore
 {
     public enum RotationMode { None, DirectionOfMovement, DirectionOfLook, Flip2D }
 
+    [Serializable]
     public class Rotable : Model
     {
-        public void SetParameters(RotationMode mode, Vector3 moveDirection, Vector2 inputLook, float rate)
+        public RotationMode Mode = RotationMode.None;
+
+        public void Update(Vector3 moveDirection, Vector2 inputLook, float rate)
         {
-            switch (mode)
+            switch (Mode)
             {
                 case RotationMode.None:
-                    RootTransform.transform.eulerAngles = Vector3.zero;
+                    RootTransform.eulerAngles = Vector3.zero;
                     break;
                 case RotationMode.DirectionOfMovement:
                     lookAtDirection(moveDirection, rate);

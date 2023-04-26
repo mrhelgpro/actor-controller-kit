@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public abstract class Movable : Model
+    public abstract class Movable : ModelComponent
     {
         public Vector3 Velocity { get; protected set; }
 

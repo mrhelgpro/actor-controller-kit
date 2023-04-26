@@ -5,20 +5,22 @@ namespace AssemblyActorCore
     public class Animatorable : Model
     {
         private Animator _animator;
+        private string _previousName = "None";
 
-        private new void Awake()
+        public override void Initialization(Transform transform)
         {
-            base.Awake();
-
+            base.Initialization(transform);
             _animator = RootTransform.GetComponentInChildren<Animator>();
         }
 
-        public void Play(string name, float speed = 1.0f, float fade = 0.025f)
+        public void Play(string name, float fade = 0.025f)
         {
-            _animator?.CrossFade(name, fade);
-            _animator?.SetFloat("Speed", speed);
+            if (name != _previousName)
+            {
+                _animator?.CrossFade(name, fade);
+                _previousName = name;
+            }
         }
-
         public void SetFloat(string name, float value) => _animator?.SetFloat(name, value);
         public void SetFloat(string name, float value, float dampTime) => _animator?.SetFloat(name, value, dampTime, Time.deltaTime);
     }

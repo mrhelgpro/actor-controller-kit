@@ -4,7 +4,7 @@ using UnityEditor;
           
 namespace AssemblyActorCore
 {
-    public class Targetable : Model
+    public class Targetable : ModelComponent
     {
         private Target _target = null;
 

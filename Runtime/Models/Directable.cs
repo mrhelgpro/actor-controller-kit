@@ -1,9 +1,15 @@
+using System;
 using UnityEngine;
 
 namespace AssemblyActorCore
 {
+    public enum LookMode { Camera, Input }
+
+    [Serializable]
     public class Directable : Model
     {
+        public LookMode Mode = LookMode.Camera;
+        public Vector3 Look { get; private set; }
         public Vector3 Camera { get; private set; }
         public Vector3 Body { get; private set; }
         public Vector3 Move { get; private set; }
@@ -12,19 +18,34 @@ namespace AssemblyActorCore
         private Transform _cameraTransform;
         private float _previousPositionY;
 
-        private new void Awake()
+        public override void Initialization(Transform transform)
         {
-            base.Awake();
-
+            base.Initialization(transform);
             _cameraTransform = UnityEngine.Camera.main.transform;
         }
 
-        public void SetParameters(Vector2 inputMove, float rate)
+        public void Update(Vector2 inputMove, float rate)
         {
+            setLookDirection();
+            
             Camera = _cameraTransform.forward.normalized;
             Body = RootTransform.TransformDirection(Vector3.forward).normalized;
             Move = (Vector3.ProjectOnPlane(Camera, Vector3.up) * inputMove.y + _cameraTransform.right * inputMove.x).normalized; // Get direction relative to Camera
             Local = Move.magnitude > 0 ? getLocalDirection(Move, Body) : Local;
+        }
+
+        private void setLookDirection()
+        {
+            if (Mode == LookMode.Camera)
+            {
+                Look = Camera;
+            }
+            else
+            {
+                Look = Vector3.forward;
+            }
+
+            Debug.DrawLine(RootTransform.position, RootTransform.position + Look.normalized * 5, Color.green, 0, true);
         }
 
         private Vector3 getLocalDirection(Vector3 move, Vector3 body)

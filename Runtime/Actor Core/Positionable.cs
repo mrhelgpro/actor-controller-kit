@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public abstract class Positionable : Model
+    public abstract class Positionable : ModelComponent
     {
         public bool IsGrounded { get; protected set; }
         public bool IsObstacle { get; protected set; }

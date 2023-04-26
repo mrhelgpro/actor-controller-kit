@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class Inputable : Model
+    public class Inputable : ModelComponent
     {
                                      // KEYBOARD            X-BOX             DUALSHOCK       GAMEPAD
         public bool Menu;            // Escape

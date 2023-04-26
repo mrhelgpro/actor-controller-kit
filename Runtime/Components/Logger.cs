@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class Logger : Model
+    public class Logger : ModelComponent
     {
         public float Height;
         public float Speed;
@@ -11,7 +11,6 @@ namespace AssemblyActorCore
         [Range (0, 100)] public int RayTraceTime = 0;
 
         protected Positionable positionable;
-        protected Directable directable;
 
         private Vector3 _lastPositionForSpeed = Vector3.zero;
         private Transform _cameraTransform;
@@ -21,7 +20,6 @@ namespace AssemblyActorCore
             base.Awake();
 
             positionable = GetComponentInParent<Positionable>();
-            directable = GetComponentInParent<Directable>();
 
             _cameraTransform = Camera.main.transform;
         }
@@ -91,14 +89,7 @@ namespace AssemblyActorCore
         {
             if (RayMoveDirection)
             {
-                if (directable)
-                {
-                    Debug.DrawLine(RootTransform.position, RootTransform.position + directable.Move * 2, Color.blue, 0, true);
-                }
-                else
-                {
-                    Debug.LogWarning(gameObject.name + " - Logger: <Directable> is not found");
-                }
+                Debug.DrawLine(RootTransform.position, RootTransform.position + RootTransform.TransformDirection(Vector3.forward).normalized * 2, Color.blue, 0, true);
             }
         }
 

@@ -4,7 +4,7 @@ using UnityEditor;
 
 namespace AssemblyActorCore
 {
-    public class Followable : Model
+    public class Followable : ModelComponent
     {
         public ActorCameraSettings Settings;
 
@@ -23,14 +23,17 @@ namespace AssemblyActorCore
             }
         }
 
-        public void SetParametres(ActorCameraSettings settings)
+        public void SetParametres(ActorCameraSettings settings, ref InputVector look)
         {
-            if (Settings.Equals(settings) == false)
+            Settings = settings;
+
+            if (look.Freez == false)
             {
-                Settings = settings;
+                Settings.Horizontal = look.Value.x;
+                look.Value.y = Mathf.Clamp(look.Value.y, -30, 85);
+                Settings.Vertical = look.Value.y;
             }
         }
-
     }
 
     [Serializable]

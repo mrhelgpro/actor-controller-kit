@@ -31,7 +31,7 @@ namespace AssemblyActorCore
 
         public override void UpdateActivate()
         {
-            if (isCurrentPresenter == false)
+            if (isCurrentController == false)
             {
                 setActive(true);
             }

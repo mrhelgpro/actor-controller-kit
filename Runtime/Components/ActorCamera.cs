@@ -35,12 +35,10 @@ namespace AssemblyActorCore
 
         public void PreviewTheTarget(Followable target)
         {
-            Target = target;
+            GetComponent<Camera>().fieldOfView = target.Settings.FieldOfView;
 
-            GetComponent<Camera>().fieldOfView = Target.Settings.FieldOfView;
-
-            transform.rotation = Quaternion.Euler(Target.Settings.Vertical, Target.Settings.Horizontal, 0);
-            transform.position = transform.rotation * new Vector3(Target.Settings.Shoulder, Target.Settings.Height, -Target.Settings.Distance) + Target.transform.position;
+            transform.rotation = Quaternion.Euler(target.Settings.Vertical, target.Settings.Horizontal, 0);
+            transform.position = transform.rotation * new Vector3(target.Settings.Shoulder, target.Settings.Height, -target.Settings.Distance) + target.transform.position;
         }
 
         private void followTheTarget()
