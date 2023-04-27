@@ -38,8 +38,11 @@ public sealed class InputPlayerController : MonoBehaviour
             _inputActions.Player.TriggerRight.performed += context => _inputable.ActionRight = true;
             _inputActions.Player.TriggerRight.canceled += context => _inputable.ActionRight = false;
 
-            _inputActions.Player.BumperRight.performed += context => _inputable.ActionLeft = true;
-            _inputActions.Player.BumperRight.canceled += context => _inputable.ActionLeft = false;
+            //_inputActions.Player.BumperRight.performed += context => _inputable.ActionLeft = true;
+            //_inputActions.Player.BumperRight.canceled += context => _inputable.ActionLeft = false;
+
+            _inputActions.Player.BumperRight.performed += context => actionLeft(true);
+            _inputActions.Player.BumperRight.canceled += context => actionLeft(false);
 
             _inputActions.Player.TriggerLeft.performed += context => _inputable.Control = true;
             _inputActions.Player.TriggerLeft.canceled += context => _inputable.Control = false;
@@ -49,18 +52,35 @@ public sealed class InputPlayerController : MonoBehaviour
         }
     }
 
+    private void actionLeft(bool state)
+    {
+        _inputable.ActionLeft = state;
+
+        if (state) checkTarget();
+    }
+
+    private void checkTarget()
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(_inputable.Pointer), out hit))
+        {
+            _inputable.Target = new Target(hit.collider.transform, hit.point);
+
+            return;
+        }
+
+        _inputable.Target = null;
+    }
+
     private void Update()
     {
+        _inputable.Pointer = _inputActions.Player.Pointer.ReadValue<Vector2>();
         _inputable.Move = _inputActions.Player.Move.ReadValue<Vector2>();
         _inputable.Look.Delta = _inputActions.Player.Look.ReadValue<Vector2>();
-
-        if (_inputable.Look.Freez == false)
-        {
-            _inputable.Look.Value += _inputable.Look.Delta;
-        }
+        _inputable.Look.Value += _inputable.Look.Delta * _inputable.Look.Sensitivity;
     }
 
     private void OnEnable() => _inputActions?.Enable();
-
     private void OnDisable() => _inputActions?.Disable();
 }

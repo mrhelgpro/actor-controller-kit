@@ -103,6 +103,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Pointer",
+                    "type": "Value",
+                    "id": "f7b0d679-fa6f-4967-8dc1-3e38be8df11b",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -320,7 +329,7 @@
                     "id": "6eda2c4e-5d67-42ee-9746-15c18804870d",
                     "path": "<Mouse>/delta",
                     "interactions": "",
-                    "processors": "InvertVector2(invertX=false),ScaleVector2(x=0.05,y=0.05)",
+                    "processors": "InvertVector2(invertX=false),ScaleVector2(x=0.01,y=0.01)",
                     "groups": "Keyboard",
                     "action": "Look",
                     "isComposite": false,
@@ -331,7 +340,7 @@
                     "id": "629db384-468f-48dc-8c81-171b16158f12",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
-                    "processors": "InvertVector2(invertX=false),ScaleVector2(x=1.25,y=0.75)",
+                    "processors": "InvertVector2(invertX=false),ScaleVector2",
                     "groups": "Gamepad",
                     "action": "Look",
                     "isComposite": false,
@@ -446,6 +455,28 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "5ccfcec1-f423-4da0-b494-5ddfd63a87c8",
+                    "path": "<Pointer>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Pointer",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ce157de2-4220-4ca5-b440-5186a47c24fb",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Pointer",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

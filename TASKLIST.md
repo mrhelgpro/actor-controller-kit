@@ -1,3 +1,4 @@
+- ADD LOOK AT TARGET
 - <ActorCamera> - Fix the transition from one camera setting to another (make it smooth)
 - <Soundable> - Make footsteps sound
 - <ActivateByInput> - Add Check "Move, Look"

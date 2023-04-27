@@ -18,6 +18,7 @@ namespace AssemblyActorCore
         // Models
         [SerializeField] protected Rotable rotable = new Rotable();
         [SerializeField] protected Directable directable = new Directable();
+        [SerializeField] protected Targetable targetable = new Targetable();
         protected Animatorable animatorable = new Animatorable();
         
         // Model Components
@@ -68,8 +69,10 @@ namespace AssemblyActorCore
         {
             JumpInput();
 
-            directable.Update(inputable.Move, Rate);
-            rotable.Update(directable.Move, inputable.Look.Value, Rate);
+            targetable.DirectionToTarget(RootTransform, ref inputable.Target, ref inputable.Move);
+
+            directable.Update(inputable.Move, inputable.Look.Delta, Rate);
+            rotable.Update(directable.Move, directable.Look, Rate);
 
             animatorable.Play(positionable.IsGrounded ? Name : "Fall");
             animatorable.SetFloat("Speed", movable.Velocity.magnitude);
@@ -141,6 +144,27 @@ namespace AssemblyActorCore
                     {
                         _isJumpDone = false;
                     }
+                }
+            }
+        }
+
+        public virtual void TargetHandler()
+        {
+            if (targetable.IsInteraction(inputable.Target))
+            {
+                Vector2 targetPosition = new Vector2(inputable.Target.GetPosition.x, inputable.Target.GetPosition.z);
+                Vector2 currentPosition = new Vector2(transform.position.x, transform.position.z);
+                Vector2 direction = targetPosition - currentPosition;
+
+                bool isReady = direction.magnitude > 0.1f;
+
+                if (isReady)
+                {
+                    inputable.Move = direction.normalized;
+                }
+                else
+                {
+                    inputable.Target = null;
                 }
             }
         }

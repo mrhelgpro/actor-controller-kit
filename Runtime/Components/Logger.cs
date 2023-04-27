@@ -15,10 +15,8 @@ namespace AssemblyActorCore
         private Vector3 _lastPositionForSpeed = Vector3.zero;
         private Transform _cameraTransform;
 
-        private new void Awake()
+        private void Start()
         {
-            base.Awake();
-
             positionable = GetComponentInParent<Positionable>();
 
             _cameraTransform = Camera.main.transform;

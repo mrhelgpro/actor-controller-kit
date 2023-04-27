@@ -127,6 +127,15 @@ namespace AssemblyActorCore
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pointer"",
+                    ""type"": ""Value"",
+                    ""id"": ""f7b0d679-fa6f-4967-8dc1-3e38be8df11b"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -344,7 +353,7 @@ namespace AssemblyActorCore
                     ""id"": ""6eda2c4e-5d67-42ee-9746-15c18804870d"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
-                    ""processors"": ""InvertVector2(invertX=false),ScaleVector2(x=0.05,y=0.05)"",
+                    ""processors"": ""InvertVector2(invertX=false),ScaleVector2(x=0.01,y=0.01)"",
                     ""groups"": ""Keyboard"",
                     ""action"": ""Look"",
                     ""isComposite"": false,
@@ -355,7 +364,7 @@ namespace AssemblyActorCore
                     ""id"": ""629db384-468f-48dc-8c81-171b16158f12"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
-                    ""processors"": ""InvertVector2(invertX=false),ScaleVector2(x=1.25,y=0.75)"",
+                    ""processors"": ""InvertVector2(invertX=false),ScaleVector2"",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Look"",
                     ""isComposite"": false,
@@ -470,6 +479,28 @@ namespace AssemblyActorCore
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5ccfcec1-f423-4da0-b494-5ddfd63a87c8"",
+                    ""path"": ""<Pointer>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Pointer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ce157de2-4220-4ca5-b440-5186a47c24fb"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Pointer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -517,6 +548,7 @@ namespace AssemblyActorCore
             m_Player_TriggerRight = m_Player.FindAction("TriggerRight", throwIfNotFound: true);
             m_Player_BumperLeft = m_Player.FindAction("BumperLeft", throwIfNotFound: true);
             m_Player_BumperRight = m_Player.FindAction("BumperRight", throwIfNotFound: true);
+            m_Player_Pointer = m_Player.FindAction("Pointer", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -589,6 +621,7 @@ namespace AssemblyActorCore
         private readonly InputAction m_Player_TriggerRight;
         private readonly InputAction m_Player_BumperLeft;
         private readonly InputAction m_Player_BumperRight;
+        private readonly InputAction m_Player_Pointer;
         public struct PlayerActions
         {
             private @InputActions m_Wrapper;
@@ -604,6 +637,7 @@ namespace AssemblyActorCore
             public InputAction @TriggerRight => m_Wrapper.m_Player_TriggerRight;
             public InputAction @BumperLeft => m_Wrapper.m_Player_BumperLeft;
             public InputAction @BumperRight => m_Wrapper.m_Player_BumperRight;
+            public InputAction @Pointer => m_Wrapper.m_Player_Pointer;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -646,6 +680,9 @@ namespace AssemblyActorCore
                 @BumperRight.started += instance.OnBumperRight;
                 @BumperRight.performed += instance.OnBumperRight;
                 @BumperRight.canceled += instance.OnBumperRight;
+                @Pointer.started += instance.OnPointer;
+                @Pointer.performed += instance.OnPointer;
+                @Pointer.canceled += instance.OnPointer;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -683,6 +720,9 @@ namespace AssemblyActorCore
                 @BumperRight.started -= instance.OnBumperRight;
                 @BumperRight.performed -= instance.OnBumperRight;
                 @BumperRight.canceled -= instance.OnBumperRight;
+                @Pointer.started -= instance.OnPointer;
+                @Pointer.performed -= instance.OnPointer;
+                @Pointer.canceled -= instance.OnPointer;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -731,6 +771,7 @@ namespace AssemblyActorCore
             void OnTriggerRight(InputAction.CallbackContext context);
             void OnBumperLeft(InputAction.CallbackContext context);
             void OnBumperRight(InputAction.CallbackContext context);
+            void OnPointer(InputAction.CallbackContext context);
         }
     }
 }

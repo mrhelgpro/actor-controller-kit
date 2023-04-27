@@ -20,7 +20,17 @@ namespace AssemblyActorCore
             _mainTransform = transform;
             _camera = GetComponent<Camera>();
 
-            if (Target == null) FindTarget();
+            if (Target == null)
+            {
+                FindTarget();
+            }
+            else
+            {
+                if (Target.gameObject.activeSelf == false)
+                {
+                    Target = null;
+                }
+            }
         }
 
         private void FixedUpdate()

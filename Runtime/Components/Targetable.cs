@@ -1,75 +1,68 @@
+using System.Collections.Generic;
 using System;
 using UnityEngine;
-using UnityEditor;
           
 namespace AssemblyActorCore
 {
-    public class Targetable : ModelComponent
+    [Serializable]
+    public class Targetable
     {
-        private Target _target = null;
+        public LayerMask InteractionLayer;
 
-        public bool IsTarget => _target != null;
-        public bool IsPosition => IsTarget && _target.IsPosition;
-        public bool IsInteraction => IsTarget && _target.IsInteraction;
-        public Vector3 GetPosition => IsTarget ? _target.GetPosition : Vector3.zero;
-        public string GetTag => IsTarget ? _target.GetTag : "None";
+        public bool IsInteraction(Target target)
+        {
+            if (target != null)
+            {
+                if (target.GetTransform != null)
+                {
+                    if ((InteractionLayer.value & (1 << target.GetTransform.gameObject.layer)) > 0)
+                    {
+                        return true;
+                    }
+                }
+            }
 
-        public void AddTarget(Vector3 position) => _target = new Target(position);
-        public void AddTarget(Transform transform) => _target = new Target(transform);
-        public void Clear() => _target = null;
+            return false;
+        }
+
+        public void DirectionToTarget(Transform transform, ref Target target, ref Vector2 moveDirection)
+        {
+            if (IsInteraction(target))
+            {
+                Vector2 targetPosition = new Vector2(target.GetPosition.x, target.GetPosition.z);
+                Vector2 currentPosition = new Vector2(transform.position.x, transform.position.z);
+                Vector2 direction = targetPosition - currentPosition;
+
+                bool isReady = direction.magnitude > 0.1f;
+
+                if (isReady)
+                {
+                    moveDirection = direction.normalized;
+                }
+                else
+                {
+                    target = null;
+                }
+            }
+        }
     }
 
     [Serializable]
     public class Target
     {
+        public Transform _transform = null;
         private Vector3 _position;
-        private Transform _transform;
 
-        public bool IsPosition => _transform == null;
-        public bool IsInteraction => _transform != null;
-        public Vector3 GetPosition => _transform == null ?_position : _transform.position;
-        public string GetTag => _transform == null ? "Position" : _transform.tag;
+        public Transform GetTransform => _transform;
+        public Vector3 GetPosition => _transform == null ? Vector3.zero : _position;
+        public string GetTag => _transform == null ? "Null" : _transform.tag;
+        //public string GetLayer => 
 
-        public Target(Vector3 position)
+
+        public Target(Transform transform, Vector3 position)
         {
+            _transform = transform;
             _position = position;
         }
-
-        public Target(Transform transform)
-        {
-            _position = transform.position;
-            _transform = transform;
-        }
     }
-
-#if UNITY_EDITOR
-    [ExecuteInEditMode]
-    [CustomEditor(typeof(Targetable))]
-    public class TargetableCameraEditor : Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            Targetable myTarget = (Targetable)target;
-
-            if (Application.isPlaying)
-            {
-                if (myTarget.IsTarget)
-                {
-                    EditorGUILayout.LabelField("Target Tag: " + myTarget.GetTag);
-                    EditorGUILayout.Vector3Field("", myTarget.GetPosition);
-                }
-                else
-                {
-                    EditorGUILayout.LabelField("Target - Null");
-                }
-
-                EditorUtility.SetDirty(target);
-            }
-            else
-            {
-                myTarget.Clear();
-            }
-        }
-    }
-#endif
 }

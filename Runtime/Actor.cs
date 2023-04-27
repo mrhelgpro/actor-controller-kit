@@ -1,4 +1,5 @@
 ﻿
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEditor;
 
@@ -16,33 +17,41 @@ namespace AssemblyActorCore
     [CustomEditor(typeof(Actor))]
     public class ActorEditor : Editor
     {
-        private Actor actor;
         protected GameObject gameObject;
+        private Actor _actor;
+        private bool _isPlaying;
 
         private void OnEnable()
         {
-            actor = (Actor)target;
-            gameObject = actor.gameObject;
+            _actor = (Actor)target;
+            gameObject = _actor.gameObject;
 
-            actor.AddComponents();
+            _actor.AddComponents();
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
-            if (actor == null)
+            if (_isPlaying == false)
             {
-                if (gameObject)
+                if (_actor == null)
                 {
-                    RemoveComponents();
+                    if (gameObject)
+                    {
+                        RemoveComponents();
+                        Debug.Log("Remove Components");
+                    }
                 }
             }
+
+            if (Application.isPlaying == false) _isPlaying = false;
         }
 
         public override void OnInspectorGUI()
         {
             if (Application.isPlaying)
             {
-                EditorGUILayout.LabelField("Name", actor.Name);
+                EditorGUILayout.LabelField("Name", _actor.Name);
+                _isPlaying = true;
             }
             else
             {
@@ -66,6 +75,7 @@ namespace AssemblyActorCore
             GUILayout.EndVertical();
 
             // EXAMPLE: To show a property - EditorGUILayout.PropertyField(new SerializedObject(target).FindProperty("Input")); 
+            // EXAMPLE: Always updated by the inspector - EditorUtility.SetDirty(target);
         }
     }
 #endif

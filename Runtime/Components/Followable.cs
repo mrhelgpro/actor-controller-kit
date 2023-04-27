@@ -27,7 +27,7 @@ namespace AssemblyActorCore
         {
             Settings = settings;
 
-            if (look.Freez == false)
+            if (look.Sensitivity > 0)
             {
                 Settings.Horizontal = look.Value.x;
                 look.Value.y = Mathf.Clamp(look.Value.y, -30, 85);

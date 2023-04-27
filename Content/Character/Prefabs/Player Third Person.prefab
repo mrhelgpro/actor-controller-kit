@@ -110,7 +110,7 @@ MonoBehaviour:
   Look:
     Value: {x: 0, y: 0}
     Delta: {x: 0, y: 0}
-    Freez: 0
+    Sensitivity: 5
   Option: 0
   Cancel: 0
   Motion: 0
@@ -119,6 +119,7 @@ MonoBehaviour:
   ActionLeft: 0
   Control: 0
   Shift: 0
+  Pointer: {x: 0, y: 0}
 --- !u!114 &648300705117784518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,6 +270,9 @@ MonoBehaviour:
     RotationTime: 0.05
   rotable:
     Mode: 2
+  directable:
+    Mode: 0
+    Look: {x: 0, y: 0, z: 0}
 --- !u!114 &2543972599039936197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -445,6 +449,9 @@ MonoBehaviour:
     RotationTime: 0.05
   rotable:
     Mode: 1
+  directable:
+    Mode: 0
+    Look: {x: 0, y: 0, z: 0}
 --- !u!114 &3910434069468452157
 MonoBehaviour:
   m_ObjectHideFlags: 0

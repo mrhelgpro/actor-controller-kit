@@ -5,47 +5,35 @@ using AssemblyActorCore;
 public class InputTargetController : MonoBehaviour
 {
     public List<string> InteractionTagList;
-    protected Targetable targetable;
-    protected Inputable inputable;
-
+    
+    private Targetable _targetable;
+    private Inputable _inputable;
     private Transform _mainTransform;
 
     private void Awake()
     {
-        targetable = gameObject.GetComponentInParent<Targetable>();
-        inputable = gameObject.GetComponentInParent<Inputable>();
+        _targetable = gameObject.GetComponentInParent<Targetable>();
+        _inputable = gameObject.GetComponentInParent<Inputable>();
         _mainTransform = transform;
     }
 
     private void Update()
     {
         getTarget();
-        inputToTarget();
+        //inputToTarget();
+        inputLookDirection();
     }
 
-    private void inputToTarget()
+    private void inputLookDirection()
     {
-        if (targetable.IsPosition)
-        {
-            Vector2 targetPosition = new Vector2(targetable.GetPosition.x, targetable.GetPosition.z);
-            Vector2 currentPosition = new Vector2(_mainTransform.position.x, _mainTransform.position.z);
-            Vector2 direction = targetPosition - currentPosition;
-
-            bool isReady = direction.magnitude > 0.1f;
-
-            inputable.Move = isReady ? direction.normalized : Vector2.zero;
-        }
-        else
-        {
-            inputable.Move = Vector2.zero;
-        }
+        _inputable.Look.Delta = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
     }
 
     private void getTarget()
     {
         if (UnityEngine.Input.GetMouseButtonDown(0))
         {
-            inputable.ActionLeft = true;
+            _inputable.ActionLeft = true;
 
             Ray ray = Camera.main.ScreenPointToRay(UnityEngine.Input.mousePosition);
             RaycastHit hit;
@@ -56,23 +44,23 @@ public class InputTargetController : MonoBehaviour
                 {
                     if (hit.collider.tag == tag)
                     {
-                        targetable.AddTarget(hit.collider.transform);
+                        //_targetable.AddTarget(hit.collider.transform);
 
                         return;
                     }
                 }
 
-                targetable.AddTarget(hit.point);
+                //_targetable.AddTarget(hit.point);
             }
             else
             {
-                targetable.Clear();
+                //_targetable.Clear();
             }
         }
 
         if (UnityEngine.Input.GetMouseButtonUp(0))
         {
-            inputable.ActionLeft = false;
+            _inputable.ActionLeft = false;
         }
     }
 }

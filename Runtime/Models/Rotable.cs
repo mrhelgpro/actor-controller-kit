@@ -10,7 +10,7 @@ namespace AssemblyActorCore
     {
         public RotationMode Mode = RotationMode.None;
 
-        public void Update(Vector3 moveDirection, Vector2 inputLook, float rate)
+        public void Update(Vector3 moveDirection, Vector3 lookDirection, float rate)
         {
             switch (Mode)
             {
@@ -21,7 +21,7 @@ namespace AssemblyActorCore
                     lookAtDirection(moveDirection, rate);
                     break;
                 case RotationMode.DirectionOfLook:
-                    directionByLook(moveDirection, inputLook, rate);
+                    directionByLook(moveDirection, lookDirection, rate);
                     break;
                 case RotationMode.Flip2D:
                     checkFlip(moveDirection);
@@ -29,12 +29,15 @@ namespace AssemblyActorCore
             }
         }
 
-        private void directionByLook(Vector3 moveDirection, Vector2 inputLook, float rate)
+        private void directionByLook(Vector3 moveDirection, Vector3 lookDirection, float rate)
         {
             if (moveDirection.magnitude > 0)
             {
-                Quaternion targetRotation = Quaternion.Euler(0, inputLook.x, 0);
-                RootTransform.rotation = Quaternion.Slerp(RootTransform.rotation, targetRotation, Time.deltaTime * 2.5f * rate);
+                //Quaternion targetRotation = Quaternion.Euler(0, lookDirection.x, 0);
+                //RootTransform.rotation = Quaternion.Slerp(RootTransform.rotation, targetRotation, Time.deltaTime * 2.5f * rate);
+
+                Vector3 look = Vector3.Normalize(Vector3.Scale(Vector3.ProjectOnPlane(lookDirection, Vector3.up), new Vector3(1, 0, 1)));
+                RootTransform.rotation = Quaternion.LookRotation(look, Vector3.up);
             }
         }
 

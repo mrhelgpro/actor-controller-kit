@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public enum LookMode { Camera, Input }
+    public enum LookMode { Camera, Pointer, Stick }
 
     [Serializable]
     public class Directable : Model
@@ -17,6 +17,7 @@ namespace AssemblyActorCore
 
         private Transform _cameraTransform;
         private float _previousPositionY;
+        private float _previousLookDeltaMagnitude;
 
         public override void Initialization(Transform transform)
         {
@@ -24,9 +25,9 @@ namespace AssemblyActorCore
             _cameraTransform = UnityEngine.Camera.main.transform;
         }
 
-        public void Update(Vector2 inputMove, float rate)
+        public void Update(Vector2 inputMove, Vector2 lookDelta, float rate)
         {
-            setLookDirection();
+            setLookDirection(lookDelta);
             
             Camera = _cameraTransform.forward.normalized;
             Body = RootTransform.TransformDirection(Vector3.forward).normalized;
@@ -34,16 +35,33 @@ namespace AssemblyActorCore
             Local = Move.magnitude > 0 ? getLocalDirection(Move, Body) : Local;
         }
 
-        private void setLookDirection()
+        private Vector3 lookDirection;
+        private void setLookDirection(Vector2 lookDelta)
         {
             if (Mode == LookMode.Camera)
             {
                 Look = Camera;
             }
-            else
+            else if (Mode == LookMode.Pointer)
             {
-                Look = Vector3.forward;
+                Vector3 mousePosition = Input.mousePosition;
+                Vector3 lookDirection = UnityEngine.Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, UnityEngine.Camera.main.transform.position.y)) - RootTransform.position;
+                Look = Vector3.ProjectOnPlane(lookDirection, Vector3.up).normalized;
             }
+            else if (Mode == LookMode.Stick)
+            {
+                if (lookDelta.magnitude > 0.1f)
+                {
+                    if (lookDelta.magnitude > _previousLookDeltaMagnitude)
+                    {
+                        lookDirection = new Vector3(lookDelta.x, 0, -lookDelta.y).normalized;
+                    } 
+                }
+
+                Look = Vector3.Lerp(Look, lookDirection, Time.deltaTime * 15);
+            }
+
+            _previousLookDeltaMagnitude = lookDelta.magnitude;
 
             Debug.DrawLine(RootTransform.position, RootTransform.position + Look.normalized * 5, Color.green, 0, true);
         }
