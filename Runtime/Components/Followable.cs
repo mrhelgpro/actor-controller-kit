@@ -23,24 +23,36 @@ namespace AssemblyActorCore
             }
         }
 
-        public void SetParametres(ActorCameraSettings settings, ref InputVector look)
+        public void SetParametres(ActorCameraSettings settings, Vector2 look)
         {
-            Settings = settings;
-
-            if (look.Sensitivity > 0)
-            {
-                Settings.Horizontal = look.Value.x;
-                look.Value.y = Mathf.Clamp(look.Value.y, -30, 85);
-                Settings.Vertical = look.Value.y;
+            if (settings.InputCameraMode == InputCameraMode.Free)
+            { 
+                // Do somethings
             }
+
+            Settings.HorizontalDirection += look.x * settings.HorizontalSensitivity;
+            Settings.VerticalDirection += look.y * settings.VerticalSensitivity;
+            Settings.VerticalDirection = Mathf.Clamp(Settings.VerticalDirection, -25, 80);
+
+            Settings.Height = settings.Height;
+            Settings.Shoulder = settings.Shoulder;
+            Settings.Distance = settings.Distance;
+            Settings.FieldOfView = settings.FieldOfView;
+            Settings.MoveTime = settings.MoveTime;
+            Settings.RotationTime = settings.RotationTime;
         }
     }
+
+    public enum InputCameraMode { Free, LeftHold, RightHold, MiddleHold}
 
     [Serializable]
     public struct ActorCameraSettings
     {
-        [Range(-30, 90)] public float Vertical;
-        [Range(-180, 180)] public float Horizontal;
+        public InputCameraMode InputCameraMode;
+        [Range(-180, 180)] public float HorizontalDirection;
+        [Range(-90, 90)] public float VerticalDirection;
+        [Range(0, 5)] public float HorizontalSensitivity;
+        [Range(0, 5)] public float VerticalSensitivity;
         [Range(-5, 5)] public float Height;
         [Range(-1, 1)] public float Shoulder;
         [Range(0, 15)] public float Distance;

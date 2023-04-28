@@ -1,3 +1,4 @@
+- Add Switch Animator
 - Fix Move To Target when Camera no freez
 - Add Look at Target
 - <ActorCamera> - Fix the transition from one camera setting to another (make it smooth)

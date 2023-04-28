@@ -26,10 +26,10 @@ namespace AssemblyActorCore
             _cameraTransform = UnityEngine.Camera.main.transform;
         }
 
-        public void Update(Vector2 inputMove, Vector2 lookDelta, float rate)
+        public void Update(Vector2 inputMove, Vector2 lookDelta, float rate, bool isTarget)
         {
             setLookDirection(lookDelta);
-            setMoveDirection(inputMove);
+            setMoveDirection(inputMove, isTarget);
 
             Camera = _cameraTransform.forward.normalized;
             Body = RootTransform.TransformDirection(Vector3.forward).normalized;
@@ -37,9 +37,16 @@ namespace AssemblyActorCore
             Local = Move.magnitude > 0 ? getLocalDirection(Move, Body) : Local;
         }
 
-        private void setMoveDirection(Vector2 inputMove)
+        private void setMoveDirection(Vector2 inputMove, bool isTarget)
         {
-            Move = (Vector3.ProjectOnPlane(Camera, Vector3.up) * inputMove.y + _cameraTransform.right * inputMove.x).normalized;
+            if (isTarget)
+            {
+                Move = new Vector3(inputMove.x, 0, inputMove.y);
+            }
+            else 
+            {
+                Move = (Vector3.ProjectOnPlane(Camera, Vector3.up) * inputMove.y + _cameraTransform.right * inputMove.x).normalized;
+            }
         }
 
         private void setLookDirection(Vector2 lookDelta)

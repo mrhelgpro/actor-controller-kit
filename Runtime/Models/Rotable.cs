@@ -33,9 +33,6 @@ namespace AssemblyActorCore
         {
             if (moveDirection.magnitude > 0)
             {
-                //Quaternion targetRotation = Quaternion.Euler(0, lookDirection.x, 0);
-                //RootTransform.rotation = Quaternion.Slerp(RootTransform.rotation, targetRotation, Time.deltaTime * 2.5f * rate);
-
                 Vector3 look = Vector3.Normalize(Vector3.Scale(Vector3.ProjectOnPlane(lookDirection, Vector3.up), new Vector3(1, 0, 1)));
                 RootTransform.rotation = Quaternion.LookRotation(look, Vector3.up);
             }

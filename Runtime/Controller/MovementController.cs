@@ -19,7 +19,7 @@ namespace AssemblyActorCore
         [SerializeField] protected Rotable rotable = new Rotable();
         [SerializeField] protected Directable directable = new Directable();
         [SerializeField] protected Animatorable animatorable = new Animatorable();
-        
+
         // Model Components
         protected Inputable inputable;
         protected Movable movable;
@@ -66,7 +66,7 @@ namespace AssemblyActorCore
         {
             JumpInput();
             
-            directable.Update(inputable.Move, inputable.Look.Delta, Rate);
+            directable.Update(inputable.Move, inputable.Look, Rate, inputable.TargetPosition.IsTargetExists);
             rotable.Update(directable.Move, directable.Look, Rate);
 
             animatorable.Play(positionable.IsGrounded ? Name : "Fall");
@@ -74,7 +74,7 @@ namespace AssemblyActorCore
             animatorable.SetFloat("DirectionX", directable.Local.x); //animatorable.SetFloat("DirectionX", directable.GetLocal.x, 0.1f);
             animatorable.SetFloat("DirectionZ", directable.Local.z); //animatorable.SetFloat("DirectionZ", directable.GetLocal.z, 0.1f);
             
-            followable?.SetParametres(CameraSettings, ref inputable.Look);
+            followable?.SetParametres(CameraSettings, inputable.Look);
         }
 
         public override void FixedLoop()

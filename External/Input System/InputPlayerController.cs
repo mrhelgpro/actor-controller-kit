@@ -11,7 +11,7 @@ public sealed class InputPlayerController : MonoBehaviour
 
     public LayerMask TargetRequiredLayers;
 
-    private Target _targetPosition;
+    //private Target _targetPosition;
     private InputActions _inputActions;
     private Inputable _inputable;
 
@@ -88,7 +88,7 @@ public sealed class InputPlayerController : MonoBehaviour
             {
                 if ((TargetRequiredLayers.value & (1 << hit.collider.transform.gameObject.layer)) > 0)
                 {
-                    _targetPosition = new Target(transform, hit.collider.transform, hit.point);
+                    _inputable.TargetPosition = new Target(transform, hit.collider.transform, hit.point);
                 }
             }
         }
@@ -97,9 +97,9 @@ public sealed class InputPlayerController : MonoBehaviour
     private void Update()
     {
         _inputable.Pointer = _inputActions.Player.Pointer.ReadValue<Vector2>();
+        _inputable.Look = _inputActions.Player.Look.ReadValue<Vector2>();
 
         readMoveInput();
-        readLookInput();
     }
 
     private void readMoveInput()
@@ -110,11 +110,11 @@ public sealed class InputPlayerController : MonoBehaviour
         }
         else if (MoveDirectionMode == MoveMode.Target)
         {
-            if (_targetPosition.IsTargetExists)
+            if (_inputable.TargetPosition.IsTargetExists)
             {
-                if (_targetPosition.GetHorizontalDistance > 0.1f)
+                if (_inputable.TargetPosition.GetHorizontalDistance > 0.1f)
                 {
-                    _inputable.Move = _targetPosition.GetHorizontalDirection;
+                    _inputable.Move = _inputable.TargetPosition.GetHorizontalDirection;
 
                     return;
                 }
@@ -125,11 +125,11 @@ public sealed class InputPlayerController : MonoBehaviour
         }
         else
         {
-            if (_targetPosition.IsTargetExists)
+            if (_inputable.TargetPosition.IsTargetExists)
             {
-                if (_targetPosition.GetHorizontalDistance > 0.1f)
+                if (_inputable.TargetPosition.GetHorizontalDistance > 0.1f)
                 {
-                    _inputable.Move = _targetPosition.GetHorizontalDirection;
+                    _inputable.Move = _inputable.TargetPosition.GetHorizontalDirection;
 
                     return;
                 }
@@ -141,13 +141,7 @@ public sealed class InputPlayerController : MonoBehaviour
         }
     }
 
-    private void readLookInput()
-    {
-        _inputable.Look.Delta = _inputActions.Player.Look.ReadValue<Vector2>();
-        _inputable.Look.Value += _inputable.Look.Delta * _inputable.Look.Sensitivity;
-    }
-
-    public void ClearTarget() => _targetPosition.Clear();
+    public void ClearTarget() => _inputable.TargetPosition.Clear();
 
     private void OnEnable() => _inputActions?.Enable();
     private void OnDisable() => _inputActions?.Disable();

@@ -194,7 +194,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Click (Mouse)
+  m_Text: Right Click (Mouse)
 --- !u!222 &131068661
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -884,9 +884,9 @@ MonoBehaviour:
   Pointer: {x: 0, y: 0}
   Move: {x: 0, y: 0}
   Look:
-    Value: {x: 0, y: 0}
     Delta: {x: 0, y: 0}
-    Sensitivity: 0
+    SensitivityX: 1
+    SensitivityY: 0.5
   Option: 0
   Cancel: 0
   Motion: 0
@@ -996,6 +996,7 @@ MonoBehaviour:
     FieldOfView: 60
     MoveTime: 0.5
     RotationTime: 1
+    FreezRotation: 1
 --- !u!114 &3808791668755991177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1166,10 +1167,11 @@ MonoBehaviour:
     FieldOfView: 60
     MoveTime: 0.5
     RotationTime: 1
+    FreezRotation: 1
   rotable:
     Mode: 1
   directable:
-    Mode: 1
+    LookMode: 0
   animatorable:
     AnimatorController: {fileID: 0}
 --- !u!4 &6714427774560711954

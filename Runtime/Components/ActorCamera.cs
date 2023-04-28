@@ -47,7 +47,7 @@ namespace AssemblyActorCore
         {
             GetComponent<Camera>().fieldOfView = target.Settings.FieldOfView;
 
-            transform.rotation = Quaternion.Euler(target.Settings.Vertical, target.Settings.Horizontal, 0);
+            transform.rotation = Quaternion.Euler(target.Settings.VerticalDirection, target.Settings.HorizontalDirection, 0);
             transform.position = transform.rotation * new Vector3(target.Settings.Shoulder, target.Settings.Height, -target.Settings.Distance) + target.transform.position;
         }
 
@@ -57,8 +57,8 @@ namespace AssemblyActorCore
             {
                 _camera.fieldOfView = Target.Settings.FieldOfView;
 
-                float horizontal = Mathf.SmoothDampAngle(_mainTransform.eulerAngles.x, Target.Settings.Vertical, ref _angleVelocity.y, Target.Settings.RotationTime);
-                float vertical = Mathf.SmoothDampAngle(_mainTransform.eulerAngles.y, Target.Settings.Horizontal, ref _angleVelocity.x, Target.Settings.RotationTime);
+                float horizontal = Mathf.SmoothDampAngle(_mainTransform.eulerAngles.x, Target.Settings.VerticalDirection, ref _angleVelocity.y, Target.Settings.RotationTime);
+                float vertical = Mathf.SmoothDampAngle(_mainTransform.eulerAngles.y, Target.Settings.HorizontalDirection, ref _angleVelocity.x, Target.Settings.RotationTime);
                 Quaternion rotation = Quaternion.Euler(horizontal, vertical, 0);
 
                 Vector3 position = rotation * new Vector3(Target.Settings.Shoulder * 2, Target.Settings.Height, -Target.Settings.Distance) + Target.ThisTransform.position;

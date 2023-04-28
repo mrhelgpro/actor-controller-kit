@@ -209,7 +209,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 20
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -234,8 +234,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 265882232}
-  m_LocalRotation: {x: 0.08715574, y: 0, z: 0, w: 0.9961947}
-  m_LocalPosition: {x: 1, y: 2.2586284, z: -4.1711626}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1, y: 1.5, z: -4.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -539,14 +539,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Settings:
-    Vertical: 10
+    Vertical: 0
     Horizontal: 0
     Height: 1.5
     Shoulder: 1
     Distance: 4.5
-    FieldOfView: 60
+    FieldOfView: 20
     MoveTime: 0.01
     RotationTime: 0.05
+    FreezRotation: 0
 --- !u!114 &94153379921358170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -747,6 +748,7 @@ MonoBehaviour:
     FieldOfView: 20
     MoveTime: 0.01
     RotationTime: 0.05
+    FreezRotation: 0
   rotable:
     Mode: 2
   directable:
@@ -876,9 +878,9 @@ MonoBehaviour:
   Pointer: {x: 0, y: 0}
   Move: {x: 0, y: 0}
   Look:
-    Value: {x: 0, y: 0}
     Delta: {x: 0, y: 0}
-    Sensitivity: 1
+    SensitivityX: 1
+    SensitivityY: 0.5
   Option: 0
   Cancel: 0
   Motion: 0
@@ -986,6 +988,7 @@ MonoBehaviour:
     FieldOfView: 60
     MoveTime: 0.01
     RotationTime: 0.05
+    FreezRotation: 0
   rotable:
     Mode: 1
   directable:
@@ -1007,7 +1010,7 @@ PrefabInstance:
     - target: {fileID: 2624738692258477866, guid: e44b199a17e075146ab822b913db9a65,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4600622685966725639, guid: e44b199a17e075146ab822b913db9a65,
         type: 3}
