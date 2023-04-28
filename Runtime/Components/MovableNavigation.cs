@@ -15,8 +15,6 @@ namespace AssemblyActorCore
             _navMeshAgent.updateRotation = false;
         }
 
-        public override void Enable(bool state) { }
-
         protected override void Move()
         {
             _navMeshAgent.speed = maxSpeed;

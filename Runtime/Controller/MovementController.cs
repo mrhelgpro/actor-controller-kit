@@ -10,16 +10,15 @@ namespace AssemblyActorCore
         [Range(1, 10)] public int Rate = 10;
         [Range(0, 2)] public float Gravity = 1;
         [Range(0, 5)]  public int JumpHeight = 2;
-        [Range(0, 2)] public int ExtraJumps;
-        [Range(0, 1)] public float Levitation = 1f;
+        [Range(0, 2)] public int ExtraJumps = 0;
+        [Range(0, 1)] public float Levitation = 0f;
 
         public ActorCameraSettings CameraSettings = new ActorCameraSettings();
 
         // Models
         [SerializeField] protected Rotable rotable = new Rotable();
         [SerializeField] protected Directable directable = new Directable();
-        [SerializeField] protected Targetable targetable = new Targetable();
-        protected Animatorable animatorable = new Animatorable();
+        [SerializeField] protected Animatorable animatorable = new Animatorable();
         
         // Model Components
         protected Inputable inputable;
@@ -60,17 +59,13 @@ namespace AssemblyActorCore
 
         public override void Enter()
         {
-            animatorable.Play(positionable.IsGrounded ? Name : "Fall");
-
-            movable.Enable(true);           
+            animatorable.Play(positionable.IsGrounded ? Name : "Fall");          
         }
 
         public override void UpdateLoop() 
         {
             JumpInput();
-
-            targetable.DirectionToTarget(RootTransform, ref inputable.Target, ref inputable.Move);
-
+            
             directable.Update(inputable.Move, inputable.Look.Delta, Rate);
             rotable.Update(directable.Move, directable.Look, Rate);
 
@@ -88,7 +83,7 @@ namespace AssemblyActorCore
             JumpHandler();
         }
 
-        public override void Exit() => movable.Enable(false);
+        public override void Exit() { }
 
         protected void MoveHandler()
         {
@@ -144,27 +139,6 @@ namespace AssemblyActorCore
                     {
                         _isJumpDone = false;
                     }
-                }
-            }
-        }
-
-        public virtual void TargetHandler()
-        {
-            if (targetable.IsInteraction(inputable.Target))
-            {
-                Vector2 targetPosition = new Vector2(inputable.Target.GetPosition.x, inputable.Target.GetPosition.z);
-                Vector2 currentPosition = new Vector2(transform.position.x, transform.position.z);
-                Vector2 direction = targetPosition - currentPosition;
-
-                bool isReady = direction.magnitude > 0.1f;
-
-                if (isReady)
-                {
-                    inputable.Move = direction.normalized;
-                }
-                else
-                {
-                    inputable.Target = null;
                 }
             }
         }

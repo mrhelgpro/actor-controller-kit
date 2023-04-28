@@ -8,7 +8,7 @@ namespace AssemblyActorCore
     [Serializable]
     public class Directable : Model
     {
-        public LookMode Mode = LookMode.Camera;
+        public LookMode LookMode = LookMode.Camera;
         public Vector3 Look { get; private set; }
         public Vector3 Camera { get; private set; }
         public Vector3 Body { get; private set; }
@@ -18,6 +18,7 @@ namespace AssemblyActorCore
         private Transform _cameraTransform;
         private float _previousPositionY;
         private float _previousLookDeltaMagnitude;
+        private Vector3 _previousLookDirection;
 
         public override void Initialization(Transform transform)
         {
@@ -28,37 +29,42 @@ namespace AssemblyActorCore
         public void Update(Vector2 inputMove, Vector2 lookDelta, float rate)
         {
             setLookDirection(lookDelta);
-            
+            setMoveDirection(inputMove);
+
             Camera = _cameraTransform.forward.normalized;
             Body = RootTransform.TransformDirection(Vector3.forward).normalized;
-            Move = (Vector3.ProjectOnPlane(Camera, Vector3.up) * inputMove.y + _cameraTransform.right * inputMove.x).normalized; // Get direction relative to Camera
+            
             Local = Move.magnitude > 0 ? getLocalDirection(Move, Body) : Local;
         }
 
-        private Vector3 lookDirection;
+        private void setMoveDirection(Vector2 inputMove)
+        {
+            Move = (Vector3.ProjectOnPlane(Camera, Vector3.up) * inputMove.y + _cameraTransform.right * inputMove.x).normalized;
+        }
+
         private void setLookDirection(Vector2 lookDelta)
         {
-            if (Mode == LookMode.Camera)
+            if (LookMode == LookMode.Camera)
             {
                 Look = Camera;
             }
-            else if (Mode == LookMode.Pointer)
+            else if (LookMode == LookMode.Pointer)
             {
                 Vector3 mousePosition = Input.mousePosition;
                 Vector3 lookDirection = UnityEngine.Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, UnityEngine.Camera.main.transform.position.y)) - RootTransform.position;
                 Look = Vector3.ProjectOnPlane(lookDirection, Vector3.up).normalized;
             }
-            else if (Mode == LookMode.Stick)
+            else if (LookMode == LookMode.Stick)
             {
                 if (lookDelta.magnitude > 0.1f)
                 {
                     if (lookDelta.magnitude > _previousLookDeltaMagnitude)
                     {
-                        lookDirection = new Vector3(lookDelta.x, 0, -lookDelta.y).normalized;
+                        _previousLookDirection = new Vector3(lookDelta.x, 0, -lookDelta.y).normalized;
                     } 
                 }
 
-                Look = Vector3.Lerp(Look, lookDirection, Time.deltaTime * 15);
+                Look = Vector3.Lerp(Look, _previousLookDirection, Time.deltaTime * 15);
             }
 
             _previousLookDeltaMagnitude = lookDelta.magnitude;

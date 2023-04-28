@@ -1,8 +1,17 @@
 using UnityEngine;
+using UnityEditor;
 using AssemblyActorCore;
 
 public sealed class InputPlayerController : MonoBehaviour
 {
+    public enum MoveMode { Input, Target, Both }
+    public MoveMode MoveDirectionMode = MoveMode.Input;
+    public enum TargetMode { LeftAction, RightAction }
+    public TargetMode InputTargetMode = TargetMode.LeftAction;
+
+    public LayerMask TargetRequiredLayers;
+
+    private Target _targetPosition;
     private InputActions _inputActions;
     private Inputable _inputable;
 
@@ -35,11 +44,8 @@ public sealed class InputPlayerController : MonoBehaviour
             _inputActions.Player.West.performed += context => _inputable.Interact = true;
             _inputActions.Player.West.canceled += context => _inputable.Interact = false;
 
-            _inputActions.Player.TriggerRight.performed += context => _inputable.ActionRight = true;
-            _inputActions.Player.TriggerRight.canceled += context => _inputable.ActionRight = false;
-
-            //_inputActions.Player.BumperRight.performed += context => _inputable.ActionLeft = true;
-            //_inputActions.Player.BumperRight.canceled += context => _inputable.ActionLeft = false;
+            _inputActions.Player.TriggerRight.performed += context => actionRight(true);
+            _inputActions.Player.TriggerRight.canceled += context => actionRight(false);
 
             _inputActions.Player.BumperRight.performed += context => actionLeft(true);
             _inputActions.Player.BumperRight.canceled += context => actionLeft(false);
@@ -56,31 +62,135 @@ public sealed class InputPlayerController : MonoBehaviour
     {
         _inputable.ActionLeft = state;
 
-        if (state) checkTarget();
+        if (InputTargetMode == TargetMode.LeftAction)
+        {
+            if (state) checkTargetPosition();
+        }
     }
 
-    private void checkTarget()
+    private void actionRight(bool state)
     {
-        RaycastHit hit;
+        _inputable.ActionRight = state;
 
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(_inputable.Pointer), out hit))
+        if (InputTargetMode == TargetMode.RightAction)
         {
-            _inputable.Target = new Target(hit.collider.transform, hit.point);
-
-            return;
+            if (state) checkTargetPosition();
         }
+    }
 
-        _inputable.Target = null;
+    private void checkTargetPosition()
+    {
+        if (MoveDirectionMode != MoveMode.Input)
+        {
+            RaycastHit hit;
+
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(_inputable.Pointer), out hit))
+            {
+                if ((TargetRequiredLayers.value & (1 << hit.collider.transform.gameObject.layer)) > 0)
+                {
+                    _targetPosition = new Target(transform, hit.collider.transform, hit.point);
+                }
+            }
+        }
     }
 
     private void Update()
     {
         _inputable.Pointer = _inputActions.Player.Pointer.ReadValue<Vector2>();
-        _inputable.Move = _inputActions.Player.Move.ReadValue<Vector2>();
+
+        readMoveInput();
+        readLookInput();
+    }
+
+    private void readMoveInput()
+    {
+        if (MoveDirectionMode == MoveMode.Input)
+        {
+            _inputable.Move = _inputActions.Player.Move.ReadValue<Vector2>();
+        }
+        else if (MoveDirectionMode == MoveMode.Target)
+        {
+            if (_targetPosition.IsTargetExists)
+            {
+                if (_targetPosition.GetHorizontalDistance > 0.1f)
+                {
+                    _inputable.Move = _targetPosition.GetHorizontalDirection;
+
+                    return;
+                }
+
+                _inputable.Move = Vector2.zero;
+                ClearTarget();
+            }
+        }
+        else
+        {
+            if (_targetPosition.IsTargetExists)
+            {
+                if (_targetPosition.GetHorizontalDistance > 0.1f)
+                {
+                    _inputable.Move = _targetPosition.GetHorizontalDirection;
+
+                    return;
+                }
+
+                ClearTarget();
+            }
+
+            _inputable.Move = _inputActions.Player.Move.ReadValue<Vector2>();
+        }
+    }
+
+    private void readLookInput()
+    {
         _inputable.Look.Delta = _inputActions.Player.Look.ReadValue<Vector2>();
         _inputable.Look.Value += _inputable.Look.Delta * _inputable.Look.Sensitivity;
     }
 
+    public void ClearTarget() => _targetPosition.Clear();
+
     private void OnEnable() => _inputActions?.Enable();
     private void OnDisable() => _inputActions?.Disable();
 }
+
+#if UNITY_EDITOR
+[ExecuteInEditMode]
+[CustomEditor(typeof(InputPlayerController))]
+public class InputPlayerControllerEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        InputPlayerController _myTarget = (InputPlayerController)target;
+
+        // Script Link
+        EditorGUI.BeginDisabledGroup(true);
+        EditorGUILayout.ObjectField("Model", MonoScript.FromMonoBehaviour(_myTarget), typeof(MonoScript), false);
+        EditorGUI.EndDisabledGroup();
+
+        Rect scriptRect = GUILayoutUtility.GetLastRect();
+        EditorGUIUtility.AddCursorRect(scriptRect, MouseCursor.Arrow);
+
+        if (GUI.Button(scriptRect, "", GUIStyle.none))
+        {
+            UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(AssetDatabase.GetAssetPath(MonoScript.FromMonoBehaviour(_myTarget)), 0);
+        }
+
+        // Show Enum Mode
+        if (_myTarget.MoveDirectionMode == InputPlayerController.MoveMode.Input)
+        {
+            _myTarget.MoveDirectionMode = (InputPlayerController.MoveMode)EditorGUILayout.EnumPopup("Move Mode", _myTarget.MoveDirectionMode);
+        }
+        else
+        {
+            _myTarget.MoveDirectionMode = (InputPlayerController.MoveMode)EditorGUILayout.EnumPopup("Move Mode", _myTarget.MoveDirectionMode);
+            _myTarget.InputTargetMode = (InputPlayerController.TargetMode)EditorGUILayout.EnumPopup("Target Mode", _myTarget.InputTargetMode);
+            _myTarget.TargetRequiredLayers = EditorGUILayout.MaskField("Target Required Layers", _myTarget.TargetRequiredLayers, UnityEditorInternal.InternalEditorUtility.layers);
+
+            if (GUI.changed)
+            {
+                _myTarget.ClearTarget();
+            }
+        }
+    }
+}
+#endif

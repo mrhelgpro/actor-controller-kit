@@ -11,26 +11,11 @@ namespace AssemblyActorCore
             base.Awake();
 
             _rigidbody = GetComponent<Rigidbody>();
-        }
-
-        public override void Enable(bool state)
-        {
-            if (state == true)
-            {
-                _rigidbody.MovePosition(_rigidbody.position);
-                _rigidbody.velocity = Vector3.zero;
-                _rigidbody.constraints = RigidbodyConstraints.None;
-                _rigidbody.freezeRotation = true;
-                _rigidbody.useGravity = false;
-                _rigidbody.isKinematic = false;
-            }
-            else
-            {
-                _rigidbody.MovePosition(_rigidbody.position);
-                _rigidbody.velocity = Vector3.zero;
-                _rigidbody.constraints = RigidbodyConstraints.FreezeAll;
-                _rigidbody.isKinematic = true;
-            }
+            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.constraints = RigidbodyConstraints.None;
+            _rigidbody.freezeRotation = true;
+            _rigidbody.useGravity = false;
+            _rigidbody.isKinematic = false;
         }
 
         public override void SetForce(Vector3 force) 

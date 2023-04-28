@@ -4,32 +4,41 @@ namespace AssemblyActorCore
 {
     public class InteractionController : Controller
     {
+        [Header("Interaction")]
         public float Duration = 1;
+        
+        public ActorCameraSettings CameraSettings = new ActorCameraSettings();
+
+        protected Vector3 interactionPosition;
+
+        // Models
+        [SerializeField] protected Rotable rotable = new Rotable();
+        [SerializeField] protected Directable directable = new Directable();
+        [SerializeField] protected Animatorable animatorable = new Animatorable();
+
+        // Model Components
+        protected Inputable inputable;
+        protected Followable followable;
+
         private float _speed => 1 / Duration;
         private float _timer = 0;
-
-        protected Animatorable animatorable;
-        protected Directable directable;
-        protected Rotable rotable;
-        protected Movable movable;
-        protected Positionable positionable;
-        protected Inputable inputable;
 
         protected new void Awake()
         {
             base.Awake();
 
             inputable = GetComponentInParent<Inputable>();
-            animatorable = GetComponentInParent<Animatorable>();
-            directable = GetComponentInParent<Directable>();
-            rotable = GetComponentInParent<Rotable>();
-            movable = GetComponentInParent<Movable>();
-            positionable = GetComponentInParent<Positionable>();
+
+            followable = GetComponentInParent<Followable>();
+
+            animatorable.Initialization(transform);
+            directable.Initialization(transform);
+            rotable.Initialization(transform);
         }
 
         public override void Enter()
         {
-            movable.Enable(false);
+            interactionPosition = RootTransform.position;
             animatorable.Play(Name, _speed);
             _timer = 0;
         }
@@ -42,6 +51,8 @@ namespace AssemblyActorCore
             {
                 controllerMachine.Deactivate(gameObject);
             }
+
+            RootTransform.position = interactionPosition;
         }
 
         public override void FixedLoop() { }

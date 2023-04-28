@@ -20,8 +20,8 @@ namespace AssemblyActorCore
         public bool ActionLeft;      // Left Mouse          Right Bumper      R1              Right Shoulder
         public bool Control;         // Left Ctrl           Left Trigget      L2              Left Trigget
         public bool Shift;           // Left Shift          Left Bumper       L1              Left Shoulder
-        
-        public Target Target;
+ 
+        public Target Interaction;
     }
 
     [Serializable]

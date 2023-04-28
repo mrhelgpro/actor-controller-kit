@@ -19,3 +19,7 @@ All notable changes to this project will be documented in this file.
 
 ## [1.0.5] - 2023-04-25
 - Add Followable
+
+## [1.0.6] - 2023-04-28
+- Add Target
+- Change Input Player Controller

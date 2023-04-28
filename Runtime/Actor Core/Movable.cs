@@ -31,9 +31,6 @@ namespace AssemblyActorCore
         }
 
         public void ChangeSpeed(float value) => _speedScale += value;
-
-        public abstract void Enable(bool state);
-
         public abstract void SetForce(Vector3 force);
         protected abstract void Move();
     }

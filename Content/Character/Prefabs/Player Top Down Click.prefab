@@ -67,10 +67,6 @@ MonoBehaviour:
     Mode: 1
   directable:
     Mode: 1
-  targetable:
-    InteractionLayer:
-      serializedVersion: 2
-      m_Bits: 0
 --- !u!114 &6296881446072576057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,8 +230,6 @@ MonoBehaviour:
   ActionLeft: 0
   Control: 0
   Shift: 0
-  Target:
-    _transform: {fileID: 0}
 --- !u!114 &4982536169518941266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -336,7 +330,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5787263979118846289}
-  - component: {fileID: 5787263979118846295}
+  - component: {fileID: 4226827540534521933}
   m_Layer: 3
   m_Name: Input Controller
   m_TagString: Untagged
@@ -359,7 +353,7 @@ Transform:
   m_Father: {fileID: 4982536169518941258}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5787263979118846295
+--- !u!114 &4226827540534521933
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -368,12 +362,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 5787263979118846290}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfe222edd67c08d4c8171943d6820a84, type: 3}
+  m_Script: {fileID: 11500000, guid: f40dbd14eb6c5654292f7dc6c24869b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InteractionTagList:
-  - Enemy
-  - Interaction
+  MoveDirectionMode: 1
+  MoveRequiredLayers:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1001 &4785535131599363866
 PrefabInstance:
   m_ObjectHideFlags: 0
