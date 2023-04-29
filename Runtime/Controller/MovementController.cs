@@ -13,7 +13,7 @@ namespace AssemblyActorCore
         [Range(0, 2)] public int ExtraJumps = 0;
         [Range(0, 1)] public float Levitation = 0f;
 
-        public ActorCameraSettings CameraSettings = new ActorCameraSettings();
+        public CameraSettings CameraSettings = new CameraSettings();
 
         // Models
         [SerializeField] protected Rotable rotable = new Rotable();
@@ -62,38 +62,38 @@ namespace AssemblyActorCore
             animatorable.Play(positionable.IsGrounded ? Name : "Fall");          
         }
 
-        public override void UpdateLoop() 
+        public override void UpdateLoop()
         {
             JumpInput();
-            
-            directable.Update(inputable.Move, inputable.Look, Rate, inputable.TargetPosition.IsTargetExists);
-            rotable.Update(directable.Move, directable.Look, Rate);
+
+            directable.Update(inputable.MoveVector, inputable.LookDelta, Rate);
+            rotable.Update(inputable.MoveVector, directable.Look, Rate);
 
             animatorable.Play(positionable.IsGrounded ? Name : "Fall");
             animatorable.SetFloat("Speed", movable.Velocity.magnitude);
             animatorable.SetFloat("DirectionX", directable.Local.x); //animatorable.SetFloat("DirectionX", directable.GetLocal.x, 0.1f);
             animatorable.SetFloat("DirectionZ", directable.Local.z); //animatorable.SetFloat("DirectionZ", directable.GetLocal.z, 0.1f);
-            
-            followable?.SetParametres(CameraSettings, inputable.Look);
+
+            FollowableUpdate();
         }
 
         public override void FixedLoop()
         {
-            MoveHandler();       
-            JumpHandler();
+            MoveUpdate();
+            JumpUpdate();
         }
 
         public override void Exit() { }
 
-        protected void MoveHandler()
+        protected void MoveUpdate()
         {
-            float speed = inputable.Shift ? MoveShift : MoveSpeed;
-            Vector3 projectOntoSurface = positionable.ProjectOntoSurface(directable.Move).normalized;
+            float speed = inputable.ShiftState ? MoveShift : MoveSpeed;
+            Vector3 projectOntoSurface = positionable.ProjectOntoSurface(inputable.MoveVector).normalized;
 
             positionable.UpdateParametres();
             movable.SetParametersy(projectOntoSurface, speed, Gravity, Rate);
         }
-        protected void JumpHandler()
+        protected void JumpUpdate()
         {
             if (_isJumpDone == false)
             {
@@ -118,7 +118,7 @@ namespace AssemblyActorCore
         }
         protected void JumpInput()
         {
-            _isJumpPressed = inputable.Motion;
+            _isJumpPressed = inputable.MotionState;
 
             if (_isJumpPressed == false)
             {
@@ -141,6 +141,30 @@ namespace AssemblyActorCore
                     }
                 }
             }
+        }
+
+        protected void FollowableUpdate()
+        {
+            bool isRotable = false;
+
+            if (CameraSettings.InputCameraMode == InputCameraMode.Free)
+            {
+                isRotable = true;
+            }
+            else if (CameraSettings.InputCameraMode == InputCameraMode.LeftHold)
+            {
+                isRotable = inputable.ActionLeftState;
+            }
+            else if (CameraSettings.InputCameraMode == InputCameraMode.MiddleHold)
+            {
+                isRotable = inputable.ActionMiddleState;
+            }
+            else if (CameraSettings.InputCameraMode == InputCameraMode.RightHold)
+            {
+                isRotable = inputable.ActionRightState;
+            }
+
+            followable?.SetParametres(CameraSettings, inputable.LookDelta, isRotable);
         }
     }
 }

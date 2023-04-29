@@ -39,6 +39,15 @@ namespace AssemblyActorCore
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Pointer"",
+                    ""type"": ""Value"",
+                    ""id"": ""f7b0d679-fa6f-4967-8dc1-3e38be8df11b"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""Move"",
                     ""type"": ""Value"",
                     ""id"": ""aaf1e6e5-7c44-4906-bcde-fa5c9e498512"",
@@ -129,13 +138,13 @@ namespace AssemblyActorCore
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Pointer"",
-                    ""type"": ""Value"",
-                    ""id"": ""f7b0d679-fa6f-4967-8dc1-3e38be8df11b"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""name"": ""ActionMiddle"",
+                    ""type"": ""Button"",
+                    ""id"": ""78b11dd1-c922-4965-9d5d-a7012e1ee184"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -501,6 +510,28 @@ namespace AssemblyActorCore
                     ""action"": ""Pointer"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9e0c01a4-420d-4b37-bc00-8486616a6e19"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""ActionMiddle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""55a1819c-a56e-425d-a886-7988ead1a4ed"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ActionMiddle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -538,6 +569,7 @@ namespace AssemblyActorCore
             // Player
             m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
             m_Player_Menu = m_Player.FindAction("Menu", throwIfNotFound: true);
+            m_Player_Pointer = m_Player.FindAction("Pointer", throwIfNotFound: true);
             m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
             m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
             m_Player_North = m_Player.FindAction("North", throwIfNotFound: true);
@@ -548,7 +580,7 @@ namespace AssemblyActorCore
             m_Player_TriggerRight = m_Player.FindAction("TriggerRight", throwIfNotFound: true);
             m_Player_BumperLeft = m_Player.FindAction("BumperLeft", throwIfNotFound: true);
             m_Player_BumperRight = m_Player.FindAction("BumperRight", throwIfNotFound: true);
-            m_Player_Pointer = m_Player.FindAction("Pointer", throwIfNotFound: true);
+            m_Player_ActionMiddle = m_Player.FindAction("ActionMiddle", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -611,6 +643,7 @@ namespace AssemblyActorCore
         private readonly InputActionMap m_Player;
         private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
         private readonly InputAction m_Player_Menu;
+        private readonly InputAction m_Player_Pointer;
         private readonly InputAction m_Player_Move;
         private readonly InputAction m_Player_Look;
         private readonly InputAction m_Player_North;
@@ -621,12 +654,13 @@ namespace AssemblyActorCore
         private readonly InputAction m_Player_TriggerRight;
         private readonly InputAction m_Player_BumperLeft;
         private readonly InputAction m_Player_BumperRight;
-        private readonly InputAction m_Player_Pointer;
+        private readonly InputAction m_Player_ActionMiddle;
         public struct PlayerActions
         {
             private @InputActions m_Wrapper;
             public PlayerActions(@InputActions wrapper) { m_Wrapper = wrapper; }
             public InputAction @Menu => m_Wrapper.m_Player_Menu;
+            public InputAction @Pointer => m_Wrapper.m_Player_Pointer;
             public InputAction @Move => m_Wrapper.m_Player_Move;
             public InputAction @Look => m_Wrapper.m_Player_Look;
             public InputAction @North => m_Wrapper.m_Player_North;
@@ -637,7 +671,7 @@ namespace AssemblyActorCore
             public InputAction @TriggerRight => m_Wrapper.m_Player_TriggerRight;
             public InputAction @BumperLeft => m_Wrapper.m_Player_BumperLeft;
             public InputAction @BumperRight => m_Wrapper.m_Player_BumperRight;
-            public InputAction @Pointer => m_Wrapper.m_Player_Pointer;
+            public InputAction @ActionMiddle => m_Wrapper.m_Player_ActionMiddle;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -650,6 +684,9 @@ namespace AssemblyActorCore
                 @Menu.started += instance.OnMenu;
                 @Menu.performed += instance.OnMenu;
                 @Menu.canceled += instance.OnMenu;
+                @Pointer.started += instance.OnPointer;
+                @Pointer.performed += instance.OnPointer;
+                @Pointer.canceled += instance.OnPointer;
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
@@ -680,9 +717,9 @@ namespace AssemblyActorCore
                 @BumperRight.started += instance.OnBumperRight;
                 @BumperRight.performed += instance.OnBumperRight;
                 @BumperRight.canceled += instance.OnBumperRight;
-                @Pointer.started += instance.OnPointer;
-                @Pointer.performed += instance.OnPointer;
-                @Pointer.canceled += instance.OnPointer;
+                @ActionMiddle.started += instance.OnActionMiddle;
+                @ActionMiddle.performed += instance.OnActionMiddle;
+                @ActionMiddle.canceled += instance.OnActionMiddle;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -690,6 +727,9 @@ namespace AssemblyActorCore
                 @Menu.started -= instance.OnMenu;
                 @Menu.performed -= instance.OnMenu;
                 @Menu.canceled -= instance.OnMenu;
+                @Pointer.started -= instance.OnPointer;
+                @Pointer.performed -= instance.OnPointer;
+                @Pointer.canceled -= instance.OnPointer;
                 @Move.started -= instance.OnMove;
                 @Move.performed -= instance.OnMove;
                 @Move.canceled -= instance.OnMove;
@@ -720,9 +760,9 @@ namespace AssemblyActorCore
                 @BumperRight.started -= instance.OnBumperRight;
                 @BumperRight.performed -= instance.OnBumperRight;
                 @BumperRight.canceled -= instance.OnBumperRight;
-                @Pointer.started -= instance.OnPointer;
-                @Pointer.performed -= instance.OnPointer;
-                @Pointer.canceled -= instance.OnPointer;
+                @ActionMiddle.started -= instance.OnActionMiddle;
+                @ActionMiddle.performed -= instance.OnActionMiddle;
+                @ActionMiddle.canceled -= instance.OnActionMiddle;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -761,6 +801,7 @@ namespace AssemblyActorCore
         public interface IPlayerActions
         {
             void OnMenu(InputAction.CallbackContext context);
+            void OnPointer(InputAction.CallbackContext context);
             void OnMove(InputAction.CallbackContext context);
             void OnLook(InputAction.CallbackContext context);
             void OnNorth(InputAction.CallbackContext context);
@@ -771,7 +812,7 @@ namespace AssemblyActorCore
             void OnTriggerRight(InputAction.CallbackContext context);
             void OnBumperLeft(InputAction.CallbackContext context);
             void OnBumperRight(InputAction.CallbackContext context);
-            void OnPointer(InputAction.CallbackContext context);
+            void OnActionMiddle(InputAction.CallbackContext context);
         }
     }
 }

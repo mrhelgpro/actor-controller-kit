@@ -6,18 +6,22 @@ public sealed class InputPlayerController : MonoBehaviour
 {
     public enum MoveMode { Input, Target, Both }
     public MoveMode MoveDirectionMode = MoveMode.Input;
-    public enum TargetMode { LeftAction, RightAction }
+    public enum TargetMode { LeftAction, MiddleAction, RightAction }
     public TargetMode InputTargetMode = TargetMode.LeftAction;
 
     public LayerMask TargetRequiredLayers;
 
-    //private Target _targetPosition;
+    private Target _targetPosition;
+    private Camera _camera;
+    private Transform _cameraTransform;
     private InputActions _inputActions;
     private Inputable _inputable;
 
     private void Awake()
     {
         _inputable = gameObject.GetComponentInParent<Inputable>();
+        _camera = Camera.main;
+        _cameraTransform = _camera.transform;
 
         if (_inputable == null)
         {
@@ -32,35 +36,48 @@ public sealed class InputPlayerController : MonoBehaviour
             _inputActions.Player.Menu.performed += context => _inputable.Menu = true;
             _inputActions.Player.Menu.canceled += context => _inputable.Menu = false;
 
-            _inputActions.Player.North.performed += context => _inputable.Option = true;
-            _inputActions.Player.North.canceled += context => _inputable.Option = false;
+            _inputActions.Player.North.performed += context => _inputable.OptionState = true;
+            _inputActions.Player.North.canceled += context => _inputable.OptionState = false;
 
-            _inputActions.Player.East.performed += context => _inputable.Cancel = true;
-            _inputActions.Player.East.canceled += context => _inputable.Cancel = false;
+            _inputActions.Player.East.performed += context => _inputable.CancelState = true;
+            _inputActions.Player.East.canceled += context => _inputable.CancelState = false;
 
-            _inputActions.Player.South.performed += context => _inputable.Motion = true;
-            _inputActions.Player.South.canceled += context => _inputable.Motion = false;
+            _inputActions.Player.South.performed += context => _inputable.MotionState = true;
+            _inputActions.Player.South.canceled += context => _inputable.MotionState = false;
 
-            _inputActions.Player.West.performed += context => _inputable.Interact = true;
-            _inputActions.Player.West.canceled += context => _inputable.Interact = false;
+            _inputActions.Player.West.performed += context => _inputable.InteractState = true;
+            _inputActions.Player.West.canceled += context => _inputable.InteractState = false;
 
             _inputActions.Player.TriggerRight.performed += context => actionRight(true);
             _inputActions.Player.TriggerRight.canceled += context => actionRight(false);
 
+            _inputActions.Player.ActionMiddle.performed += context => actionMiddle(true);
+            _inputActions.Player.ActionMiddle.canceled += context => actionMiddle(false);
+
             _inputActions.Player.BumperRight.performed += context => actionLeft(true);
             _inputActions.Player.BumperRight.canceled += context => actionLeft(false);
 
-            _inputActions.Player.TriggerLeft.performed += context => _inputable.Control = true;
-            _inputActions.Player.TriggerLeft.canceled += context => _inputable.Control = false;
+            _inputActions.Player.TriggerLeft.performed += context => _inputable.ControlState = true;
+            _inputActions.Player.TriggerLeft.canceled += context => _inputable.ControlState = false;
 
-            _inputActions.Player.BumperLeft.performed += context => _inputable.Shift = true;
-            _inputActions.Player.BumperLeft.canceled += context => _inputable.Shift = false;
+            _inputActions.Player.BumperLeft.performed += context => _inputable.ShiftState = true;
+            _inputActions.Player.BumperLeft.canceled += context => _inputable.ShiftState = false;
+        }
+    }
+
+    private void actionMiddle(bool state)
+    {
+        _inputable.ActionMiddleState = state;
+
+        if (InputTargetMode == TargetMode.MiddleAction)
+        {
+            if (state) checkTargetPosition();
         }
     }
 
     private void actionLeft(bool state)
     {
-        _inputable.ActionLeft = state;
+        _inputable.ActionLeftState = state;
 
         if (InputTargetMode == TargetMode.LeftAction)
         {
@@ -70,7 +87,7 @@ public sealed class InputPlayerController : MonoBehaviour
 
     private void actionRight(bool state)
     {
-        _inputable.ActionRight = state;
+        _inputable.ActionRightState = state;
 
         if (InputTargetMode == TargetMode.RightAction)
         {
@@ -84,11 +101,11 @@ public sealed class InputPlayerController : MonoBehaviour
         {
             RaycastHit hit;
 
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(_inputable.Pointer), out hit))
+            if (Physics.Raycast(_camera.ScreenPointToRay(_inputable.PointerScreenPosition), out hit))
             {
                 if ((TargetRequiredLayers.value & (1 << hit.collider.transform.gameObject.layer)) > 0)
                 {
-                    _inputable.TargetPosition = new Target(transform, hit.collider.transform, hit.point);
+                    _targetPosition = new Target(transform, hit.collider.transform, hit.point);
                 }
             }
         }
@@ -96,40 +113,45 @@ public sealed class InputPlayerController : MonoBehaviour
 
     private void Update()
     {
-        _inputable.Pointer = _inputActions.Player.Pointer.ReadValue<Vector2>();
-        _inputable.Look = _inputActions.Player.Look.ReadValue<Vector2>();
+        _inputable.PointerScreenPosition = _inputActions.Player.Pointer.ReadValue<Vector2>();
+        _inputable.LookDelta = _inputActions.Player.Look.ReadValue<Vector2>();
 
         readMoveInput();
     }
 
     private void readMoveInput()
     {
+        Vector2 inputMove = _inputActions.Player.Move.ReadValue<Vector2>();
+        Vector3 cameraDirection = _cameraTransform.forward.normalized;
+        Vector3 moveDirection = (Vector3.ProjectOnPlane(cameraDirection, Vector3.up) * inputMove.y + _cameraTransform.right * inputMove.x).normalized;
+        Vector2 inputMoveVector = new Vector2(moveDirection.x, moveDirection.z);
+
         if (MoveDirectionMode == MoveMode.Input)
         {
-            _inputable.Move = _inputActions.Player.Move.ReadValue<Vector2>();
+            _inputable.MoveVector = inputMoveVector;
         }
         else if (MoveDirectionMode == MoveMode.Target)
         {
-            if (_inputable.TargetPosition.IsTargetExists)
+            if (_targetPosition.IsTargetExists)
             {
-                if (_inputable.TargetPosition.GetHorizontalDistance > 0.1f)
+                if (_targetPosition.GetHorizontalDistance > 0.1f)
                 {
-                    _inputable.Move = _inputable.TargetPosition.GetHorizontalDirection;
+                    _inputable.MoveVector = _targetPosition.GetHorizontalDirection;
 
                     return;
                 }
 
-                _inputable.Move = Vector2.zero;
+                _inputable.MoveVector = Vector2.zero;
                 ClearTarget();
             }
         }
         else
         {
-            if (_inputable.TargetPosition.IsTargetExists)
+            if (_targetPosition.IsTargetExists)
             {
-                if (_inputable.TargetPosition.GetHorizontalDistance > 0.1f)
+                if (_targetPosition.GetHorizontalDistance > 0.1f)
                 {
-                    _inputable.Move = _inputable.TargetPosition.GetHorizontalDirection;
+                    _inputable.MoveVector = _targetPosition.GetHorizontalDirection;
 
                     return;
                 }
@@ -137,11 +159,11 @@ public sealed class InputPlayerController : MonoBehaviour
                 ClearTarget();
             }
 
-            _inputable.Move = _inputActions.Player.Move.ReadValue<Vector2>();
+            _inputable.MoveVector = inputMoveVector;
         }
     }
 
-    public void ClearTarget() => _inputable.TargetPosition.Clear();
+    public void ClearTarget() => _targetPosition.Clear();
 
     private void OnEnable() => _inputActions?.Enable();
     private void OnDisable() => _inputActions?.Disable();

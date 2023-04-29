@@ -7,7 +7,7 @@ namespace AssemblyActorCore
         [Header("Interaction")]
         public float Duration = 1;
         
-        public ActorCameraSettings CameraSettings = new ActorCameraSettings();
+        public CameraSettings CameraSettings = new CameraSettings();
 
         protected Vector3 interactionPosition;
 

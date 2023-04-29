@@ -55,18 +55,27 @@ MonoBehaviour:
   ExtraJumps: 2
   Levitation: 0.75
   CameraSettings:
-    Vertical: 55
-    Horizontal: 0
-    Height: 0.55
-    Shoulder: 0
-    Distance: 12
+    InputCameraMode: 2
+    Orbit:
+      Horizontal: 0
+      Vertical: 60
+    Sensitivity:
+      Horizontal: 1
+      Vertical: 0.5
+    Offset:
+      Horizontal: 0
+      Vertical: 0.5
+      Distance: 12
+    DampTime:
+      Move: 0
+      Rotation: 0
     FieldOfView: 60
-    MoveTime: 0.5
-    RotationTime: 1
   rotable:
-    Mode: 1
+    RotateMode: 1
   directable:
-    Mode: 1
+    LookMode: 0
+  animatorable:
+    AnimatorController: {fileID: 0}
 --- !u!114 &6296881446072576057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,7 +118,7 @@ Transform:
   m_Children:
   - {fileID: 4667701849468060536}
   m_Father: {fileID: 4982536169518941258}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4982536169518941259
 GameObject:
@@ -120,6 +129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4982536169518941258}
+  - component: {fileID: 1940636615304777597}
   - component: {fileID: 6265121836926942211}
   - component: {fileID: 6265121836926942219}
   - component: {fileID: 4982536169518941269}
@@ -146,12 +156,28 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5787263979118846289}
   - {fileID: 5787263978264038126}
   - {fileID: 4732298756291789256}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1940636615304777597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4982536169518941259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f40dbd14eb6c5654292f7dc6c24869b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveDirectionMode: 1
+  InputTargetMode: 2
+  TargetRequiredLayers:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!114 &6265121836926942211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,14 +208,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Settings:
-    Vertical: 55
-    Horizontal: 0
-    Height: 0.55
-    Shoulder: 0
-    Distance: 12
+    InputCameraMode: 2
+    Orbit:
+      Horizontal: 0
+      Vertical: 60
+    Sensitivity:
+      Horizontal: 1
+      Vertical: 0.5
+    Offset:
+      Horizontal: 0
+      Vertical: 0.5
+      Distance: 12
+    DampTime:
+      Move: 0
+      Rotation: 0
     FieldOfView: 60
-    MoveTime: 0.5
-    RotationTime: 1
 --- !u!114 &4982536169518941269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,20 +249,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Menu: 0
-  Pointer: {x: 0, y: 0}
-  Move: {x: 0, y: 0}
-  Look:
-    Value: {x: 0, y: 0}
-    Delta: {x: 0, y: 0}
-    Sensitivity: 0
-  Option: 0
-  Cancel: 0
-  Motion: 0
-  Interact: 0
-  ActionRight: 0
-  ActionLeft: 0
-  Control: 0
-  Shift: 0
+  PointerPosition: {x: 0, y: 0}
+  MoveVector: {x: 0, y: 0}
+  LookDelta: {x: 0, y: 0}
+  OptionState: 0
+  CancelState: 0
+  MotionState: 0
+  InteractState: 0
+  ActionLeftState: 0
+  ActionMiddleState: 0
+  ActionMiddleScroll: 0
+  ActionRightState: 0
+  ActionRightValue: 0
+  ControlState: 0
+  ControlValue: 0
+  ShiftState: 0
 --- !u!114 &4982536169518941266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,7 +341,7 @@ Transform:
   m_Children:
   - {fileID: 4541832630052357016}
   m_Father: {fileID: 4982536169518941258}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5787263978264038125
 MonoBehaviour:
@@ -321,54 +355,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81c8decd36c6cca4484527a3f9a865c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &5787263979118846290
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5787263979118846289}
-  - component: {fileID: 4226827540534521933}
-  m_Layer: 3
-  m_Name: Input Controller
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5787263979118846289
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5787263979118846290}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.25, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4982536169518941258}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4226827540534521933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5787263979118846290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f40dbd14eb6c5654292f7dc6c24869b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MoveDirectionMode: 1
-  MoveRequiredLayers:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!1001 &4785535131599363866
 PrefabInstance:
   m_ObjectHideFlags: 0

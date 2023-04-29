@@ -55,16 +55,23 @@ MonoBehaviour:
   ExtraJumps: 2
   Levitation: 0.75
   CameraSettings:
-    Vertical: 10
-    Horizontal: 0
-    Height: 1.5
-    Shoulder: 1
-    Distance: 4.5
+    InputCameraMode: 0
+    Orbit:
+      Horizontal: 0
+      Vertical: 0
+    Sensitivity:
+      Horizontal: 1
+      Vertical: 0.5
+    Offset:
+      Horizontal: 1
+      Vertical: 1.5
+      Distance: 5
+    DampTime:
+      Move: 0
+      Rotation: 0
     FieldOfView: 60
-    MoveTime: 0.01
-    RotationTime: 0.05
   rotable:
-    Mode: 1
+    RotateMode: 1
   directable:
     LookMode: 0
   animatorable:
@@ -216,14 +223,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Settings:
-    Vertical: 0
-    Horizontal: 0
-    Height: 1.5
-    Shoulder: 1
-    Distance: 4.5
-    FieldOfView: 20
-    MoveTime: 0.01
-    RotationTime: 0.05
+    InputCameraMode: 0
+    Orbit:
+      Horizontal: 0
+      Vertical: 0
+    Sensitivity:
+      Horizontal: 1
+      Vertical: 0.5
+    Offset:
+      Horizontal: 1
+      Vertical: 1.5
+      Distance: 5
+    DampTime:
+      Move: 0
+      Rotation: 0
+    FieldOfView: 60
 --- !u!114 &2457573871330212914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,20 +264,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Menu: 0
-  Pointer: {x: 0, y: 0}
-  Move: {x: 0, y: 0}
-  Look:
-    Value: {x: 0, y: 0}
-    Delta: {x: 0, y: 0}
-    Sensitivity: 1
-  Option: 0
-  Cancel: 0
-  Motion: 0
-  Interact: 0
-  ActionRight: 0
-  ActionLeft: 0
-  Control: 0
-  Shift: 0
+  PointerPosition: {x: 0, y: 0}
+  MoveVector: {x: 0, y: 0}
+  LookDelta: {x: 0, y: 0}
+  OptionState: 0
+  CancelState: 0
+  MotionState: 0
+  InteractState: 0
+  ActionLeftState: 0
+  ActionMiddleState: 0
+  ActionMiddleScroll: 0
+  ActionRightState: 0
+  ActionRightValue: 0
+  ControlState: 0
+  ControlValue: 0
+  ShiftState: 0
 --- !u!114 &4140022124360765392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -404,16 +419,23 @@ MonoBehaviour:
   ExtraJumps: 0
   Levitation: 0
   CameraSettings:
-    Vertical: 0
-    Horizontal: 0
-    Height: 1.5
-    Shoulder: 1
-    Distance: 4.5
+    InputCameraMode: 0
+    Orbit:
+      Horizontal: 0
+      Vertical: 0
+    Sensitivity:
+      Horizontal: 0.25
+      Vertical: 0.125
+    Offset:
+      Horizontal: 1
+      Vertical: 1.5
+      Distance: 5
+    DampTime:
+      Move: 0
+      Rotation: 0
     FieldOfView: 20
-    MoveTime: 0.01
-    RotationTime: 0.05
   rotable:
-    Mode: 2
+    RotateMode: 2
   directable:
     LookMode: 0
   animatorable:
@@ -436,6 +458,7 @@ MonoBehaviour:
   Motion: 0
   Interact: 0
   ActionRight: 1
+  ActionMiddle: 0
   ActionLeft: 0
   Control: 0
   Shift: 0

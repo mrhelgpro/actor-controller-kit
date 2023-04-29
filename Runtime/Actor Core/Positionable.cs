@@ -23,8 +23,9 @@ namespace AssemblyActorCore
 
         public float GetSlope => Vector3.Angle(SurfaceNormal, Vector3.up);
 
-        public Vector3 ProjectOntoSurface(Vector3 direction)
+        public Vector3 ProjectOntoSurface(Vector2 inputMoveVector)
         {
+            Vector3 direction = new Vector3(inputMoveVector.x, 0, inputMoveVector.y);
             Vector3 projection = Vector3.ProjectOnPlane(direction, SurfaceNormal);
             return projection == Vector3.zero || IsGrounded == false ? direction : projection;
         }

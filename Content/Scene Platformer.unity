@@ -235,7 +235,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 265882232}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: -10}
+  m_LocalPosition: {x: 0, y: 2, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -898,14 +898,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Settings:
-    Vertical: 0
-    Horizontal: 0
-    Height: 1.5
-    Shoulder: 0
-    Distance: 10
+    InputCameraMode: 0
+    Orbit:
+      Horizontal: 0
+      Vertical: 0
+    Sensitivity:
+      Horizontal: 0
+      Vertical: 0
+    Offset:
+      Horizontal: 0
+      Vertical: 2
+      Distance: 10
+    DampTime:
+      Move: 0.5
+      Rotation: 0
     FieldOfView: 60
-    MoveTime: 0.5
-    RotationTime: 1
 --- !u!114 &8452822126080133295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1010,20 +1017,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Menu: 0
-  Pointer: {x: 0, y: 0}
-  Move: {x: 0, y: 0}
-  Look:
-    Value: {x: 0, y: 0}
-    Delta: {x: 0, y: 0}
-    Sensitivity: 0
-  Option: 0
-  Cancel: 0
-  Motion: 0
-  Interact: 0
-  ActionRight: 0
-  ActionLeft: 0
-  Control: 0
-  Shift: 0
+  PointerPosition: {x: 0, y: 0}
+  MoveVector: {x: 0, y: 0}
+  LookDelta: {x: 0, y: 0}
+  OptionState: 0
+  CancelState: 0
+  MotionState: 0
+  InteractState: 0
+  ActionLeftState: 0
+  ActionMiddleState: 0
+  ActionMiddleScroll: 0
+  ActionRightState: 0
+  ActionRightValue: 0
+  ControlState: 0
+  ControlValue: 0
+  ShiftState: 0
 --- !u!114 &8452822126080133307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1078,14 +1086,21 @@ MonoBehaviour:
   ExtraJumps: 2
   Levitation: 0.75
   CameraSettings:
-    Vertical: 0
-    Horizontal: 0
-    Height: 1.5
-    Shoulder: 0
-    Distance: 10
+    InputCameraMode: 0
+    Orbit:
+      Horizontal: 0
+      Vertical: 0
+    Sensitivity:
+      Horizontal: 0
+      Vertical: 0
+    Offset:
+      Horizontal: 0
+      Vertical: 2
+      Distance: 10
+    DampTime:
+      Move: 0.5
+      Rotation: 0
     FieldOfView: 60
-    MoveTime: 0.5
-    RotationTime: 1
   rotable:
     Mode: 1
   directable:

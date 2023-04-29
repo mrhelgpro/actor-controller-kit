@@ -5,23 +5,28 @@ namespace AssemblyActorCore
 {
     public class Inputable : ModelComponent
     {
-                                     // KEYBOARD            X-BOX             DUALSHOCK       GAMEPAD
-        public bool Menu;            // Escape
-        public Vector2 Pointer;      // Mouse Position                        Options         Start
-        public Vector2 Move;         // WASD - Movement     Left Stick        Left Stick      Left Stick
-        public Vector2 Look;
+                                                        // KEYBOARD            X-BOX             DUALSHOCK       GAMEPAD
+        public bool Menu;                               // Escape
+        public Vector2 PointerScreenPosition;           // Mouse Position                        Options         Start
+        public Vector2 MoveVector;                      // WASD - Movement     Left Stick        Left Stick      Left Stick
+        public Vector2 LookDelta;
 
-        public bool Option;          // Q                   Y                 Triangle        North
-        public bool Cancel;          // Backspace / C       B                 Circle          East
-        public bool Motion;          // Space               A                 Cross           South
-        public bool Interact;        // E                   X                 Square          West
+        public bool OptionState;                        // Q                   Y                 Triangle        North
+        public bool CancelState;                        // Backspace / C       B                 Circle          East
+        public bool MotionState;                        // Space               A                 Cross           South
+        public bool InteractState;                      // E                   X                 Square          West
 
-        public bool ActionRight;     // Right Mouse         Right Trigger     R2              Right Trigger
-        public bool ActionLeft;      // Left Mouse          Right Bumper      R1              Right Shoulder
-        public bool Control;         // Left Ctrl           Left Trigget      L2              Left Trigget
-        public bool Shift;           // Left Shift          Left Bumper       L1              Left Shoulder
+        public bool ActionLeftState;                    // Left Mouse          Right Bumper      R1              Right Shoulder
+        public bool ActionMiddleState;                  // Middle Mouse          
+        [Range(-1, 1)] public float ActionMiddleScroll; // Scroll Mouse
+        public bool ActionRightState;                   // Right Mouse         Right Trigger     R2              Right Trigge
+        [Range (0, 1)] public float ActionRightValue;
 
-        public Target TargetPosition;
+        public bool ControlState;                       // Left Ctrl           Left Trigget      L2              Left Trigget
+        [Range(0, 1)] public float ControlValue;
+
+        public bool ShiftState;                         // Left Shift          Left Bumper       L1              Left Shoulder
+
         public Target TargetInteraction;
     }
 }

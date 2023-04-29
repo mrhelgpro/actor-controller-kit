@@ -3,47 +3,47 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public enum RotationMode { None, DirectionOfMovement, DirectionOfLook, Flip2D }
+    public enum RotateMode { None, RotateToMovement, RotateToLook, Flip2D }
 
     [Serializable]
     public class Rotable : Model
     {
-        public RotationMode Mode = RotationMode.None;
+        public RotateMode RotateMode = RotateMode.None;
 
-        public void Update(Vector3 moveDirection, Vector3 lookDirection, float rate)
+        public void Update(Vector2 inputMoveVector, Vector3 lookDirection, float rate)
         {
-            switch (Mode)
+            switch (RotateMode)
             {
-                case RotationMode.None:
+                case RotateMode.None:
                     RootTransform.eulerAngles = Vector3.zero;
                     break;
-                case RotationMode.DirectionOfMovement:
-                    lookAtDirection(moveDirection, rate);
+                case RotateMode.RotateToMovement:
+                    rotateToMovement(inputMoveVector, rate);
                     break;
-                case RotationMode.DirectionOfLook:
-                    directionByLook(moveDirection, lookDirection, rate);
+                case RotateMode.RotateToLook:
+                    rotateToLook(inputMoveVector, lookDirection, rate);
                     break;
-                case RotationMode.Flip2D:
-                    checkFlip(moveDirection);
+                case RotateMode.Flip2D:
+                    checkFlip(inputMoveVector);
                     break;
             }
         }
 
-        private void directionByLook(Vector3 moveDirection, Vector3 lookDirection, float rate)
+        private void rotateToLook(Vector2 inputMoveVector, Vector3 lookDirection, float rate)
         {
-            if (moveDirection.magnitude > 0)
+            if (inputMoveVector.magnitude > 0)
             {
                 Vector3 look = Vector3.Normalize(Vector3.Scale(Vector3.ProjectOnPlane(lookDirection, Vector3.up), new Vector3(1, 0, 1)));
                 RootTransform.rotation = Quaternion.LookRotation(look, Vector3.up);
             }
         }
 
-        private void lookAtDirection(Vector3 moveDirection, float rate)
+        private void rotateToMovement(Vector2 inputMoveVector, float rate)
         {
-            if (moveDirection.magnitude > 0)
+            if (inputMoveVector.magnitude > 0)
             {
-                Quaternion targetRotation = Quaternion.LookRotation(new Vector3(moveDirection.x, moveDirection.y, moveDirection.z), Vector3.up);
-                RootTransform.rotation = Quaternion.Slerp(RootTransform.rotation, targetRotation, Time.deltaTime * 2.5f * rate);
+                Quaternion targetRotation = Quaternion.LookRotation(new Vector3(inputMoveVector.x, 0, inputMoveVector.y), Vector3.up);
+                RootTransform.rotation = Quaternion.Slerp(RootTransform.rotation, targetRotation, Time.deltaTime * rate);
             }
         }
 

@@ -235,7 +235,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 265882232}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 1.5, z: -1}
+  m_LocalPosition: {x: 0.4, y: 1.5, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -607,55 +607,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b7c71ea0ccb88844a1b75265d0f157f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &291957802664256980
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 291957802664256981}
-  - component: {fileID: 291957802664256982}
-  m_Layer: 3
-  m_Name: Input Controller
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &291957802664256981
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 291957802664256980}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.25, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3439630284013496808}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &291957802664256982
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 291957802664256980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f40dbd14eb6c5654292f7dc6c24869b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MoveDirectionMode: 0
-  InputTargetMode: 0
-  TargetRequiredLayers:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1 &424261973886513024
 GameObject:
   m_ObjectHideFlags: 0
@@ -688,7 +639,7 @@ Transform:
   - {fileID: 7689018265849112311}
   - {fileID: 1718852446943190689}
   m_Father: {fileID: 3439630284013496808}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &424261973886513026
 MonoBehaviour:
@@ -732,7 +683,7 @@ Transform:
   m_Children:
   - {fileID: 1718852446983322230}
   m_Father: {fileID: 3439630284013496808}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1718852446943190689
 Transform:
@@ -785,6 +736,7 @@ MonoBehaviour:
   Motion: 0
   Interact: 0
   ActionRight: 1
+  ActionMiddle: 0
   ActionLeft: 0
   Control: 0
   Shift: 0
@@ -810,16 +762,21 @@ MonoBehaviour:
   ExtraJumps: 0
   Levitation: 0
   CameraSettings:
-    HorizontalDirection: 0
-    VerticalDirection: 0
-    HorizontalSensitivity: 0.25
-    VerticalSensitivity: 0.125
-    Height: 1.55
-    Shoulder: 0.45
-    Distance: 1
+    InputCameraMode: 0
+    Orbit:
+      Horizontal: 0
+      Vertical: 0
+    Sensitivity:
+      Horizontal: 0.25
+      Vertical: 0.125
+    Offset:
+      Horizontal: 0.4
+      Vertical: 1.5
+      Distance: 1
+    DampTime:
+      Move: 0.01
+      Rotation: 0.05
     FieldOfView: 35
-    MoveTime: 0.01
-    RotationTime: 0.05
   rotable:
     Mode: 2
   directable:
@@ -918,7 +875,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 291957802664256981}
   - {fileID: 424261973886513025}
   - {fileID: 1450076943514477735}
   m_Father: {fileID: 0}
@@ -933,6 +889,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3439630284013496808}
+  - component: {fileID: 4353763294979822000}
   - component: {fileID: 4353763294979821985}
   - component: {fileID: 4353763294979821993}
   - component: {fileID: 4353763294979821999}
@@ -978,16 +935,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Settings:
-    HorizontalDirection: 0
-    VerticalDirection: 0
-    HorizontalSensitivity: 1
-    VerticalSensitivity: 0.5
-    Height: 1.5
-    Shoulder: 0.5
-    Distance: 1
+    InputCameraMode: 0
+    Orbit:
+      Horizontal: 0
+      Vertical: 0
+    Sensitivity:
+      Horizontal: 1
+      Vertical: 0.5
+    Offset:
+      Horizontal: 0.4
+      Vertical: 1.5
+      Distance: 1
+    DampTime:
+      Move: 0
+      Rotation: 0
     FieldOfView: 60
-    MoveTime: 0.01
-    RotationTime: 0.05
 --- !u!54 &4353763294979821994
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1054,17 +1016,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Menu: 0
-  Pointer: {x: 0, y: 0}
-  Move: {x: 0, y: 0}
-  Look: {x: 0, y: 0}
-  Option: 0
-  Cancel: 0
-  Motion: 0
-  Interact: 0
-  ActionRight: 0
-  ActionLeft: 0
-  Control: 0
-  Shift: 0
+  PointerPosition: {x: 0, y: 0}
+  MoveVector: {x: 0, y: 0}
+  LookDelta: {x: 0, y: 0}
+  OptionState: 0
+  CancelState: 0
+  MotionState: 0
+  InteractState: 0
+  ActionLeftState: 0
+  ActionMiddleState: 0
+  ActionMiddleScroll: 0
+  ActionRightState: 0
+  ActionRightValue: 0
+  ControlState: 0
+  ControlValue: 0
+  ShiftState: 0
 --- !u!114 &4353763294979821999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1078,6 +1044,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Actor
+--- !u!114 &4353763294979822000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3439630284013496809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f40dbd14eb6c5654292f7dc6c24869b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveDirectionMode: 0
+  InputTargetMode: 0
+  TargetRequiredLayers:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1001 &4815560170630058854
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1160,7 +1143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 0
-  Name: Strafe
+  Name: Move
   MoveSpeed: 4
   MoveShift: 8
   Rate: 10
@@ -1169,16 +1152,21 @@ MonoBehaviour:
   ExtraJumps: 2
   Levitation: 0.75
   CameraSettings:
-    HorizontalDirection: 0
-    VerticalDirection: 0
-    HorizontalSensitivity: 1
-    VerticalSensitivity: 0.5
-    Height: 1.5
-    Shoulder: 0.5
-    Distance: 1
+    InputCameraMode: 0
+    Orbit:
+      Horizontal: 0
+      Vertical: 0
+    Sensitivity:
+      Horizontal: 1
+      Vertical: 0.5
+    Offset:
+      Horizontal: 0.4
+      Vertical: 1.5
+      Distance: 1
+    DampTime:
+      Move: 0
+      Rotation: 0
     FieldOfView: 60
-    MoveTime: 0.01
-    RotationTime: 0.05
   rotable:
     Mode: 1
   directable:

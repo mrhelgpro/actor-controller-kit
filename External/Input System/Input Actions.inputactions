@@ -15,6 +15,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Pointer",
+                    "type": "Value",
+                    "id": "f7b0d679-fa6f-4967-8dc1-3e38be8df11b",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Move",
                     "type": "Value",
                     "id": "aaf1e6e5-7c44-4906-bcde-fa5c9e498512",
@@ -105,13 +114,13 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Pointer",
-                    "type": "Value",
-                    "id": "f7b0d679-fa6f-4967-8dc1-3e38be8df11b",
-                    "expectedControlType": "Vector2",
+                    "name": "ActionMiddle",
+                    "type": "Button",
+                    "id": "78b11dd1-c922-4965-9d5d-a7012e1ee184",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -475,6 +484,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Pointer",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9e0c01a4-420d-4b37-bc00-8486616a6e19",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "ActionMiddle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "55a1819c-a56e-425d-a886-7988ead1a4ed",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ActionMiddle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

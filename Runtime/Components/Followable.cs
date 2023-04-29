@@ -6,9 +6,9 @@ namespace AssemblyActorCore
 {
     public class Followable : ModelComponent
     {
-        public ActorCameraSettings Settings;
+        public CameraSettings Settings;
 
-        public void SetPreview(ActorCameraSettings settings)
+        public void SetPreview(CameraSettings settings)
         {
             ActorCamera actorCamera = FindObjectOfType<ActorCamera>();
 
@@ -23,42 +23,66 @@ namespace AssemblyActorCore
             }
         }
 
-        public void SetParametres(ActorCameraSettings settings, Vector2 look)
+        public void SetParametres(CameraSettings settings, Vector2 look, bool isRotable)
         {
-            if (settings.InputCameraMode == InputCameraMode.Free)
-            { 
-                // Do somethings
+            Settings.Offset = settings.Offset;
+            Settings.DampTime = settings.DampTime;
+            Settings.FieldOfView = settings.FieldOfView;
+
+            if (isRotable)
+            {
+                Settings.Orbit.Horizontal += look.x * settings.Sensitivity.Horizontal;
+                Settings.Orbit.Vertical += look.y * settings.Sensitivity.Vertical;
+                Settings.Orbit.Vertical = Mathf.Clamp(Settings.Orbit.Vertical, -30, 80);
+
+                return;
             }
 
-            Settings.HorizontalDirection += look.x * settings.HorizontalSensitivity;
-            Settings.VerticalDirection += look.y * settings.VerticalSensitivity;
-            Settings.VerticalDirection = Mathf.Clamp(Settings.VerticalDirection, -25, 80);
-
-            Settings.Height = settings.Height;
-            Settings.Shoulder = settings.Shoulder;
-            Settings.Distance = settings.Distance;
-            Settings.FieldOfView = settings.FieldOfView;
-            Settings.MoveTime = settings.MoveTime;
-            Settings.RotationTime = settings.RotationTime;
+            Settings.Orbit = settings.Orbit;
         }
     }
 
-    public enum InputCameraMode { Free, LeftHold, RightHold, MiddleHold}
+    public enum InputCameraMode { Free, LeftHold, MiddleHold, RightHold, Freez }
 
     [Serializable]
-    public struct ActorCameraSettings
+    public struct CameraSettings
     {
         public InputCameraMode InputCameraMode;
-        [Range(-180, 180)] public float HorizontalDirection;
-        [Range(-90, 90)] public float VerticalDirection;
-        [Range(0, 5)] public float HorizontalSensitivity;
-        [Range(0, 5)] public float VerticalSensitivity;
-        [Range(-5, 5)] public float Height;
-        [Range(-1, 1)] public float Shoulder;
-        [Range(0, 15)] public float Distance;
+        public Vector2Orbit Orbit;
+        public Vector2Sensitivity Sensitivity;
+        public Vector3Offset Offset;
+        public Vector2DampTime DampTime;
+
         [Range(10, 90)] public int FieldOfView;
-        [Range(0.01f, 1.0f)] public float MoveTime;
-        [Range(0.05f, 1.0f)] public float RotationTime;
+    }
+
+    [Serializable]
+    public struct Vector2Orbit
+    {
+        [Range(-180, 180)] public float Horizontal;
+        [Range(-90, 90)] public float Vertical;
+    }
+
+    [Serializable]
+    public struct Vector2Sensitivity
+    {
+        [Range(0, 5)] public float Horizontal;
+        [Range(0, 5)] public float Vertical;
+    }
+
+    [Serializable]
+    public struct Vector3Offset
+    {
+        [Range(-5, 5)] public float Horizontal;
+        [Range(-5, 5)] public float Vertical;
+        [Range(0, 20)] public float Distance;
+    }
+
+    [Serializable]
+    public struct Vector2DampTime
+    {
+        [Range(0, 1)] public float Move;
+        [Range(0, 1)] public float Rotation;
     }
 
 #if UNITY_EDITOR

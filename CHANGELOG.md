@@ -23,3 +23,6 @@ All notable changes to this project will be documented in this file.
 ## [1.0.6] - 2023-04-28
 - Add Target
 - Change Input Player Controller
+
+## [1.0.7] - 2023-04-29
+- Fix Input Player Controller

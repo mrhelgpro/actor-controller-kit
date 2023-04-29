@@ -1,95 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2367553904855194941
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2367553904855194930}
-  - component: {fileID: 2367553904855194928}
-  - component: {fileID: 2367553904855194931}
-  m_Layer: 3
-  m_Name: Shoot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2367553904855194930
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2367553904855194941}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2621714823308067743}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2367553904855194928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2367553904855194941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdc52e6bbb9c0da4fb58485ea005695d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Type: 0
-  Name: Strafe
-  MoveSpeed: 2
-  MoveShift: 3
-  Rate: 10
-  Gravity: 1
-  JumpHeight: 2
-  ExtraJumps: 2
-  Levitation: 0.75
-  CameraSettings:
-    Vertical: 55
-    Horizontal: 0
-    Height: 0.55
-    Shoulder: 0
-    Distance: 12
-    FieldOfView: 60
-    MoveTime: 0.25
-    RotationTime: 0.5
-  rotable:
-    Mode: 1
-  directable:
-    Mode: 0
-  animatorable:
-    AnimatorController: {fileID: 0}
---- !u!114 &2367553904855194931
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2367553904855194941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41c97848d856ce34795ae2c816fdd92e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DeactivateMode: 2
-  Option: 0
-  Cancel: 0
-  Motion: 0
-  Interact: 0
-  ActionRight: 1
-  ActionLeft: 0
-  Control: 0
-  Shift: 0
 --- !u!1 &2621714823308067742
 GameObject:
   m_ObjectHideFlags: 0
@@ -120,7 +30,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5419408040786676457}
-  - {fileID: 2367553904855194930}
   m_Father: {fileID: 3537516414154214715}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -190,8 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f40dbd14eb6c5654292f7dc6c24869b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveDirectionMode: 0
-  InputTargetMode: 0
+  MoveDirectionMode: 2
+  InputTargetMode: 2
   TargetRequiredLayers:
     serializedVersion: 2
     m_Bits: 1
@@ -225,14 +134,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Settings:
-    Vertical: 55
-    Horizontal: 0
-    Height: 0.55
-    Shoulder: 0
-    Distance: 12
+    InputCameraMode: 4
+    Orbit:
+      Horizontal: 0
+      Vertical: 60
+    Sensitivity:
+      Horizontal: 0
+      Vertical: 0
+    Offset:
+      Horizontal: 0
+      Vertical: 0.05
+      Distance: 12
+    DampTime:
+      Move: 0
+      Rotation: 0
     FieldOfView: 60
-    MoveTime: 0.5
-    RotationTime: 1
 --- !u!114 &5950703915286210555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,20 +175,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Menu: 0
-  Pointer: {x: 0, y: 0}
-  Move: {x: 0, y: 0}
-  Look:
-    Value: {x: 0, y: 0}
-    Delta: {x: 0, y: 0}
-    Sensitivity: 0
-  Option: 0
-  Cancel: 0
-  Motion: 0
-  Interact: 0
-  ActionRight: 0
-  ActionLeft: 0
-  Control: 0
-  Shift: 0
+  PointerPosition: {x: 0, y: 0}
+  MoveVector: {x: 0, y: 0}
+  LookDelta: {x: 0, y: 0}
+  OptionState: 0
+  CancelState: 0
+  MotionState: 0
+  InteractState: 0
+  ActionLeftState: 0
+  ActionMiddleState: 0
+  ActionMiddleScroll: 0
+  ActionRightState: 0
+  ActionRightValue: 0
+  ControlState: 0
+  ControlValue: 0
+  ShiftState: 0
 --- !u!114 &5950703915286210553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,18 +330,25 @@ MonoBehaviour:
   ExtraJumps: 2
   Levitation: 0.75
   CameraSettings:
-    Vertical: 55
-    Horizontal: 0
-    Height: 0.55
-    Shoulder: 0
-    Distance: 12
+    InputCameraMode: 4
+    Orbit:
+      Horizontal: 0
+      Vertical: 60
+    Sensitivity:
+      Horizontal: 0
+      Vertical: 0
+    Offset:
+      Horizontal: 0
+      Vertical: 0.05
+      Distance: 12
+    DampTime:
+      Move: 0
+      Rotation: 0
     FieldOfView: 60
-    MoveTime: 0.5
-    RotationTime: 1
   rotable:
-    Mode: 1
+    RotateMode: 1
   directable:
-    Mode: 1
+    LookMode: 1
   animatorable:
     AnimatorController: {fileID: 0}
 --- !u!114 &2544896632019198280

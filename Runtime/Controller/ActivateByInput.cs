@@ -4,7 +4,9 @@ namespace AssemblyActorCore
 {
     public class ActivateByInput : Activator
     {
-        public enum Mode { None, Repeat, Cancel}
+        public enum Mode { None, RepeatedPressing, ActiveWhileHolding }
+        
+        [Tooltip("The event when the controller will be deactivated")]
         public Mode DeactivateMode = Mode.None;
 
                                      // KEYBOARD            X-BOX             DUALSHOCK       GAMEPAD
@@ -14,6 +16,7 @@ namespace AssemblyActorCore
         public bool Interact;        // E                   X                 Square          West
 
         public bool ActionRight;     // Right Mouse         Right Trigger     R2              Right Trigger
+        public bool ActionMiddle;    // Middle Mouse
         public bool ActionLeft;      // Left Mouse          Right Bumper      R1              Right Shoulder
         public bool Control;         // Left Ctrl           Left Trigget      L2              Left Trigget
         public bool Shift;           // Left Shift          Left Bumper       L1              Left Shoulder
@@ -37,11 +40,11 @@ namespace AssemblyActorCore
             }
             else
             {
-                if (DeactivateMode == Mode.Repeat)
+                if (DeactivateMode == Mode.RepeatedPressing)
                 {
                     setActive(false);
                 }
-                else if (DeactivateMode == Mode.Cancel)
+                else if (DeactivateMode == Mode.ActiveWhileHolding)
                 {
                     if (_isButtonPress == false)
                     {
@@ -79,15 +82,16 @@ namespace AssemblyActorCore
         {
             get
             {
-                if (Option == true && inputable.Option == false) return false;
-                if (Cancel == true && inputable.Cancel == false) return false;
-                if (Motion == true && inputable.Motion == false) return false;
-                if (Interact == true && inputable.Interact == false) return false;
+                if (Option == true && inputable.OptionState == false) return false;
+                if (Cancel == true && inputable.CancelState == false) return false;
+                if (Motion == true && inputable.MotionState == false) return false;
+                if (Interact == true && inputable.InteractState == false) return false;
 
-                if (ActionRight == true && inputable.ActionRight == false) return false;
-                if (ActionLeft == true && inputable.ActionLeft == false) return false;
-                if (Control == true && inputable.Control == false) return false;
-                if (Shift == true && inputable.Shift == false) return false;
+                if (ActionRight == true && inputable.ActionRightState == false) return false;
+                if (ActionMiddle == true && inputable.ActionMiddleState == false) return false;
+                if (ActionLeft == true && inputable.ActionLeftState == false) return false;
+                if (Control == true && inputable.ControlState == false) return false;
+                if (Shift == true && inputable.ShiftState == false) return false;
 
                 return true;
             }

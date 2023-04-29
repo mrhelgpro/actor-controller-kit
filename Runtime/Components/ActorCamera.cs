@@ -47,8 +47,8 @@ namespace AssemblyActorCore
         {
             GetComponent<Camera>().fieldOfView = target.Settings.FieldOfView;
 
-            transform.rotation = Quaternion.Euler(target.Settings.VerticalDirection, target.Settings.HorizontalDirection, 0);
-            transform.position = transform.rotation * new Vector3(target.Settings.Shoulder, target.Settings.Height, -target.Settings.Distance) + target.transform.position;
+            transform.rotation = Quaternion.Euler(target.Settings.Orbit.Vertical, target.Settings.Orbit.Horizontal, 0);
+            transform.position = transform.rotation * new Vector3(target.Settings.Offset.Horizontal, target.Settings.Offset.Vertical, -target.Settings.Offset.Distance) + target.transform.position;
         }
 
         private void followTheTarget()
@@ -57,16 +57,16 @@ namespace AssemblyActorCore
             {
                 _camera.fieldOfView = Target.Settings.FieldOfView;
 
-                float horizontal = Mathf.SmoothDampAngle(_mainTransform.eulerAngles.x, Target.Settings.VerticalDirection, ref _angleVelocity.y, Target.Settings.RotationTime);
-                float vertical = Mathf.SmoothDampAngle(_mainTransform.eulerAngles.y, Target.Settings.HorizontalDirection, ref _angleVelocity.x, Target.Settings.RotationTime);
+                float horizontal = Mathf.SmoothDampAngle(_mainTransform.eulerAngles.x, Target.Settings.Orbit.Vertical, ref _angleVelocity.y, Target.Settings.DampTime.Rotation + 0.025f);
+                float vertical = Mathf.SmoothDampAngle(_mainTransform.eulerAngles.y, Target.Settings.Orbit.Horizontal, ref _angleVelocity.x, Target.Settings.DampTime.Rotation + 0.025f);
                 Quaternion rotation = Quaternion.Euler(horizontal, vertical, 0);
 
-                Vector3 position = rotation * new Vector3(Target.Settings.Shoulder * 2, Target.Settings.Height, -Target.Settings.Distance) + Target.ThisTransform.position;
-                Vector3 delta = new Vector3(Target.ThisTransform.position.x, Target.ThisTransform.position.y + Target.Settings.Height, Target.ThisTransform.position.z) - _camera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, Target.Settings.Distance));
+                Vector3 position = rotation * new Vector3(Target.Settings.Offset.Horizontal * 2, Target.Settings.Offset.Vertical, -Target.Settings.Offset.Distance) + Target.ThisTransform.position;
+                Vector3 delta = new Vector3(Target.ThisTransform.position.x, Target.ThisTransform.position.y + Target.Settings.Offset.Vertical, Target.ThisTransform.position.z) - _camera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, Target.Settings.Offset.Distance));
                 Vector3 destination = position + delta;
 
                 _mainTransform.rotation = rotation;
-                _mainTransform.position = Vector3.SmoothDamp(_mainTransform.position, destination, ref _moveVelocity, Target.Settings.MoveTime);
+                _mainTransform.position = Vector3.SmoothDamp(_mainTransform.position, destination, ref _moveVelocity, Target.Settings.DampTime.Move + 0.01f);
             }
         }
 
