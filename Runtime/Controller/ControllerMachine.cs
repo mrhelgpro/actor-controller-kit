@@ -8,6 +8,7 @@ namespace AssemblyActorCore
 
     public class ControllerMachine : MonoBehaviour
     {
+        //private GameObject _currentController = null;
         private Controller _currentController = null;
         private List<Controller> _controllers = new List<Controller>();
         private List<Activator> _activators = new List<Activator>();
@@ -101,7 +102,7 @@ namespace AssemblyActorCore
                 _currentController = controller;
                 _currentController.Enter();
 
-                Debug.Log(GetName);
+                //Debug.Log(GetName);
             }
         }
 

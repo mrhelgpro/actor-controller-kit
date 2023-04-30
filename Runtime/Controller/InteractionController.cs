@@ -7,7 +7,7 @@ namespace AssemblyActorCore
         [Header("Interaction")]
         public float Duration = 1;
         
-        public CameraSettings CameraSettings = new CameraSettings();
+        public CameraParametres CameraParametres = new CameraParametres();
 
         protected Vector3 interactionPosition;
 
@@ -31,7 +31,7 @@ namespace AssemblyActorCore
 
             followable = GetComponentInParent<Followable>();
 
-            animatorable.Initialization(transform);
+            //animatorable.Initialization(transform);
             directable.Initialization(transform);
             rotable.Initialization(transform);
         }
@@ -39,7 +39,8 @@ namespace AssemblyActorCore
         public override void Enter()
         {
             interactionPosition = RootTransform.position;
-            animatorable.Play(Name, _speed);
+            animatorable.Enter(transform, Name);
+            animatorable.SetFloat("Speed", _speed);
             _timer = 0;
         }
 

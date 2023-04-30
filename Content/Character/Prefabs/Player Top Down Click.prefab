@@ -54,14 +54,15 @@ MonoBehaviour:
   JumpHeight: 2
   ExtraJumps: 2
   Levitation: 0.75
-  CameraSettings:
-    InputCameraMode: 2
+  CameraParametres:
+    name: Movement
+    InputCameraMode: 4
     Orbit:
       Horizontal: 0
       Vertical: 60
     Sensitivity:
-      Horizontal: 1
-      Vertical: 0.5
+      Horizontal: 0
+      Vertical: 0
     Offset:
       Horizontal: 0
       Vertical: 0.5
@@ -73,7 +74,7 @@ MonoBehaviour:
   rotable:
     RotateMode: 1
   directable:
-    LookMode: 0
+    LookMode: 1
   animatorable:
     AnimatorController: {fileID: 0}
 --- !u!114 &6296881446072576057
@@ -207,14 +208,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ced2bc7da838a664796c132e46dc4469, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Settings:
-    InputCameraMode: 2
+  Parametres:
+    name: Movement
+    InputCameraMode: 4
     Orbit:
       Horizontal: 0
       Vertical: 60
     Sensitivity:
-      Horizontal: 1
-      Vertical: 0.5
+      Horizontal: 0
+      Vertical: 0
     Offset:
       Horizontal: 0
       Vertical: 0.5
@@ -249,7 +251,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Menu: 0
-  PointerPosition: {x: 0, y: 0}
+  PointerScreenPosition: {x: 0, y: 0}
   MoveVector: {x: 0, y: 0}
   LookDelta: {x: 0, y: 0}
   OptionState: 0

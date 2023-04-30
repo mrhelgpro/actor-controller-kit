@@ -209,7 +209,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 20
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -235,7 +235,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 265882232}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 1.5, z: -5}
+  m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -526,6 +526,97 @@ LightingSettings:
   m_PVRFilteringAtrousPositionSigmaIndirect: 2
   m_PVRFilteringAtrousPositionSigmaAO: 1
   m_PVRTiledBaking: 0
+--- !u!1 &1976227759
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1976227760}
+  - component: {fileID: 1976227762}
+  - component: {fileID: 1976227761}
+  m_Layer: 3
+  m_Name: Action
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1976227760
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1976227759}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8691554513897671938}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1976227761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1976227759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41c97848d856ce34795ae2c816fdd92e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DeactivateMode: 0
+  Option: 0
+  Cancel: 0
+  Motion: 0
+  Interact: 0
+  ActionRight: 0
+  ActionMiddle: 0
+  ActionLeft: 0
+  Control: 1
+  Shift: 0
+--- !u!114 &1976227762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1976227759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b045949ba0f3794a85d15817fd5c228, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 0
+  Name: Fall
+  Duration: 2
+  CameraParametres:
+    InputCameraMode: 0
+    Orbit:
+      Horizontal: 0
+      Vertical: 0
+      SensitivityX: 1
+      SensitivityY: 0.5
+    Offset:
+      Horizontal: 0
+      Vertical: 0
+      Distance: 5
+    DampTime:
+      Move: 0
+      Rotation: 0
+    FieldOfView: 60
+  rotable:
+    RotateMode: 0
+  directable:
+    LookMode: 0
+  animatorable:
+    AnimatorController: {fileID: 0}
 --- !u!54 &611576166510790833
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -554,6 +645,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1afe73b36812b1c41a31f82428a59477, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MovementParametres:
+    Direction: {x: 0, y: 0, z: 0}
+    Speed: 3
+    Rate: 10
+    Gravity: 1
 --- !u!135 &611576166510790838
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -621,24 +717,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 0
   Name: Move
+  MovementParametres:
+    Direction: {x: 0, y: 0, z: 0}
+    Speed: 3
+    Rate: 10
+    Gravity: 1
   MoveSpeed: 4
   MoveShift: 8
-  Rate: 10
-  Gravity: 1
   JumpHeight: 2
   ExtraJumps: 2
   Levitation: 0.75
-  CameraSettings:
+  CameraParametres:
     InputCameraMode: 0
     Orbit:
       Horizontal: 0
       Vertical: 0
-    Sensitivity:
-      Horizontal: 1
-      Vertical: 0.5
+      SensitivityX: 1
+      SensitivityY: 0.5
     Offset:
-      Horizontal: 1
-      Vertical: 1.5
+      Horizontal: 1.5
+      Vertical: 1
       Distance: 5
     DampTime:
       Move: 0
@@ -704,7 +802,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Menu: 0
-  PointerPosition: {x: 0, y: 0}
+  PointerScreenPosition: {x: 0, y: 0}
   MoveVector: {x: 0, y: 0}
   LookDelta: {x: 0, y: 0}
   OptionState: 0
@@ -884,7 +982,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7685188195733634082
 Transform:
   m_ObjectHideFlags: 0
@@ -914,29 +1012,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 0
   Name: Strafe
+  MovementParametres:
+    Direction: {x: 0, y: 0, z: 0}
+    Speed: 3
+    Rate: 10
+    Gravity: 1
   MoveSpeed: 2
   MoveShift: 3
-  Rate: 5
-  Gravity: 1
   JumpHeight: 0
   ExtraJumps: 0
   Levitation: 0
-  CameraSettings:
+  CameraParametres:
     InputCameraMode: 0
     Orbit:
       Horizontal: 0
       Vertical: 0
-    Sensitivity:
-      Horizontal: 0.25
-      Vertical: 0.125
+      SensitivityX: 1
+      SensitivityY: 0.5
     Offset:
-      Horizontal: 1
-      Vertical: 1.5
+      Horizontal: 0
+      Vertical: 0
       Distance: 5
     DampTime:
       Move: 0
       Rotation: 0
-    FieldOfView: 20
+    FieldOfView: 60
   rotable:
     RotateMode: 2
   directable:
@@ -1199,6 +1299,7 @@ Transform:
   m_Children:
   - {fileID: 1713957879381967988}
   - {fileID: 7685188195733634082}
+  - {fileID: 1976227760}
   m_Father: {fileID: 7593745788358997322}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1248,22 +1349,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ced2bc7da838a664796c132e46dc4469, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Settings:
+  Parametres:
     InputCameraMode: 0
     Orbit:
       Horizontal: 0
       Vertical: 0
-    Sensitivity:
-      Horizontal: 0.25
-      Vertical: 0.125
+      SensitivityX: 1
+      SensitivityY: 0.5
     Offset:
-      Horizontal: 1
-      Vertical: 1.5
+      Horizontal: 0
+      Vertical: 0
       Distance: 5
     DampTime:
       Move: 0
       Rotation: 0
-    FieldOfView: 20
+    FieldOfView: 60
 --- !u!114 &9200259730249920469
 MonoBehaviour:
   m_ObjectHideFlags: 0

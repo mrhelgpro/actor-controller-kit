@@ -20,6 +20,7 @@ namespace AssemblyActorCore
             layerMask = ~(1 << LayerMask.NameToLayer("Actor"));
         }
 
+        private void FixedUpdate() => UpdateParametres();
 
         public float GetSlope => Vector3.Angle(SurfaceNormal, Vector3.up);
 

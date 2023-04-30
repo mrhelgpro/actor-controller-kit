@@ -6,15 +6,15 @@ namespace AssemblyActorCore
 {
     public class Followable : ModelComponent
     {
-        public CameraSettings Settings;
+        public CameraParametres Parametres;
 
-        public void SetPreview(CameraSettings settings)
+        public void SetPreview(CameraParametres parametres)
         {
             ActorCamera actorCamera = FindObjectOfType<ActorCamera>();
 
             if (actorCamera)
             {
-                Settings = settings;
+                Parametres = parametres;
                 actorCamera.PreviewTheTarget(this);
             }
             else
@@ -22,38 +22,19 @@ namespace AssemblyActorCore
                 Debug.LogWarning(gameObject.name + " - Followable: <ActorCamera> - is not found");
             }
         }
-
-        public void SetParametres(CameraSettings settings, Vector2 look, bool isRotable)
-        {
-            Settings.Offset = settings.Offset;
-            Settings.DampTime = settings.DampTime;
-            Settings.FieldOfView = settings.FieldOfView;
-
-            if (isRotable)
-            {
-                Settings.Orbit.Horizontal += look.x * settings.Sensitivity.Horizontal;
-                Settings.Orbit.Vertical += look.y * settings.Sensitivity.Vertical;
-                Settings.Orbit.Vertical = Mathf.Clamp(Settings.Orbit.Vertical, -30, 80);
-
-                return;
-            }
-
-            Settings.Orbit = settings.Orbit;
-        }
     }
 
     public enum InputCameraMode { Free, LeftHold, MiddleHold, RightHold, Freez }
 
     [Serializable]
-    public struct CameraSettings
+    public class CameraParametres
     {
         public InputCameraMode InputCameraMode;
-        public Vector2Orbit Orbit;
-        public Vector2Sensitivity Sensitivity;
-        public Vector3Offset Offset;
+        public Vector2Orbit Orbit = new Vector2Orbit(1.0f, 0.5f);
+        public Vector3Offset Offset = new Vector3Offset(0.0f, 0.0f, 5.0f);
         public Vector2DampTime DampTime;
 
-        [Range(10, 90)] public int FieldOfView;
+        [Range(10, 90)] public int FieldOfView = 60;
     }
 
     [Serializable]
@@ -61,13 +42,16 @@ namespace AssemblyActorCore
     {
         [Range(-180, 180)] public float Horizontal;
         [Range(-90, 90)] public float Vertical;
-    }
+        [Range(0, 5)] public float SensitivityX;
+        [Range(0, 5)] public float SensitivityY;
 
-    [Serializable]
-    public struct Vector2Sensitivity
-    {
-        [Range(0, 5)] public float Horizontal;
-        [Range(0, 5)] public float Vertical;
+        public Vector2Orbit(float x, float y)
+        {
+            Horizontal = 0;
+            Vertical = 0;
+            SensitivityX = x;
+            SensitivityY = y;
+        }
     }
 
     [Serializable]
@@ -76,6 +60,13 @@ namespace AssemblyActorCore
         [Range(-5, 5)] public float Horizontal;
         [Range(-5, 5)] public float Vertical;
         [Range(0, 20)] public float Distance;
+
+        public Vector3Offset(float horizontal, float vertical, float distance)
+        {
+            Horizontal = horizontal;
+            Vertical = vertical;
+            Distance = distance;
+        }
     }
 
     [Serializable]
@@ -107,18 +98,18 @@ namespace AssemblyActorCore
                 UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(AssetDatabase.GetAssetPath(MonoScript.FromMonoBehaviour(myTarget)), 0);
             }
 
-            // Settings Structure
+            // Parametres Structure
             if (myTarget.GetComponent<Actor>() == null)
             {
                 if (Application.isPlaying == false)
                 {
-                    SerializedProperty settingsProperty = serializedObject.FindProperty("Settings");
-                    EditorGUILayout.PropertyField(settingsProperty, true);
+                    SerializedProperty parametresProperty = serializedObject.FindProperty("Parametres");
+                    EditorGUILayout.PropertyField(parametresProperty, true);
                     serializedObject.ApplyModifiedProperties();
 
                     if (GUI.changed)
                     {
-                        myTarget.SetPreview(myTarget.Settings);
+                        myTarget.SetPreview(myTarget.Parametres);
                     }
                 }
             }

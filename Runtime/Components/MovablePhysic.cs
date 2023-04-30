@@ -27,7 +27,14 @@ namespace AssemblyActorCore
         protected override void Move()
         {
             _rigidbody.MovePosition(_rigidbody.position + Velocity * Time.fixedDeltaTime);
-            _rigidbody.AddForce(Physics.gravity * gravity, ForceMode.Acceleration);
+            _rigidbody.AddForce(Physics.gravity * MovementParametres.Gravity, ForceMode.Acceleration);
+        }
+
+        public override void Exit()
+        {
+            MovementParametres = new MovementParametres();
+            _rigidbody.MovePosition(_rigidbody.position);
+            _rigidbody.velocity = Vector3.zero;
         }
     }
 }

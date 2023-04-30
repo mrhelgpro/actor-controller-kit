@@ -235,7 +235,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 265882232}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.4, y: 1.5, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -761,24 +761,23 @@ MonoBehaviour:
   JumpHeight: 0
   ExtraJumps: 0
   Levitation: 0
-  CameraSettings:
+  CameraParametres:
     InputCameraMode: 0
     Orbit:
       Horizontal: 0
       Vertical: 0
-    Sensitivity:
-      Horizontal: 0.25
-      Vertical: 0.125
+      SensitivityX: 0
+      SensitivityY: 0
     Offset:
-      Horizontal: 0.4
-      Vertical: 1.5
-      Distance: 1
+      Horizontal: 0
+      Vertical: 0
+      Distance: 5
     DampTime:
-      Move: 0.01
-      Rotation: 0.05
-    FieldOfView: 35
+      Move: 0
+      Rotation: 0
+    FieldOfView: 60
   rotable:
-    Mode: 2
+    RotateMode: 0
   directable:
     LookMode: 0
   animatorable:
@@ -934,18 +933,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ced2bc7da838a664796c132e46dc4469, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Settings:
+  Parametres:
     InputCameraMode: 0
     Orbit:
       Horizontal: 0
       Vertical: 0
-    Sensitivity:
-      Horizontal: 1
-      Vertical: 0.5
+      SensitivityX: 1
+      SensitivityY: 0.5
     Offset:
-      Horizontal: 0.4
-      Vertical: 1.5
-      Distance: 1
+      Horizontal: 0
+      Vertical: 0
+      Distance: 5
     DampTime:
       Move: 0
       Rotation: 0
@@ -1016,7 +1014,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Menu: 0
-  PointerPosition: {x: 0, y: 0}
+  PointerScreenPosition: {x: 0, y: 0}
   MoveVector: {x: 0, y: 0}
   LookDelta: {x: 0, y: 0}
   OptionState: 0
@@ -1151,24 +1149,23 @@ MonoBehaviour:
   JumpHeight: 2
   ExtraJumps: 2
   Levitation: 0.75
-  CameraSettings:
+  CameraParametres:
     InputCameraMode: 0
     Orbit:
       Horizontal: 0
       Vertical: 0
-    Sensitivity:
-      Horizontal: 1
-      Vertical: 0.5
+      SensitivityX: 0
+      SensitivityY: 0
     Offset:
-      Horizontal: 0.4
-      Vertical: 1.5
-      Distance: 1
+      Horizontal: 0
+      Vertical: 0
+      Distance: 5
     DampTime:
       Move: 0
       Rotation: 0
     FieldOfView: 60
   rotable:
-    Mode: 1
+    RotateMode: 0
   directable:
     LookMode: 0
   animatorable:

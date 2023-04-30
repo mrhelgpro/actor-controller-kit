@@ -11,9 +11,9 @@ namespace AssemblyActorCore
         private Animator _animator;
         private string _previousName = "None";
 
-        public override void Initialization(Transform transform)
+        public void Enter(Transform transform, string name, float fade = 0.025f)
         {
-            base.Initialization(transform);
+            Initialization(transform);
 
             _animator = RootTransform.GetComponentInChildren<Animator>();
 
@@ -21,14 +21,15 @@ namespace AssemblyActorCore
             {
                 AnimatorController = _animator.runtimeAnimatorController;
             }
-        }
-        public void Enter()
-        {
+
             if (AnimatorController != _animator.runtimeAnimatorController)
             {
                 _animator.StopPlayback();
                 _animator.runtimeAnimatorController = AnimatorController;
             }
+
+            _animator?.CrossFade(name, fade);
+            _animator?.SetFloat("Speed", 1);
         }
         public void Play(string name, float fade = 0.025f)
         {
