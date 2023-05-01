@@ -14,7 +14,7 @@ namespace AssemblyActorCore
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _navMeshAgent.updateRotation = false;
         }
-
+        /*
         protected override void Move()
         {
             _navMeshAgent.speed = maxSpeed;
@@ -30,5 +30,6 @@ namespace AssemblyActorCore
         }
 
         public override void SetForce(Vector3 force) { }
+        */
     }
 }

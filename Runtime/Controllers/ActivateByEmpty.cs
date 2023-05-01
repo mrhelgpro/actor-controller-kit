@@ -4,7 +4,7 @@ namespace AssemblyActorCore
     {
         public override void UpdateActivate()
         {
-            if (controllerMachine.IsEmpty)
+            if (stateMachine.IsEmpty)
             {
                 TryToActivate();
             }

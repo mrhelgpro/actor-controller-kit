@@ -2,33 +2,33 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public abstract class Activator : ModelComponent
+    public abstract class Activator : ActorComponent
     {
-        protected ControllerMachine controllerMachine;
-        protected Controller controller;
+        protected StatePresenterMachine stateMachine;
+        protected Presenter presenter;
 
         protected new void Awake()
         {
             base.Awake();
 
-            controller = GetComponent<Controller>();
+            presenter = GetComponent<Presenter>();
 
-            if (controller == null)
+            if (presenter == null)
             {
                 gameObject.SetActive(false);
 
-                Debug.LogWarning(gameObject.name + " - <Controller> is not found");
+                Debug.LogWarning(gameObject.name + " - Activator: is not found <Presenter>");
             }
             else
             {
-                controllerMachine = GetComponentInParent<ControllerMachine>();
+                stateMachine = GetComponentInParent<StatePresenterMachine>();
             }
         }
 
         public abstract void UpdateActivate();
 
-        protected void TryToActivate() => controllerMachine.TryToActivate(gameObject);
-        protected void Deactivate() => controllerMachine.Deactivate(gameObject);
-        protected bool isCurrentController => controllerMachine.GetController == null ? false : gameObject == controllerMachine.GetController.gameObject;
+        protected void TryToActivate() => stateMachine.TryToActivate(gameObject);
+        protected void Deactivate() => stateMachine.Deactivate(gameObject);
+        protected bool isCurrentState => stateMachine.GetCurrentState == null ? false : gameObject == stateMachine.GetCurrentState.gameObject;
     }
 }

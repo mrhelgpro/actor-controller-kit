@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public sealed class PositionablePlatformer : Positionable
+    public sealed class Positionable2D : Positionable
     {
         private Collision2D _groundCollision;
         private CircleCollider2D _groundCollider;
@@ -10,39 +10,29 @@ namespace AssemblyActorCore
         private PhysicsMaterial2D _materialOnTheGround;
         private PhysicsMaterial2D _materialInTheAir;
 
-        private new void Awake()
+        private void Start()
         {
-            base.Awake();
-
             _groundCollider = GetComponent<CircleCollider2D>();
 
             _materialInTheAir = Resources.Load<PhysicsMaterial2D>("Physic2D/Player In The Air");
             _materialOnTheGround = Resources.Load<PhysicsMaterial2D>("Physic2D/Player On The Ground");
         }
 
-        public override void UpdateParametres()
-        {
-            groundCheck();
-            surfaceCheck();
-            obstacleCheck();
-            materialCheck();
-        }
-
-        private void groundCheck()
+        protected override void GroundCheck()
         {
             bool isGroundedCollision = _groundCollision == null ? false : true;
-            bool isGroundedPhysics = Physics.CheckSphere(RootTransform.position, 0.2f, groundLayer);
+            bool isGroundedPhysics = Physics2D.OverlapCircle(RootTransform.position, 0.2f, groundLayer);
 
             IsGrounded = IsGrounded == true ? isGroundedPhysics : isGroundedCollision && isGroundedPhysics;
         }
 
-        private void surfaceCheck()
+        protected override void SurfaceCheck()
         {
             SurfaceType = IsGrounded == true && _groundCollision != null ? _groundCollision.gameObject.tag : "None";
             SurfaceNormal = IsGrounded == true && _groundCollision != null ? _groundCollision.contacts[0].normal : Vector3.zero;
         }
 
-        private void obstacleCheck()
+        protected override void ObstacleCheck()
         {
             float length = 0.35f;
             Vector3 origin = new Vector3(RootTransform.position.x, RootTransform.position.y + 0.25f, RootTransform.position.z);
@@ -52,7 +42,7 @@ namespace AssemblyActorCore
             IsObstacle = hit.collider == null ? false : hit.collider.isTrigger ? false : true;
         }
 
-        private void materialCheck()
+        private void materialCheck() // REMOVE THIS
         {
             _groundCollider.sharedMaterial = IsGrounded && IsObstacle == false ? _materialOnTheGround : _materialInTheAir;
         }

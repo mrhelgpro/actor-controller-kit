@@ -1,11 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class TestController : Controller
+    public class TestController : Presenter
     {
+        private void Start()
+        {
+
+        }
+
         public override void Enter()
         { 
         
@@ -14,11 +17,6 @@ namespace AssemblyActorCore
         public override void UpdateLoop()
         {
             Debug.Log("IS DOING");
-        }
-
-        public override void FixedLoop()
-        { 
-        
         }
 
         public override void Exit()

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class Soundable : ModelComponent
+    public class Soundable : ActorComponent
     {
         public void OnFootstep()
         {

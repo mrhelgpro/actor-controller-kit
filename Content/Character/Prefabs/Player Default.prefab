@@ -1,5 +1,88 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2471234233875674081
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2471234233875674110}
+  - component: {fileID: 2471234233875674109}
+  - component: {fileID: 2471234233875674108}
+  - component: {fileID: 2471234233875674111}
+  m_Layer: 3
+  m_Name: Action
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2471234233875674110
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2471234233875674081}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5302438394639469158}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2471234233875674109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2471234233875674081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 517d03c0db93a0d4b9517bf85c0bd3fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 0
+  Name: Fall
+--- !u!114 &2471234233875674108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2471234233875674081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b045949ba0f3794a85d15817fd5c228, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Duration: 2
+--- !u!114 &2471234233875674111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2471234233875674081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41c97848d856ce34795ae2c816fdd92e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DeactivateMode: 0
+  Option: 0
+  Cancel: 0
+  Motion: 0
+  Interact: 0
+  ActionRight: 0
+  ActionMiddle: 0
+  ActionLeft: 0
+  Control: 1
+  Shift: 0
 --- !u!1 &2792692446251434783
 GameObject:
   m_ObjectHideFlags: 0
@@ -9,7 +92,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2792692446251434768}
-  - component: {fileID: 2792692446251434770}
+  - component: {fileID: 6766224184467770265}
+  - component: {fileID: 6766224184467770260}
+  - component: {fileID: 6766224184467770262}
+  - component: {fileID: 6766224184467770263}
   - component: {fileID: 5667061176334297265}
   m_Layer: 3
   m_Name: Movement
@@ -33,7 +119,7 @@ Transform:
   m_Father: {fileID: 5302438394639469158}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2792692446251434770
+--- !u!114 &6766224184467770265
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,40 +128,72 @@ MonoBehaviour:
   m_GameObject: {fileID: 2792692446251434783}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdc52e6bbb9c0da4fb58485ea005695d, type: 3}
+  m_Script: {fileID: 11500000, guid: 517d03c0db93a0d4b9517bf85c0bd3fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 0
   Name: Move
-  MoveSpeed: 4
-  MoveShift: 8
+--- !u!114 &6766224184467770260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2792692446251434783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cdd867fe72011a49b65fc52f96fb076, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 3
+  MoveShift: 5
   Rate: 10
-  Gravity: 1
   JumpHeight: 2
-  ExtraJumps: 2
-  Levitation: 0.75
-  CameraSettings:
-    InputCameraMode: 0
+  ExtraJumps: 0
+  Levitation: 0
+  Gravity: 1
+--- !u!114 &6766224184467770262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2792692446251434783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecbb7a10392afbe47a6d0d19d84c495b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CameraParametres:
+    InputOrbitMode: 0
     Orbit:
       Horizontal: 0
       Vertical: 0
-    Sensitivity:
-      Horizontal: 1
-      Vertical: 0.5
+      SensitivityX: 1
+      SensitivityY: 0.5
     Offset:
-      Horizontal: 1
-      Vertical: 1.5
+      Horizontal: 1.16
+      Vertical: 0.72
       Distance: 5
     DampTime:
       Move: 0
       Rotation: 0
     FieldOfView: 60
-  rotable:
-    RotateMode: 1
-  directable:
-    LookMode: 0
-  animatorable:
-    AnimatorController: {fileID: 0}
+--- !u!114 &6766224184467770263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2792692446251434783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8efeb5e5e8a92e243b42977696c64b63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LookMode: 0
+  RotateMode: 1
+  Rate: 10
 --- !u!114 &5667061176334297265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,7 +236,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2792692446251434768}
-  - {fileID: 6606732918004579142}
+  - {fileID: 2471234233875674110}
   m_Father: {fileID: 6371176099915837998}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -148,8 +266,9 @@ GameObject:
   - component: {fileID: 5457623647060871791}
   - component: {fileID: 2457573871330212914}
   - component: {fileID: 5969089977483399594}
-  - component: {fileID: 4140022124360765392}
+  - component: {fileID: -3368978410175793735}
   - component: {fileID: 4140022124360765395}
+  - component: {fileID: 6412660621990308163}
   - component: {fileID: 4140022124360765394}
   - component: {fileID: 4140022124360765397}
   m_Layer: 3
@@ -222,17 +341,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ced2bc7da838a664796c132e46dc4469, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Settings:
-    InputCameraMode: 0
+  Parametres:
+    InputOrbitMode: 0
     Orbit:
       Horizontal: 0
       Vertical: 0
-    Sensitivity:
-      Horizontal: 1
-      Vertical: 0.5
+      SensitivityX: 1
+      SensitivityY: 0.5
     Offset:
-      Horizontal: 1
-      Vertical: 1.5
+      Horizontal: 1.16
+      Vertical: 0.72
       Distance: 5
     DampTime:
       Move: 0
@@ -264,7 +382,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Menu: 0
-  PointerPosition: {x: 0, y: 0}
+  PointerScreenPosition: {x: 0, y: 0}
   MoveVector: {x: 0, y: 0}
   LookDelta: {x: 0, y: 0}
   OptionState: 0
@@ -279,7 +397,7 @@ MonoBehaviour:
   ControlState: 0
   ControlValue: 0
   ShiftState: 0
---- !u!114 &4140022124360765392
+--- !u!114 &-3368978410175793735
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -288,7 +406,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6371176099915837999}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1afe73b36812b1c41a31f82428a59477, type: 3}
+  m_Script: {fileID: 11500000, guid: db5f0e5d6c98ec844a4407fc492bb1ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &4140022124360765395
@@ -301,6 +419,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 02c6f8dcb17dc07418867b7a6642d67c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6412660621990308163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6371176099915837999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac87edc77fc46344b85cd3b55ebb732b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!135 &4140022124360765394
@@ -364,104 +494,6 @@ Transform:
   m_Father: {fileID: 6371176099915837998}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &6606732918004579141
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6606732918004579142}
-  - component: {fileID: 6606732918004579144}
-  - component: {fileID: 6606732918004579145}
-  m_Layer: 3
-  m_Name: Strafe
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6606732918004579142
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6606732918004579141}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5302438394639469158}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6606732918004579144
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6606732918004579141}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdc52e6bbb9c0da4fb58485ea005695d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Type: 0
-  Name: Strafe
-  MoveSpeed: 2
-  MoveShift: 3
-  Rate: 5
-  Gravity: 1
-  JumpHeight: 0
-  ExtraJumps: 0
-  Levitation: 0
-  CameraSettings:
-    InputCameraMode: 0
-    Orbit:
-      Horizontal: 0
-      Vertical: 0
-    Sensitivity:
-      Horizontal: 0.25
-      Vertical: 0.125
-    Offset:
-      Horizontal: 1
-      Vertical: 1.5
-      Distance: 5
-    DampTime:
-      Move: 0
-      Rotation: 0
-    FieldOfView: 20
-  rotable:
-    RotateMode: 2
-  directable:
-    LookMode: 0
-  animatorable:
-    AnimatorController: {fileID: 0}
---- !u!114 &6606732918004579145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6606732918004579141}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41c97848d856ce34795ae2c816fdd92e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DeactivateMode: 2
-  Option: 0
-  Cancel: 0
-  Motion: 0
-  Interact: 0
-  ActionRight: 1
-  ActionMiddle: 0
-  ActionLeft: 0
-  Control: 0
-  Shift: 0
 --- !u!1001 &6606732917963399058
 PrefabInstance:
   m_ObjectHideFlags: 0

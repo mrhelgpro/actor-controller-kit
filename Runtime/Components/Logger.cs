@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class Logger : ModelComponent
+    public class Logger : ActorComponent
     {
         public float Height;
         public float Speed;

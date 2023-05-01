@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using AssemblyActorCore;
 
-public sealed class InputPlayerController : MonoBehaviour
+public sealed class InputPlayerController : ActorComponent
 {
     public enum MoveMode { Input, Target, Both }
     public MoveMode MoveDirectionMode = MoveMode.Input;
@@ -17,9 +17,12 @@ public sealed class InputPlayerController : MonoBehaviour
     private InputActions _inputActions;
     private Inputable _inputable;
 
-    private void Awake()
+    private new void Awake()
     {
-        _inputable = gameObject.GetComponentInParent<Inputable>();
+        base.Awake();
+
+        _inputable = RequireComponent<Inputable>();
+
         _camera = Camera.main;
         _cameraTransform = _camera.transform;
 

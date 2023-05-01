@@ -15,7 +15,7 @@ namespace AssemblyActorCore
             _rigidbody.constraints = RigidbodyConstraints2D.None;
             _rigidbody.freezeRotation = true;
         }
-
+        /*
         public override void SetForce(Vector3 force) 
         {
             _rigidbody.velocity = Vector2.zero;
@@ -35,5 +35,6 @@ namespace AssemblyActorCore
             _rigidbody.MovePosition(_rigidbody.position);
             _rigidbody.velocity = Vector3.zero;
         }
+        */
     }
 }

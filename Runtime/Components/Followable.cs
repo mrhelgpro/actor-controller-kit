@@ -4,7 +4,7 @@ using UnityEditor;
 
 namespace AssemblyActorCore
 {
-    public class Followable : ModelComponent
+    public class Followable : ActorComponent
     {
         public CameraParametres Parametres;
 
@@ -19,17 +19,22 @@ namespace AssemblyActorCore
             }
             else
             {
-                Debug.LogWarning(gameObject.name + " - Followable: <ActorCamera> - is not found");
+                Debug.LogWarning(gameObject.name + " - Followable: is not found <ActorCamera>");
             }
         }
     }
 
-    public enum InputCameraMode { Free, LeftHold, MiddleHold, RightHold, Freez }
+    public enum InputOrbitMode { Free, LeftHold, MiddleHold, RightHold, Freez }
+    public enum InputLookMode { Free, LeftHold, MiddleHold, RightHold, Freez }
+    public enum InputOffsetMode { Free, LeftHold, MiddleHold, RightHold, Freez }
 
     [Serializable]
     public class CameraParametres
     {
-        public InputCameraMode InputCameraMode;
+        public InputOrbitMode InputOrbitMode;
+        //public InputLookMode InputLookMode;
+        //public InputOffsetMode InputOffsetMode;
+
         public Vector2Orbit Orbit = new Vector2Orbit(1.0f, 0.5f);
         public Vector3Offset Offset = new Vector3Offset(0.0f, 0.0f, 5.0f);
         public Vector2DampTime DampTime;

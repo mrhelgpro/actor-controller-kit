@@ -9,8 +9,8 @@ namespace AssemblyActorCore
         public override void AddComponents() 
         {
             gameObject.AddThisComponent<Inputable>();
-            gameObject.AddThisComponent<MovableNavigation>();
-            gameObject.AddThisComponent<PositionableNavigation>();
+            gameObject.AddThisComponent<Movable>();
+            gameObject.AddThisComponent<Positionable>();
 
             NavMeshAgent navMeshAgent = gameObject.AddThisComponent<NavMeshAgent>();
             navMeshAgent.agentTypeID = 0;
@@ -36,8 +36,8 @@ namespace AssemblyActorCore
         public override void RemoveComponents()
         {
             gameObject.RemoveComponent<Inputable>();
-            gameObject.RemoveComponent<MovableNavigation>();
-            gameObject.RemoveComponent<PositionableNavigation>();
+            gameObject.RemoveComponent<Movable>();
+            gameObject.RemoveComponent<Positionable>();
             gameObject.RemoveComponent<NavMeshAgent>();
         }
     }

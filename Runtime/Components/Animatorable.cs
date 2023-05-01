@@ -4,23 +4,23 @@ using UnityEngine;
 namespace AssemblyActorCore
 {
     [Serializable]
-    public class Animatorable : Model
+    public class Animatorable : ActorComponent
     {
-        public RuntimeAnimatorController AnimatorController;
+        //public RuntimeAnimatorController AnimatorController;
 
         private Animator _animator;
         private string _previousName = "None";
 
-        public void Enter(Transform transform, string name, float fade = 0.025f)
+        private new void Awake()
         {
-            Initialization(transform);
+            base.Awake();
 
             _animator = RootTransform.GetComponentInChildren<Animator>();
+        }
 
-            if (AnimatorController == null)
-            {
-                AnimatorController = _animator.runtimeAnimatorController;
-            }
+        /*
+        public void Enter(string name, float fade = 0.025f)
+        {
 
             if (AnimatorController != _animator.runtimeAnimatorController)
             {
@@ -31,6 +31,8 @@ namespace AssemblyActorCore
             _animator?.CrossFade(name, fade);
             _animator?.SetFloat("Speed", 1);
         }
+        */
+
         public void Play(string name, float fade = 0.025f)
         {
             if (name != _previousName)

@@ -8,8 +8,9 @@ namespace AssemblyActorCore
         public override void AddComponents()
         {
             gameObject.AddThisComponent<Inputable>();
-            gameObject.AddThisComponent<MovablePlatformer>();
-            gameObject.AddThisComponent<PositionablePlatformer>();
+            gameObject.AddThisComponent<Animatorable>();
+            gameObject.AddThisComponent<Movable>();
+            gameObject.AddThisComponent<Positionable2D>();
 
             CircleCollider2D collider = gameObject.AddThisComponent<CircleCollider2D>();
             collider.isTrigger = false;
@@ -37,8 +38,9 @@ namespace AssemblyActorCore
         public override void RemoveComponents()
         {
             gameObject.RemoveComponent<Inputable>();
-            gameObject.RemoveComponent<MovablePlatformer>();
-            gameObject.RemoveComponent<PositionablePlatformer>();
+            gameObject.RemoveComponent<Animatorable>();
+            gameObject.RemoveComponent<Movable>();
+            gameObject.RemoveComponent<Positionable2D>();
             gameObject.RemoveComponent<CircleCollider2D>();
             gameObject.RemoveComponent<Rigidbody2D>();
         }

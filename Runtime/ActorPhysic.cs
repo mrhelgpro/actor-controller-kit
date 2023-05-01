@@ -8,8 +8,9 @@ namespace AssemblyActorCore
         public override void AddComponents()
         {
             gameObject.AddThisComponent<Inputable>();
-            gameObject.AddThisComponent<MovablePhysic>();
-            gameObject.AddThisComponent<PositionablePhysic>();
+            gameObject.AddThisComponent<Animatorable>();
+            gameObject.AddThisComponent<Movable>();
+            gameObject.AddThisComponent<Positionable>();
 
             SphereCollider collider = gameObject.AddThisComponent<SphereCollider>();
             collider.radius = 0.25f;
@@ -34,8 +35,9 @@ namespace AssemblyActorCore
         public override void RemoveComponents()
         {
             gameObject.RemoveComponent<Inputable>();
-            gameObject.RemoveComponent<MovablePhysic>();
-            gameObject.RemoveComponent<PositionablePhysic>();
+            gameObject.RemoveComponent<Animatorable>();
+            gameObject.RemoveComponent<Movable>();
+            gameObject.RemoveComponent<Positionable>();
             gameObject.RemoveComponent<SphereCollider>();
             gameObject.RemoveComponent<Rigidbody>();
         }

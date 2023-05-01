@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4541832630052357016}
-  - component: {fileID: 4541832630052357018}
   - component: {fileID: 6296881446072576057}
   m_Layer: 3
   m_Name: Movement
@@ -33,50 +32,6 @@ Transform:
   m_Father: {fileID: 5787263978264038126}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4541832630052357018
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4541832630052357015}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdc52e6bbb9c0da4fb58485ea005695d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Type: 0
-  Name: Move
-  MoveSpeed: 4
-  MoveShift: 8
-  Rate: 10
-  Gravity: 1
-  JumpHeight: 2
-  ExtraJumps: 2
-  Levitation: 0.75
-  CameraParametres:
-    name: Movement
-    InputCameraMode: 4
-    Orbit:
-      Horizontal: 0
-      Vertical: 60
-    Sensitivity:
-      Horizontal: 0
-      Vertical: 0
-    Offset:
-      Horizontal: 0
-      Vertical: 0.5
-      Distance: 12
-    DampTime:
-      Move: 0
-      Rotation: 0
-    FieldOfView: 60
-  rotable:
-    RotateMode: 1
-  directable:
-    LookMode: 1
-  animatorable:
-    AnimatorController: {fileID: 0}
 --- !u!114 &6296881446072576057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,14 +164,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Parametres:
-    name: Movement
-    InputCameraMode: 4
+    InputOrbitMode: 0
     Orbit:
       Horizontal: 0
       Vertical: 60
-    Sensitivity:
-      Horizontal: 0
-      Vertical: 0
+      SensitivityX: 1
+      SensitivityY: 0.5
     Offset:
       Horizontal: 0
       Vertical: 0.5

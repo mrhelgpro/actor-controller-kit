@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 648300705117784519}
   - component: {fileID: 648300705117784512}
   - component: {fileID: 648300705117784513}
+  - component: {fileID: 3992229137863876031}
   m_Layer: 3
   m_Name: Player Third Person
   m_TagString: Player
@@ -71,15 +72,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ced2bc7da838a664796c132e46dc4469, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Settings:
-    Vertical: 0
-    Horizontal: 0
-    Height: 1.5
-    Shoulder: 0.5
-    Distance: 1
+  Parametres:
+    InputOrbitMode: 0
+    Orbit:
+      Horizontal: 0
+      Vertical: 0
+      SensitivityX: 1
+      SensitivityY: 0.5
+    Offset:
+      Horizontal: 0
+      Vertical: 0
+      Distance: 5
+    DampTime:
+      Move: 0
+      Rotation: 0
     FieldOfView: 60
-    MoveTime: 0.01
-    RotationTime: 0.05
 --- !u!114 &648300705117784516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,20 +113,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Menu: 0
-  Move: {x: 0, y: 0}
-  Look:
-    Value: {x: 0, y: 0}
-    Delta: {x: 0, y: 0}
-    Sensitivity: 5
-  Option: 0
-  Cancel: 0
-  Motion: 0
-  Interact: 0
-  ActionRight: 0
-  ActionLeft: 0
-  Control: 0
-  Shift: 0
-  Pointer: {x: 0, y: 0}
+  PointerScreenPosition: {x: 0, y: 0}
+  MoveVector: {x: 0, y: 0}
+  LookDelta: {x: 0, y: 0}
+  OptionState: 0
+  CancelState: 0
+  MotionState: 0
+  InteractState: 0
+  ActionLeftState: 0
+  ActionMiddleState: 0
+  ActionMiddleScroll: 0
+  ActionRightState: 0
+  ActionRightValue: 0
+  ControlState: 0
+  ControlValue: 0
+  ShiftState: 0
 --- !u!114 &648300705117784518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,6 +181,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
+--- !u!114 &3992229137863876031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956975858636468610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db5f0e5d6c98ec844a4407fc492bb1ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2345007493780634829
 GameObject:
   m_ObjectHideFlags: 0
@@ -214,7 +234,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2543972599039936202}
-  - component: {fileID: 2543972599039936196}
   - component: {fileID: 2543972599039936197}
   m_Layer: 3
   m_Name: Strafe
@@ -238,41 +257,6 @@ Transform:
   m_Father: {fileID: 3564562461618108394}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2543972599039936196
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2543972599039936201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdc52e6bbb9c0da4fb58485ea005695d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Type: 0
-  Name: Strafe
-  MoveSpeed: 2
-  MoveShift: 3
-  Rate: 5
-  Gravity: 1
-  JumpHeight: 0
-  ExtraJumps: 0
-  Levitation: 0
-  CameraSettings:
-    Vertical: 0
-    Horizontal: 0
-    Height: 1.55
-    Shoulder: 0.45
-    Distance: 1
-    FieldOfView: 35
-    MoveTime: 0.01
-    RotationTime: 0.05
-  rotable:
-    Mode: 2
-  directable:
-    Mode: 0
-    Look: {x: 0, y: 0, z: 0}
 --- !u!114 &2543972599039936197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -291,6 +275,7 @@ MonoBehaviour:
   Motion: 0
   Interact: 0
   ActionRight: 1
+  ActionMiddle: 0
   ActionLeft: 0
   Control: 0
   Shift: 0
@@ -338,6 +323,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f40dbd14eb6c5654292f7dc6c24869b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MoveDirectionMode: 0
+  InputTargetMode: 0
+  TargetRequiredLayers:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &3564562461618108395
 GameObject:
   m_ObjectHideFlags: 0
@@ -393,7 +383,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6782552945220877980}
-  - component: {fileID: 6782552945220877982}
   - component: {fileID: 3910434069468452157}
   m_Layer: 3
   m_Name: Movement
@@ -417,41 +406,6 @@ Transform:
   m_Father: {fileID: 3564562461618108394}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6782552945220877982
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6782552945220877971}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdc52e6bbb9c0da4fb58485ea005695d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Type: 0
-  Name: Strafe
-  MoveSpeed: 4
-  MoveShift: 8
-  Rate: 10
-  Gravity: 1
-  JumpHeight: 2
-  ExtraJumps: 2
-  Levitation: 0.75
-  CameraSettings:
-    Vertical: 0
-    Horizontal: 0
-    Height: 1.5
-    Shoulder: 0.5
-    Distance: 1
-    FieldOfView: 60
-    MoveTime: 0.01
-    RotationTime: 0.05
-  rotable:
-    Mode: 1
-  directable:
-    Mode: 0
-    Look: {x: 0, y: 0, z: 0}
 --- !u!114 &3910434069468452157
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -15,9 +15,10 @@ namespace AssemblyActorCore
         public bool Motion;          // Space               A                 Cross           South
         public bool Interact;        // E                   X                 Square          West
 
-        public bool ActionRight;     // Right Mouse         Right Trigger     R2              Right Trigger
-        public bool ActionMiddle;    // Middle Mouse
         public bool ActionLeft;      // Left Mouse          Right Bumper      R1              Right Shoulder
+        public bool ActionMiddle;    // Middle Mouse
+        public bool ActionRight;     // Right Mouse         Right Trigger     R2              Right Trigger
+
         public bool Control;         // Left Ctrl           Left Trigget      L2              Left Trigget
         public bool Shift;           // Left Shift          Left Bumper       L1              Left Shoulder
 
@@ -29,12 +30,12 @@ namespace AssemblyActorCore
         {
             base.Awake();
 
-            inputable = GetComponentInParent<Inputable>();
+            inputable = RequireComponent<Inputable>();
         }
 
         public override void UpdateActivate()
         {
-            if (isCurrentController == false)
+            if (isCurrentState == false)
             {
                 setActive(true);
             }
@@ -87,9 +88,10 @@ namespace AssemblyActorCore
                 if (Motion == true && inputable.MotionState == false) return false;
                 if (Interact == true && inputable.InteractState == false) return false;
 
-                if (ActionRight == true && inputable.ActionRightState == false) return false;
-                if (ActionMiddle == true && inputable.ActionMiddleState == false) return false;
                 if (ActionLeft == true && inputable.ActionLeftState == false) return false;
+                if (ActionMiddle == true && inputable.ActionMiddleState == false) return false;
+                if (ActionRight == true && inputable.ActionRightState == false) return false;
+
                 if (Control == true && inputable.ControlState == false) return false;
                 if (Shift == true && inputable.ShiftState == false) return false;
 
