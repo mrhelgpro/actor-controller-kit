@@ -91,21 +91,8 @@ namespace AssemblyActorCore
     public class FollowableEditor : Editor
     {
         public override void OnInspectorGUI()
-        {
+        {   
             Followable myTarget = (Followable)target;
-
-            // Script Link
-            EditorGUI.BeginDisabledGroup(true);
-            EditorGUILayout.ObjectField("Model", MonoScript.FromMonoBehaviour(myTarget), typeof(MonoScript), false);
-            EditorGUI.EndDisabledGroup();
-
-            Rect scriptRect = GUILayoutUtility.GetLastRect();
-            EditorGUIUtility.AddCursorRect(scriptRect, MouseCursor.Arrow);
-
-            if (GUI.Button(scriptRect, "", GUIStyle.none))
-            {
-                UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(AssetDatabase.GetAssetPath(MonoScript.FromMonoBehaviour(myTarget)), 0);
-            }
 
             // Parametres Structure
             if (myTarget.GetComponent<Actor>() == null)
@@ -121,6 +108,10 @@ namespace AssemblyActorCore
                         myTarget.SetPreview(myTarget.Parametres);
                     }
                 }
+            }
+            else
+            {
+                EditorGUILayout.LabelField("Followable - to be able to control the Camera using Presenter");
             }
         }
     }

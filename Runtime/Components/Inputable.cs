@@ -29,4 +29,25 @@ namespace AssemblyActorCore
 
         public Target TargetInteraction;
     }
+
+#if UNITY_EDITOR
+    [ExecuteInEditMode]
+    [UnityEditor.CustomEditor(typeof(Inputable))]
+    public class InputableEditor : UnityEditor.Editor
+    {
+        public override void OnInspectorGUI() 
+        {
+            Inputable component = (Inputable)target;
+
+            if (Application.isPlaying)
+            {
+                UnityEditor.EditorGUILayout.LabelField("Menu - " + (component.Menu == true ? "Press" : "None"));
+            }
+            else
+            {
+                UnityEditor.EditorGUILayout.LabelField("Inputable - to receive input data");
+            }
+        }
+    }
+#endif
 }

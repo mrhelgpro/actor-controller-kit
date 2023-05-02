@@ -111,21 +111,12 @@ namespace AssemblyActorCore
     }
 
     [RequireComponent(typeof(StatePresenter))]
+    [RequireComponent(typeof(Activator))]
     public abstract class Presenter : ActorComponent
     {
         protected StatePresenter statePresenter;
         protected StatePresenterMachine stateMachine;
         public string Name => statePresenter.Name;
-
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            if (GetComponentInParent<StatePresenterMachine>() == null)
-            {
-                Debug.LogWarning(gameObject.name + " - Presenter: is not found <StatePresenterMachine>");
-            }
-        }
-#endif
 
         private new void Awake()
         {

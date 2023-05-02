@@ -14,72 +14,89 @@ namespace AssemblyActorCore
     [CustomEditor(typeof(Actor))]
     public class ActorEditor : Editor
     {
-        private Actor _actor = null;
-        private StatePresenterMachine _statePresenterMachine = null;
-
-        private void OnEnable()
-        {
-            _actor = (Actor)target;
-
-            AddRequireComponent();
-        }
-
         public override void OnInspectorGUI()
         {
+            Actor component = (Actor)target;
+
+            hideChildObjects(component.transform, isPrefab(component.gameObject));
+
             if (Application.isPlaying)
             {
-                EditorGUILayout.LabelField("Name", _actor.Name);
+                EditorGUILayout.LabelField("Name", component.Name);
+
+                return;
             }
-            else
+
+            component.Name = EditorGUILayout.TextField("Name", component.Name);
+        }
+
+        private void hideChildObjects(Transform transform, bool state)
+        {
+            foreach (Transform child in transform)
             {
-                DrawDefaultInspector();
+                child.gameObject.hideFlags = state == true ? HideFlags.HideInHierarchy : HideFlags.None;
             }
         }
 
-        private void AddRequireComponent()
+        private bool isPrefab(GameObject gameObject)
         {
-            _statePresenterMachine = _actor.gameObject.GetComponentInChildren<StatePresenterMachine>();
-
-            if (_statePresenterMachine == null)
-            {
-                GameObject statePresenterMachineObject = new GameObject();
-                _statePresenterMachine = statePresenterMachineObject.AddComponent<StatePresenterMachine>();
-            }
-
-            _statePresenterMachine.gameObject.name = "State Presenter Machine";
-            _statePresenterMachine.transform.parent = _actor.transform;
-        }
-
-        // Examples of showing fields
-        private bool foldoutInput = false;
-        private void Example()
-        {
-            // EXAMPLE: Example of how to hide some fields
-            GUILayout.BeginVertical();
-            foldoutInput = EditorGUILayout.Foldout(foldoutInput, "Foldout");
-            if (foldoutInput)
-            {
-                EditorGUILayout.LabelField("Your ad could be here");
-            }
-            GUILayout.EndVertical();
-
-            // EXAMPLE: To show a property - EditorGUILayout.PropertyField(new SerializedObject(target).FindProperty("Input")); 
-            // EXAMPLE: Always updated by the inspector - EditorUtility.SetDirty(target);
+            PrefabAssetType assetType = PrefabUtility.GetPrefabAssetType(gameObject);
+            return assetType == PrefabAssetType.Regular || assetType == PrefabAssetType.Variant;
         }
     }
 #endif
 }
 
 /*
-EXAMPLE:
-GameObject childGameObject = EditorUtility.CreateGameObjectWithHideFlags("New Child GameObject", HideFlags.HideInHierarchy | HideFlags.HideInInspector);
+    EXAMPLE: GameObject will be hidden in the inspector window
+    GameObject childGameObject = EditorUtility.CreateGameObjectWithHideFlags("New Child GameObject", HideFlags.HideInHierarchy | HideFlags.HideInInspector);
 
-HideFlags.HideInHierarchy and HideFlags.HideInInspector - are two of the values 
-that can be set for the flags parameter of the EditorUtility.CreateGameObjectWithHideFlags() method.
+    HideFlags.HideInHierarchy and HideFlags.HideInInspector - are two of the values 
+    that can be set for the flags parameter of the EditorUtility.CreateGameObjectWithHideFlags() method.
 
-HideFlags.HideInHierarchy - When this flag is set, the GameObject will be hidden in the hierarchy window, which means 
-it will not be visible in the list of objects that are on the stage.
+    HideFlags.HideInHierarchy - When this flag is set, the GameObject will be hidden in the hierarchy window, which means 
+    it will not be visible in the list of objects that are on the stage.
 
-HideFlags.HideInInspector - When this flag is checked, the GameObject will be hidden in the inspector window, which means 
-its components will not be displayed in the inspector window.
+    HideFlags.HideInInspector - When this flag is checked, the GameObject will be hidden in the inspector window, which means 
+    its components will not be displayed in the inspector window.
+
+
+    // How to hide some fields
+    private bool foldoutInput = false;
+
+    GUILayout.BeginVertical();
+    foldoutInput = EditorGUILayout.Foldout(foldoutInput, "Foldout");
+    if (foldoutInput)
+    {
+        EditorGUILayout.LabelField("Your ad could be here");
+    }
+    GUILayout.EndVertical();
+
+
+    // To show a property
+    EditorGUILayout.PropertyField(new SerializedObject(target).FindProperty("Input")); 
+
+    // Always updated by the inspector
+    EditorUtility.SetDirty(target);
+
+    // Show script Link
+    EditorGUI.BeginDisabledGroup(true);
+    EditorGUILayout.ObjectField("Model", MonoScript.FromMonoBehaviour(_myTarget), typeof(MonoScript), false);
+    EditorGUI.EndDisabledGroup();
+
+    Rect scriptRect = GUILayoutUtility.GetLastRect();
+    EditorGUIUtility.AddCursorRect(scriptRect, MouseCursor.Arrow);
+
+    if (GUI.Button(scriptRect, "", GUIStyle.none))
+    {
+        UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(AssetDatabase.GetAssetPath(MonoScript.FromMonoBehaviour(_myTarget)), 0);
+    }
+
+    // Text Color = Red
+    new GUIStyle() { normal = new GUIStyleState() { textColor = Color.red } }
+
+    // Font Style = Bold;
+    GUIStyle style = new GUIStyle(GUI.skin.label);
+    style.fontStyle = FontStyle.Bold;
+    EditorGUILayout.LabelField("My Component", style);
 */
