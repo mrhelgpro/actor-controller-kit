@@ -4,9 +4,13 @@ using UnityEditor;
 
 namespace AssemblyActorCore
 {
-    public class Followable : ActorComponent
+    public class Followable : MonoBehaviour
     {
         public CameraParametres Parametres;
+
+        public Transform ThisTransform { get; private set; }
+
+        private void Awake() => ThisTransform = transform;
 
         public void SetPreview(CameraParametres parametres)
         {

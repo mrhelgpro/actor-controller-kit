@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace AssemblyActorCore
@@ -7,41 +5,43 @@ namespace AssemblyActorCore
     public enum LookMode { LookToCamera, LookToPointer, LookToStick }
     public enum RotateMode { None, RotateToMovement, RotateToLook, Flip2D }
 
-    public sealed class DirectionController : Presenter
+    public sealed class DirectionPresenter : Presenter
     {
         public LookMode LookMode = LookMode.LookToCamera;
         public RotateMode RotateMode = RotateMode.RotateToMovement;
         [Range (0, 10)] public float Rate = 10;
 
-        public Vector3 Look { get; private set; }
-        public Vector3 Camera { get; private set; }
-        public Vector3 Body { get; private set; }
-        public Vector3 Local { get; private set; }
+        // Direction Fields
+        private Vector3 _lookDirection;
+        private Vector3 _cameraDirection;
+        private Vector3 _bodyDirection;
+        private Vector3 _localDirection;
 
-        // Model Components
-        private Inputable _inputable;
-
+        // Buffer Fields
         private Transform _cameraTransform;
         private float _previousPositionY;
         private float _previousLookDeltaMagnitude;
         private Vector3 _previousLookDirection;
 
-        private new void Awake()
+        // Model Components
+        private Inputable _inputable;
+        private Animatorable _animatorable;
+
+        protected override void Initiation()
         {
-            base.Awake();
-
-            _cameraTransform = UnityEngine.Camera.main.transform;
-
-            _inputable = RequireComponent<Inputable>();
+            // Get components using "GetComponentInActor" to create them on <Actor>
+            _cameraTransform = Camera.main.transform;
+            _inputable = GetComponentInActor<Inputable>();
+            _animatorable = GetComponentInActor<Animatorable>();
         }
 
         public override void UpdateLoop()
         {
-            //animatorable.SetFloat("DirectionX", directable.Local.x); //animatorable.SetFloat("DirectionX", directable.GetLocal.x, 0.1f);
-            //animatorable.SetFloat("DirectionZ", directable.Local.z); //animatorable.SetFloat("DirectionZ", directable.GetLocal.z, 0.1f);
+            _animatorable.SetFloat("DirectionX", _localDirection.x); //animatorable.SetFloat("DirectionX", directable.GetLocal.x, 0.1f);
+            _animatorable.SetFloat("DirectionZ", _localDirection.z); //animatorable.SetFloat("DirectionZ", directable.GetLocal.z, 0.1f);
 
-            Camera = _cameraTransform.forward.normalized;
-            Body = RootTransform.TransformDirection(Vector3.forward).normalized;
+            _cameraDirection = _cameraTransform.forward.normalized;
+            _bodyDirection = RootTransform.TransformDirection(Vector3.forward).normalized;
 
             setLookDirection();
             setLocalDirection();
@@ -68,13 +68,13 @@ namespace AssemblyActorCore
         {
             if (LookMode == LookMode.LookToCamera)
             {
-                Look = Camera;
+                _lookDirection = _cameraDirection;
             }
             else if (LookMode == LookMode.LookToPointer)
             {
                 Vector3 mousePosition = Input.mousePosition;
-                Vector3 lookDirection = UnityEngine.Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, UnityEngine.Camera.main.transform.position.y)) - RootTransform.position;
-                Look = Vector3.ProjectOnPlane(lookDirection, Vector3.up).normalized;
+                Vector3 lookDirection = UnityEngine.Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, _cameraTransform.position.y)) - RootTransform.position;
+                _lookDirection = Vector3.ProjectOnPlane(lookDirection, Vector3.up).normalized;
             }
             else if (LookMode == LookMode.LookToStick)
             {
@@ -86,26 +86,28 @@ namespace AssemblyActorCore
                     }
                 }
 
-                Look = Vector3.Lerp(Look, _previousLookDirection, Time.deltaTime * 15);
+                _lookDirection = Vector3.Lerp(_lookDirection, _previousLookDirection, Time.deltaTime * 15);
             }
 
             _previousLookDeltaMagnitude = _inputable.LookDelta.magnitude;
 
-            Debug.DrawLine(RootTransform.position, RootTransform.position + Look.normalized * 5, Color.green, 0, true);
+            Debug.DrawLine(RootTransform.position, RootTransform.position + _lookDirection.normalized * 5, Color.green, 0, true);
         }
 
+
+        // FIXED IT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         private void setLocalDirection()
         {
             float positionY = RootTransform.position.y;
             bool difference = Mathf.Abs(positionY - _previousPositionY) > 0.01f;
 
-            float x = Mathf.Round(Vector3.Cross(_inputable.MoveVector, Body.GetVector2Horizontal()).z);
-            float z = Mathf.Round(Vector3.Dot(_inputable.MoveVector, Body));
+            float x = Mathf.Round(Vector3.Cross(_inputable.MoveVector, _bodyDirection.GetVector2Horizontal()).z);
+            float z = Mathf.Round(Vector3.Dot(new Vector3(_inputable.MoveVector.x, 0, _inputable.MoveVector.y), _bodyDirection));
             float y = positionY > _previousPositionY ? 1 : difference ? -1 : 0;
 
             _previousPositionY = positionY;
 
-            Local = _inputable.MoveVector.magnitude > 0 ? new Vector3(x, y, z) : Local;
+            _localDirection = _inputable.MoveVector.magnitude > 0 ? new Vector3(x, y, z) : _localDirection;
         }
 
         // Rotation
@@ -113,7 +115,7 @@ namespace AssemblyActorCore
         {
             if (_inputable.MoveVector.magnitude > 0)
             {
-                Vector3 direction = Vector3.Normalize(Vector3.Scale(Vector3.ProjectOnPlane(Look, Vector3.up), new Vector3(1, 0, 1)));
+                Vector3 direction = Vector3.Normalize(Vector3.Scale(Vector3.ProjectOnPlane(_lookDirection, Vector3.up), new Vector3(1, 0, 1)));
                 
                 Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
                 RootTransform.rotation = Quaternion.Slerp(RootTransform.rotation, targetRotation, Time.deltaTime * Rate);

@@ -39,16 +39,21 @@ namespace AssemblyActorCore
         private PhysicMaterial _materialOnTheGround;
         private PhysicMaterial _materialInTheAir;
 
-        private new void Awake()
+        protected override void Initiation() 
         {
-            base.Awake();
+            // Get components using "GetComponentInActor" to create them on <Actor>
+            _inputable = GetComponentInActor<Inputable>();
+            _animatorable = GetComponentInActor<Animatorable>();
+            _movable = GetComponentInActor<Movable>();
+            _positionable = GetComponentInActor<Positionable>();
 
-            _inputable = RequireComponent<Inputable>();
-            _animatorable = RequireComponent<Animatorable>();
-            _movable = RequireComponent<Movable>();
-            _positionable = RequireComponent<Positionable>();   
-            _groundCollider = RequireComponent<SphereCollider>();
-            _rigidbody = RequireComponent<Rigidbody>();
+            _groundCollider = GetComponentInActor<SphereCollider>();
+            _groundCollider.radius = 0.25f;
+            _groundCollider.center = new Vector3(0, _groundCollider.radius, 0);
+
+            _rigidbody = GetComponentInActor<Rigidbody>();
+            _rigidbody.useGravity = false;
+            _rigidbody.isKinematic = true;
 
             _materialInTheAir = Resources.Load<PhysicMaterial>("Physic/Player In The Air");
             _materialOnTheGround = Resources.Load<PhysicMaterial>("Physic/Player On The Ground");

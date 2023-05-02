@@ -26,14 +26,13 @@ namespace AssemblyActorCore
 
         private bool _previousButtonPress = false;
 
-        private new void Awake()
+        protected override void Initiation()
         {
-            base.Awake();
-
-            inputable = RequireComponent<Inputable>();
+            // Get components using "GetComponentInActor" to create them on <Actor>
+            inputable = GetComponentInActor<Inputable>();
         }
 
-        public override void UpdateActivate()
+        public override void CheckLoop()
         {
             if (isCurrentState == false)
             {

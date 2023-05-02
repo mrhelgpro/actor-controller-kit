@@ -6,7 +6,7 @@ namespace AssemblyActorCore
 {
     public class ActorNavMesh : Actor
     {
-        public override void AddComponents() 
+        public void AddComponents() 
         {
             gameObject.AddThisComponent<Inputable>();
             gameObject.AddThisComponent<Movable>();
@@ -26,14 +26,8 @@ namespace AssemblyActorCore
             navMeshAgent.autoTraverseOffMeshLink = true;
             navMeshAgent.autoRepath = true;
         }
-    }
 
-#if UNITY_EDITOR
-    [ExecuteInEditMode]
-    [CustomEditor(typeof(ActorNavMesh))]
-    public class ActorNavMeshEditor : ActorEditor
-    {
-        public override void RemoveComponents()
+        public void RemoveComponents()
         {
             gameObject.RemoveComponent<Inputable>();
             gameObject.RemoveComponent<Movable>();
@@ -41,5 +35,4 @@ namespace AssemblyActorCore
             gameObject.RemoveComponent<NavMeshAgent>();
         }
     }
-#endif
 }

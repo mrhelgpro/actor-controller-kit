@@ -4,9 +4,9 @@ namespace AssemblyActorCore
 {
     public class TestController : Presenter
     {
-        private void Start()
+        protected override void Initiation()
         {
-
+            // Get components using "GetComponentInActor" to create them on <Actor>
         }
 
         public override void Enter()

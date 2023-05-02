@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace AssemblyActorCore
@@ -8,10 +7,12 @@ namespace AssemblyActorCore
         public string Tag = "Any";
         public LayerMask Layer;
 
+#if UNITY_EDITOR
         private void OnValidate()
         {
             Tag = Tag == "" ? "Any" : Tag;
         }
+#endif
 
         private void targetCheck(Transform target, bool enter)
         {

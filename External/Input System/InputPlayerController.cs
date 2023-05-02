@@ -21,7 +21,7 @@ public sealed class InputPlayerController : ActorComponent
     {
         base.Awake();
 
-        _inputable = RequireComponent<Inputable>();
+        _inputable = GetComponentInActor<Inputable>();
 
         _camera = Camera.main;
         _cameraTransform = _camera.transform;

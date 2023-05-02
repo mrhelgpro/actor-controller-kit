@@ -5,7 +5,7 @@ namespace AssemblyActorCore
 {
     public class ActorPhysic : Actor
     {
-        public override void AddComponents()
+        public void AddComponents()
         {
             gameObject.AddThisComponent<Inputable>();
             gameObject.AddThisComponent<Animatorable>();
@@ -25,14 +25,8 @@ namespace AssemblyActorCore
             rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
             rigidbody.freezeRotation = true;
         }
-    }
 
-#if UNITY_EDITOR
-    [ExecuteInEditMode]
-    [CustomEditor(typeof(ActorPhysic))]
-    public class ActorPhysicEditor : ActorEditor
-    {
-        public override void RemoveComponents()
+        public void RemoveComponents()
         {
             gameObject.RemoveComponent<Inputable>();
             gameObject.RemoveComponent<Animatorable>();
@@ -42,5 +36,4 @@ namespace AssemblyActorCore
             gameObject.RemoveComponent<Rigidbody>();
         }
     }
-#endif
 }

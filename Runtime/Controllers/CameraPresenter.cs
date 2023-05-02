@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class CameraController : Presenter
+    public class CameraPresenter : Presenter
     {
         // Model Parametres
         public CameraParametres CameraParametres = new CameraParametres();
@@ -21,12 +21,11 @@ namespace AssemblyActorCore
         }
 #endif
 
-        private new void Awake()
+        protected override void Initiation()
         {
-            base.Awake();
-
-            followable = RequireComponent<Followable>();
-            inputable = RequireComponent<Inputable>();
+            // Get components using "GetComponentInActor" to create them on <Actor>
+            followable = GetComponentInActor<Followable>();
+            inputable = GetComponentInActor<Inputable>();
         }
 
         public override void UpdateLoop()

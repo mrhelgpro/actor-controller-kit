@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class InteractionController : Presenter
+    public class InteractionPresenter : Presenter
     {
         [Header("Interaction")]
         public float Duration = 1;
@@ -16,12 +16,11 @@ namespace AssemblyActorCore
         private float _speed => 1 / Duration;
         private float _timer = 0;
 
-        protected new void Awake()
+        protected override void Initiation()
         {
-            base.Awake();  
-
-            inputable = RequireComponent<Inputable>();
-            animatorable = RequireComponent<Animatorable>();
+            // Get components using "GetComponentInActor" to create them on <Actor>
+            inputable = GetComponentInActor<Inputable>();
+            animatorable = GetComponentInActor<Animatorable>();
         }
 
         public override void Enter()

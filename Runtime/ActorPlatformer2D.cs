@@ -5,7 +5,7 @@ namespace AssemblyActorCore
 {
     public class ActorPlatformer2D : Actor
     {
-        public override void AddComponents()
+        public void AddComponents()
         {
             gameObject.AddThisComponent<Inputable>();
             gameObject.AddThisComponent<Animatorable>();
@@ -28,14 +28,8 @@ namespace AssemblyActorCore
             rigidbody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
             rigidbody.freezeRotation = true;
         }
-    }
 
-#if UNITY_EDITOR
-    [ExecuteInEditMode]
-    [CustomEditor(typeof(ActorPlatformer2D))]
-    public class ActorPlatformer2DEditor : ActorEditor
-    {
-        public override void RemoveComponents()
+        public void RemoveComponents()
         {
             gameObject.RemoveComponent<Inputable>();
             gameObject.RemoveComponent<Animatorable>();
@@ -45,5 +39,4 @@ namespace AssemblyActorCore
             gameObject.RemoveComponent<Rigidbody2D>();
         }
     }
-#endif
 }

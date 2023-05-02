@@ -16,11 +16,20 @@ namespace AssemblyActorCore
             ThisTransform = transform;
         }
 
-        public T RequireComponent<T>() where T : Component
+        /// <summary> Returns or creates the required component on the Actor. </summary>
+        public T GetComponentInActor<T>() where T : Component
         {
             Actor actor = GetComponentInParent<Actor>();
-            
-            return actor.gameObject.GetComponent<T>() == null ? actor.gameObject.AddComponent<T>() : actor.gameObject.GetComponent<T>();
+
+            if (GetComponentInParent<Actor>())
+            {
+                return actor.gameObject.GetComponent<T>() == null ? actor.gameObject.AddComponent<T>() : actor.gameObject.GetComponent<T>();
+            }
+
+            Debug.LogWarning(gameObject.name + " - is not found <Actor>");
+            gameObject.SetActive(false);
+
+            return null;
         }
     }
 }
