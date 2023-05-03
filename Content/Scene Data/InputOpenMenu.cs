@@ -20,7 +20,7 @@ namespace AssemblyActorCore
         {
             Time.timeScale = 1;
 
-            ActorExtention.MouseVisibility(MouseVisable);
+            InputSystem.CursorVisible(MouseVisable);
 
             _playerInput = GetComponent<PlayerInput>();
             _eventSystem = FindObjectOfType<EventSystem>();
@@ -33,7 +33,7 @@ namespace AssemblyActorCore
                 _isGamepad = _playerInput.currentControlScheme == "Gamepad" ? true : false;
                 Device.text = _isGamepad == true ? "Option (Gamepad)" : "Esc (Keyboard)";
 
-                ActorExtention.MouseVisibility(_isGamepad ? false : MouseVisable);
+                InputSystem.CursorVisible(_isGamepad ? false : MouseVisable);
             }
         }
 
@@ -45,7 +45,7 @@ namespace AssemblyActorCore
             Menu.SetActive(state);
             _eventSystem.SetSelectedGameObject(_eventSystem.firstSelectedGameObject);
 
-            ActorExtention.MouseVisibility(_isGamepad ? false : state);
+            InputSystem.CursorVisible(_isGamepad ? false : state);
         }
 
         public void LoadSceneByName(string name) => SceneManager.LoadScene(name);

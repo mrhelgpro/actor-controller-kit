@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
+    /// <summary> Model - for speed control. </summary>
     public class Movable : ActorComponent
     {
         // Movable Fields
@@ -22,12 +23,6 @@ namespace AssemblyActorCore
     [UnityEditor.CustomEditor(typeof(Movable))]
     public class MovableEditor : ModelEditor
     {
-        protected override void OnHeaderGUI()
-        {
-            GUILayout.Label("My Custom Header");
-            UnityEditor.EditorGUILayout.LabelField("Header!");
-        }
-
         public override void OnInspectorGUI()
         {
             DefaultModelStyle("Movable - for speed control");

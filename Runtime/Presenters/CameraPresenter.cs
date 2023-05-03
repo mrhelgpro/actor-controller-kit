@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEditor;
 
 namespace AssemblyActorCore
 {
@@ -10,25 +11,6 @@ namespace AssemblyActorCore
         // Model Components
         private Inputable _inputable;
         private Followable _followable;
-
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            try
-            {
-                if (Application.isPlaying == false)
-                {
-                    Actor actor = GetComponentInParent<Actor>();
-
-                    actor.gameObject.GetComponentInChildren<Followable>()?.SetPreview(CameraParametres);
-                }
-            }
-            catch
-            {
-                // NullReferenceException: Called during Script Reload
-            }
-        }
-#endif
 
         protected override void Initiation()
         {
@@ -70,4 +52,51 @@ namespace AssemblyActorCore
             _followable.Parametres.FieldOfView = CameraParametres.FieldOfView;
         }
     }
+
+#if UNITY_EDITOR
+    [ExecuteInEditMode]
+    [CustomEditor(typeof(CameraPresenter))]
+    public class CameraPresenterEditor : ModelEditor
+    {
+        public override void OnInspectorGUI()
+        {
+            CameraPresenter thisTarget = (CameraPresenter)target;
+
+            Actor actor = thisTarget.GetComponentInParent<Actor>();
+
+            if (actor)
+            {
+                Followable followable = actor.gameObject.GetComponentInChildren<Followable>();
+
+                if (followable)
+                {
+                    // Show script Link
+                    ShowLink(thisTarget);
+
+                    // Show Camera Parametres
+                    SerializedProperty parametresProperty = serializedObject.FindProperty("CameraParametres");
+                    EditorGUILayout.PropertyField(parametresProperty, true);
+                    serializedObject.ApplyModifiedProperties();
+
+                    if (GUI.changed)
+                    {
+                        if (Application.isPlaying == false)
+                        {
+                            followable.SetPreview(thisTarget.CameraParametres);
+                            EditorUtility.SetDirty(thisTarget);
+                        }
+                    }
+
+                    return;
+                }
+
+                ErrorMessage("<Followable> is not found", thisTarget.gameObject.name + " - CameraPresenter: ");
+            }
+            else
+            {
+                ErrorMessage("<Actor> is not found", thisTarget.gameObject.name + " - CameraPresenter: ");
+            }
+        }
+    }
+#endif
 }

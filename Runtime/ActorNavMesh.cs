@@ -8,6 +8,7 @@ namespace AssemblyActorCore
     {
         public void AddComponents() 
         {
+            /*
             gameObject.AddThisComponent<Inputable>();
             gameObject.AddThisComponent<Movable>();
             gameObject.AddThisComponent<Positionable>();
@@ -25,6 +26,7 @@ namespace AssemblyActorCore
             navMeshAgent.avoidancePriority = 50;
             navMeshAgent.autoTraverseOffMeshLink = true;
             navMeshAgent.autoRepath = true;
+            */
         }
 
         public void RemoveComponents()

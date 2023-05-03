@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
 namespace AssemblyActorCore
 {
@@ -114,16 +113,17 @@ namespace AssemblyActorCore
     [RequireComponent(typeof(Activator))]
     public abstract class Presenter : ActorComponent
     {
-        protected StatePresenter statePresenter;
         protected StatePresenterMachine stateMachine;
-        public string Name => statePresenter.Name;
+        private StatePresenter _statePresenter;
+
+        public string Name => _statePresenter.Name;
 
         private new void Awake()
         {
             base.Awake();
 
-            statePresenter = GetComponentInParent<StatePresenter>();
-            stateMachine = GetComponentInParent<StatePresenterMachine>();
+            stateMachine = GetComponentInActor<StatePresenterMachine>();
+            _statePresenter = GetComponentInActor<StatePresenter>();
 
             Initiation();
         }

@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
+    /// <summary> Model - to receive input data. </summary>
     public class Inputable : ActorComponent
     {
                                                         // KEYBOARD            X-BOX             DUALSHOCK       GAMEPAD
@@ -28,6 +29,16 @@ namespace AssemblyActorCore
         public bool ShiftState;                         // Left Shift          Left Bumper       L1              Left Shoulder
 
         public Target TargetInteraction;
+    }
+
+    /// <summary> Extensions for the input system. </summary>
+    public static class InputSystem
+    {
+        public static void CursorVisible(bool state)
+        {
+            Cursor.lockState = state == true ? CursorLockMode.None : CursorLockMode.Locked;
+            Cursor.visible = state;
+        }
     }
 
 #if UNITY_EDITOR

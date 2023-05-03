@@ -4,16 +4,23 @@ using UnityEditor;
 
 namespace AssemblyActorCore
 {
-    public class Actor : MonoBehaviour
+    public class Actor : ActorComponent
     {
         public string Name = "Actor";
 
-        [MenuItem("GameObject/Actor/Player Default", false, 0)]
-        public static void CreateActorDefault()
+        public bool HideChildObjects = false;
+
+#if UNITY_EDITOR
+        private void OnValidate()
         {
-            GameObject instance = Instantiate(Resources.Load<GameObject>("Characters/Player Default"));
-            instance.name = "Player Default";
+            if (Application.isPlaying == false)
+            {
+                HideChildObjects = gameObject.IsPrefab();
+            }
+
+            transform.HideChildObjects(HideChildObjects);
         }
+#endif
     }
 
 #if UNITY_EDITOR
@@ -77,7 +84,7 @@ namespace AssemblyActorCore
 
     // Show script Link
     EditorGUI.BeginDisabledGroup(true);
-    EditorGUILayout.ObjectField("Model", MonoScript.FromMonoBehaviour(_myTarget), typeof(MonoScript), false);
+    EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour(_myTarget), typeof(MonoScript), false);
     EditorGUI.EndDisabledGroup();
 
     Rect scriptRect = GUILayoutUtility.GetLastRect();
@@ -96,25 +103,9 @@ namespace AssemblyActorCore
     style.fontStyle = FontStyle.Bold;
     EditorGUILayout.LabelField("My Component", style);
 
-    // Check if gameObject Prefab
-    private bool isPrefab(GameObject gameObject)
-    {
-        PrefabAssetType assetType = PrefabUtility.GetPrefabAssetType(gameObject);
-        return assetType == PrefabAssetType.Regular || assetType == PrefabAssetType.Variant;
-    }
-
-    // Hide Child Objects in Hierarchy
-    public static void HideChildObjects(Transform transform, bool state)
-    {
-        foreach (Transform child in transform)
-        {
-            child.gameObject.hideFlags = state == true ? HideFlags.HideInHierarchy | HideFlags.HideInInspector : HideFlags.None;
-        }
-    }
-
-    // Context Menu
+    // Selected Context Menu
     [MenuItem("GameObject/NewMenu/Menu", false, 0)]
-    public static void HideChildObjects()
+    public static void DoSomethingWithSelected()
     {
         GameObject selectedObject = Selection.activeGameObject;
 

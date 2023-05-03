@@ -7,6 +7,7 @@ namespace AssemblyActorCore
     {
         public void AddComponents()
         {
+            /*
             gameObject.AddThisComponent<Inputable>();
             gameObject.AddThisComponent<Animatorable>();
             gameObject.AddThisComponent<Movable>();
@@ -27,6 +28,7 @@ namespace AssemblyActorCore
             rigidbody.gravityScale = 1;
             rigidbody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
             rigidbody.freezeRotation = true;
+            */
         }
 
         public void RemoveComponents()

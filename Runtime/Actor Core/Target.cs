@@ -2,6 +2,7 @@ using UnityEngine;
           
 namespace AssemblyActorCore
 {
+    /// <summary> Structure - for data storage about the target. </summary>
     public struct Target
     {
         private Transform _targetTransform;

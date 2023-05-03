@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    [Serializable]
+    /// <summary> Model - to control the Animator. </summary>
     public class Animatorable : ActorComponent
     {
         //public RuntimeAnimatorController AnimatorController;

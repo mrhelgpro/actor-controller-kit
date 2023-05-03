@@ -22,29 +22,64 @@ namespace AssemblyActorCore
         {
             Actor actor = GetComponentInParent<Actor>();
 
-            if (actor)
-            {
-                return actor.gameObject.GetComponentInChildren<T>() == null ? actor.gameObject.AddComponent<T>() : actor.gameObject.GetComponentInChildren<T>();
-            }
+            GameObject root = actor == null ? gameObject : actor.gameObject;
 
-            Debug.LogWarning(gameObject.name + " - is not found <Actor>");
-            gameObject.SetActive(false);
+            return root.GetComponentInChildren<T>() == null ? root.AddComponent<T>() : root.GetComponentInChildren<T>();
+        }
+    }
 
-            return null;
+    public static class ActorComponentExtention
+    {
+        // Finds the required Component on <Actor> gets or instantiates
+        public static T AddRequiredComponent<T>(this GameObject gameObject) where T : Component
+        {
+            return gameObject.GetComponent<T>() == null ? gameObject.AddComponent<T>() : gameObject.GetComponent<T>();
+        }
+
+        public static void RemoveComponent<T>(this GameObject gameObject) where T : Component
+        {
+            if (gameObject.GetComponent<T>() != null) Object.DestroyImmediate(gameObject.GetComponent<T>());
         }
     }
 
 #if UNITY_EDITOR
-    [ExecuteInEditMode]
+        [ExecuteInEditMode]
     [CustomEditor(typeof(ActorComponent))]
     public class ModelEditor : Editor
     {
+        public bool IsActor(GameObject gameObject) => gameObject.GetComponentInParent<Actor>();
+
+        public void ShowLink(MonoBehaviour monoScript)
+        {
+            // Show script Link
+            EditorGUI.BeginDisabledGroup(true);
+            EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour(monoScript), typeof(MonoScript), false);
+            EditorGUI.EndDisabledGroup();
+
+            Rect scriptRect = GUILayoutUtility.GetLastRect();
+            EditorGUIUtility.AddCursorRect(scriptRect, MouseCursor.Arrow);
+
+            if (GUI.Button(scriptRect, "", GUIStyle.none))
+            {
+                UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(AssetDatabase.GetAssetPath(MonoScript.FromMonoBehaviour(monoScript)), 0);
+            }
+        }
+
         public void DefaultModelStyle(string info)
         {
-            EditorGUILayout.Space(2);
+            drawBox(info, new Color(0.5f, 0.5f, 0.5f, 1f), new Color(0.25f, 0.25f, 0.25f, 1f));
+        }
 
-            Color backgroundColor = new Color(0.5f, 0.5f, 0.5f, 1f);
-            Color textColor = new Color(0.25f, 0.25f, 0.25f, 1f);
+        public void ErrorMessage(string info, string name = "")
+        {
+            drawBox(info, new Color(0.8f, 0.4f, 0.4f, 1f), new Color(0.25f, 0.25f, 0.25f, 1f));
+
+            Debug.LogWarning(name + info);
+        }
+
+        private void drawBox(string info, Color backgroundColor, Color textColor)
+        {
+            EditorGUILayout.Space(2);
 
             // Font Style
             GUIStyle fontStyle = new GUIStyle(EditorStyles.label);

@@ -94,14 +94,12 @@ namespace AssemblyActorCore
             Debug.DrawLine(RootTransform.position, RootTransform.position + _lookDirection.normalized * 5, Color.green, 0, true);
         }
 
-
-        // FIXED IT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         private void setLocalDirection()
         {
             float positionY = RootTransform.position.y;
             bool difference = Mathf.Abs(positionY - _previousPositionY) > 0.01f;
 
-            float x = Mathf.Round(Vector3.Cross(_inputable.MoveVector, _bodyDirection.GetVector2Horizontal()).z);
+            float x = Mathf.Round(Vector3.Cross(_inputable.MoveVector, new Vector2(_bodyDirection.x, _bodyDirection.z)).z);
             float z = Mathf.Round(Vector3.Dot(new Vector3(_inputable.MoveVector.x, 0, _inputable.MoveVector.y), _bodyDirection));
             float y = positionY > _previousPositionY ? 1 : difference ? -1 : 0;
 

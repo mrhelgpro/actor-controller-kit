@@ -10,7 +10,7 @@ namespace AssemblyActorCore
         {
             base.Awake();
 
-            stateMachine = GetComponentInParent<StatePresenterMachine>();
+            stateMachine = GetComponentInActor<StatePresenterMachine>();
 
             Initiation();
         }

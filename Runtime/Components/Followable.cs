@@ -4,6 +4,7 @@ using UnityEditor;
 
 namespace AssemblyActorCore
 {
+    /// <summary> Model - to control the Camera Parametres. </summary>
     public class Followable : MonoBehaviour
     {
         public CameraParametres Parametres;
@@ -32,6 +33,7 @@ namespace AssemblyActorCore
     public enum InputLookMode { Free, LeftHold, MiddleHold, RightHold, Freez }
     public enum InputOffsetMode { Free, LeftHold, MiddleHold, RightHold, Freez }
 
+    /// <summary> Camera position and settings. </summary>
     [Serializable]
     public class CameraParametres
     {
@@ -106,17 +108,13 @@ namespace AssemblyActorCore
                     if (GUI.changed)
                     {
                         thisTarget.SetPreview(thisTarget.Parametres);
+                        EditorUtility.SetDirty(thisTarget);
                     }
                 }
             }
             else
             {
                 DefaultModelStyle("Followable - edit in Presenter");
-            }
-
-            if (GUI.changed)
-            {
-                EditorUtility.SetDirty(thisTarget);
             }
         }
     }

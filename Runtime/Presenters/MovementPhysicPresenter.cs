@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEditor;
 
 namespace AssemblyActorCore
 {
@@ -83,7 +82,7 @@ namespace AssemblyActorCore
 
             _currentSpeed = _movable.GetSpeed(maxSpeed);
             _currentGravity = _movable.GetGravity(Gravity);
-            _currentDirection = _positionable.ProjectOntoSurface(_inputable.MoveVector).normalized;
+            _currentDirection = _positionable.GetDirection(_inputable.MoveVector);
 
             _lerpDirection = Vector3.Lerp(_lerpDirection, _currentDirection, Time.deltaTime * Rate);
             _currentVelocity = new Vector3(_lerpDirection.x, _currentDirection.y, _lerpDirection.z) * _currentSpeed;
