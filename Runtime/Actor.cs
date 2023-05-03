@@ -7,6 +7,13 @@ namespace AssemblyActorCore
     public class Actor : MonoBehaviour
     {
         public string Name = "Actor";
+
+        [MenuItem("GameObject/Actor/Player Default", false, 0)]
+        public static void CreateActorDefault()
+        {
+            GameObject instance = Instantiate(Resources.Load<GameObject>("Characters/Player Default"));
+            instance.name = "Player Default";
+        }
     }
 
 #if UNITY_EDITOR
@@ -16,32 +23,21 @@ namespace AssemblyActorCore
     {
         public override void OnInspectorGUI()
         {
-            Actor component = (Actor)target;
-
-            hideChildObjects(component.transform, isPrefab(component.gameObject));
+            Actor thisTarget = (Actor)target;
 
             if (Application.isPlaying)
             {
-                EditorGUILayout.LabelField("Name", component.Name);
-
-                return;
+                EditorGUILayout.LabelField("Name", thisTarget.Name);
             }
-
-            component.Name = EditorGUILayout.TextField("Name", component.Name);
-        }
-
-        private void hideChildObjects(Transform transform, bool state)
-        {
-            foreach (Transform child in transform)
+            else
             {
-                child.gameObject.hideFlags = state == true ? HideFlags.HideInHierarchy : HideFlags.None;
+                thisTarget.Name = EditorGUILayout.TextField("Name", thisTarget.Name);
             }
-        }
 
-        private bool isPrefab(GameObject gameObject)
-        {
-            PrefabAssetType assetType = PrefabUtility.GetPrefabAssetType(gameObject);
-            return assetType == PrefabAssetType.Regular || assetType == PrefabAssetType.Variant;
+            if (GUI.changed)
+            {
+                EditorUtility.SetDirty(thisTarget);
+            }
         }
     }
 #endif
@@ -99,4 +95,32 @@ namespace AssemblyActorCore
     GUIStyle style = new GUIStyle(GUI.skin.label);
     style.fontStyle = FontStyle.Bold;
     EditorGUILayout.LabelField("My Component", style);
+
+    // Check if gameObject Prefab
+    private bool isPrefab(GameObject gameObject)
+    {
+        PrefabAssetType assetType = PrefabUtility.GetPrefabAssetType(gameObject);
+        return assetType == PrefabAssetType.Regular || assetType == PrefabAssetType.Variant;
+    }
+
+    // Hide Child Objects in Hierarchy
+    public static void HideChildObjects(Transform transform, bool state)
+    {
+        foreach (Transform child in transform)
+        {
+            child.gameObject.hideFlags = state == true ? HideFlags.HideInHierarchy | HideFlags.HideInInspector : HideFlags.None;
+        }
+    }
+
+    // Context Menu
+    [MenuItem("GameObject/NewMenu/Menu", false, 0)]
+    public static void HideChildObjects()
+    {
+        GameObject selectedObject = Selection.activeGameObject;
+
+        if (selectedObject != null)
+        {
+            // Do something
+        }
+    }
 */

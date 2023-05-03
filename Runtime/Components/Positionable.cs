@@ -62,4 +62,16 @@ namespace AssemblyActorCore
             IsObstacle = hit.collider == null ? false : hit.collider.isTrigger ? false : true;
         }
     }
+
+#if UNITY_EDITOR
+    [ExecuteInEditMode]
+    [UnityEditor.CustomEditor(typeof(Positionable))]
+    public class PositionableEditor : ModelEditor
+    {
+        public override void OnInspectorGUI()
+        {
+            DefaultModelStyle("Positionable - to get the position data");
+        }
+    }
+#endif
 }

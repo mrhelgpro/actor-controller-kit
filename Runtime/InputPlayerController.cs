@@ -180,23 +180,24 @@ namespace AssemblyActorCore
     {
         public override void OnInspectorGUI()
         {
-            InputPlayerController _myTarget = (InputPlayerController)target;
+            InputPlayerController thisTarget = (InputPlayerController)target;
 
             // Show Enum Mode
-            if (_myTarget.MoveDirectionMode == InputPlayerController.MoveMode.Input)
+            if (thisTarget.MoveDirectionMode == InputPlayerController.MoveMode.Input)
             {
-                _myTarget.MoveDirectionMode = (InputPlayerController.MoveMode)EditorGUILayout.EnumPopup("Move Mode", _myTarget.MoveDirectionMode);
+                thisTarget.MoveDirectionMode = (InputPlayerController.MoveMode)EditorGUILayout.EnumPopup("Move Mode", thisTarget.MoveDirectionMode);
             }
             else
             {
-                _myTarget.MoveDirectionMode = (InputPlayerController.MoveMode)EditorGUILayout.EnumPopup("Move Mode", _myTarget.MoveDirectionMode);
-                _myTarget.InputTargetMode = (InputPlayerController.TargetMode)EditorGUILayout.EnumPopup("Target Mode", _myTarget.InputTargetMode);
-                _myTarget.TargetRequiredLayers = EditorGUILayout.MaskField("Target Required Layers", _myTarget.TargetRequiredLayers, UnityEditorInternal.InternalEditorUtility.layers);
+                thisTarget.MoveDirectionMode = (InputPlayerController.MoveMode)EditorGUILayout.EnumPopup("Move Mode", thisTarget.MoveDirectionMode);
+                thisTarget.InputTargetMode = (InputPlayerController.TargetMode)EditorGUILayout.EnumPopup("Target Mode", thisTarget.InputTargetMode);
+                thisTarget.TargetRequiredLayers = EditorGUILayout.MaskField("Target Required Layers", thisTarget.TargetRequiredLayers, UnityEditorInternal.InternalEditorUtility.layers);
+            }
 
-                if (GUI.changed)
-                {
-                    _myTarget.ClearTarget();
-                }
+            if (GUI.changed)
+            {
+                EditorUtility.SetDirty(thisTarget);
+                thisTarget.ClearTarget();
             }
         }
     }

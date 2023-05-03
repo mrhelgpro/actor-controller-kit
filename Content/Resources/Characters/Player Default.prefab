@@ -102,7 +102,7 @@ MonoBehaviour:
       SensitivityY: 0.5
     Offset:
       Horizontal: 1.5
-      Vertical: 1
+      Vertical: 0
       Distance: 5
     DampTime:
       Move: 0
@@ -155,7 +155,7 @@ Transform:
   - {fileID: 2792692446251434768}
   - {fileID: 6482539189169707431}
   m_Father: {fileID: 6371176099915837998}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3614990663499576864
 MonoBehaviour:
@@ -169,6 +169,65 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81c8decd36c6cca4484527a3f9a865c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &4805263465774449587
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4805263465774449586}
+  - component: {fileID: 4805263465774449589}
+  m_Layer: 3
+  m_Name: Followable
+  m_TagString: Player
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4805263465774449586
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4805263465774449587}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.35, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6371176099915837998}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4805263465774449589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4805263465774449587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ced2bc7da838a664796c132e46dc4469, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parametres:
+    InputOrbitMode: 0
+    Orbit:
+      Horizontal: 0
+      Vertical: 0
+      SensitivityX: 1
+      SensitivityY: 0.5
+    Offset:
+      Horizontal: 1.5
+      Vertical: 0
+      Distance: 5
+    DampTime:
+      Move: 0
+      Rotation: 0
+    FieldOfView: 60
 --- !u!1 &6371176099915837999
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,7 +239,6 @@ GameObject:
   - component: {fileID: 6371176099915837998}
   - component: {fileID: 1244267517816821807}
   - component: {fileID: 5457623647060871783}
-  - component: {fileID: 5457623647060871791}
   - component: {fileID: 2582809518139182697}
   - component: {fileID: 5969089977483399594}
   - component: {fileID: -3368978410175793735}
@@ -205,6 +263,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 4805263465774449586}
   - {fileID: 3614990663499576867}
   - {fileID: 6371176100067590464}
   m_Father: {fileID: 0}
@@ -222,7 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f40dbd14eb6c5654292f7dc6c24869b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveDirectionMode: 0
+  MoveDirectionMode: 1
   InputTargetMode: 0
   TargetRequiredLayers:
     serializedVersion: 2
@@ -244,33 +303,6 @@ MonoBehaviour:
   RayCameraDirection: 0
   RayMoveDirection: 0
   RayTraceTime: 25
---- !u!114 &5457623647060871791
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6371176099915837999}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ced2bc7da838a664796c132e46dc4469, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Parametres:
-    InputOrbitMode: 0
-    Orbit:
-      Horizontal: 0
-      Vertical: 0
-      SensitivityX: 0.25
-      SensitivityY: 0.125
-    Offset:
-      Horizontal: 1.5
-      Vertical: 1
-      Distance: 5
-    DampTime:
-      Move: 0
-      Rotation: 0
-    FieldOfView: 30
 --- !u!114 &2582809518139182697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,7 +410,7 @@ Transform:
   m_Children:
   - {fileID: 6413535251310380016}
   m_Father: {fileID: 6371176099915837998}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6482539189169707424
 GameObject:
@@ -470,12 +502,12 @@ MonoBehaviour:
       SensitivityY: 0.125
     Offset:
       Horizontal: 1.5
-      Vertical: 1
+      Vertical: 0
       Distance: 5
     DampTime:
       Move: 0
       Rotation: 0
-    FieldOfView: 30
+    FieldOfView: 25
 --- !u!114 &6482539189169707449
 MonoBehaviour:
   m_ObjectHideFlags: 0

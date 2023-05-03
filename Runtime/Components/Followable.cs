@@ -88,14 +88,14 @@ namespace AssemblyActorCore
 #if UNITY_EDITOR
     [ExecuteInEditMode]
     [CustomEditor(typeof(Followable))]
-    public class FollowableEditor : Editor
+    public class FollowableEditor : ModelEditor
     {
         public override void OnInspectorGUI()
         {   
-            Followable myTarget = (Followable)target;
+            Followable thisTarget = (Followable)target;
 
             // Parametres Structure
-            if (myTarget.GetComponent<Actor>() == null)
+            if (thisTarget.GetComponentInParent<Actor>() == null)
             {
                 if (Application.isPlaying == false)
                 {
@@ -105,13 +105,18 @@ namespace AssemblyActorCore
 
                     if (GUI.changed)
                     {
-                        myTarget.SetPreview(myTarget.Parametres);
+                        thisTarget.SetPreview(thisTarget.Parametres);
                     }
                 }
             }
             else
             {
-                EditorGUILayout.LabelField("Followable - to be able to control the Camera using Presenter");
+                DefaultModelStyle("Followable - edit in Presenter");
+            }
+
+            if (GUI.changed)
+            {
+                EditorUtility.SetDirty(thisTarget);
             }
         }
     }

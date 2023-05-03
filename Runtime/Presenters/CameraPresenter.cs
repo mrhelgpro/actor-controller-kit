@@ -8,15 +8,24 @@ namespace AssemblyActorCore
         public CameraParametres CameraParametres = new CameraParametres();
 
         // Model Components
-        protected Inputable inputable;
-        protected Followable followable;
+        private Inputable _inputable;
+        private Followable _followable;
 
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            if (Application.isPlaying == false)
+            try
             {
-                GetComponentInParent<Followable>()?.SetPreview(CameraParametres);
+                if (Application.isPlaying == false)
+                {
+                    Actor actor = GetComponentInParent<Actor>();
+
+                    actor.gameObject.GetComponentInChildren<Followable>()?.SetPreview(CameraParametres);
+                }
+            }
+            catch
+            {
+                // NullReferenceException: Called during Script Reload
             }
         }
 #endif
@@ -24,8 +33,8 @@ namespace AssemblyActorCore
         protected override void Initiation()
         {
             // Get components using "GetComponentInActor" to create them on <Actor>
-            followable = GetComponentInActor<Followable>();
-            inputable = GetComponentInActor<Inputable>();
+            _followable = GetComponentInActor<Followable>();
+            _inputable = GetComponentInActor<Inputable>();
         }
 
         public override void UpdateLoop()
@@ -38,27 +47,27 @@ namespace AssemblyActorCore
             }
             else if (CameraParametres.InputOrbitMode == InputOrbitMode.LeftHold)
             {
-                isRotable = inputable.ActionLeftState;
+                isRotable = _inputable.ActionLeftState;
             }
             else if (CameraParametres.InputOrbitMode == InputOrbitMode.MiddleHold)
             {
-                isRotable = inputable.ActionMiddleState;
+                isRotable = _inputable.ActionMiddleState;
             }
             else if (CameraParametres.InputOrbitMode == InputOrbitMode.RightHold)
             {
-                isRotable = inputable.ActionRightState;
+                isRotable = _inputable.ActionRightState;
             }
 
             if (isRotable)
             {
-                followable.Parametres.Orbit.Horizontal += inputable.LookDelta.x * CameraParametres.Orbit.SensitivityX;
-                followable.Parametres.Orbit.Vertical += inputable.LookDelta.y * CameraParametres.Orbit.SensitivityY;
-                followable.Parametres.Orbit.Vertical = Mathf.Clamp(followable.Parametres.Orbit.Vertical, -30, 80);
+                _followable.Parametres.Orbit.Horizontal += _inputable.LookDelta.x * CameraParametres.Orbit.SensitivityX;
+                _followable.Parametres.Orbit.Vertical += _inputable.LookDelta.y * CameraParametres.Orbit.SensitivityY;
+                _followable.Parametres.Orbit.Vertical = Mathf.Clamp(_followable.Parametres.Orbit.Vertical, -30, 80);
             }
 
-            followable.Parametres.Offset = CameraParametres.Offset;
-            followable.Parametres.DampTime = CameraParametres.DampTime;
-            followable.Parametres.FieldOfView = CameraParametres.FieldOfView;
+            _followable.Parametres.Offset = CameraParametres.Offset;
+            _followable.Parametres.DampTime = CameraParametres.DampTime;
+            _followable.Parametres.FieldOfView = CameraParametres.FieldOfView;
         }
     }
 }

@@ -44,4 +44,16 @@ namespace AssemblyActorCore
         public void SetFloat(string name, float value) => _animator?.SetFloat(name, value);
         public void SetFloat(string name, float value, float dampTime) => _animator?.SetFloat(name, value, dampTime, Time.deltaTime);
     }
+
+#if UNITY_EDITOR
+    [ExecuteInEditMode]
+    [UnityEditor.CustomEditor(typeof(Animatorable))]
+    public class AnimatorableEditor : ModelEditor
+    {
+        public override void OnInspectorGUI()
+        {
+            DefaultModelStyle("Animatorable - to control the Animator");
+        }
+    }
+#endif
 }

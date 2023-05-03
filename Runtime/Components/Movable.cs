@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace AssemblyActorCore
@@ -17,4 +16,22 @@ namespace AssemblyActorCore
         public void ChangeSpeed(float value) => _speedScale += value;
         public void ChangeGravity(float value) => _gravityScale += value;
     }
+
+#if UNITY_EDITOR
+    [ExecuteInEditMode]
+    [UnityEditor.CustomEditor(typeof(Movable))]
+    public class MovableEditor : ModelEditor
+    {
+        protected override void OnHeaderGUI()
+        {
+            GUILayout.Label("My Custom Header");
+            UnityEditor.EditorGUILayout.LabelField("Header!");
+        }
+
+        public override void OnInspectorGUI()
+        {
+            DefaultModelStyle("Movable - for speed control");
+        }
+    }
+#endif
 }

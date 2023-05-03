@@ -33,7 +33,7 @@ namespace AssemblyActorCore
 #if UNITY_EDITOR
     [ExecuteInEditMode]
     [UnityEditor.CustomEditor(typeof(Inputable))]
-    public class InputableEditor : UnityEditor.Editor
+    public class InputableEditor : ModelEditor
     {
         public override void OnInspectorGUI() 
         {
@@ -45,7 +45,7 @@ namespace AssemblyActorCore
             }
             else
             {
-                UnityEditor.EditorGUILayout.LabelField("Inputable - to receive input data");
+                DefaultModelStyle("Inputable - to receive input data");
             }
         }
     }
