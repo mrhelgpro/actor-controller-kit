@@ -52,7 +52,25 @@ namespace AssemblyActorCore
     {
         public override void OnInspectorGUI()
         {
-            DefaultModelStyle("Animatorable - to control the Animator");
+            Animatorable thisTarget = (Animatorable)target;
+            Transform root = thisTarget.FindRootTransform;
+            Animator animator = root.gameObject.GetComponentInChildren<Animator>();
+
+            if (animator == null)
+            {
+                DrawModelBox("<Animator> - is not found", BoxStyle.Error);
+
+                return;
+            }
+
+            if (Application.isPlaying)
+            {
+                DrawModelBox(animator.runtimeAnimatorController.name);
+            }
+            else
+            {
+                DrawModelBox("Controls animations");
+            }
         }
     }
 #endif

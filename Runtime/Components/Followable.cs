@@ -97,7 +97,7 @@ namespace AssemblyActorCore
             Followable thisTarget = (Followable)target;
 
             // Parametres Structure
-            if (thisTarget.GetComponentInParent<Actor>() == null)
+            if (thisTarget.GetComponentInParent<ActorComponent>() == null)
             {
                 if (Application.isPlaying == false)
                 {
@@ -114,7 +114,7 @@ namespace AssemblyActorCore
             }
             else
             {
-                DefaultModelStyle("Followable - edit in Presenter");
+                DrawModelBox("Edited in the Presenter");
             }
         }
     }

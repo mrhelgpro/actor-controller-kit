@@ -14,9 +14,9 @@ namespace AssemblyActorCore
 
         protected override void Initiation()
         {
-            // Get components using "GetComponentInActor" to create them on <Actor>
-            _followable = GetComponentInActor<Followable>();
-            _inputable = GetComponentInActor<Inputable>();
+            // Get components using "GetComponentInRoot" to create them on <Actor>
+            _followable = GetComponentInRoot<Followable>();
+            _inputable = GetComponentInRoot<Inputable>();
         }
 
         public override void UpdateLoop()
@@ -62,40 +62,33 @@ namespace AssemblyActorCore
         {
             CameraPresenter thisTarget = (CameraPresenter)target;
 
-            Actor actor = thisTarget.GetComponentInParent<Actor>();
+            Transform root = thisTarget.FindRootTransform;
 
-            if (actor)
+            Followable followable = root.gameObject.GetComponentInChildren<Followable>();
+
+            if (followable)
             {
-                Followable followable = actor.gameObject.GetComponentInChildren<Followable>();
+                // Show script Link
+                ShowLink(thisTarget);
 
-                if (followable)
+                // Show Camera Parametres
+                SerializedProperty parametresProperty = serializedObject.FindProperty("CameraParametres");
+                EditorGUILayout.PropertyField(parametresProperty, true);
+                serializedObject.ApplyModifiedProperties();
+
+                if (GUI.changed)
                 {
-                    // Show script Link
-                    ShowLink(thisTarget);
-
-                    // Show Camera Parametres
-                    SerializedProperty parametresProperty = serializedObject.FindProperty("CameraParametres");
-                    EditorGUILayout.PropertyField(parametresProperty, true);
-                    serializedObject.ApplyModifiedProperties();
-
-                    if (GUI.changed)
+                    if (Application.isPlaying == false)
                     {
-                        if (Application.isPlaying == false)
-                        {
-                            followable.SetPreview(thisTarget.CameraParametres);
-                            EditorUtility.SetDirty(thisTarget);
-                        }
+                        followable.SetPreview(thisTarget.CameraParametres);
+                        EditorUtility.SetDirty(thisTarget);
                     }
-
-                    return;
                 }
 
-                ErrorMessage("<Followable> is not found", thisTarget.gameObject.name + " - CameraPresenter: ");
+                return;
             }
-            else
-            {
-                ErrorMessage("<Actor> is not found", thisTarget.gameObject.name + " - CameraPresenter: ");
-            }
+
+            DrawModelBox("<Followable> is not found", BoxStyle.Error);
         }
     }
 #endif

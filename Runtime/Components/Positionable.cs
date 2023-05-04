@@ -101,7 +101,7 @@ namespace AssemblyActorCore
     {
         public override void OnInspectorGUI()
         {
-            DefaultModelStyle("Positionable - to get the position data");
+            DrawModelBox("Ñhecks position data");
         }
     }
 #endif

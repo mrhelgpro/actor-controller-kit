@@ -23,8 +23,10 @@ namespace AssemblyActorCore
         }
 
         public StatePresenter GetCurrentState => _currentStatePresenter;
+        public List<StatePresenter> GetStatePresentersList => _statePresentersList;
+        public bool IsCurrentStateObject(GameObject checkObject) => _currentStatePresenter == null ? false : checkObject == _currentStatePresenter.gameObject;
         public string GetName => _currentStatePresenter == null ? "None" : _currentStatePresenter.gameObject.name + " - " + _currentStatePresenter.Name;
-        public bool IsEmpty => _currentStatePresenter == null;
+        public bool IsFree => _currentStatePresenter == null;
 
         // Check the Actions list for a ready-made Action
         // If you find an equal GameObject Name, execute this Action
@@ -63,7 +65,7 @@ namespace AssemblyActorCore
         private bool _isIrreversible => _currentStatePresenter == null ? false : _currentStatePresenter.Type == PresenterType.Irreversible;
         private bool _isReady(StatePresenter statePresenter)
         {
-            if (IsEmpty == true)
+            if (IsFree == true)
             {
                 return true;
             }
@@ -109,35 +111,32 @@ namespace AssemblyActorCore
         }
     }
 
-    [RequireComponent(typeof(StatePresenter))]
-    [RequireComponent(typeof(Activator))]
-    public abstract class Presenter : ActorComponent
+#if UNITY_EDITOR
+    [ExecuteInEditMode]
+    [UnityEditor.CustomEditor(typeof(StatePresenterMachine))]
+    public class StatePresenterMachineEditor : ModelEditor
     {
-        protected StatePresenterMachine stateMachine;
-        private StatePresenter _statePresenter;
-
-        public string Name => _statePresenter.Name;
-
-        private new void Awake()
+        public override void OnInspectorGUI()
         {
-            base.Awake();
+            bool error = false;
 
-            stateMachine = GetComponentInActor<StatePresenterMachine>();
-            _statePresenter = GetComponentInActor<StatePresenter>();
+            StatePresenterMachine thisTarget = (StatePresenterMachine)target;
 
-            Initiation();
+            // Check StatePresenter
+            StatePresenter statePresenter = thisTarget.gameObject.GetComponentInChildren<StatePresenter>();
+            if (statePresenter == null)
+            {
+                DrawModelBox("<StatePresenter> - is not found", BoxStyle.Error);
+                error = true;
+            }
+
+            if (error == false)
+            {
+                DrawModelBox("Update the State Presenter");
+            }
+
+            UnityEditor.EditorUtility.SetDirty(thisTarget);
         }
-
-        /// <summary> Called once during Awake. Use "GetComponentInActor". </summary>
-        protected abstract void Initiation();
-
-        /// <summary> Called once when "Presenter" starts running. </summary>
-        public virtual void Enter() { }
-
-        /// <summary> Called every time after "Enter" when using Update. </summary>
-        public abstract void UpdateLoop();
-
-        /// <summary> Called once when "Presenter" stops running. </summary>
-        public virtual void Exit() { }
     }
+#endif
 }

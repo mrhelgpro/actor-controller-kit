@@ -1,49 +1,69 @@
 ﻿
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEditor;
+using System.Collections.Generic;
 
 namespace AssemblyActorCore
 {
     public class Actor : ActorComponent
     {
         public string Name = "Actor";
-
-        public bool HideChildObjects = false;
-
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            if (Application.isPlaying == false)
-            {
-                HideChildObjects = gameObject.IsPrefab();
-            }
-
-            transform.HideChildObjects(HideChildObjects);
-        }
-#endif
     }
 
 #if UNITY_EDITOR
     [ExecuteInEditMode]
     [CustomEditor(typeof(Actor))]
-    public class ActorEditor : Editor
+    public class ActorEditor : ModelEditor
     {
+        Actor thisTarget;
+
         public override void OnInspectorGUI()
         {
-            Actor thisTarget = (Actor)target;
+            thisTarget = (Actor)target;
 
             if (Application.isPlaying)
             {
-                EditorGUILayout.LabelField("Name", thisTarget.Name);
+                DrawHeader(thisTarget.Name);
+
+                // Check StatePresenterMachine
+                StatePresenterMachine statePresenterMachine = thisTarget.gameObject.GetComponentInChildren<StatePresenterMachine>();
+                if (statePresenterMachine != null)
+                {
+                    List<StatePresenter> statePresentersList = statePresenterMachine.GetStatePresentersList;
+
+                    foreach (StatePresenter statePresenter in statePresentersList)
+                    {
+                        bool state = statePresenterMachine.IsCurrentStateObject(statePresenter.gameObject) == true;
+                        BoxStyle style = state == true ? BoxStyle.Active : BoxStyle.Default;
+                        DrawModelBox(statePresenter.gameObject.name, style);
+                    }
+                }
             }
             else
             {
                 thisTarget.Name = EditorGUILayout.TextField("Name", thisTarget.Name);
-            }
 
-            if (GUI.changed)
+                Component component = thisTarget;
+                ComponentUtility.MoveComponentUp(component);
+
+                checkRootTransform();
+
+                if (GUI.changed)
+                {
+                    EditorUtility.SetDirty(thisTarget);
+                }
+            }
+        }
+
+        private void checkRootTransform()
+        {
+            GameObject root = thisTarget.FindRootTransform.gameObject;
+
+            if (root != thisTarget.gameObject)
             {
-                EditorUtility.SetDirty(thisTarget);
+                root.AddRequiredComponent<Actor>();
+                thisTarget.gameObject.RemoveComponent<Actor>();
             }
         }
     }
@@ -51,19 +71,6 @@ namespace AssemblyActorCore
 }
 
 /*
-    EXAMPLE: GameObject will be hidden in the inspector window
-    GameObject childGameObject = EditorUtility.CreateGameObjectWithHideFlags("New Child GameObject", HideFlags.HideInHierarchy | HideFlags.HideInInspector);
-
-    HideFlags.HideInHierarchy and HideFlags.HideInInspector - are two of the values 
-    that can be set for the flags parameter of the EditorUtility.CreateGameObjectWithHideFlags() method.
-
-    HideFlags.HideInHierarchy - When this flag is set, the GameObject will be hidden in the hierarchy window, which means 
-    it will not be visible in the list of objects that are on the stage.
-
-    HideFlags.HideInInspector - When this flag is checked, the GameObject will be hidden in the inspector window, which means 
-    its components will not be displayed in the inspector window.
-
-
     // How to hide some fields
     private bool foldoutInput = false;
 
@@ -74,7 +81,6 @@ namespace AssemblyActorCore
         EditorGUILayout.LabelField("Your ad could be here");
     }
     GUILayout.EndVertical();
-
 
     // To show a property
     EditorGUILayout.PropertyField(new SerializedObject(target).FindProperty("Input")); 
@@ -102,16 +108,4 @@ namespace AssemblyActorCore
     GUIStyle style = new GUIStyle(GUI.skin.label);
     style.fontStyle = FontStyle.Bold;
     EditorGUILayout.LabelField("My Component", style);
-
-    // Selected Context Menu
-    [MenuItem("GameObject/NewMenu/Menu", false, 0)]
-    public static void DoSomethingWithSelected()
-    {
-        GameObject selectedObject = Selection.activeGameObject;
-
-        if (selectedObject != null)
-        {
-            // Do something
-        }
-    }
 */

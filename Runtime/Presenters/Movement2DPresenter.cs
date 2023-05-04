@@ -1,8 +1,10 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public sealed class MovementPhysicPresenter : Presenter
+    public sealed class Movement2DPresenter : Presenter
     {
         [Range(1, 5)] public float MoveSpeed = 3f;
         [Range(1, 10)] public float MoveShift = 5f;
@@ -33,49 +35,48 @@ namespace AssemblyActorCore
         private Positionable _positionable;
 
         // Unity Components
-        private Rigidbody _rigidbody;
-        private SphereCollider _groundCollider;
-        private PhysicMaterial _materialOnTheGround;
-        private PhysicMaterial _materialInTheAir;
+        private Rigidbody2D _rigidbody;
+        private CircleCollider2D _groundCollider;
 
-        protected override void Initiation() 
+        private PhysicsMaterial2D _materialOnTheGround;
+        private PhysicsMaterial2D _materialInTheAir;
+
+        protected override void Initiation()
         {
             // Get components using "GetComponentInRoot" to create them on <Actor>
             _inputable = GetComponentInRoot<Inputable>();
             _animatorable = GetComponentInRoot<Animatorable>();
             _movable = GetComponentInRoot<Movable>();
-            _positionable = GetComponentInRoot<Positionable>();
+            _positionable = GetComponentInRoot<Positionable2D>();
 
-            _groundCollider = GetComponentInRoot<SphereCollider>();
+            _groundCollider = GetComponentInRoot<CircleCollider2D>();
             _groundCollider.isTrigger = false;
             _groundCollider.radius = 0.25f;
-            _groundCollider.center = new Vector3(0, _groundCollider.radius, 0);
+            _groundCollider.offset = new Vector2(0, _groundCollider.radius);
 
-            _rigidbody = GetComponentInRoot<Rigidbody>();
-            _rigidbody.useGravity = false;
-            _rigidbody.isKinematic = true;
+            _rigidbody = GetComponentInRoot<Rigidbody2D>();
+            _rigidbody.bodyType = RigidbodyType2D.Kinematic;
 
-            _materialInTheAir = Resources.Load<PhysicMaterial>("Physic/Player In The Air");
-            _materialOnTheGround = Resources.Load<PhysicMaterial>("Physic/Player On The Ground");
+            _materialInTheAir = Resources.Load<PhysicsMaterial2D>("Physic2D/Player In The Air");
+            _materialOnTheGround = Resources.Load<PhysicsMaterial2D>("Physic2D/Player On The Ground");
         }
 
         public override void Enter()
         {
             _groundCollider.isTrigger = false;
             _groundCollider.radius = 0.25f;
-            _groundCollider.center = new Vector3(0, _groundCollider.radius, 0);
+            _groundCollider.offset = new Vector2(0, _groundCollider.radius);
 
-            _currentVelocity = Vector3.zero;
+            _rigidbody.velocity = Vector2.zero;
+            _rigidbody.bodyType = RigidbodyType2D.Dynamic;
+            _rigidbody.simulated = true;
+            _rigidbody.useAutoMass = false;
             _rigidbody.mass = 1;
             _rigidbody.drag = 0;
             _rigidbody.angularDrag = 0.05f;
-            _rigidbody.useGravity = false;
-            _rigidbody.isKinematic = false;
-            _rigidbody.interpolation = RigidbodyInterpolation.None;
-            _rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
-            _rigidbody.constraints = RigidbodyConstraints.None;
+            _rigidbody.gravityScale = 1;
+            _rigidbody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
             _rigidbody.freezeRotation = true;
-            _rigidbody.velocity = Vector3.zero;
         }
 
         public override void UpdateLoop()
@@ -101,21 +102,20 @@ namespace AssemblyActorCore
             _currentVelocity = Vector3.zero;
 
             _rigidbody.MovePosition(_rigidbody.position);
+            _rigidbody.constraints = RigidbodyConstraints2D.None;
             _rigidbody.velocity = Vector3.zero;
-            _rigidbody.constraints = RigidbodyConstraints.None;
-            _rigidbody.useGravity = false;
-            _rigidbody.isKinematic = true;
         }
 
         private void FixedUpdate()
         {
-            _rigidbody.MovePosition(_rigidbody.position + _currentVelocity * Time.fixedDeltaTime);
-            _rigidbody.AddForce(Physics.gravity * _currentGravity, ForceMode.Acceleration);
+            _rigidbody.gravityScale = _currentGravity;
+            _rigidbody.velocity = new Vector2(_currentVelocity.x * 51.0f * Time.fixedDeltaTime, _rigidbody.velocity.y);
 
             if (_currentForce.magnitude > 0)
             {
-                _rigidbody.velocity = Vector3.zero;
-                _rigidbody.AddForce(_currentForce, ForceMode.Impulse);
+                _rigidbody.velocity = Vector2.zero;
+                _rigidbody.AddForce(_currentForce, ForceMode2D.Impulse);
+
                 _currentForce = Vector3.zero;
             }
         }
@@ -173,7 +173,7 @@ namespace AssemblyActorCore
 
         private void materialLoop()
         {
-            _groundCollider.material = _positionable.IsGrounded && _positionable.IsObstacle == false ? _materialOnTheGround : _materialInTheAir;
+            _groundCollider.sharedMaterial = _positionable.IsGrounded && _positionable.IsObstacle == false ? _materialOnTheGround : _materialInTheAir;
         }
     }
 }

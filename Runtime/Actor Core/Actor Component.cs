@@ -3,34 +3,52 @@ using UnityEditor;
 
 namespace AssemblyActorCore
 {
+    /// <summary> All classes that are part of the Actor must inherit from this class. </summary>
     public abstract class ActorComponent : MonoBehaviour
     {
         public Transform RootTransform { get; private set; }
         public Transform ThisTransform { get; private set; }
 
-
         protected void Awake()
         {
-            Actor actor = GetComponentInParent<Actor>();
-
-            RootTransform = actor == null ? transform : actor.transform;
+            RootTransform = FindRootTransform;
             ThisTransform = transform;
         }
 
         /// <summary> Returns or creates the required component on the Actor. </summary>
-        public T GetComponentInActor<T>() where T : Component
+        public T GetComponentInRoot<T>() where T : Component
         {
-            Actor actor = GetComponentInParent<Actor>();
-
-            GameObject root = actor == null ? gameObject : actor.gameObject;
+            GameObject root = FindRootTransform.gameObject;
 
             return root.GetComponentInChildren<T>() == null ? root.AddComponent<T>() : root.GetComponentInChildren<T>();
+        }
+
+        /// <summary> Finds the highest object in the hierarchy that contains "ActorComponent" and uses it as a marker for the root object. </summary>
+        public Transform FindRootTransform
+        {
+            get 
+            {
+                ActorComponent actorComponent = this;
+
+                Transform rootTransform = transform;
+
+                while (rootTransform.parent != null)
+                {
+                    rootTransform = rootTransform.parent;
+
+                    if (rootTransform.GetComponent<ActorComponent>())
+                    {
+                        actorComponent = rootTransform.GetComponent<ActorComponent>();
+                    }
+                }
+
+                return actorComponent.transform;
+            }
         }
     }
 
     public static class ActorComponentExtention
     {
-        // Finds the required Component on <Actor> gets or instantiates
         public static T AddRequiredComponent<T>(this GameObject gameObject) where T : Component
         {
             return gameObject.GetComponent<T>() == null ? gameObject.AddComponent<T>() : gameObject.GetComponent<T>();
@@ -42,6 +60,7 @@ namespace AssemblyActorCore
         }
     }
 
+    public enum BoxStyle { Default, Error, Active }
 #if UNITY_EDITOR
         [ExecuteInEditMode]
     [CustomEditor(typeof(ActorComponent))]
@@ -65,16 +84,35 @@ namespace AssemblyActorCore
             }
         }
 
-        public void DefaultModelStyle(string info)
+        public void DrawHeader(string info)
         {
-            drawBox(info, new Color(0.5f, 0.5f, 0.5f, 1f), new Color(0.25f, 0.25f, 0.25f, 1f));
+            // Font Style
+            GUIStyle fontStyle = new GUIStyle(EditorStyles.label);
+            fontStyle.fontSize = 16;
+            fontStyle.fontStyle = FontStyle.Bold;
+            fontStyle.alignment = TextAnchor.MiddleCenter;
+            //fontStyle.normal.textColor = textColor;
+
+            EditorGUILayout.LabelField(info, fontStyle, GUILayout.Height(20), GUILayout.Width(80), GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
         }
 
-        public void ErrorMessage(string info, string name = "")
+        public void DrawModelBox(string info, BoxStyle boxStyle = BoxStyle.Default)
         {
-            drawBox(info, new Color(0.8f, 0.4f, 0.4f, 1f), new Color(0.25f, 0.25f, 0.25f, 1f));
+            Color backgroundColor = new Color(0.5f, 0.5f, 0.5f, 1f);
+            Color textColor = new Color(0.25f, 0.25f, 0.25f, 1f);
+            
+            if (boxStyle == BoxStyle.Error)
+            {
+                backgroundColor = new Color(0.8f, 0.4f, 0.4f, 1f);
+                textColor = new Color(0.25f, 0.25f, 0.25f, 1f);
+            }
+            else if (boxStyle == BoxStyle.Active)
+            {
+                backgroundColor = new Color(0.5f, 0.8f, 0.5f, 1f);
+                textColor = new Color(0.85f, 0.95f, 0.85f, 1f);
+            }
 
-            Debug.LogWarning(name + info);
+            drawBox(info, backgroundColor, textColor);
         }
 
         private void drawBox(string info, Color backgroundColor, Color textColor)

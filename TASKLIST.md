@@ -1,7 +1,7 @@
+- Add Strafe Animation
 - Add Switch Animator
 - Add Look at Target
 - <ActorCamera> - Fix the transition from one camera setting to another (make it smooth)
 - <Soundable> - Make footsteps sound
 - <ActivateByInput> - Add Check "Move, Look"
 - <Rotable> - Add Direction (for Navigation)
-- <InputPlayer> - Add Mode enum LookMode { Camera, Mouse }

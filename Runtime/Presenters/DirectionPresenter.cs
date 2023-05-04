@@ -22,6 +22,7 @@ namespace AssemblyActorCore
         private float _previousPositionY;
         private float _previousLookDeltaMagnitude;
         private Vector3 _previousLookDirection;
+        private Vector3 _previousLocalDirection;
 
         // Model Components
         private Inputable _inputable;
@@ -29,10 +30,10 @@ namespace AssemblyActorCore
 
         protected override void Initiation()
         {
-            // Get components using "GetComponentInActor" to create them on <Actor>
+            // Get components using "GetComponentInRoot" to create them on <Actor>
             _cameraTransform = Camera.main.transform;
-            _inputable = GetComponentInActor<Inputable>();
-            _animatorable = GetComponentInActor<Animatorable>();
+            _inputable = GetComponentInRoot<Inputable>();
+            _animatorable = GetComponentInRoot<Animatorable>();
         }
 
         public override void UpdateLoop()
@@ -86,7 +87,7 @@ namespace AssemblyActorCore
                     }
                 }
 
-                _lookDirection = Vector3.Lerp(_lookDirection, _previousLookDirection, Time.deltaTime * 15);
+                _lookDirection = Vector3.Lerp(_lookDirection, _previousLookDirection, Time.deltaTime * 15); // !!!!!!!!
             }
 
             _previousLookDeltaMagnitude = _inputable.LookDelta.magnitude;
@@ -96,16 +97,30 @@ namespace AssemblyActorCore
 
         private void setLocalDirection()
         {
+            // Calculate the current direction
             float positionY = RootTransform.position.y;
             bool difference = Mathf.Abs(positionY - _previousPositionY) > 0.01f;
 
-            float x = Mathf.Round(Vector3.Cross(_inputable.MoveVector, new Vector2(_bodyDirection.x, _bodyDirection.z)).z);
-            float z = Mathf.Round(Vector3.Dot(new Vector3(_inputable.MoveVector.x, 0, _inputable.MoveVector.y), _bodyDirection));
+            float x = Vector3.Cross(_inputable.MoveVector, new Vector2(_bodyDirection.x, _bodyDirection.z)).z;
+            float z = Vector3.Dot(new Vector3(_inputable.MoveVector.x, 0, _inputable.MoveVector.y), _bodyDirection);
             float y = positionY > _previousPositionY ? 1 : difference ? -1 : 0;
 
-            _previousPositionY = positionY;
+            // Calculate the lerp direction
+            Vector3 lerpLocalDirection = Vector3.Lerp(_previousLocalDirection, new Vector3(x, y, z), Time.deltaTime * Rate);
+            
+            // Round up the value
+            x = Mathf.Round(lerpLocalDirection.x * 1000f) / 1000f;
+            y = Mathf.Round(lerpLocalDirection.y * 1000f) / 1000f;
+            z = Mathf.Round(lerpLocalDirection.z * 1000f) / 1000f;
 
-            _localDirection = _inputable.MoveVector.magnitude > 0 ? new Vector3(x, y, z) : _localDirection;
+            lerpLocalDirection = new Vector3(x, y, z);
+
+            // Get local direction
+            _localDirection = _inputable.MoveVector.magnitude > 0 ? lerpLocalDirection : _localDirection;
+
+            // Save the previous value
+            _previousLocalDirection = _localDirection;
+            _previousPositionY = positionY;
         }
 
         // Rotation

@@ -18,9 +18,9 @@ namespace AssemblyActorCore
 
         protected override void Initiation()
         {
-            // Get components using "GetComponentInActor" to create them on <Actor>
-            inputable = GetComponentInActor<Inputable>();
-            animatorable = GetComponentInActor<Animatorable>();
+            // Get components using "GetComponentInRoot" to create them on <Actor>
+            inputable = GetComponentInRoot<Inputable>();
+            animatorable = GetComponentInRoot<Animatorable>();
         }
 
         public override void Enter()

@@ -25,7 +25,7 @@ namespace AssemblyActorCore
     {
         public override void OnInspectorGUI()
         {
-            DefaultModelStyle("Movable - for speed control");
+            DrawModelBox("Controls speed");
         }
     }
 #endif

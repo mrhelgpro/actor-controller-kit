@@ -7,7 +7,7 @@ namespace AssemblyActorCore
     public class Inputable : ActorComponent
     {
                                                         // KEYBOARD            X-BOX             DUALSHOCK       GAMEPAD
-        public bool Menu;                               // Escape
+        public bool MenuState;                          // Escape
         public Vector2 PointerScreenPosition;           // Mouse Position                        Options         Start
         public Vector2 MoveVector;                      // WASD - Movement     Left Stick        Left Stick      Left Stick
         public Vector2 LookDelta;
@@ -31,6 +31,19 @@ namespace AssemblyActorCore
         public Target TargetInteraction;
     }
 
+    /// <summary> Parent class from which all "Input Controllers: should inherit. </summary>
+    public class InputController : ActorComponent
+    {
+        protected Inputable inputable;
+
+        protected new void Awake()
+        {
+            base.Awake();
+
+            inputable = GetComponentInRoot<Inputable>();
+        }
+    }
+
     /// <summary> Extensions for the input system. </summary>
     public static class InputSystem
     {
@@ -48,15 +61,40 @@ namespace AssemblyActorCore
     {
         public override void OnInspectorGUI() 
         {
-            Inputable component = (Inputable)target;
+            Inputable thisTarget = (Inputable)target;
+            Transform root = thisTarget.FindRootTransform;
+            InputController inputController = root.gameObject.GetComponentInChildren<InputController>();
+
+            if (inputController == null)
+            {
+                DrawModelBox("<InputController> - is not found", BoxStyle.Error);
+
+                return;
+            }
 
             if (Application.isPlaying)
             {
-                UnityEditor.EditorGUILayout.LabelField("Menu - " + (component.Menu == true ? "Press" : "None"));
+                DrawModelBox("Menu", thisTarget.MenuState == true ? BoxStyle.Active : BoxStyle.Default);
+
+                // public Vector2 PointerScreenPosition;
+                // public Vector2 MoveVector;
+                // public Vector2 LookDelta;
+
+                DrawModelBox("Option", thisTarget.OptionState == true ? BoxStyle.Active : BoxStyle.Default);
+                DrawModelBox("Cancel", thisTarget.CancelState == true ? BoxStyle.Active : BoxStyle.Default);
+                DrawModelBox("Motion", thisTarget.MotionState == true ? BoxStyle.Active : BoxStyle.Default);
+                DrawModelBox("Interact", thisTarget.InteractState == true ? BoxStyle.Active : BoxStyle.Default);
+
+                DrawModelBox("Action Left", thisTarget.ActionLeftState == true ? BoxStyle.Active : BoxStyle.Default);
+                DrawModelBox("Action Middle", thisTarget.ActionMiddleState == true ? BoxStyle.Active : BoxStyle.Default);
+                DrawModelBox("Action Right", thisTarget.ActionRightState == true ? BoxStyle.Active : BoxStyle.Default);
+
+                DrawModelBox("Control", thisTarget.ControlState == true ? BoxStyle.Active : BoxStyle.Default);
+                DrawModelBox("Shift", thisTarget.ShiftState == true ? BoxStyle.Active : BoxStyle.Default);
             }
             else
             {
-                DefaultModelStyle("Inputable - to receive input data");
+                DrawModelBox("Receive input data");
             }
         }
     }
