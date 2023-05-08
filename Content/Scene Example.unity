@@ -1157,7 +1157,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 24
   orthographic: 0
   orthographic size: 2.02
   m_Depth: -1
@@ -1183,7 +1183,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 265882232}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: -10}
+  m_LocalPosition: {x: 1, y: 1.5, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1400,15 +1400,19 @@ MonoBehaviour:
   InputOrbitMode: 0
   Parameters:
     CameraType: 0
-    Orbit:
-      Horizontal: 0
-      Vertical: 0
-      SensitivityX: 1
-      SensitivityY: 0.5
     FieldOfView: 60
     Damping: {x: 0, y: 0, z: 0}
     Offset: {x: 0, y: 0, z: 0}
     Distance: 5
+    OrbitHorizontal: 0
+    OrbitVertical: 0
+    OrbitSensitivityX: 1
+    OrbitSensitivityY: 0.5
+    DeadZoneWidth: 0.1
+    DeadZoneHeight: 0.1
+    DeadZoneDepth: 0
+    SoftZoneWidth: 0.8
+    SoftZoneHeight: 0.8
 --- !u!114 &387152475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2075,16 +2079,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InputOrbitMode: 0
   Parameters:
-    CameraType: 1
-    Orbit:
-      Horizontal: 0
-      Vertical: 0
-      SensitivityX: 1
-      SensitivityY: 0.5
+    CameraType: 0
     FieldOfView: 24
     Damping: {x: 0, y: 0, z: 0}
     Offset: {x: 1, y: 0, z: 0}
     Distance: 5
+    OrbitHorizontal: 0
+    OrbitVertical: 0
+    OrbitSensitivityX: 1
+    OrbitSensitivityY: 0.5
+    DeadZoneWidth: 0.1
+    DeadZoneHeight: 0.1
+    DeadZoneDepth: 0
+    SoftZoneWidth: 0.8
+    SoftZoneHeight: 0.8
 --- !u!114 &542658289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6607,10 +6615,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damping: {x: 0, y: 0, z: 0}
-  ShoulderOffset: {x: 0, y: 0, z: 0}
+  ShoulderOffset: {x: 1, y: 0, z: 0}
   VerticalArmLength: 0
   CameraSide: 1
-  CameraDistance: 10
+  CameraDistance: 5
   CameraCollisionFilter:
     serializedVersion: 2
     m_Bits: 1
@@ -6644,7 +6652,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3459404164680521140}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: -10}
+  m_LocalPosition: {x: 1, y: 1.5, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6673,7 +6681,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 1946911175}
   m_Lens:
-    FieldOfView: 60
+    FieldOfView: 24
     OrthographicSize: 2.02
     NearClipPlane: 0.3
     FarClipPlane: 1000
@@ -6704,15 +6712,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Parameters:
     CameraType: 0
-    Orbit:
-      Horizontal: 0
-      Vertical: 0
-      SensitivityX: 1
-      SensitivityY: 0.5
-    FieldOfView: 60
+    FieldOfView: 24
     Damping: {x: 0, y: 0, z: 0}
-    Offset: {x: 0, y: 0, z: 0}
-    Distance: 10
+    Offset: {x: 1, y: 0, z: 0}
+    Distance: 5
+    OrbitHorizontal: 0
+    OrbitVertical: 0
+    OrbitSensitivityX: 1
+    OrbitSensitivityY: 0.5
+    DeadZoneWidth: 0.1
+    DeadZoneHeight: 0.1
+    DeadZoneDepth: 0
+    SoftZoneWidth: 0.8
+    SoftZoneHeight: 0.8
 --- !u!114 &3586631398267076716
 MonoBehaviour:
   m_ObjectHideFlags: 0

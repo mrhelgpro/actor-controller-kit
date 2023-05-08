@@ -16,7 +16,7 @@ namespace AssemblyActorCore
             UpdateRotation();
         }
 
-        protected void UpdateRotation() => cinemachineVirtualCamera.Follow.rotation = Quaternion.Euler(Parameters.Orbit.Vertical, Parameters.Orbit.Horizontal, 0.0f);
+        protected void UpdateRotation() => cinemachineVirtualCamera.Follow.rotation = Quaternion.Euler(Parameters.OrbitVertical, Parameters.OrbitHorizontal, 0.0f);
 
         public void Enter(Transform enterFollow, CameraParameters enterParameters)
         {
@@ -75,6 +75,11 @@ namespace AssemblyActorCore
             framingTransposer.m_YDamping = Parameters.Damping.y;
             framingTransposer.m_ZDamping = Parameters.Damping.z;
             framingTransposer.m_CameraDistance = Parameters.Distance;
+            framingTransposer.m_DeadZoneWidth = Parameters.DeadZoneWidth;
+            framingTransposer.m_DeadZoneHeight = Parameters.DeadZoneHeight;
+            framingTransposer.m_DeadZoneDepth = Parameters.DeadZoneDepth;
+            framingTransposer.m_SoftZoneWidth = Parameters.SoftZoneWidth;
+            framingTransposer.m_SoftZoneHeight = Parameters.SoftZoneHeight;
         }
     }
 
@@ -127,27 +132,24 @@ namespace AssemblyActorCore
     public class CameraParameters
     {
         public CameraType CameraType = CameraType.ThirdPersonFollow;
-        public Vector2Orbit Orbit = new Vector2Orbit(1.0f, 0.5f);
+
+        // Default Parameters
         [Range(20, 80)] public int FieldOfView = 60;
         public Vector3 Damping = Vector3.zero;
         public Vector3 Offset = Vector3.zero;
         [Range(1, 20)] public float Distance = 10;
-    }
 
-    [Serializable]
-    public struct Vector2Orbit
-    {
-        [Range(-180, 180)] public float Horizontal;
-        [Range(-90, 90)] public float Vertical;
-        [Range(0, 5)] public float SensitivityX;
-        [Range(0, 5)] public float SensitivityY;
+        // Orbit Parameters
+        [Range(-180, 180)] public float OrbitHorizontal;
+        [Range(-90, 90)] public float OrbitVertical;
+        [Range(0, 5)] public float OrbitSensitivityX = 1.0f;
+        [Range(0, 5)] public float OrbitSensitivityY = 0.5f;
 
-        public Vector2Orbit(float x, float y)
-        {
-            Horizontal = 0;
-            Vertical = 0;
-            SensitivityX = x;
-            SensitivityY = y;
-        }
+        // Framing Transposer Parameters
+        [Range(0, 1)] public float DeadZoneWidth = 0.1f;
+        [Range(0, 1)] public float DeadZoneHeight = 0.1f;
+        public float DeadZoneDepth = 0.0f;
+        [Range(0, 1)] public float SoftZoneWidth = 0.8f;
+        [Range(0, 1)] public float SoftZoneHeight = 0.8f;
     }
 }

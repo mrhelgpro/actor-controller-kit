@@ -60,19 +60,11 @@ namespace AssemblyActorCore
                 {
                     float deltaTimeMultiplier = 1.0f;
 
-                    _followable.VirtualCamera.Parameters.Orbit.Horizontal += _inputable.LookDelta.x * Parameters.Orbit.SensitivityX * deltaTimeMultiplier;
-                    _followable.VirtualCamera.Parameters.Orbit.Vertical += _inputable.LookDelta.y * Parameters.Orbit.SensitivityY * deltaTimeMultiplier;
+                    _followable.VirtualCamera.Parameters.OrbitHorizontal += _inputable.LookDelta.x * Parameters.OrbitSensitivityX * deltaTimeMultiplier;
+                    _followable.VirtualCamera.Parameters.OrbitVertical += _inputable.LookDelta.y * Parameters.OrbitSensitivityY * deltaTimeMultiplier;
 
-                    _followable.VirtualCamera.Parameters.Orbit.Horizontal = ClampAngle(_followable.VirtualCamera.Parameters.Orbit.Horizontal, float.MinValue, float.MaxValue);
-                    _followable.VirtualCamera.Parameters.Orbit.Vertical = ClampAngle(_followable.VirtualCamera.Parameters.Orbit.Vertical, -30, 80);
-                    
-                    /*
-                    Parameters.Orbit.Horizontal += _inputable.LookDelta.x * Parameters.Orbit.SensitivityX * deltaTimeMultiplier;
-                    Parameters.Orbit.Vertical += _inputable.LookDelta.y * Parameters.Orbit.SensitivityY * deltaTimeMultiplier;
-
-                    Parameters.Orbit.Horizontal = ClampAngle(Parameters.Orbit.Horizontal, float.MinValue, float.MaxValue);
-                    Parameters.Orbit.Vertical = ClampAngle(Parameters.Orbit.Vertical, -30, 80);
-                    */
+                    _followable.VirtualCamera.Parameters.OrbitHorizontal = ClampAngle(_followable.VirtualCamera.Parameters.OrbitHorizontal, float.MinValue, float.MaxValue);
+                    _followable.VirtualCamera.Parameters.OrbitVertical = ClampAngle(_followable.VirtualCamera.Parameters.OrbitVertical, -30, 80);
                 }
             }
 
@@ -108,8 +100,42 @@ namespace AssemblyActorCore
                 }
                 else
                 {
-                    DrawDefaultInspector();
+                    // Show Camera Parameters
+                    EditorGUILayout.LabelField("Camera Parameters", EditorStyles.boldLabel);
+                    
+                    serializedObject.Update();
 
+                    thisTarget.Parameters.FieldOfView = EditorGUILayout.IntSlider("Field Of View", thisTarget.Parameters.FieldOfView, 20, 80);
+                    thisTarget.Parameters.Damping = EditorGUILayout.Vector3Field("Damping", thisTarget.Parameters.Damping);
+                    thisTarget.Parameters.Offset = EditorGUILayout.Vector3Field("Offset", thisTarget.Parameters.Offset);
+                    thisTarget.Parameters.Distance = EditorGUILayout.Slider("Distance", thisTarget.Parameters.Distance, 1f, 20f);
+
+                    thisTarget.Parameters.CameraType = (CameraType)EditorGUILayout.EnumPopup("Camera Type", thisTarget.Parameters.CameraType);
+
+                    if (thisTarget.Parameters.CameraType == CameraType.ThirdPersonFollow)
+                    {
+                        // Show Orbit Parameters
+                        thisTarget.InputOrbitMode = (InputOrbitMode)EditorGUILayout.EnumPopup("Input Orbit Mode", thisTarget.InputOrbitMode);
+
+                        if (thisTarget.InputOrbitMode != InputOrbitMode.Lock)
+                        {
+                            thisTarget.Parameters.OrbitSensitivityX = EditorGUILayout.Slider("Orbit Sensitivity X", thisTarget.Parameters.OrbitSensitivityX, 0f, 2f);
+                            thisTarget.Parameters.OrbitSensitivityY = EditorGUILayout.Slider("Orbit Sensitivity Y", thisTarget.Parameters.OrbitSensitivityY, 0f, 2f);
+                        }
+                    }
+                    else
+                    {
+                        // Show Framing Transposer Parameters
+                        thisTarget.Parameters.DeadZoneWidth = EditorGUILayout.Slider("Dead Zone Width", thisTarget.Parameters.DeadZoneWidth, 0f, 1f);
+                        thisTarget.Parameters.DeadZoneHeight = EditorGUILayout.Slider("Dead Zone Height", thisTarget.Parameters.DeadZoneHeight, 0f, 1f);
+                        thisTarget.Parameters.DeadZoneDepth = EditorGUILayout.FloatField("Dead Zone Height", thisTarget.Parameters.DeadZoneDepth);
+                        thisTarget.Parameters.SoftZoneWidth = EditorGUILayout.Slider("Soft Zone Width", thisTarget.Parameters.SoftZoneWidth, 0f, 1f);
+                        thisTarget.Parameters.SoftZoneHeight = EditorGUILayout.Slider("Soft Zone Height", thisTarget.Parameters.SoftZoneHeight, 0f, 1f);
+                    }
+
+                    serializedObject.ApplyModifiedProperties();
+
+                    // Update Camera Parameters
                     if (Application.isPlaying == false)
                     {
                         if (GUI.changed)
