@@ -16,7 +16,7 @@ namespace AssemblyActorCore
             base.Awake();
 
             stateMachine = GetComponentInRoot<StatePresenterMachine>();
-            _statePresenter = GetComponent<StatePresenter>();
+            _statePresenter = GetComponentInParent<StatePresenter>();
 
             Initiation();
         }

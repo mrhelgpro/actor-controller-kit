@@ -44,32 +44,36 @@ namespace AssemblyActorCore
 
         public void PreviewTheTarget(Followable target)
         {
-            GetComponent<Camera>().fieldOfView = target.Parametres.FieldOfView;
+            /*
+            GetComponent<Camera>().fieldOfView = target.Parameters.FieldOfView;
 
-            transform.rotation = Quaternion.Euler(target.Parametres.Orbit.Vertical, target.Parametres.Orbit.Horizontal, 0);
-            transform.position = transform.rotation * new Vector3(target.Parametres.Offset.Horizontal, target.Parametres.Offset.Vertical, -target.Parametres.Offset.Distance) + target.transform.position;
+            transform.rotation = Quaternion.Euler(target.Parameters.Orbit.Vertical, target.Parameters.Orbit.Horizontal, 0);
+            transform.position = transform.rotation * new Vector3(target.Parameters.Offset.Horizontal, target.Parameters.Offset.Vertical, -target.Parameters.Offset.Distance) + target.transform.position;
+        */
         }
 
         private void followTheTarget()
         {
+            /*
             if (Target)
             {
-                _camera.fieldOfView = Target.Parametres.FieldOfView;
+                _camera.fieldOfView = Target.Parameters.FieldOfView;
 
-                float horizontal = Mathf.SmoothDampAngle(_mainTransform.eulerAngles.x, Target.Parametres.Orbit.Vertical, ref _angleVelocity.y, Target.Parametres.DampTime.Rotation + 0.025f);
-                float vertical = Mathf.SmoothDampAngle(_mainTransform.eulerAngles.y, Target.Parametres.Orbit.Horizontal, ref _angleVelocity.x, Target.Parametres.DampTime.Rotation + 0.025f);
+                float horizontal = Mathf.SmoothDampAngle(_mainTransform.eulerAngles.x, Target.Parameters.Orbit.Vertical, ref _angleVelocity.y, Target.Parameters.DampTime.Rotation + 0.025f);
+                float vertical = Mathf.SmoothDampAngle(_mainTransform.eulerAngles.y, Target.Parameters.Orbit.Horizontal, ref _angleVelocity.x, Target.Parameters.DampTime.Rotation + 0.025f);
                 Quaternion rotation = Quaternion.Euler(horizontal, vertical, 0);
 
-                Vector3 position = rotation * new Vector3(Target.Parametres.Offset.Horizontal * 2, Target.Parametres.Offset.Vertical, -Target.Parametres.Offset.Distance) + Target.ThisTransform.position;
-                Vector3 delta = new Vector3(Target.ThisTransform.position.x, Target.ThisTransform.position.y + Target.Parametres.Offset.Vertical, Target.ThisTransform.position.z) - _camera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, Target.Parametres.Offset.Distance));
+                Vector3 position = rotation * new Vector3(Target.Parameters.Offset.Horizontal * 2, Target.Parameters.Offset.Vertical, -Target.Parameters.Offset.Distance) + Target.transform.position;
+                Vector3 delta = new Vector3(Target.transform.position.x, Target.transform.position.y + Target.Parameters.Offset.Vertical, Target.transform.position.z) - _camera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, Target.Parameters.Offset.Distance));
                 Vector3 destination = position + delta;
 
                 _mainTransform.rotation = rotation;
-                _mainTransform.position = Vector3.SmoothDamp(_mainTransform.position, destination, ref _moveVelocity, Target.Parametres.DampTime.Move + 0.01f);
+                _mainTransform.position = Vector3.SmoothDamp(_mainTransform.position, destination, ref _moveVelocity, Target.Parameters.DampTime.Move + 0.01f);
             }
+            */
         }
 
-        public void FindTarget()
+        private void FindTarget()
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
 

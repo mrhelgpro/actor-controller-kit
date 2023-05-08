@@ -24,10 +24,12 @@ namespace AssemblyActorCore
 
 		public override void OnTargetExit(Transform target)
 		{
-			_targetExit.Parametres.Orbit.Horizontal = _targetEnter.Parametres.Orbit.Horizontal;
-			_targetExit.Parametres.Orbit.Vertical = _targetEnter.Parametres.Orbit.Vertical;
+			/*
+			_targetExit.Parameters.Orbit.Horizontal = _targetEnter.Parameters.Orbit.Horizontal;
+			_targetExit.Parameters.Orbit.Vertical = _targetEnter.Parametres.Orbit.Vertical;
 			_actorCamera.Target = _targetExit;
 			_targetExit = null;
+			*/
 		}
 	}
 }

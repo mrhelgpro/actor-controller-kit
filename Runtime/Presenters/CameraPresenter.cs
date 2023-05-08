@@ -3,10 +3,17 @@ using UnityEditor;
 
 namespace AssemblyActorCore
 {
+    public enum InputOrbitMode { Free, LeftHold, MiddleHold, RightHold, Lock }
+    public enum InputLookMode { Free, LeftHold, MiddleHold, RightHold, Lock }
+    public enum InputOffsetMode { Free, LeftHold, MiddleHold, RightHold, Lock }
     public class CameraPresenter : Presenter
     {
-        // Model Parametres
-        public CameraParametres CameraParametres = new CameraParametres();
+        // Model Parameters
+        public InputOrbitMode InputOrbitMode;
+        //public InputLookMode InputLookMode;
+        //public InputOffsetMode InputOffsetMode;
+        
+        public CameraParameters Parameters = new CameraParameters();
 
         // Model Components
         private Inputable _inputable;
@@ -17,39 +24,66 @@ namespace AssemblyActorCore
             // Get components using "GetComponentInRoot" to create them on <Actor>
             _followable = GetComponentInRoot<Followable>();
             _inputable = GetComponentInRoot<Inputable>();
+
+            //_followable.transform.rotation = Quaternion.identity;
+        }
+
+        public override void Enter()
+        {
+            _followable.Enter(Parameters);
         }
 
         public override void UpdateLoop()
         {
             bool isRotable = false;
 
-            if (CameraParametres.InputOrbitMode == InputOrbitMode.Free)
+            if (InputOrbitMode == InputOrbitMode.Free)
             {
                 isRotable = true;
             }
-            else if (CameraParametres.InputOrbitMode == InputOrbitMode.LeftHold)
+            else if (InputOrbitMode == InputOrbitMode.LeftHold)
             {
                 isRotable = _inputable.ActionLeftState;
             }
-            else if (CameraParametres.InputOrbitMode == InputOrbitMode.MiddleHold)
+            else if (InputOrbitMode == InputOrbitMode.MiddleHold)
             {
                 isRotable = _inputable.ActionMiddleState;
             }
-            else if (CameraParametres.InputOrbitMode == InputOrbitMode.RightHold)
+            else if (InputOrbitMode == InputOrbitMode.RightHold)
             {
                 isRotable = _inputable.ActionRightState;
             }
 
             if (isRotable)
             {
-                _followable.Parametres.Orbit.Horizontal += _inputable.LookDelta.x * CameraParametres.Orbit.SensitivityX;
-                _followable.Parametres.Orbit.Vertical += _inputable.LookDelta.y * CameraParametres.Orbit.SensitivityY;
-                _followable.Parametres.Orbit.Vertical = Mathf.Clamp(_followable.Parametres.Orbit.Vertical, -30, 80);
+                if (_inputable.LookDelta.sqrMagnitude >= 0.01f)
+                {
+                    float deltaTimeMultiplier = 1.0f;
+
+                    _followable.VirtualCamera.Parameters.Orbit.Horizontal += _inputable.LookDelta.x * Parameters.Orbit.SensitivityX * deltaTimeMultiplier;
+                    _followable.VirtualCamera.Parameters.Orbit.Vertical += _inputable.LookDelta.y * Parameters.Orbit.SensitivityY * deltaTimeMultiplier;
+
+                    _followable.VirtualCamera.Parameters.Orbit.Horizontal = ClampAngle(_followable.VirtualCamera.Parameters.Orbit.Horizontal, float.MinValue, float.MaxValue);
+                    _followable.VirtualCamera.Parameters.Orbit.Vertical = ClampAngle(_followable.VirtualCamera.Parameters.Orbit.Vertical, -30, 80);
+                    
+                    /*
+                    Parameters.Orbit.Horizontal += _inputable.LookDelta.x * Parameters.Orbit.SensitivityX * deltaTimeMultiplier;
+                    Parameters.Orbit.Vertical += _inputable.LookDelta.y * Parameters.Orbit.SensitivityY * deltaTimeMultiplier;
+
+                    Parameters.Orbit.Horizontal = ClampAngle(Parameters.Orbit.Horizontal, float.MinValue, float.MaxValue);
+                    Parameters.Orbit.Vertical = ClampAngle(Parameters.Orbit.Vertical, -30, 80);
+                    */
+                }
             }
 
-            _followable.Parametres.Offset = CameraParametres.Offset;
-            _followable.Parametres.DampTime = CameraParametres.DampTime;
-            _followable.Parametres.FieldOfView = CameraParametres.FieldOfView;
+            //_followable.UpdateParameters();
+        }
+
+        private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
+        {
+            if (lfAngle < -360f) lfAngle += 360f;
+            if (lfAngle > 360f) lfAngle -= 360f;
+            return Mathf.Clamp(lfAngle, lfMin, lfMax);
         }
     }
 
@@ -68,20 +102,20 @@ namespace AssemblyActorCore
 
             if (followable)
             {
-                // Show script Link
-                ShowLink(thisTarget);
-
-                // Show Camera Parametres
-                SerializedProperty parametresProperty = serializedObject.FindProperty("CameraParametres");
-                EditorGUILayout.PropertyField(parametresProperty, true);
-                serializedObject.ApplyModifiedProperties();
-
-                if (GUI.changed)
+                if (followable.VirtualCamera == null)
                 {
+                    DrawModelBox("Add Virtual Camera to <Followable>", BoxStyle.Error);
+                }
+                else
+                {
+                    DrawDefaultInspector();
+
                     if (Application.isPlaying == false)
                     {
-                        followable.SetPreview(thisTarget.CameraParametres);
-                        EditorUtility.SetDirty(thisTarget);
+                        if (GUI.changed)
+                        {
+                            followable.Enter(thisTarget.Parameters);
+                        }
                     }
                 }
 
