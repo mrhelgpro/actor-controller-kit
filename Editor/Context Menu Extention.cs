@@ -48,17 +48,18 @@ namespace AssemblyActorCore
             return false;
         }
 
-        public static void CreateCharacter(string name, bool hideInHierarchy = false)
+        public static void CreatePrefab(string type, string name, bool hideInHierarchy = false, bool notEditable = false)
         {
-            Transform parent = Selection.activeGameObject == null ? null : Selection.activeGameObject.transform;
+            Transform parent = null;
             Vector3 position = parent == null ? Vector3.zero : parent.position;
 
-            GameObject instantiate = GameObject.Instantiate(Resources.Load<GameObject>("Characters/" + name));
+            GameObject instantiate = GameObject.Instantiate(Resources.Load<GameObject>(type + "/" + name));
             instantiate.name = name;
             instantiate.transform.parent = parent;
             instantiate.transform.position = position;
             instantiate.transform.rotation = Quaternion.identity;
             instantiate.HideChildObjects(hideInHierarchy);
+            instantiate.hideFlags = notEditable ? HideFlags.NotEditable : HideFlags.None;
         }
     }
 }

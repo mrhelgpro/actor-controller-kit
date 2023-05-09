@@ -45,6 +45,8 @@ namespace AssemblyActorCore
                 return actorComponent.transform;
             }
         }
+
+
     }
 
     public static class ActorComponentExtention
@@ -60,7 +62,7 @@ namespace AssemblyActorCore
         }
     }
 
-    public enum BoxStyle { Default, Error, Active }
+    public enum BoxStyle { Default, Error, Warning, Active }
 #if UNITY_EDITOR
         [ExecuteInEditMode]
     [CustomEditor(typeof(ActorComponent))]
@@ -84,27 +86,31 @@ namespace AssemblyActorCore
             }
         }
 
-        public void DrawHeader(string info)
+        public void DrawHeader(string info, int fontSize = 16)
         {
             // Font Style
             GUIStyle fontStyle = new GUIStyle(EditorStyles.label);
-            fontStyle.fontSize = 16;
+            fontStyle.fontSize = fontSize;
             fontStyle.fontStyle = FontStyle.Bold;
             fontStyle.alignment = TextAnchor.MiddleCenter;
-            //fontStyle.normal.textColor = textColor;
 
             EditorGUILayout.LabelField(info, fontStyle, GUILayout.Height(20), GUILayout.Width(80), GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
         }
 
         public void DrawModelBox(string info, BoxStyle boxStyle = BoxStyle.Default)
         {
-            Color backgroundColor = new Color(0.5f, 0.5f, 0.5f, 1f);
-            Color textColor = new Color(0.25f, 0.25f, 0.25f, 1f);
+            Color backgroundColor = new Color(0.75f, 0.75f, 0.75f, 1f);
+            Color textColor = new Color(0.22f, 0.22f, 0.22f, 1f);
             
             if (boxStyle == BoxStyle.Error)
             {
-                backgroundColor = new Color(0.8f, 0.4f, 0.4f, 1f);
-                textColor = new Color(0.25f, 0.25f, 0.25f, 1f);
+                backgroundColor = new Color(0.85f, 0.38f, 0.35f, 1f);
+                textColor = new Color(0.22f, 0.22f, 0.22f, 1f);
+            }
+            else if (boxStyle == BoxStyle.Warning)
+            {
+                backgroundColor = new Color(0.90f, 0.80f, 0.48f, 1f);
+                textColor = new Color(0.22f, 0.22f, 0.22f, 1f);
             }
             else if (boxStyle == BoxStyle.Active)
             {

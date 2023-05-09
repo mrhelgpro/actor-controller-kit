@@ -7,8 +7,8 @@ namespace AssemblyActorCore
 
     public sealed class StatePresenter : MonoBehaviour
     {
-        public PresenterType Type;
         public string Name = "Controller";
+        public PresenterType Type;
 
         private List<Presenter> _presenters = new List<Presenter>();
         private List<GameObject> _childObjects = new List<GameObject>();
@@ -84,10 +84,11 @@ namespace AssemblyActorCore
 
             if (error == false)
             {
-                DrawDefaultInspector();
-
                 if (Application.isPlaying)
                 {
+                    DrawHeader(thisTarget.Name);
+                    DrawHeader(thisTarget.Type.ToString(), 12);
+
                     if (statePresenterMachine.IsCurrentStateObject(thisTarget.gameObject))
                     {
                         DrawModelBox("State active", BoxStyle.Active);
@@ -99,6 +100,9 @@ namespace AssemblyActorCore
                 }
                 else
                 {
+                    thisTarget.Name = UnityEditor.EditorGUILayout.TextField("Name", thisTarget.Name);
+                    thisTarget.Type = (PresenterType)UnityEditor.EditorGUILayout.EnumPopup("Type", thisTarget.Type);
+
                     DrawModelBox("Update the Presenter");
                 }
             }

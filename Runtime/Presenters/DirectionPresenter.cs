@@ -36,10 +36,12 @@ namespace AssemblyActorCore
             _animatorable = GetComponentInRoot<Animatorable>();
         }
 
+        public float speedScale;
+
         public override void UpdateLoop()
         {
-            _animatorable.SetFloat("DirectionX", _localDirection.x); //animatorable.SetFloat("DirectionX", directable.GetLocal.x, 0.1f);
-            _animatorable.SetFloat("DirectionZ", _localDirection.z); //animatorable.SetFloat("DirectionZ", directable.GetLocal.z, 0.1f);
+            _animatorable.SetFloat("DirectionX", _localDirection.x);
+            _animatorable.SetFloat("DirectionZ", _localDirection.z);
 
             _cameraDirection = _cameraTransform.forward.normalized;
             _bodyDirection = RootTransform.TransformDirection(Vector3.forward).normalized;

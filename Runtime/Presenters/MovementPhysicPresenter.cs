@@ -98,6 +98,8 @@ namespace AssemblyActorCore
 
         public override void Exit()
         {
+            _animatorable.Stop();
+
             _currentVelocity = Vector3.zero;
 
             _rigidbody.MovePosition(_rigidbody.position);
