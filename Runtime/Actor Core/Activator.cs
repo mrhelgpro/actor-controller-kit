@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AssemblyActorCore
 {
-    public class Activator : ActorComponent
+    public class Activator : ActorBehaviour
     {
         protected StatePresenterMachine stateMachine;
 

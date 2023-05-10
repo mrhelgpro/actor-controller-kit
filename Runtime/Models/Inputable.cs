@@ -4,7 +4,7 @@ using UnityEngine;
 namespace AssemblyActorCore
 {
     /// <summary> Model - to receive input data. </summary>
-    public class Inputable : ActorComponent
+    public class Inputable : ActorBehaviour
     {
                                                         // KEYBOARD            X-BOX             DUALSHOCK       GAMEPAD
         public bool MenuState;                          // Escape
@@ -32,7 +32,7 @@ namespace AssemblyActorCore
     }
 
     /// <summary> Parent class from which all "Input Controllers: should inherit. </summary>
-    public class InputController : ActorComponent
+    public class InputController : ActorBehaviour
     {
         protected Inputable inputable;
 

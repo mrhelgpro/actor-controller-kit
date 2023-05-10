@@ -78,6 +78,8 @@ namespace AssemblyActorCore
     {
         public override void OnInspectorGUI()
         {
+            if(CheckBootstrap<CameraBootstrap>()) return;
+
             CameraFollowPresenter thisTarget = (CameraFollowPresenter)target;
 
             Transform root = thisTarget.FindRootTransform;
@@ -129,6 +131,8 @@ namespace AssemblyActorCore
                     // Update Camera Parameters
                     if (GUI.changed)
                     {
+                        CinemachineExtantion.SwitchPriority(FindAnyObjectByType<ActorVirtualCamera>().GetComponent<CinemachineVirtualCameraBase>());
+
                         followable.Enter(thisTarget.Parameters, isPreview:true);
                     }
 

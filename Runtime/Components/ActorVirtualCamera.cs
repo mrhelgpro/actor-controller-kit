@@ -12,27 +12,28 @@ namespace AssemblyActorCore
     [RequireComponent(typeof(CinemachineVirtualCamera))]
     public class ActorVirtualCamera : MonoBehaviour
     {
+        public bool IsLock = false;
         public CameraParameters Parameters = new CameraParameters();
-        protected CinemachineVirtualCamera cinemachineVirtualCamera;
+        public CinemachineVirtualCamera VirtualCamera;
         
         private bool _isEnter = false;
 
-        // Check Single Instance <ActorVirtualCamera>
-        private void OnValidate() => ActorExtantion.CheckSingleInstance<ActorVirtualCamera>();
+        private void Awake()
+        {
+            VirtualCamera = GetComponent<CinemachineVirtualCamera>();
+            VirtualCamera.Priority = 10;
+        }
 
         private void LateUpdate()
         {
-            if (_isEnter)
-            {
-                updateRotation();
-            }
+            updateRotation();
         }
 
         /// <summary> Entering with setting Camera Parameters. It is not recommended to call in Update.</summary>
         public void Enter(Transform enterFollow, CameraParameters enterParameters, bool isPreview = false)
         {
-            cinemachineVirtualCamera = GetComponent<CinemachineVirtualCamera>();
-            cinemachineVirtualCamera.Follow = enterFollow;
+            VirtualCamera = GetComponent<CinemachineVirtualCamera>();
+            VirtualCamera.Follow = enterFollow;
 
             // Set Camera Parameters
             Parameters.CameraType = enterParameters.CameraType;
@@ -46,7 +47,7 @@ namespace AssemblyActorCore
                 Parameters.Offset = enterParameters.Offset;
 
                 // Add a component to immediately update the parameters in preview mode
-                if (isPreview) cinemachineVirtualCamera.AddCinemachineComponent<Cinemachine3rdPersonFollow>();
+                if (isPreview) VirtualCamera.AddCinemachineComponent<Cinemachine3rdPersonFollow>();
 
                 updateThirdPersonFollow();
             }
@@ -61,15 +62,17 @@ namespace AssemblyActorCore
                 Parameters.SoftZoneHeight = enterParameters.SoftZoneHeight;
 
                 // Add a component to immediately update the parameters in preview mode
-                if (isPreview) cinemachineVirtualCamera.AddCinemachineComponent<CinemachineFramingTransposer>();
+                if (isPreview) VirtualCamera.AddCinemachineComponent<CinemachineFramingTransposer>();
 
                 updateFramingTransposer();
             }
 
             // Update Cinemachine State
-            if (cinemachineVirtualCamera.Follow)
+            if (VirtualCamera.Follow)
             {
                 updateRotation();
+
+                VirtualCamera.UpdateCameraState(VirtualCamera.Follow.position, CinemachineCore.CurrentTime);
 
                 _isEnter = true;
             }
@@ -77,14 +80,14 @@ namespace AssemblyActorCore
 
         public void updateThirdPersonFollow()
         {
-            Cinemachine3rdPersonFollow thirdPerson = cinemachineVirtualCamera.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
+            Cinemachine3rdPersonFollow thirdPerson = VirtualCamera.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
 
             if (thirdPerson == null)
             {
-                thirdPerson = cinemachineVirtualCamera.AddCinemachineComponent<Cinemachine3rdPersonFollow>();
+                thirdPerson = VirtualCamera.AddCinemachineComponent<Cinemachine3rdPersonFollow>();
             }
 
-            cinemachineVirtualCamera.m_Lens.FieldOfView = Parameters.FieldOfView;
+            VirtualCamera.m_Lens.FieldOfView = Parameters.FieldOfView;
             thirdPerson.Damping = Parameters.Damping;
             thirdPerson.VerticalArmLength = 0;
             thirdPerson.CameraSide = 1;
@@ -99,14 +102,14 @@ namespace AssemblyActorCore
 
         private void updateFramingTransposer()
         {
-            CinemachineFramingTransposer framingTransposer = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+            CinemachineFramingTransposer framingTransposer = VirtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
 
             if (framingTransposer == null)
             {
-                framingTransposer = cinemachineVirtualCamera.AddCinemachineComponent<CinemachineFramingTransposer>();
+                framingTransposer = VirtualCamera.AddCinemachineComponent<CinemachineFramingTransposer>();
             }
 
-            cinemachineVirtualCamera.m_Lens.FieldOfView = Parameters.FieldOfView;
+            VirtualCamera.m_Lens.FieldOfView = Parameters.FieldOfView;
             framingTransposer.m_XDamping = Parameters.Damping.x;
             framingTransposer.m_YDamping = Parameters.Damping.y;
             framingTransposer.m_ZDamping = Parameters.Damping.z;
@@ -120,14 +123,22 @@ namespace AssemblyActorCore
 
         private void updateRotation()
         {
-            // Third Person Follow Rotation
-            cinemachineVirtualCamera.Follow.rotation = Quaternion.Euler(Parameters.OrbitVertical, Parameters.OrbitHorizontal, 0.0f);
+            if (IsLock == false)
+            {
+                if (_isEnter)
+                {
 
-            // Framing Transposer Rotation
-            if (Parameters.CameraType == CameraType.FramingTransposer)
-            { 
-                transform.rotation = Quaternion.Euler(Parameters.OrbitVertical, Parameters.OrbitHorizontal, 0);
-                transform.position = transform.rotation * new Vector3(Parameters.Offset.x, Parameters.Offset.y, -Parameters.Distance) + cinemachineVirtualCamera.Follow.transform.position;
+                }
+
+                // Third Person Follow Rotation
+                VirtualCamera.Follow.rotation = Quaternion.Euler(Parameters.OrbitVertical, Parameters.OrbitHorizontal, 0.0f);
+
+                // Framing Transposer Rotation
+                if (Parameters.CameraType == CameraType.FramingTransposer)
+                {
+                    transform.rotation = Quaternion.Euler(Parameters.OrbitVertical, Parameters.OrbitHorizontal, 0);
+                    transform.position = transform.rotation * new Vector3(Parameters.Offset.x, Parameters.Offset.y, -Parameters.Distance) + VirtualCamera.Follow.transform.position;
+                }
             }
         }
     }
@@ -170,21 +181,9 @@ namespace AssemblyActorCore
 
             thisTarget.gameObject.hideFlags = HideFlags.NotEditable;
 
-            if (ActorExtantion.CheckSingleInstance<ActorVirtualCamera>() == true)
-            {
-                if (ActorExtantion.CheckSingleInstance<Followable>() == true)
-                {
-                    DrawModelBox("Edited in the Presenter");
-                }
-                else
-                {
-                    DrawModelBox("Should be a single instance of <Followable>", BoxStyle.Error);
-                }   
-            }
-            else
-            {
-                DrawModelBox("Should be a single instance of <ActorVirtualCamera>", BoxStyle.Error);
-            }
+            if (CheckBootstrap<CameraBootstrap>()) return;
+
+            DrawModelBox("Edited in the Presenter");
         }
     }
 #endif

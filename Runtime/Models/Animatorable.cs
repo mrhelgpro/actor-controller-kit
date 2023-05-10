@@ -4,7 +4,7 @@ using UnityEngine;
 namespace AssemblyActorCore
 {
     /// <summary> Model - to control the Animator. </summary>
-    public class Animatorable : ActorComponent
+    public class Animatorable : ActorBehaviour
     {
         //public RuntimeAnimatorController AnimatorController;
 

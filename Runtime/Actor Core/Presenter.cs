@@ -4,7 +4,7 @@ namespace AssemblyActorCore
 {
     [RequireComponent(typeof(StatePresenter))]
     [RequireComponent(typeof(Activator))]
-    public abstract class Presenter : ActorComponent
+    public abstract class Presenter : ActorBehaviour
     {
         protected StatePresenterMachine stateMachine;
         private StatePresenter _statePresenter;

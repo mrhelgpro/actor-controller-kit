@@ -16,7 +16,9 @@ namespace AssemblyActorCore
         [MenuItem("GameObject/Actor/Player/Player Platformer 2D", false, 0)]
         public static void CreatePlayerPlatformer2D() => ContextMenuExtention.CreatePrefab("Players", "Player Platformer 2D");
 
-        // Create a other
+        // Create a prefab from the resources folder - Camera
+        [MenuItem("GameObject/Actor/Camera/Point Of Interest", false, 0)]
+        public static void CreatePointOfInterest() => ContextMenuExtention.CreatePrefab("Camera", "Point Of Interest", hideInHierarchy:true);
 
         // If there is a selected object in the hierarchy and there are no hidden objects in it
         // If the selected object has no hidden objects, show "Hide Child Objects"

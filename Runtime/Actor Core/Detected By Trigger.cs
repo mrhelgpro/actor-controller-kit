@@ -4,30 +4,33 @@ namespace AssemblyActorCore
 {
     public abstract class DetectedByTrigger : MonoBehaviour
     {
-        public string Tag = "Any";
-        public LayerMask Layer;
+        public string TargetTag = "Any";
 
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            Tag = Tag == "" ? "Any" : Tag;
+            TargetTag = TargetTag == "" ? "Any" : TargetTag;
+
+            Collider collider = GetComponent<Collider>();
+            
+            if (collider)
+            {
+                collider.isTrigger = true;
+            }
         }
 #endif
 
         private void targetCheck(Transform target, bool enter)
         {
-            if (Tag == "Any" ? true : Tag == target.tag)
+            if (TargetTag == "Any" ? true : TargetTag == target.tag)
             {
-                if ((Layer.value & (1 << target.gameObject.layer)) != 0)
+                if (enter == true)
                 {
-                    if (enter == true)
-                    {
-                        OnTargetEnter(target);
-                    }
-                    else
-                    {
-                        OnTargetExit(target);
-                    }
+                    OnTargetEnter(target);
+                }
+                else
+                {
+                    OnTargetExit(target);
                 }
             }
         }

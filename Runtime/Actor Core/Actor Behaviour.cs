@@ -4,7 +4,7 @@ using UnityEditor;
 namespace AssemblyActorCore
 {
     /// <summary> All classes that are part of the Actor must inherit from this class. </summary>
-    public abstract class ActorComponent : MonoBehaviour
+    public abstract class ActorBehaviour : MonoBehaviour
     {
         public Transform RootTransform { get; private set; }
         public Transform ThisTransform { get; private set; }
@@ -23,12 +23,12 @@ namespace AssemblyActorCore
             return root.GetComponentInChildren<T>() == null ? root.AddComponent<T>() : root.GetComponentInChildren<T>();
         }
 
-        /// <summary> Finds the highest object in the hierarchy that contains "ActorComponent" and uses it as a marker for the root object. </summary>
+        /// <summary> Finds the highest object in the hierarchy that contains "ActorBehaviour" and uses it as a marker for the root object. </summary>
         public Transform FindRootTransform
         {
             get 
             {
-                ActorComponent actorComponent = this;
+                ActorBehaviour actorBehaviour = this;
 
                 Transform rootTransform = transform;
 
@@ -36,20 +36,18 @@ namespace AssemblyActorCore
                 {
                     rootTransform = rootTransform.parent;
 
-                    if (rootTransform.GetComponent<ActorComponent>())
+                    if (rootTransform.GetComponent<ActorBehaviour>())
                     {
-                        actorComponent = rootTransform.GetComponent<ActorComponent>();
+                        actorBehaviour = rootTransform.GetComponent<ActorBehaviour>();
                     }
                 }
 
-                return actorComponent.transform;
+                return actorBehaviour.transform;
             }
         }
-
-
     }
 
-    public static class ActorComponentExtention
+    public static class ActorBehaviourExtention
     {
         public static T AddRequiredComponent<T>(this GameObject gameObject) where T : Component
         {
@@ -65,7 +63,7 @@ namespace AssemblyActorCore
     public enum BoxStyle { Default, Error, Warning, Active }
 #if UNITY_EDITOR
         [ExecuteInEditMode]
-    [CustomEditor(typeof(ActorComponent))]
+    [CustomEditor(typeof(ActorBehaviour))]
     public class ModelEditor : Editor
     {
         public bool IsActor(GameObject gameObject) => gameObject.GetComponentInParent<Actor>();
@@ -119,6 +117,20 @@ namespace AssemblyActorCore
             }
 
             drawBox(info, backgroundColor, textColor);
+        }
+
+        public bool CheckBootstrap<T>() where T : Component
+        { 
+            T requireComponent = GameObject.FindAnyObjectByType<T>();
+
+            if (requireComponent == null)
+            {
+                DrawModelBox("<" + typeof(T).ToString() + "> is not found", BoxStyle.Error);
+
+                return true;
+            }
+
+            return false;
         }
 
         private void drawBox(string info, Color backgroundColor, Color textColor)

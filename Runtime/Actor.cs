@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace AssemblyActorCore
 {
-    public class Actor : ActorComponent
+    public class Actor : ActorBehaviour
     {
         public string Name = "Actor";
     }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using Cinemachine;
 
 namespace AssemblyActorCore
 {
@@ -66,6 +67,22 @@ namespace AssemblyActorCore
             }
 
             return instances.Length > 0;
+        }
+    }
+
+    public static class CinemachineExtantion
+    {
+        public static void SwitchPriority(CinemachineVirtualCameraBase switchedVirtualCamera)
+        {
+            CinemachineBrain cinemachineBrain = GameObject.FindAnyObjectByType<CinemachineBrain>();
+
+            if (cinemachineBrain != null && cinemachineBrain.ActiveVirtualCamera != null)
+            {
+                CinemachineVirtualCameraBase currentVirtualCamera = cinemachineBrain.ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCameraBase>();
+                currentVirtualCamera.Priority = 0;
+            }
+
+            switchedVirtualCamera.Priority = 100;
         }
     }
 }
