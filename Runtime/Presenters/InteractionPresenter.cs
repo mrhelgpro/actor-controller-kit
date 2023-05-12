@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace AssemblyActorCore
+namespace Actormachine
 {
     public class InteractionPresenter : Presenter
     {
@@ -16,7 +16,7 @@ namespace AssemblyActorCore
         private float _speed => 1 / Duration;
         private float _timer = 0;
 
-        protected override void Initiation()
+        public override void Initiation()
         {
             // Get components using "GetComponentInRoot" to create them on <Actor>
             inputable = GetComponentInRoot<Inputable>();
@@ -37,7 +37,7 @@ namespace AssemblyActorCore
 
             if (_timer >= Duration)
             {
-                stateMachine.Deactivate(gameObject);
+                Deactivate();
             }
 
             // REMOVE THIS TO FIXED UPDATE

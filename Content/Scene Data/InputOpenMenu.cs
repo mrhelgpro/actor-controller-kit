@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine;
 
-namespace AssemblyActorCore
+namespace Actormachine
 {
     public class InputOpenMenu : MonoBehaviour
     {

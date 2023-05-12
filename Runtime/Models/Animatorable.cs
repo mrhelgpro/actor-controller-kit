@@ -1,7 +1,6 @@
-using System;
 using UnityEngine;
 
-namespace AssemblyActorCore
+namespace Actormachine
 {
     /// <summary> Model - to control the Animator. </summary>
     public class Animatorable : ActorBehaviour
@@ -56,34 +55,4 @@ namespace AssemblyActorCore
         public void SetFloat(string name, float value) => _animator?.SetFloat(name, value);
         public void SetFloat(string name, float value, float dampTime) => _animator?.SetFloat(name, value, dampTime, Time.deltaTime);
     }
-
-#if UNITY_EDITOR
-    [ExecuteInEditMode]
-    [UnityEditor.CustomEditor(typeof(Animatorable))]
-    public class AnimatorableEditor : ModelEditor
-    {
-        public override void OnInspectorGUI()
-        {
-            Animatorable thisTarget = (Animatorable)target;
-            Transform root = thisTarget.FindRootTransform;
-            Animator animator = root.gameObject.GetComponentInChildren<Animator>();
-
-            if (animator == null)
-            {
-                DrawModelBox("<Animator> - is not found", BoxStyle.Error);
-
-                return;
-            }
-
-            if (Application.isPlaying)
-            {
-                DrawModelBox(animator.runtimeAnimatorController.name);
-            }
-            else
-            {
-                DrawModelBox("Controls animations");
-            }
-        }
-    }
-#endif
 }

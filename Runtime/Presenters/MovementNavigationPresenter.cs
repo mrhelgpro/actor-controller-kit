@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
 
-namespace AssemblyActorCore
+namespace Actormachine
 {
     public sealed class MovementNavigationPresenter : Presenter
     {
@@ -26,7 +24,7 @@ namespace AssemblyActorCore
         // Unity Components
         private NavMeshAgent _navMeshAgent;
 
-        protected override void Initiation()
+        public override void Initiation()
         {
             // Get components using "GetComponentInRoot" to create them on <Actor>
             _inputable = GetComponentInRoot<Inputable>();
@@ -70,6 +68,13 @@ namespace AssemblyActorCore
             _animatorable.SetFloat("Speed", _currentVelocity.magnitude);
         }
 
+        public override void FixedUpdateLoop()
+        {
+            _navMeshAgent.speed = _currentSpeed;
+            _navMeshAgent.acceleration = Rate * 2;
+            _navMeshAgent.SetDestination(RootTransform.position + _currentDirection.normalized);
+        }
+
         public override void Exit()
         {
             _currentVelocity = Vector3.zero;
@@ -77,13 +82,6 @@ namespace AssemblyActorCore
             _navMeshAgent.speed = 0;
             _navMeshAgent.acceleration = 0;
             _navMeshAgent.SetDestination(RootTransform.position);
-        }
-
-        private void FixedUpdate()
-        {
-            _navMeshAgent.speed = _currentSpeed;
-            _navMeshAgent.acceleration = Rate * 2;
-            _navMeshAgent.SetDestination(RootTransform.position + _currentDirection.normalized);
         }
     }
 }

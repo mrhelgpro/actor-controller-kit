@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace AssemblyActorCore
+namespace Actormachine
 {
     /// <summary> Model - to get the position data. </summary>
     public class Positionable : ActorBehaviour
@@ -93,16 +93,4 @@ namespace AssemblyActorCore
             IsEdge = hit.collider == null ? false : IsGrounded ? hit.distance > edgeDistance : false;
         }
     }
-
-#if UNITY_EDITOR
-    [ExecuteInEditMode]
-    [UnityEditor.CustomEditor(typeof(Positionable))]
-    public class PositionableEditor : ModelEditor
-    {
-        public override void OnInspectorGUI()
-        {
-            DrawModelBox("Ñhecks position data");
-        }
-    }
-#endif
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace AssemblyActorCore
+namespace Actormachine
 {
     public enum LookMode { LookToCamera, LookToPointer, LookToStick }
     public enum RotateMode { None, RotateToMovement, RotateToLook, Flip2D }
@@ -28,7 +28,7 @@ namespace AssemblyActorCore
         private Inputable _inputable;
         private Animatorable _animatorable;
 
-        protected override void Initiation()
+        public override void Initiation()
         {
             // Get components using "GetComponentInRoot" to create them on <Actor>
             _cameraTransform = Camera.main.transform;

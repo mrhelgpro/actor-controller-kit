@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace AssemblyActorCore
+namespace Actormachine
 {
     public class Logger : ActorBehaviour
     {

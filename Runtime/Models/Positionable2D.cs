@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace AssemblyActorCore
+namespace Actormachine
 {
     public sealed class Positionable2D : Positionable
     {
@@ -33,16 +33,4 @@ namespace AssemblyActorCore
         private void OnCollisionStay2D(Collision2D collision) => _groundCollision = collision;
         private void OnCollisionExit2D(Collision2D collision) => _groundCollision = null;
     }
-
-#if UNITY_EDITOR
-    [ExecuteInEditMode]
-    [UnityEditor.CustomEditor(typeof(Positionable2D))]
-    public class Positionable2DEditor : ModelEditor
-    {
-        public override void OnInspectorGUI()
-        {
-            DrawModelBox("Ñhecks 2D position data");
-        }
-    }
-#endif
 }

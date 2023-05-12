@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace AssemblyActorCore
+namespace Actormachine
 {
     public sealed class Movement2DPresenter : Presenter
     {
@@ -41,7 +39,7 @@ namespace AssemblyActorCore
         private PhysicsMaterial2D _materialOnTheGround;
         private PhysicsMaterial2D _materialInTheAir;
 
-        protected override void Initiation()
+        public override void Initiation()
         {
             // Get components using "GetComponentInRoot" to create them on <Actor>
             _inputable = GetComponentInRoot<Inputable>();
@@ -97,16 +95,7 @@ namespace AssemblyActorCore
             materialLoop();
         }
 
-        public override void Exit()
-        {
-            _currentVelocity = Vector3.zero;
-
-            _rigidbody.MovePosition(_rigidbody.position);
-            _rigidbody.constraints = RigidbodyConstraints2D.None;
-            _rigidbody.velocity = Vector3.zero;
-        }
-
-        private void FixedUpdate()
+        public override void FixedUpdateLoop()
         {
             _rigidbody.gravityScale = _currentGravity;
             _rigidbody.velocity = new Vector2(_currentVelocity.x * 51.0f * Time.fixedDeltaTime, _rigidbody.velocity.y);
@@ -118,6 +107,15 @@ namespace AssemblyActorCore
 
                 _currentForce = Vector3.zero;
             }
+        }
+
+        public override void Exit()
+        {
+            _currentVelocity = Vector3.zero;
+
+            _rigidbody.MovePosition(_rigidbody.position);
+            _rigidbody.constraints = RigidbodyConstraints2D.None;
+            _rigidbody.velocity = Vector3.zero;
         }
 
         private void jumpLoop()

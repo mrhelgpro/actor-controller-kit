@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace AssemblyActorCore
+namespace Actormachine
 {
     /// <summary> Model - for speed control. </summary>
     public class Movable : ActorBehaviour
@@ -17,16 +17,4 @@ namespace AssemblyActorCore
         public void ChangeSpeed(float value) => _speedScale += value;
         public void ChangeGravity(float value) => _gravityScale += value;
     }
-
-#if UNITY_EDITOR
-    [ExecuteInEditMode]
-    [UnityEditor.CustomEditor(typeof(Movable))]
-    public class MovableEditor : ModelEditor
-    {
-        public override void OnInspectorGUI()
-        {
-            DrawModelBox("Controls speed");
-        }
-    }
-#endif
 }

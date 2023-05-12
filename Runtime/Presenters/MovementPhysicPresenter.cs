@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace AssemblyActorCore
+namespace Actormachine
 {
     public sealed class MovementPhysicPresenter : Presenter
     {
@@ -38,7 +38,7 @@ namespace AssemblyActorCore
         private PhysicMaterial _materialOnTheGround;
         private PhysicMaterial _materialInTheAir;
 
-        protected override void Initiation() 
+        public override void Initiation() 
         {
             // Get components using "GetComponentInRoot" to create them on <Actor>
             _inputable = GetComponentInRoot<Inputable>();
@@ -96,6 +96,19 @@ namespace AssemblyActorCore
             materialLoop();
         }
 
+        public override void FixedUpdateLoop()
+        {
+            _rigidbody.MovePosition(_rigidbody.position + _currentVelocity * Time.fixedDeltaTime);
+            _rigidbody.AddForce(Physics.gravity * _currentGravity, ForceMode.Acceleration);
+
+            if (_currentForce.magnitude > 0)
+            {
+                _rigidbody.velocity = Vector3.zero;
+                _rigidbody.AddForce(_currentForce, ForceMode.Impulse);
+                _currentForce = Vector3.zero;
+            }
+        }
+
         public override void Exit()
         {
             _animatorable.Stop();
@@ -107,19 +120,6 @@ namespace AssemblyActorCore
             _rigidbody.constraints = RigidbodyConstraints.None;
             _rigidbody.useGravity = false;
             _rigidbody.isKinematic = true;
-        }
-
-        private void FixedUpdate()
-        {
-            _rigidbody.MovePosition(_rigidbody.position + _currentVelocity * Time.fixedDeltaTime);
-            _rigidbody.AddForce(Physics.gravity * _currentGravity, ForceMode.Acceleration);
-
-            if (_currentForce.magnitude > 0)
-            {
-                _rigidbody.velocity = Vector3.zero;
-                _rigidbody.AddForce(_currentForce, ForceMode.Impulse);
-                _currentForce = Vector3.zero;
-            }
         }
 
         private void jumpLoop()
