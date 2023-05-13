@@ -11,15 +11,30 @@ namespace Actormachine.Editor
     {
         Actor thisTarget;
 
-        public override void OnInspectorGUI()
+        private void OnEnable()
         {
             thisTarget = (Actor)target;
 
-            // Checking for a single instance in children and destroy duplicates
-            if (CheckSingleInstanceInChildren<Actor>(thisTarget.gameObject) == false) return;
+            if (thisTarget)
+            {
+                // Checking for a single instance in children and destroy duplicates
+                if (CheckSingleInstanceInChildren<Actor>(thisTarget.gameObject) == false) return;
 
-            //Give all child objects the "Actror" layer
-            thisTarget.SetActorLayer(thisTarget.transform);
+                //Give all child objects the "Actror" layer
+                thisTarget.SetActorLayer(thisTarget.transform);
+
+
+                // Move Component To Root
+                Component component = thisTarget;
+                ComponentUtility.MoveComponentUp(component);
+
+                moveToRootTransform();
+            }
+        }
+
+        public override void OnInspectorGUI()
+        {
+            thisTarget = (Actor)target;
 
             if (Application.isPlaying)
             {
@@ -38,16 +53,6 @@ namespace Actormachine.Editor
             else
             {
                 thisTarget.Name = EditorGUILayout.TextField("Name", thisTarget.Name);
-
-                Component component = thisTarget;
-                ComponentUtility.MoveComponentUp(component);
-
-                moveToRootTransform();
-
-                if (GUI.changed)
-                {
-                    EditorUtility.SetDirty(thisTarget);
-                }
             }
         }
 

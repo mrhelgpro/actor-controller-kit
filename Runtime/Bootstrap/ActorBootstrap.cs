@@ -4,9 +4,9 @@ namespace Actormachine
 {
     public sealed class ActorBootstrap : Bootstrap
     {
-        private List<Actor> _actorList = new List<Actor>();
+        private static List<Actor> _actorList = new List<Actor>();
 
-        public List<Actor> GetActors => _actorList;
+        public static List<Actor> GetActors => _actorList;
 
         public override void Initiation()
         {
@@ -17,7 +17,7 @@ namespace Actormachine
             ActorExtantion.IsSingleInstanceOnScene<ActorBootstrap>();
         }
 
-        public void AddActor(Actor actor)
+        public static void AddActor(Actor actor)
         {
             if (_actorList.Exists(a => a == actor))
             {
@@ -54,5 +54,10 @@ namespace Actormachine
                 _actorList.Add(actor);
             }
         }
+    }
+
+    public interface IRequireBootstrap<T>
+    { 
+    
     }
 }

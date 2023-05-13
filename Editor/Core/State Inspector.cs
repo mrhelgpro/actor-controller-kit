@@ -24,16 +24,8 @@ namespace Actormachine.Editor
                 error = true;
             }
 
-            // Check Activator
-            Activator activator = thisTarget.gameObject.GetComponent<Activator>();
-            if (activator == null)
-            {
-                DrawModelBox("<Activator> - is not found", BoxStyle.Error);
-                error = true;
-            }
-
             // Check Presenter
-            Presenter presenter = thisTarget.gameObject.GetComponentInChildren<Presenter>();
+            Presenter presenter = thisTarget.gameObject.GetComponent<Presenter>();
             if (presenter == null)
             {
                 DrawModelBox("<Presenter> - is not found", BoxStyle.Error);

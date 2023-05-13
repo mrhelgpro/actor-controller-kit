@@ -89,6 +89,7 @@ namespace Actormachine.Editor
             fontStyle.fontStyle = FontStyle.Bold;
             fontStyle.alignment = TextAnchor.MiddleCenter;
 
+            EditorGUILayout.Space(6);
             EditorGUILayout.LabelField(info, fontStyle, GUILayout.Height(20), GUILayout.Width(80), GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
         }
 
@@ -96,33 +97,30 @@ namespace Actormachine.Editor
         {
             Color backgroundColor = Gray;
             Color textColor = Dark;
-            float height = 20;
+            float height = 22;
             int fontSize = 12;
 
             if (buttonStyle == ButtonStyle.Main)
             {
                 backgroundColor = Blue;
                 textColor = Dark;
-                height = 30;
+                height = 25;
                 fontSize = 16;
             }
             else if (buttonStyle == ButtonStyle.Active)
             {
                 backgroundColor = Green;
                 textColor = LightGreen;
-                height = 20;
-                fontSize = 12;
             }
             else if (buttonStyle == ButtonStyle.Default)
             {
                 backgroundColor = Gray;
                 textColor = Dark;
-                height = 20;
-                fontSize = 12;
             }
 
             GUIStyle guiStyle = new GUIStyle(GUI.skin.button);
-            guiStyle.normal.background = buttonTexture(2, 2, backgroundColor);
+            guiStyle.normal.background = buttonTexture(1, 1, backgroundColor);
+            guiStyle.border = new RectOffset(1, 1, 1, 1);
             guiStyle.fontSize = fontSize;
             guiStyle.fontStyle = FontStyle.Bold;
             guiStyle.alignment = TextAnchor.MiddleCenter;

@@ -17,23 +17,15 @@ namespace Actormachine.Editor
             bool error = false;
 
             // Check Actor
-            Actor actorMachine = thisTarget.gameObject.GetComponentInParent<Actor>();
-            if (actorMachine == null)
+            Actor actor = thisTarget.gameObject.GetComponentInParent<Actor>();
+            if (actor == null)
             {
                 DrawModelBox("<Actor> - is not found", BoxStyle.Error);
                 error = true;
             }
 
-            // Check State
-            State state = thisTarget.gameObject.GetComponent<State>();
-            if (state == null)
-            {
-                DrawModelBox("<State> - is not found", BoxStyle.Error);
-                error = true;
-            }
-
             // Check Presenter
-            Presenter presenter = thisTarget.gameObject.GetComponentInChildren<Presenter>();
+            Presenter presenter = thisTarget.gameObject.GetComponent<Presenter>();
             if (presenter == null)
             {
                 DrawModelBox("<Presenter> - is not found", BoxStyle.Error);

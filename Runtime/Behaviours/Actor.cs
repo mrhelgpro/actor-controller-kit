@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Actormachine
 {
     /// <summary> Actor is as a State Machine that controls states. </summary>
-    public class Actor : ActorBehaviour
+    public sealed class Actor : ActorBehaviour
     {
         public string Name = "Actor";
 
@@ -28,10 +28,11 @@ namespace Actormachine
             {
                 _actorBootstrapExists = true;
 
-                actorBootstrap.AddActor(this);
+                ActorBootstrap.AddActor(this);
             }
         }
 
+        /*
         private void Update()
         {
             if (_actorBootstrapExists == false)
@@ -47,6 +48,7 @@ namespace Actormachine
                 FixedUpdateLoop();
             }
         }
+        */
 
         public void UpdateLoop()
         {
