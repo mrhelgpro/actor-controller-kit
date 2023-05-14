@@ -14,41 +14,13 @@ namespace Actormachine
         private List<State> _statesList = new List<State>();
         private List<Activator> _activatorsList = new List<Activator>();
 
-        private bool _actorBootstrapExists = false;
-
         private void Start()
         {
             foreach (State state in GetComponentsInChildren<State>()) _statesList.Add(state);
             foreach (Activator activator in GetComponentsInChildren<Activator>()) _activatorsList.Add(activator);
 
-            // Check ActorBootstrap 
-            ActorBootstrap actorBootstrap = FindAnyObjectByType<ActorBootstrap>();
-
-            if (actorBootstrap == true)
-            {
-                _actorBootstrapExists = true;
-
-                ActorBootstrap.AddActor(this);
-            }
+            ActorBootstrap.AddActor(this);
         }
-
-        /*
-        private void Update()
-        {
-            if (_actorBootstrapExists == false)
-            {
-                UpdateLoop();
-            }
-        }
-
-        private void FixedUpdate()
-        {
-            if (_actorBootstrapExists == false)
-            {
-                FixedUpdateLoop();
-            }
-        }
-        */
 
         public void UpdateLoop()
         {

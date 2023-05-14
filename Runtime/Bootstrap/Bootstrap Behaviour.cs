@@ -11,24 +11,13 @@ namespace Actormachine
 		public abstract void Initiation();
 	}
 
-/*
-#if UNITY_EDITOR
-	[ExecuteInEditMode]
-	public abstract class BootstrapEditor : MonoBehaviour
+	public interface IRequireBootstrap<T>
 	{
-		private void OnEnable() => EditorApplication.update += UpdateInEditMode;
 
-		private void OnDisable() => EditorApplication.update -= UpdateInEditMode;
-		private void UpdateInEditMode()
-		{
-			if (Application.isPlaying == false)
-			{
-				UpdateBootstrap();
-			}
-		}
-
-		public abstract void UpdateBootstrap();
 	}
-#endif
-*/
+
+	public interface IRequireComponentInRoot<T>
+	{
+
+	}
 }

@@ -26,7 +26,7 @@ namespace Actormachine
 
         private bool _previousButtonPress = false;
 
-        protected override void Initiation()
+        public override void Initiation()
         {
             // Get components using "GetComponentInRoot" to create them on <Actor>
             inputable = GetComponentInRoot<Inputable>();

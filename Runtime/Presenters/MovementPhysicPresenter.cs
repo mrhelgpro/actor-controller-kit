@@ -89,7 +89,7 @@ namespace Actormachine
             _lerpDirection = Vector3.Lerp(_lerpDirection, _currentDirection, Time.deltaTime * Rate);
             _currentVelocity = new Vector3(_lerpDirection.x, _currentDirection.y, _lerpDirection.z) * _currentSpeed;
 
-            _animatorable.Play(_positionable.IsGrounded ? Name : "Fall");
+            _animatorable.Play(_positionable.IsGrounded ? StateName : "Fall");
             _animatorable.SetFloat("Speed", _currentVelocity.magnitude);
 
             jumpLoop();

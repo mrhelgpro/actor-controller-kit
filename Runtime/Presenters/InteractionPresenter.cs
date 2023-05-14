@@ -26,7 +26,7 @@ namespace Actormachine
         public override void Enter()
         {
             interactionPosition = RootTransform.position;
-            animatorable.Play(Name);
+            animatorable.Play(StateName);
             animatorable.SetFloat("Speed", _speed);
             _timer = 0;
         }

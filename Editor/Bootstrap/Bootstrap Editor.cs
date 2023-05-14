@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using System.Linq;
 
 namespace Actormachine.Editor
 {
@@ -8,10 +9,31 @@ namespace Actormachine.Editor
     {
         static BootstrapEditor()
         {
-            EditorApplication.update += UpdateInEditMode;
+            EditorApplication.update += updateInEditMode;
         }
 
-        private static void UpdateInEditMode()
+        private void Awake()
+        {
+            Debug.Log("BootstrapEditor");
+        }
+
+        private static void updateInEditMode()
+        {
+            updateBootstraps();
+        }
+
+        /*
+        private static void checkRequireComponentInRoot<T>() where T : ActorBehaviour
+        {
+            IRequireComponentInRoot<T>[] requireComponents = (IRequireComponentInRoot<T>[])GameObject.FindObjectsOfType<ActorBehaviour>().Where(c => c is IRequireComponentInRoot<T>).ToArray();
+
+            //foreach()
+
+            GameObject gameObject = (requireComponents as ActorBehaviour).gameObject;
+        }
+        */
+
+        private static void updateBootstraps()
         {
             if (Application.isPlaying == false)
             {

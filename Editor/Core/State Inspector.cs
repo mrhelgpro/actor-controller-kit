@@ -5,8 +5,14 @@ namespace Actormachine.Editor
 {
     [ExecuteInEditMode]
     [CustomEditor(typeof(State))]
-    public class StateInspector : ActorBehaviourInspector
+    public sealed class StateInspector : ActorBehaviourInspector
     {
+        public void OnEnable()
+        {
+            StateBehaviour thisTarget = (StateBehaviour)target;
+            thisTarget.UpdateInspector();
+        }
+
         public override void OnInspectorGUI()
         {
             State thisTarget = (State)target;
@@ -14,47 +20,34 @@ namespace Actormachine.Editor
             // Checking for a single instance in children and destroy duplicates
             if (CheckSingleInstanceOnObject<State>(thisTarget.gameObject) == false) return;
 
-            bool error = false;
-
-            // Check Actor
-            Actor actorMachine = thisTarget.gameObject.GetComponentInParent<Actor>();
-            if (actorMachine == null)
-            {
-                DrawModelBox("<Actor> - is not found", BoxStyle.Error);
-                error = true;
-            }
-
             // Check Presenter
             Presenter presenter = thisTarget.gameObject.GetComponent<Presenter>();
             if (presenter == null)
             {
                 DrawModelBox("<Presenter> - is not found", BoxStyle.Error);
-                error = true;
+                return;
             }
 
-            if (error == false)
+            if (Application.isPlaying)
             {
-                if (Application.isPlaying)
-                {
-                    DrawHeader(thisTarget.Name);
-                    DrawHeader(thisTarget.Type.ToString(), 12);
+                DrawHeader(thisTarget.Name);
+                DrawHeader(thisTarget.Type.ToString(), 12);
 
-                    if (thisTarget.IsCurrentState)
-                    {
-                        DrawModelBox("State active", BoxStyle.Active);
-                    }
-                    else
-                    {
-                        DrawModelBox("Waiting for state activation");
-                    }
+                if (thisTarget.IsCurrentState)
+                {
+                    DrawModelBox("State active", BoxStyle.Active);
                 }
                 else
                 {
-                    thisTarget.Name = EditorGUILayout.TextField("Name", thisTarget.Name);
-                    thisTarget.Type = (StateType)EditorGUILayout.EnumPopup("Type", thisTarget.Type);
-
-                    DrawModelBox("Update the Presenter");
+                    DrawModelBox("Waiting for state activation");
                 }
+            }
+            else
+            {
+                thisTarget.Name = EditorGUILayout.TextField("Name", thisTarget.Name);
+                thisTarget.Type = (StateType)EditorGUILayout.EnumPopup("Type", thisTarget.Type);
+
+                DrawModelBox("Update the Presenter");
             }
 
             EditorUtility.SetDirty(thisTarget);

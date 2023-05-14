@@ -55,9 +55,4 @@ namespace Actormachine
             }
         }
     }
-
-    public interface IRequireBootstrap<T>
-    { 
-    
-    }
 }

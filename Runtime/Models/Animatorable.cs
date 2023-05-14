@@ -27,29 +27,39 @@ namespace Actormachine
                 _animator.runtimeAnimatorController = AnimatorController;
             }
 
-            _animator?.CrossFade(name, fade);
-            _animator?.SetFloat("Speed", 1);
+            _animator.CrossFade(name, fade);
+            _animator.SetFloat("Speed", 1);
         }
         */
 
         public void Play(string name, float fade = 0.025f)
         {
-            if (name != _previousName)
+            if (_animator)
             {
-                _animator?.CrossFade(name, fade);
-                _animator.speed = 1;
-                _previousName = name;
+                if (name != _previousName)
+                {
+                    _animator.CrossFade(name, fade);
+                    _animator.speed = 1;
+                    _previousName = name;
+                }
             }
         }
         public void Speed(float value)
         {
-            _animator.speed = value;
+            if (_animator)
+            {
+                _animator.speed = value;
+            } 
         }
         public void Stop()
         {
-            _animator.StopPlayback();
-            _animator.speed = 0;
-            _animator?.SetFloat("Speed", 0);
+            if (_animator)
+            {
+                _animator.StopPlayback();
+                _animator.speed = 0;
+                _animator.SetFloat("Speed", 0);
+            }
+
             _previousName = "Stop";
         }
         public void SetFloat(string name, float value) => _animator?.SetFloat(name, value);

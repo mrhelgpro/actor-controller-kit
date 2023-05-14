@@ -4,7 +4,7 @@ namespace Actormachine
 {
     public enum InputOrbitMode { Free, LeftHold, MiddleHold, RightHold, Lock }
     
-    public class CameraFollowPresenter : Presenter
+    public sealed class CameraFollowPresenter : Presenter
     {
         // Model Parameters
         public Transform Follow;
@@ -24,14 +24,16 @@ namespace Actormachine
             // Check Required Follow
             if (Follow == null)
             {
-                gameObject.SetActive(false);
                 Debug.LogWarning(gameObject.name + " - You need to add a Follow (Transform)");
             } 
         }
 
         public override void Enter()
         {
-            _actorVirtualCamera.Enter(Follow, EnterParameters);
+            if (Follow)
+            {
+                _actorVirtualCamera.Enter(Follow, EnterParameters);
+            }
         }
 
         public override void UpdateLoop()
