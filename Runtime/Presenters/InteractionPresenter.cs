@@ -16,7 +16,7 @@ namespace Actormachine
         private float _speed => 1 / Duration;
         private float _timer = 0;
 
-        public override void Initiation()
+        protected override void Initiation()
         {
             // Get components using "GetComponentInRoot" to create them on <Actor>
             inputable = GetComponentInRoot<Inputable>();

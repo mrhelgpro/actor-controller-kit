@@ -32,14 +32,15 @@ namespace Actormachine.Editor
     }
 
     [ExecuteInEditMode]
-    [CustomEditor(typeof(ActivateByInput))]
-    public class ActivateByInputInspector : ActivatorInspector
+    [CustomEditor(typeof(ActivatorByInput))]
+    public class ActivatorByInputInspector : ActivatorInspector
     {
         public override void OnInspectorGUI()
         {
             DrawActivator();
 
-            DrawDefaultInspector();
+            DrawPropertiesExcluding(serializedObject, "m_Script");
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }

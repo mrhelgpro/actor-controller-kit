@@ -38,7 +38,8 @@ namespace Actormachine
         private PhysicMaterial _materialOnTheGround;
         private PhysicMaterial _materialInTheAir;
 
-        public override void Initiation() 
+        // Presenter Methods
+        protected override void Initiation() 
         {
             // Get components using "GetComponentInRoot" to create them on <Actor>
             _inputable = GetComponentInRoot<Inputable>();
@@ -122,6 +123,7 @@ namespace Actormachine
             _rigidbody.isKinematic = true;
         }
 
+        // Movement Methods
         private void jumpLoop()
         {
             // Input Jump

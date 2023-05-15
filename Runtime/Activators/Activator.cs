@@ -13,8 +13,5 @@ namespace Actormachine
                 TryToActivate();
             }
         }
-
-        /// <summary> Called once during Awake. Use "GetComponentInRoot". </summary>
-        public override void Initiation() { }
     }
 }

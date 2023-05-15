@@ -28,15 +28,13 @@ namespace Actormachine
         private Inputable _inputable;
         private Animatorable _animatorable;
 
-        public override void Initiation()
+        protected override void Initiation()
         {
             // Get components using "GetComponentInRoot" to create them on <Actor>
             _cameraTransform = Camera.main.transform;
             _inputable = GetComponentInRoot<Inputable>();
             _animatorable = GetComponentInRoot<Animatorable>();
         }
-
-        public float speedScale;
 
         public override void UpdateLoop()
         {

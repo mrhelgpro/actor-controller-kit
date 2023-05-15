@@ -15,15 +15,27 @@ namespace Actormachine
         private Inputable _inputable;
         private ActorVirtualCamera _actorVirtualCamera;
 
-        public override void Initiation()
+        protected override void Initiation()
         {
+            // Check Bootstrap
+            Bootstrap.Create<BootstrapCamera>();
+            
             // Get components using "GetComponentInRoot" to create them on <Actor>
             _inputable = GetComponentInRoot<Inputable>();
             _actorVirtualCamera = FindAnyObjectByType<ActorVirtualCamera>();
 
-            // Check Required Follow
+            // Check Required Component
             if (Follow == null)
             {
+                Followable followable = RootTransform.GetComponentInChildren<Followable>();
+
+                if (followable)
+                {
+                    Follow = followable.transform;
+
+                    return;
+                }
+
                 Debug.LogWarning(gameObject.name + " - You need to add a Follow (Transform)");
             } 
         }

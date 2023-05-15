@@ -24,7 +24,7 @@ namespace Actormachine
         // Unity Components
         private NavMeshAgent _navMeshAgent;
 
-        public override void Initiation()
+        protected override void Initiation()
         {
             // Get components using "GetComponentInRoot" to create them on <Actor>
             _inputable = GetComponentInRoot<Inputable>();

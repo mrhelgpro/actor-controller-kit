@@ -10,9 +10,6 @@ namespace Actormachine.Editor
     {
         public override void OnInspectorGUI()
         {
-            // Draw a Warning
-            if (CheckSingleInstanceOnScene<CameraBootstrap>()) return;
-
             // Draw a Inspector
             CameraFollowPresenter thisTarget = (CameraFollowPresenter)target;
 
@@ -22,7 +19,6 @@ namespace Actormachine.Editor
             if (thisTarget.Follow == false)
             {
                 DrawModelBox("You need to add a Follow (Transform)", BoxStyle.Error);
-
                 return;
             }
 
@@ -64,7 +60,6 @@ namespace Actormachine.Editor
                 {
                     CinemachineExtantion.SwitchPriority(FindAnyObjectByType<ActorVirtualCamera>().GetComponent<CinemachineVirtualCameraBase>());
 
-                    thisTarget.Initiation();
                     thisTarget.Enter();
                 }
             }
