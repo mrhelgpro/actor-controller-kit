@@ -18,7 +18,7 @@ namespace Actormachine.Editor
             if (thisTarget)
             {
                 // Checking for a single instance in children and destroy duplicates
-                if (CheckSingleInstanceInChildren<Actor>(thisTarget.gameObject) == false) return;
+                if (thisTarget.gameObject.CheckSingleInstanceInChildren<Actor>() == false) return;
 
                 //Give all child objects the "Actror" layer
                 thisTarget.SetActorLayer(thisTarget.transform);
@@ -38,7 +38,7 @@ namespace Actormachine.Editor
 
             if (Application.isPlaying)
             {
-                DrawHeader(thisTarget.Name);
+                Inspector.DrawHeader(thisTarget.Name);
 
                 // Check State Machine
                 List<State> statesList = thisTarget.GetStatesList;
@@ -47,8 +47,10 @@ namespace Actormachine.Editor
                 {
                     bool isStateActive = thisTarget.IsCurrentState(state) == true;
                     BoxStyle style = isStateActive == true ? BoxStyle.Active : BoxStyle.Default;
-                    DrawModelBox(state.gameObject.name, style);
+                    Inspector.DrawModelBox(state.gameObject.name, style);
                 }
+
+                EditorUtility.SetDirty(target);
             }
             else
             {

@@ -15,18 +15,18 @@ namespace Actormachine.Editor
 
             if (animator == null)
             {
-                DrawModelBox("<Animator> - is not found", BoxStyle.Error);
+                Inspector.DrawModelBox("<Animator> - is not found", BoxStyle.Error);
 
                 return;
             }
 
             if (Application.isPlaying)
             {
-                DrawModelBox(animator.runtimeAnimatorController.name);
+                Inspector.DrawModelBox(animator.runtimeAnimatorController.name);
             }
             else
             {
-                DrawModelBox("Controls animations");
+                Inspector.DrawModelBox("Controls animations");
             }
         }
     }

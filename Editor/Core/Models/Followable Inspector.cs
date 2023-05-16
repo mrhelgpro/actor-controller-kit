@@ -9,7 +9,7 @@ namespace Actormachine.Editor
     {
         public override void OnInspectorGUI()
         {
-            DrawModelBox("Mark for Camera");
+            Inspector.DrawModelBox("Mark for Camera");
         }
     }
 }

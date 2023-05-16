@@ -24,7 +24,7 @@ namespace Actormachine
         // Unity Components
         private NavMeshAgent _navMeshAgent;
 
-        protected override void Initiation()
+        public override void Initiation()
         {
             // Get components using "GetComponentInRoot" to create them on <Actor>
             _inputable = GetComponentInRoot<Inputable>();
@@ -65,7 +65,7 @@ namespace Actormachine
             _currentVelocity = new Vector3(_lerpDirection.x, _currentDirection.y, _lerpDirection.z) * _currentSpeed;
 
             _animatorable.Play(_positionable.IsGrounded ? StateName : "Fall");
-            _animatorable.SetFloat("Speed", _currentVelocity.magnitude);
+            _animatorable.Speed = _currentVelocity.magnitude;
         }
 
         public override void FixedUpdateLoop()
@@ -77,7 +77,9 @@ namespace Actormachine
 
         public override void Exit()
         {
+            _currentDirection = Vector3.zero;
             _currentVelocity = Vector3.zero;
+            _lerpDirection = Vector3.zero;
 
             _navMeshAgent.speed = 0;
             _navMeshAgent.acceleration = 0;

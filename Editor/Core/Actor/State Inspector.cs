@@ -9,8 +9,8 @@ namespace Actormachine.Editor
     {
         public void OnEnable()
         {
-            //StateBehaviour thisTarget = (StateBehaviour)target;
-            //thisTarget.UpdateInspector();
+            StateBehaviour thisTarget = (StateBehaviour)target;
+            thisTarget.InitiationState();
         }
 
         public override void OnInspectorGUI()
@@ -18,30 +18,30 @@ namespace Actormachine.Editor
             State thisTarget = (State)target;
 
             // Checking for a single instance in children and destroy duplicates
-            if (CheckSingleInstanceOnObject<State>(thisTarget.gameObject) == false) return;
+            if (thisTarget.gameObject.CheckSingleInstanceOnObject<State>() == false) return;
 
             // Check Presenter
             Presenter presenter = thisTarget.gameObject.GetComponent<Presenter>();
             if (presenter == null)
             {
-                DrawModelBox("<Presenter> - is not found", BoxStyle.Error);
+                Inspector.DrawModelBox("<Presenter> - is not found", BoxStyle.Error);
                 return;
             }
 
             if (Application.isPlaying)
             {
-                DrawHeader(thisTarget.Name);
-                DrawHeader(thisTarget.Type.ToString(), 12);
+                Inspector.DrawHeader(thisTarget.Name);
+                Inspector.DrawHeader(thisTarget.Type.ToString(), 12);
 
                 Actor actor = thisTarget.gameObject.GetComponentInParent<Actor>();
 
                 if (actor.IsCurrentState(thisTarget))
                 {
-                    DrawModelBox("State active", BoxStyle.Active);
+                    Inspector.DrawModelBox("State active", BoxStyle.Active);
                 }
                 else
                 {
-                    DrawModelBox("Waiting for state activation");
+                    Inspector.DrawModelBox("Waiting for state activation");
                 }
             }
             else
@@ -49,7 +49,7 @@ namespace Actormachine.Editor
                 thisTarget.Name = EditorGUILayout.TextField("Name", thisTarget.Name);
                 thisTarget.Type = (StateType)EditorGUILayout.EnumPopup("Type", thisTarget.Type);
 
-                DrawModelBox("Update the Presenter");
+                Inspector.DrawModelBox("Update the Presenter");
             }
 
             EditorUtility.SetDirty(thisTarget);

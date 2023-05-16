@@ -6,14 +6,14 @@ namespace Actormachine
     public enum StateType { Controller, Interaction, Forced, Irreversible, Required };
 
     /// <summary> State to update Presenters. </summary>
-    public sealed class State : ActorBehaviour
+    public sealed class State : StateBehaviour
     {
         public string Name = "Controller";
         public StateType Type;
 
         private List<Presenter> _presenters = new List<Presenter>();
 
-        protected override void Initiation() 
+        public override void Initiation() 
         {
             Bootstrap.Create<BootstrapActor>();
 
@@ -43,17 +43,20 @@ namespace Actormachine
         }
     }
 
-    public abstract class StateBehaviour : ActorBehaviour, IInitInEditMode
+    public abstract class StateBehaviour : ActorBehaviour
     {
         private Actor _actor;
         private State _state;
-
-        public new void InitInEditMode() => Awake();
 
         protected new void Awake()
         {
             base.Awake();
 
+            InitiationState();
+        }
+
+        public void InitiationState()
+        {
             _actor = GetComponentInRoot<Actor>();
             _state = GetComponent<State>();
         }

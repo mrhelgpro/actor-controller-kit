@@ -6,7 +6,7 @@ namespace Actormachine.Editor
 {
 	[ExecuteInEditMode]
 	[CustomEditor(typeof(BootstrapCamera))]
-	public class CameraBootstrapInspector : ActorBehaviourInspector
+	public class CameraBootstrapInspector : UnityEditor.Editor
 	{
 		public override void OnInspectorGUI()
 		{
@@ -15,28 +15,28 @@ namespace Actormachine.Editor
 
 			if (BootstrapExtantion.IsSingleInstanceOnScene<BootstrapCamera>() == false)
 			{
-				DrawModelBox("<CameraBootstrap> should be a single", BoxStyle.Warning);
+				Inspector.DrawModelBox("<CameraBootstrap> should be a single", BoxStyle.Warning);
 
 				error = true;
 			}
 
 			if (BootstrapExtantion.IsSingleInstanceOnScene<Camera>() == false)
 			{
-				DrawModelBox("<Camera> should be a single", BoxStyle.Warning);
+				Inspector.DrawModelBox("<Camera> should be a single", BoxStyle.Warning);
 
 				error = true;
 			}
 
 			if (BootstrapExtantion.IsSingleInstanceOnScene<CinemachineBrain>() == false)
 			{
-				DrawModelBox("<CinemachineBrain> should be a single", BoxStyle.Warning);
+				Inspector.DrawModelBox("<CinemachineBrain> should be a single", BoxStyle.Warning);
 
 				error = true;
 			}
 
 			if (BootstrapExtantion.IsSingleInstanceOnScene<ActorVirtualCamera>() == false)
 			{
-				DrawModelBox("<ActorVirtualCamera> should be a single", BoxStyle.Warning);
+				Inspector.DrawModelBox("<ActorVirtualCamera> should be a single", BoxStyle.Warning);
 
 				error = true;
 			}
@@ -44,18 +44,18 @@ namespace Actormachine.Editor
 			// Draw a Inspector
 			if (error == false)
 			{
-				DrawHeader("CameraBootstrap");
+				Inspector.DrawHeader("CameraBootstrap");
 
 				// Show Main Camera
 				CinemachineBrain mainCamera = FindAnyObjectByType<CinemachineBrain>();
 				CinemachineVirtualCameraBase liveCamera = mainCamera.ActiveVirtualCamera as CinemachineVirtualCameraBase;
-				DrawLinkButton("Main Camera", mainCamera.gameObject, ButtonStyle.Main);
+				Inspector.DrawLinkButton("Main Camera", mainCamera.gameObject, ButtonStyle.Main);
 
 				// Show Actor Virtual Camera
 				ActorVirtualCamera actorVirtualCamera = FindAnyObjectByType<ActorVirtualCamera>();
 				CinemachineVirtualCameraBase actorCinemachineVirtualCamera = actorVirtualCamera.GetComponent<CinemachineVirtualCameraBase>();
 				ButtonStyle actorStyle = liveCamera == actorCinemachineVirtualCamera ? ButtonStyle.Active : ButtonStyle.Default;
-				DrawLinkButton("Actor Virtual Camera", actorVirtualCamera.gameObject, actorStyle);
+				Inspector.DrawLinkButton("Actor Virtual Camera", actorVirtualCamera.gameObject, actorStyle);
 
 				// Show Other Virtual Cameras
 				CinemachineVirtualCameraBase[] cinemachineVirtualCameras = FindObjectsOfType<CinemachineVirtualCameraBase>();
@@ -72,12 +72,12 @@ namespace Actormachine.Editor
 							{
 								if (cinemachineVirtualCamera.transform.parent != null)
 								{
-									DrawLinkButton(cinemachineVirtualCamera.transform.parent.gameObject.name, cinemachineVirtualCamera.transform.parent.gameObject, buttonStyle);
+									Inspector.DrawLinkButton(cinemachineVirtualCamera.transform.parent.gameObject.name, cinemachineVirtualCamera.transform.parent.gameObject, buttonStyle);
 								}
 							}
 							else
 							{
-								DrawLinkButton(cinemachineVirtualCamera.gameObject.name, cinemachineVirtualCamera.gameObject, buttonStyle);
+								Inspector.DrawLinkButton(cinemachineVirtualCamera.gameObject.name, cinemachineVirtualCamera.gameObject, buttonStyle);
 							}
 						}
 					}
@@ -85,17 +85,6 @@ namespace Actormachine.Editor
 
 				EditorUtility.SetDirty(target);
 			}
-		}
-
-		private bool isLiveCamera(CinemachineVirtualCameraBase camera)
-		{
-			CinemachineBrain cinemachineBrain = FindObjectOfType<CinemachineBrain>();
-			if (cinemachineBrain != null)
-			{
-				CinemachineVirtualCameraBase liveCamera = cinemachineBrain.ActiveVirtualCamera as CinemachineVirtualCameraBase;
-				return (liveCamera == camera);
-			}
-			return false;
 		}
 	}
 }

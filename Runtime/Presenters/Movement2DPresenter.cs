@@ -39,7 +39,7 @@ namespace Actormachine
         private PhysicsMaterial2D _materialOnTheGround;
         private PhysicsMaterial2D _materialInTheAir;
 
-        protected override void Initiation()
+        public override void Initiation()
         {
             // Get components using "GetComponentInRoot" to create them on <Actor>
             _inputable = GetComponentInRoot<Inputable>();
@@ -89,7 +89,8 @@ namespace Actormachine
             _currentVelocity = new Vector3(_lerpDirection.x, _currentDirection.y, _lerpDirection.z) * _currentSpeed;
 
             _animatorable.Play(_positionable.IsGrounded ? StateName : "Fall");
-            _animatorable.SetFloat("Speed", _currentVelocity.magnitude);
+            _animatorable.Speed = _currentVelocity.magnitude;
+            //_animatorable.SetFloat("Speed", _currentVelocity.magnitude);
 
             jumpLoop();
             materialLoop();
@@ -111,7 +112,10 @@ namespace Actormachine
 
         public override void Exit()
         {
+            _currentDirection = Vector3.zero;
             _currentVelocity = Vector3.zero;
+            _currentForce = Vector3.zero;
+            _lerpDirection = Vector3.zero;
 
             _rigidbody.MovePosition(_rigidbody.position);
             _rigidbody.constraints = RigidbodyConstraints2D.None;

@@ -4,14 +4,12 @@ using UnityEditor;
 namespace Actormachine
 {
     /// <summary> Checks or creates all required components. </summary>
-    public abstract class Bootstrap : MonoBehaviour, IInitInEditMode
+    public abstract class Bootstrap : MonoBehaviour
     {
-        public void InitInEditMode() => Awake();
-
         private void Awake() => Initiation();
 
         /// <summary> In Play Mode it is called once when Awake, in Edit Mode it is called constantly as an Update. </summary>
-        protected abstract void Initiation();
+        public abstract void Initiation();
 
         /// <summary> Create the required <see cref="Bootstrap"/> to get all the dependent components. </summary>
         public static T Create<T>() where T : Bootstrap
@@ -92,12 +90,5 @@ namespace Actormachine
 
             return instances.Length == 1;
         }
-    }
-
-    public interface IInitInEditMode
-    {
-        /// <summary> In Edit Mode it is called constantly as an Update. </summary>
-        public void InitInEditMode();
-
     }
 }

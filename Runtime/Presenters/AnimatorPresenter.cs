@@ -4,15 +4,14 @@ namespace Actormachine
 {
     public class AnimatorPresenter : Presenter
     {
+        //public AnimatorOverrideController OverrideController;
         public RuntimeAnimatorController AnimatorController;
-
-        public float Fade = 0.025f;
 
         // Model Components
         private Animatorable _animatorable;
 
         // Presenter Methods
-        protected override void Initiation()
+        public override void Initiation()
         {
             _animatorable = GetComponentInRoot<Animatorable>();
 
@@ -23,7 +22,7 @@ namespace Actormachine
             }
         }
 
-        public override void Enter() => _animatorable.Enter(AnimatorController, StateName, Fade);
+        public override void Enter() => _animatorable.Enter(AnimatorController);
 
         public override void Exit() => _animatorable.Exit();
     }

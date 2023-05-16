@@ -11,7 +11,7 @@ namespace Actormachine
 	/// </summary>
 	public class BootstrapCamera : Bootstrap
 	{
-        protected override void Initiation()
+		public override void Initiation()
         {
 			// Finds or creates a Camera
 			Camera camera = FindAnyObjectByType<Camera>();

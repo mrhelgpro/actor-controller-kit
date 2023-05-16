@@ -15,7 +15,7 @@ namespace Actormachine
         private Inputable _inputable;
         private ActorVirtualCamera _actorVirtualCamera;
 
-        protected override void Initiation()
+        public override void Initiation()
         {
             // Check Bootstrap
             Bootstrap.Create<BootstrapCamera>();

@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEditor;
-using System.Linq;
 
 namespace Actormachine.Editor
 {   
@@ -12,6 +11,21 @@ namespace Actormachine.Editor
             EditorApplication.update += InitInEditMode;
         }
 
+        private static void InitInEditMode()
+        {
+            if (Application.isPlaying == false)
+            {
+                Bootstrap[] bootstraps = FindObjectsOfType<Bootstrap>();
+
+                foreach (Bootstrap bootstrap in bootstraps) bootstrap.Initiation();
+
+                ActorBehaviour[] actorBehaviours = FindObjectsOfType<ActorBehaviour>();
+
+                foreach (ActorBehaviour actorBehaviour in actorBehaviours) actorBehaviour.Initiation();
+            }
+        }
+
+        /*
         /// <summary> Finds all IInitInEditMode and calls InitInEditMode(). </summary>
         private static void InitInEditMode()
         {
@@ -25,5 +39,6 @@ namespace Actormachine.Editor
                 foreach (IInitInEditMode initiation in initiations) initiation.InitInEditMode();
             }
         }
+        */
     }
 }

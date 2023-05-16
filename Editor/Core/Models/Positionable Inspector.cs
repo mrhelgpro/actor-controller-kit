@@ -13,14 +13,14 @@ namespace Actormachine.Editor
 
             if (Application.isPlaying == false)
             {
-                DrawModelBox("Ñhecks position data");
+                Inspector.DrawModelBox("Ñhecks position data");
             }
             else
             {
-                DrawModelBox("Ground: " + thisTarget.SurfaceType, thisTarget.IsGrounded ? BoxStyle.Active : BoxStyle.Default);
-                DrawModelBox("Obstacle: " + (thisTarget.ObstacleTransform == null ? "None" : thisTarget.ObstacleTransform.name), thisTarget.IsObstacle ? BoxStyle.Active : BoxStyle.Default);
-                DrawModelBox("Edge", thisTarget.IsEdge ? BoxStyle.Active : BoxStyle.Default);
-                DrawModelBox("Abyss", thisTarget.IsAbyss ? BoxStyle.Active : BoxStyle.Default);
+                Inspector.DrawModelBox("Ground: " + thisTarget.SurfaceType, thisTarget.IsGrounded ? BoxStyle.Active : BoxStyle.Default);
+                Inspector.DrawModelBox("Obstacle: " + (thisTarget.ObstacleTransform == null ? "None" : thisTarget.ObstacleTransform.name), thisTarget.IsObstacle ? BoxStyle.Active : BoxStyle.Default);
+                Inspector.DrawModelBox("Edge", thisTarget.IsEdge ? BoxStyle.Active : BoxStyle.Default);
+                Inspector.DrawModelBox("Abyss", thisTarget.IsAbyss ? BoxStyle.Active : BoxStyle.Default);
             }
         }
     }

@@ -9,13 +9,12 @@ namespace Actormachine
     {
         public LookMode LookMode = LookMode.LookToCamera;
         public RotateMode RotateMode = RotateMode.RotateToMovement;
-        [Range (0, 10)] public float Rate = 10;
+        [Range (1, 10)] public int Rate = 10;
 
         // Direction Fields
         private Vector3 _lookDirection;
         private Vector3 _cameraDirection;
         private Vector3 _bodyDirection;
-        private Vector3 _localDirection;
 
         // Buffer Fields
         private Transform _cameraTransform;
@@ -28,7 +27,7 @@ namespace Actormachine
         private Inputable _inputable;
         private Animatorable _animatorable;
 
-        protected override void Initiation()
+        public override void Initiation()
         {
             // Get components using "GetComponentInRoot" to create them on <Actor>
             _cameraTransform = Camera.main.transform;
@@ -38,9 +37,6 @@ namespace Actormachine
 
         public override void UpdateLoop()
         {
-            _animatorable.SetFloat("DirectionX", _localDirection.x);
-            _animatorable.SetFloat("DirectionZ", _localDirection.z);
-
             _cameraDirection = _cameraTransform.forward.normalized;
             _bodyDirection = RootTransform.TransformDirection(Vector3.forward).normalized;
 
@@ -74,7 +70,7 @@ namespace Actormachine
             else if (LookMode == LookMode.LookToPointer)
             {
                 Vector3 mousePosition = Input.mousePosition;
-                Vector3 lookDirection = UnityEngine.Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, _cameraTransform.position.y)) - RootTransform.position;
+                Vector3 lookDirection = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, _cameraTransform.position.y)) - RootTransform.position;
                 _lookDirection = Vector3.ProjectOnPlane(lookDirection, Vector3.up).normalized;
             }
             else if (LookMode == LookMode.LookToStick)
@@ -116,10 +112,10 @@ namespace Actormachine
             lerpLocalDirection = new Vector3(x, y, z);
 
             // Get local direction
-            _localDirection = _inputable.MoveVector.magnitude > 0 ? lerpLocalDirection : _localDirection;
+            _animatorable.Direction = _inputable.MoveVector.magnitude > 0 ? lerpLocalDirection : _animatorable.Direction;
 
             // Save the previous value
-            _previousLocalDirection = _localDirection;
+            _previousLocalDirection = _animatorable.Direction;
             _previousPositionY = positionY;
         }
 

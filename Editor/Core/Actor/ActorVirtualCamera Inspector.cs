@@ -14,17 +14,17 @@ namespace Actormachine.Editor
             thisTarget.gameObject.hideFlags = HideFlags.NotEditable;
 
             // Draw a Warning
-            if (CheckSingleInstanceOnScene<BootstrapCamera>()) return;
+            if (Inspector.CheckSingleInstanceOnScene<BootstrapCamera>()) return;
 
             // Draw a Inspector
 
             if (thisTarget.IsLock == true)
             {
-                DrawModelBox("Locked", BoxStyle.Warning);
+                Inspector.DrawModelBox("Locked", BoxStyle.Warning);
             }
             else
             {
-                DrawModelBox("Edited in the Presenter");
+                Inspector.DrawModelBox("Edited in the Presenter");
             }
         }
     }

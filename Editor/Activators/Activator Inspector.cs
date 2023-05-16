@@ -11,14 +11,11 @@ namespace Actormachine.Editor
         {
             Activator thisTarget = (Activator)target;
 
-            // Checking for a single instance in children and destroy duplicates
-            if (CheckSingleInstanceOnObject<Activator>(thisTarget.gameObject) == false) return;
-
             // Check Presenter
             Presenter presenter = thisTarget.gameObject.GetComponent<Presenter>();
             if (presenter == null)
             {
-                DrawModelBox("<Presenter> - is not found", BoxStyle.Error);
+                Inspector.DrawModelBox("<Presenter> - is not found", BoxStyle.Error);
                 return;
             }
         }
@@ -27,7 +24,7 @@ namespace Actormachine.Editor
         {
             DrawActivator();
 
-            DrawModelBox("Activated by free");
+            Inspector.DrawModelBox("Activated by free");
         }
     }
 
@@ -36,7 +33,7 @@ namespace Actormachine.Editor
     public class ActivatorByInputInspector : ActivatorInspector
     {
         public override void OnInspectorGUI()
-        {
+        { 
             DrawActivator();
 
             DrawPropertiesExcluding(serializedObject, "m_Script");

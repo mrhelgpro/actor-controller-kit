@@ -16,7 +16,7 @@ namespace Actormachine
         private Transform _cameraTransform;
         private InputActions _inputActions;
 
-        protected override void Initiation()
+        public override void Initiation()
         {
             Bootstrap.Create<BootstrapCamera>();
 

@@ -11,13 +11,14 @@ namespace Actormachine.Editor
         {
             AnimatorPresenter thisTarget = (AnimatorPresenter)target;
 
-            DrawPropertiesExcluding(serializedObject, "m_Script");
-            serializedObject.ApplyModifiedProperties();
-
             if (thisTarget.AnimatorController == null)
             {
-                DrawModelBox("You need to add an AnimatorController", BoxStyle.Error);
+                Inspector.DrawModelBox("You need to add an AnimatorController", BoxStyle.Error);
             }
+
+            base.OnInspectorGUI();
+
+            //thisTarget.AnimatorController = EditorGUILayout.ObjectField("Switch to", thisTarget.AnimatorController, typeof(RuntimeAnimatorController), true) as RuntimeAnimatorController;
         }
     }
 }

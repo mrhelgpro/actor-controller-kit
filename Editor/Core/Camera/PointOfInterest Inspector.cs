@@ -11,7 +11,7 @@ namespace Actormachine.Editor
 		public override void OnInspectorGUI()
 		{
 			// Draw a Warning
-			if (CheckSingleInstanceOnScene<BootstrapCamera>()) return;
+			if (Inspector.CheckSingleInstanceOnScene<BootstrapCamera>()) return;
 
 			// Draw a Inspector
 			PointOfInterest thisTarget = (PointOfInterest)target;

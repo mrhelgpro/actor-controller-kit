@@ -6,7 +6,7 @@ namespace Actormachine.Editor
 {
     [ExecuteInEditMode]
     [CustomEditor(typeof(BootstrapActor))]
-    public class ActorBootstrapInspector : ActorBehaviourInspector
+    public class ActorBootstrapInspector : UnityEditor.Editor
     {
         private bool foldoutPlayers = true;
         //private bool foldout—ompanions = true;   
@@ -19,13 +19,13 @@ namespace Actormachine.Editor
             // Draw a Warning	
             if (BootstrapExtantion.IsSingleInstanceOnScene<BootstrapActor>() == false)
             {
-                DrawModelBox("<ActorBootstrap> should be a single", BoxStyle.Warning);
+                Inspector.DrawModelBox("<ActorBootstrap> should be a single", BoxStyle.Warning);
 
                 return;
             }
 
             // Draw a Inspector
-            DrawHeader("ActorBootstrap");
+            Inspector.DrawHeader("ActorBootstrap");
 
             if (BootstrapActor.GetActors.Count > 0)
             {
@@ -60,12 +60,12 @@ namespace Actormachine.Editor
 
                 if (mainStyle == ButtonStyle.Main)
                 {
-                    DrawHeader(info + count, 10);
+                    Inspector.DrawHeader(info + count, 10);
 
                     foreach (Actor actor in actors)
                     {
                         ButtonStyle buttonStyle = actor.IsFree ? ButtonStyle.Default : mainStyle;
-                        DrawLinkButton(actor.Name, actor.gameObject, buttonStyle);
+                        Inspector.DrawLinkButton(actor.Name, actor.gameObject, buttonStyle);
                     }
 
                     EditorGUILayout.Space(16);
@@ -82,7 +82,7 @@ namespace Actormachine.Editor
                     foreach (Actor actor in actors)
                     {
                         ButtonStyle buttonStyle = actor.IsFree ? ButtonStyle.Default : mainStyle;
-                        DrawLinkButton(actor.Name, actor.gameObject, buttonStyle);
+                        Inspector.DrawLinkButton(actor.Name, actor.gameObject, buttonStyle);
                     }
                 }
                 GUILayout.EndVertical();

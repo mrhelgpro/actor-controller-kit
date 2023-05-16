@@ -18,7 +18,7 @@ namespace Actormachine.Editor
 
             if (thisTarget.Follow == false)
             {
-                DrawModelBox("You need to add a Follow (Transform)", BoxStyle.Error);
+                Inspector.DrawModelBox("You need to add a Follow (Transform)", BoxStyle.Error);
                 return;
             }
 
