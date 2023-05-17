@@ -6,22 +6,61 @@ namespace Actormachine
     public enum StateType { Controller, Interaction, Forced, Irreversible, Required };
 
     /// <summary> State to update Presenters. </summary>
-    public sealed class State : StateBehaviour
+    public sealed class State : ActorBehaviour
     {
         public string Name = "Controller";
-        public StateType Type;
+        public StateType Type = StateType.Controller;
 
+        private List<Activator> _activators = new List<Activator>();
+        private List<Deactivator> _deactivators = new List<Deactivator>();
         private List<Presenter> _presenters = new List<Presenter>();
+
+        private Actor _actor;
 
         public override void Initiation() 
         {
             Bootstrap.Create<BootstrapActor>();
 
+            _actor = GetComponentInRoot<Actor>();
+
+            _activators = new List<Activator>();
+            _deactivators = new List<Deactivator>();
             _presenters = new List<Presenter>();
 
-            foreach (Presenter controller in GetComponentsInChildren<Presenter>()) _presenters.Add(controller);
+            foreach (Activator activator in GetComponents<Activator>()) _activators.Add(activator);
+            foreach (Deactivator deactivator in GetComponents<Deactivator>()) _deactivators.Add(deactivator);
+            foreach (Presenter controller in GetComponents<Presenter>()) _presenters.Add(controller); 
         }
 
+        // Actor Methods
+        public bool ActorIsFree => _actor.IsFree;
+
+        public void Activate()
+        {
+            int amountOfReady = 0;
+
+            foreach (Activator activator in _activators) amountOfReady += activator.IsReady ? 1 : 0;
+
+            if (amountOfReady == _activators.Count)
+            {
+                _actor.Activate(this);
+            }
+        }
+
+        public void Deactivate() => _actor.Deactivate(this);
+
+        // Activator Loop
+        public void ActivatorLoop()
+        {
+            foreach (Activator activator in _activators) activator.UpdateLoop();
+        }
+
+        public void DeactivatorLoop()
+        {
+            foreach (Deactivator deactivator in _deactivators) deactivator.UpdateLoop();
+        }
+
+        // Presenter Loop
         public void Enter()
         {
             foreach (Presenter controller in _presenters) controller.Enter();
@@ -45,27 +84,19 @@ namespace Actormachine
 
     public abstract class StateBehaviour : ActorBehaviour
     {
-        private Actor _actor;
         private State _state;
 
-        protected new void Awake()
+        private new void Awake()
         {
             base.Awake();
 
-            InitiationState();
-        }
-
-        public void InitiationState()
-        {
-            _actor = GetComponentInRoot<Actor>();
             _state = GetComponent<State>();
         }
 
         public string StateName => _state.Name;
-        public bool ActorIsFree => _actor.IsFree;
-        public bool IsCurrentState => _actor.IsCurrentState(_state);
-        protected void TryToActivate() => _actor.TryToActivate(_state);
-        protected void Deactivate() => _actor.Deactivate(_state);
+        public bool ActorIsFree => _state.ActorIsFree;
+        public void Activate() => _state.Activate();
+        public void Deactivate() => _state.Deactivate();
     }
 
     /// <summary> 

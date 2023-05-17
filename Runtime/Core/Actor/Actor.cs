@@ -10,23 +10,24 @@ namespace Actormachine
 
         // State Machine
         private State _currentState = null;
-
         private List<State> _statesList = new List<State>();
-        private List<Activator> _activatorsList = new List<Activator>();
 
         private void Start()
         {
             foreach (State state in GetComponentsInChildren<State>()) _statesList.Add(state);
-            foreach (Activator activator in GetComponentsInChildren<Activator>()) _activatorsList.Add(activator);
 
             BootstrapActor.AddActor(this);
         }
 
         public void UpdateLoop()
         {
-            foreach (Activator activator in _activatorsList) activator.CheckLoop();
+            foreach (State state in _statesList)
+            {
+                if (IsCurrentState(state) == false) state.ActivatorLoop();
+            }
 
             _currentState?.UpdateLoop();
+            _currentState?.DeactivatorLoop();
         }
 
         public void FixedUpdateLoop()
@@ -56,7 +57,7 @@ namespace Actormachine
         /// If you find an equal GameObject Name, execute this Action
         /// If you don't find an equal Action, create a new one.
         /// </summary>
-        public void TryToActivate(State state)
+        public void Activate(State state)
         {
             if (_statesList.Exists(a => a == state))
             {
@@ -66,16 +67,6 @@ namespace Actormachine
             }
 
             CreateAction(state.gameObject);
-        }
-
-        /// <summary> At the end of the Action, remove it from the Actor. </summary>
-        public void Deactivate(State state)
-        {
-            if (state == _currentState)
-            {
-                _currentState.Exit();
-                _currentState = null;
-            }
         }
 
         // If the Action is empty, we can activate any other type
@@ -114,6 +105,16 @@ namespace Actormachine
                 _currentState?.Exit();
                 _currentState = state;
                 _currentState.Enter();
+            }
+        }
+
+        /// <summary> At the end of the Action, remove it from the Actor. </summary>
+        public void Deactivate(State state)
+        {
+            if (state == _currentState)
+            {
+                _currentState.Exit();
+                _currentState = null;
             }
         }
 

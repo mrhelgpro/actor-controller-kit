@@ -8,12 +8,6 @@ namespace Actormachine.Editor
     [CanEditMultipleObjects]
     public sealed class StateInspector : ActorBehaviourInspector
     {
-        public void OnEnable()
-        {
-            StateBehaviour thisTarget = (StateBehaviour)target;
-            thisTarget.InitiationState();
-        }
-
         public override void OnInspectorGUI()
         {
             State thisTarget = (State)target;

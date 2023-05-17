@@ -2,9 +2,15 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public class ActivatorByInput : Activator
+    /// <summary> To deactivate the Presenters. </summary>
+    public class DeactivatorByInput : Deactivator
     {
-                                     // KEYBOARD            X-BOX             DUALSHOCK       GAMEPAD
+        public enum Mode { None, RepeatedPressing, ActiveWhileHolding }
+
+        [Tooltip("The event when the controller will be deactivated")]
+        public Mode DeactivateMode = Mode.None;
+
+        // KEYBOARD            X-BOX             DUALSHOCK       GAMEPAD
         public bool Option;          // Q                   Y                 Triangle        North
         public bool Cancel;          // Backspace / C       B                 Circle          East
         public bool Motion;          // Space               A                 Cross           South
@@ -25,21 +31,34 @@ namespace Actormachine
             inputable = GetComponentInRoot<Inputable>();
         }
 
-        private bool _previousReadyState = false;
+        private bool _isRepeatedPressing = false;
 
         public override void UpdateLoop()
         {
-            IsReady = _isButtonPress;
-
-            if (_previousReadyState != IsReady)
+            if (DeactivateMode == Mode.RepeatedPressing)
             {
-                if (IsReady == true)
+                if (_isButtonPress == false)
                 {
-                    Activate();
+                    _isRepeatedPressing = true;
+                }
+
+                if (_isRepeatedPressing == true)
+                {
+                    if (_isButtonPress == true)
+                    {
+                        Deactivate();
+
+                        _isRepeatedPressing = false;
+                    }
                 }
             }
-
-            _previousReadyState = IsReady;
+            else if (DeactivateMode == Mode.ActiveWhileHolding)
+            {
+                if (_isButtonPress == false)
+                {
+                    Deactivate();
+                }
+            }
         }
 
         private bool _isButtonPress
