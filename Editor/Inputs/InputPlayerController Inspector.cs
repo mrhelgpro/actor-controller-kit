@@ -5,6 +5,7 @@ namespace Actormachine
 {
     [ExecuteInEditMode]
     [CustomEditor(typeof(InputPlayerController))]
+    [CanEditMultipleObjects]
     public class InputPlayerControllerInspector : UnityEditor.Editor
     {
         public override void OnInspectorGUI()

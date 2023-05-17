@@ -5,6 +5,7 @@ namespace Actormachine.Editor
 {
     [ExecuteInEditMode]
     [CustomEditor(typeof(State))]
+    [CanEditMultipleObjects]
     public sealed class StateInspector : ActorBehaviourInspector
     {
         public void OnEnable()

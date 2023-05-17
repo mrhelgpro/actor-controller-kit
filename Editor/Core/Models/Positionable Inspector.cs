@@ -5,6 +5,7 @@ namespace Actormachine.Editor
 {
     [ExecuteInEditMode]
     [CustomEditor(typeof(Positionable))]
+    [CanEditMultipleObjects]
     public class PositionableInspector : ActorBehaviourInspector
     {
         public override void OnInspectorGUI()

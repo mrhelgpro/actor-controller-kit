@@ -16,8 +16,6 @@ namespace Actormachine
         private Vector3 _currentDirection = Vector3.zero;
         private Vector3 _currentVelocity = Vector3.zero;
         private Vector3 _currentForce = Vector3.zero;
-        //private Vector3 _lerpDirection = Vector3.zero;
-        //private float _currentSpeed = 0;
         private float _currentGravity = 1;
 
         // Jump Fields
@@ -76,28 +74,14 @@ namespace Actormachine
             _rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
             _rigidbody.constraints = RigidbodyConstraints.None;
             _rigidbody.freezeRotation = true;
-            //_rigidbody.velocity = Vector3.zero;
+            _rigidbody.velocity = Vector3.zero;
         }
 
         public override void UpdateLoop()
         {
-            /*
-            float speed = _inputable.ShiftState ? MoveShift : MoveSpeed;
-
-            _currentGravity = _movable.GetGravity(Gravity);
-            _currentDirection = _positionable.GetDirection(_inputable.MoveVector);
-
-            _currentVelocity = _movable.GetVelocity(_currentDirection, speed, Time.deltaTime * Rate);
-
-            _animatorable.Play(_positionable.IsGrounded ? StateName : "Fall");
-            _animatorable.Speed = Mathf.Round(_currentVelocity.magnitude * 100f) / 100f; //!!!
-            */
-
             jumpLoop();
             materialLoop();
         }
-
-        public float Fade = 0.25f;
 
         public override void FixedUpdateLoop()
         {
@@ -108,8 +92,8 @@ namespace Actormachine
 
             _currentVelocity = _movable.GetVelocity(_currentDirection, speed, Time.fixedDeltaTime * Rate);
 
-            _animatorable.Play(_positionable.IsGrounded ? StateName : "Fall", Fade);
-            _animatorable.Speed = Mathf.Round(_currentVelocity.magnitude * 100f) / 100f; //!!!
+            _animatorable.Play(_positionable.IsGrounded ? StateName : "Fall");
+            _animatorable.Speed = _currentVelocity.magnitude;
 
             _rigidbody.MovePosition(_rigidbody.position + _currentVelocity * Time.fixedDeltaTime);
             _rigidbody.AddForce(Physics.gravity * _currentGravity, ForceMode.Acceleration);
@@ -124,20 +108,14 @@ namespace Actormachine
 
         public override void Exit()
         {
-            //_animatorable.Stop();
-
-            /*
             _currentDirection = Vector3.zero;
-            _currentVelocity = Vector3.zero;
             _currentForce = Vector3.zero;
-            _lerpDirection = Vector3.zero;
             
             _rigidbody.MovePosition(_rigidbody.position);
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.constraints = RigidbodyConstraints.None;
             _rigidbody.useGravity = false;
             _rigidbody.isKinematic = true;
-            */
         }
 
         // Movement Methods

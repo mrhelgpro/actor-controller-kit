@@ -6,6 +6,7 @@ namespace Actormachine.Editor
 {
 	[ExecuteInEditMode]
 	[CustomEditor(typeof(PointOfInterest))]
+	[CanEditMultipleObjects]
 	public class PointOfInterestInspector : ActorBehaviourInspector
 	{
 		public override void OnInspectorGUI()

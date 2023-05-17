@@ -5,16 +5,14 @@ namespace Actormachine
 {
     /// <summary> Model - to control the Animator. </summary>
     public class Animatorable : ActorBehaviour
-    {
-        private float _speed;
-        private Vector3 _direction;
+    {          
+        // Parameters
+        private float _speed = 0;
+        private Vector3 _direction = Vector3.zero;
         private string _previousName = "None";
 
-        private AnimationClip _enterClip;
-        private string _enterName;
+        public Animator _animator = null;
 
-        private Animator _animator = null;
-        //private AnimatorOverrideController _previousOverrideController = null;
         private RuntimeAnimatorController _previousAnimatorController = null;
 
         private new void Awake()
@@ -63,32 +61,8 @@ namespace Actormachine
                 return;
             }
 
-            AnimatorClipInfo[] currentClipInfo = _animator.GetCurrentAnimatorClipInfo(0);
-            if (currentClipInfo.Length > 0)
-            {
-                _enterClip = currentClipInfo[0].clip;
-            }
-
-            //_previousOverrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
-            //_previousOverrideController.name = _animator.runtimeAnimatorController.name;
-
             _previousAnimatorController = _animator.runtimeAnimatorController;
-
-            AnimatorOverrideController enterOverrideController = new AnimatorOverrideController(controller);
-
-            AnimationClip[] clips = controller.animationClips;
-
-            foreach (AnimationClip clip in clips)
-            {
-                Debug.Log(clip.name);
-                enterOverrideController[clip.name] = clip;
-            }
-
-            enterOverrideController["Enter"] = _enterClip;
-            _animator.runtimeAnimatorController = enterOverrideController;
-            
-            //_animator.Play("Enter", 0, 0.75f);
-            _animator.CrossFade("Move", 0.025f);
+            _animator.runtimeAnimatorController = controller;
 
             _previousName = "Enter";
         }
@@ -100,27 +74,8 @@ namespace Actormachine
                 return;
             }
 
-            AnimatorClipInfo[] currentClipInfo = _animator.GetCurrentAnimatorClipInfo(0);
-            if (currentClipInfo.Length > 0)
-            {
-                _enterClip = currentClipInfo[0].clip;
-            }
-
-            AnimatorOverrideController enterOverrideController = new AnimatorOverrideController(_previousAnimatorController);
-
-            AnimationClip[] clips = _previousAnimatorController.animationClips;
-
-            foreach (AnimationClip clip in clips)
-            {
-                enterOverrideController[clip.name] = clip;
-            }
-
-            enterOverrideController["Enter"] = _enterClip;
-            _animator.runtimeAnimatorController = enterOverrideController;
-
-            //_animator.Play("Enter", 0, 0.75f);
-            _animator.CrossFade("Move", 0.025f);
-
+            _animator.runtimeAnimatorController = _previousAnimatorController;
+            
             _previousName = "Exit";
         }
 
@@ -131,7 +86,7 @@ namespace Actormachine
                 if (name != _previousName)
                 {
                     Debug.Log(name);
-                    _animator.CrossFade(name, fade);
+                    _animator.CrossFade(name, fade, 0, 0);
                     _animator.speed = 1;
                     _previousName = name;
                 }

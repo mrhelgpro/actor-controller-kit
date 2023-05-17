@@ -7,6 +7,7 @@ namespace Actormachine.Editor
 {
     [ExecuteInEditMode]
     [CustomEditor(typeof(Actor))]
+    [CanEditMultipleObjects]
     public sealed class ActorInspector : ActorBehaviourInspector
     {
         Actor thisTarget;

@@ -5,6 +5,7 @@ namespace Actormachine.Editor
 {
     [ExecuteInEditMode]
     [CustomEditor(typeof(MovementPhysicPresenter))]
+    [CanEditMultipleObjects]
     public class MovementPhysicPresenterInspector : ActorBehaviourInspector
     {
         public override void OnInspectorGUI()

@@ -6,6 +6,7 @@ namespace Actormachine.Editor
 {
     [ExecuteInEditMode]
     [CustomEditor(typeof(CameraFollowPresenter))]
+    [CanEditMultipleObjects]
     public class CameraFollowPresenterInspector : ActorBehaviourInspector
     {
         public override void OnInspectorGUI()

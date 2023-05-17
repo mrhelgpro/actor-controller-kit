@@ -1,5 +1,4 @@
 - Add Scene Manager
-- Add Switch Animator
 - Add Look at Target
 - Make ckeck is Mouse or Gamepad
 - <Soundable> - Make footsteps sound

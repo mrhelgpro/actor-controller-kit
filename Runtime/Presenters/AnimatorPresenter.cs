@@ -4,10 +4,8 @@ namespace Actormachine
 {
     public class AnimatorPresenter : Presenter
     {
-        //public AnimatorOverrideController OverrideController;
         public RuntimeAnimatorController AnimatorController;
 
-        // Model Components
         private Animatorable _animatorable;
 
         // Presenter Methods
@@ -15,7 +13,6 @@ namespace Actormachine
         {
             _animatorable = GetComponentInRoot<Animatorable>();
 
-            // Check Required Component
             if (AnimatorController == null)
             {
                 Debug.LogWarning(gameObject.name + " - You need to add an AnimatorController");

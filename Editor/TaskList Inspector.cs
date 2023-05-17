@@ -6,6 +6,7 @@ namespace Actormachine.Editor
 {
     [ExecuteInEditMode]
     [CustomEditor(typeof(TaskList))]
+    [CanEditMultipleObjects]
     public class TaskListInspector : ActorBehaviourInspector
     {
         private string tasklistContent = "";

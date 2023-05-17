@@ -5,6 +5,7 @@ namespace Actormachine.Editor
 {
     [ExecuteInEditMode]
     [CustomEditor(typeof(Activator))]
+    [CanEditMultipleObjects]
     public class ActivatorInspector : ActorBehaviourInspector
     {
         public void DrawActivator()

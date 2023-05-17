@@ -5,6 +5,7 @@ namespace Actormachine.Editor
 {
     [ExecuteInEditMode]
     [CustomEditor(typeof(AnimatorPresenter))]
+    [CanEditMultipleObjects]
     public class AnimatorPresenterInspector : ActorBehaviourInspector
     {
         public override void OnInspectorGUI()
