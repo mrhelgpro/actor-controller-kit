@@ -12,14 +12,12 @@ namespace Actormachine.Editor
         {
             AnimatorPresenter thisTarget = (AnimatorPresenter)target;
 
-            if (thisTarget.AnimatorController == null)
+            if (thisTarget.Controller == null)
             {
                 Inspector.DrawModelBox("You need to add an AnimatorController", BoxStyle.Error);
             }
 
             base.OnInspectorGUI();
-
-            //thisTarget.AnimatorController = EditorGUILayout.ObjectField("Switch to", thisTarget.AnimatorController, typeof(RuntimeAnimatorController), true) as RuntimeAnimatorController;
         }
     }
 }

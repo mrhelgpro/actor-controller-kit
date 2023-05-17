@@ -4,7 +4,7 @@ namespace Actormachine
 {
     public class AnimatorPresenter : Presenter
     {
-        public RuntimeAnimatorController AnimatorController;
+        public RuntimeAnimatorController Controller;
 
         private Animatorable _animatorable;
 
@@ -13,13 +13,13 @@ namespace Actormachine
         {
             _animatorable = GetComponentInRoot<Animatorable>();
 
-            if (AnimatorController == null)
+            if (Controller == null)
             {
                 Debug.LogWarning(gameObject.name + " - You need to add an AnimatorController");
             }
         }
 
-        public override void Enter() => _animatorable.Enter(AnimatorController);
+        public override void Enter() => _animatorable.Enter(Controller);
 
         public override void Exit() => _animatorable.Exit();
     }

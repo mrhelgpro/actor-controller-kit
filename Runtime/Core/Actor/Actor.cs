@@ -71,8 +71,6 @@ namespace Actormachine
         /// <summary> At the end of the Action, remove it from the Actor. </summary>
         public void Deactivate(State state)
         {
-            //State state = objectState.GetComponent<State>();
-
             if (state == _currentState)
             {
                 _currentState.Exit();

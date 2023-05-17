@@ -27,8 +27,8 @@ namespace Actormachine
         {
             interactionPosition = RootTransform.position;
             animatorable.Play(StateName);
-            animatorable.Speed = _speed;
-            //animatorable.SetFloat("Speed", _speed);
+            animatorable.Speed = 0;
+
             _timer = 0;
         }
 
@@ -41,10 +41,7 @@ namespace Actormachine
                 Deactivate();
             }
 
-            // REMOVE THIS TO FIXED UPDATE
-            //interactionPosition += Vector3.up * Time.fixedDeltaTime * 2; // REMOTE THIS!!!!!!!!!!!!!!!!!!!!!!!
-            //interactionPosition += Vector3.up * Time.deltaTime * 2; // REMOTE THIS!!!!!!!!!!!!!!!!!!!!!!!
-            RootTransform.position = interactionPosition;
+            //RootTransform.position = interactionPosition;
         }
 
         public override void Exit() { }

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Actormachine
@@ -11,9 +10,9 @@ namespace Actormachine
         private Vector3 _direction = Vector3.zero;
         private string _previousName = "None";
 
-        public Animator _animator = null;
+        private RuntimeAnimatorController _previousController;
 
-        private RuntimeAnimatorController _previousAnimatorController = null;
+        private Animator _animator = null;
 
         private new void Awake()
         {
@@ -54,27 +53,34 @@ namespace Actormachine
             }
         }
 
-        public void Enter(RuntimeAnimatorController controller)
+        public RuntimeAnimatorController Controller
+        { 
+            get => _animator.runtimeAnimatorController;
+
+            set => _animator.runtimeAnimatorController = value;
+        }
+
+        public void Enter(RuntimeAnimatorController nextController)
         {
-            if (controller == null)
+            if (nextController == null)
             {
                 return;
             }
 
-            _previousAnimatorController = _animator.runtimeAnimatorController;
-            _animator.runtimeAnimatorController = controller;
+            _previousController = _animator.runtimeAnimatorController;
+            _animator.runtimeAnimatorController = nextController;
 
             _previousName = "Enter";
         }
 
         public void Exit()
         {
-            if (_previousAnimatorController == null)
+            if (_previousController == null)
             {
                 return;
             }
 
-            _animator.runtimeAnimatorController = _previousAnimatorController;
+            _animator.runtimeAnimatorController = _previousController;
             
             _previousName = "Exit";
         }

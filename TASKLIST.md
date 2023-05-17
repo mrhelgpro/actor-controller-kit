@@ -1,5 +1,5 @@
 - Add Scene Manager
-- Add Look at Target
+- Add Look at Target (Chanhe Look Mode) if mouse or gamepad
 - Make ckeck is Mouse or Gamepad
 - <Soundable> - Make footsteps sound
 - <ActivateByInput> - Add Check "Move, Look"
