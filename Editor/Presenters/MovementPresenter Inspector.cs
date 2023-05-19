@@ -10,30 +10,29 @@ namespace Actormachine.Editor
     {
         public override void OnInspectorGUI()
         {
-            DrawPropertiesExcluding(serializedObject, "m_Script");
-            serializedObject.ApplyModifiedProperties();
+            base.OnInspectorGUI();
         }
     }
 
     [ExecuteInEditMode]
     [CustomEditor(typeof(MovementNavigationPresenter))]
+    [CanEditMultipleObjects]
     public class MovementNavigationPresenterInspector : ActorBehaviourInspector
     {
         public override void OnInspectorGUI()
         {
-            DrawPropertiesExcluding(serializedObject, "m_Script");
-            serializedObject.ApplyModifiedProperties();
+            base.OnInspectorGUI();
         }
     }
 
     [ExecuteInEditMode]
     [CustomEditor(typeof(Movement2DPresenter))]
+    [CanEditMultipleObjects]
     public class Movement2DPresenterInspector : ActorBehaviourInspector
     {
         public override void OnInspectorGUI()
         {
-            DrawPropertiesExcluding(serializedObject, "m_Script");
-            serializedObject.ApplyModifiedProperties();
+            base.OnInspectorGUI();
         }
     }
 }

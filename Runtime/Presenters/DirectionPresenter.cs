@@ -27,12 +27,12 @@ namespace Actormachine
         private Inputable _inputable;
         private Animatorable _animatorable;
 
-        public override void Initiation()
+        public override void Initiate()
         {
-            // Get components using "GetComponentInRoot" to create them on <Actor>
+            // Using "AddComponentInRoot" to add or get comppnent on the Root
             _cameraTransform = Camera.main.transform;
-            _inputable = GetComponentInRoot<Inputable>();
-            _animatorable = GetComponentInRoot<Animatorable>();
+            _inputable = AddComponentInRoot<Inputable>();
+            _animatorable = AddComponentInRoot<Animatorable>();
         }
 
         public override void UpdateLoop()

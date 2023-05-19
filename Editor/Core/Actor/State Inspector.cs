@@ -1,3 +1,4 @@
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEditor;
 
@@ -8,44 +9,44 @@ namespace Actormachine.Editor
     [CanEditMultipleObjects]
     public sealed class StateInspector : ActorBehaviourInspector
     {
+        private void OnEnable()
+        {
+            State thisTarget = (State)target;
+
+            if (thisTarget)
+            {
+                // Checking for a single instance on object and destroy duplicates
+                if (thisTarget.gameObject.CheckSingleInstanceOnObject<State>() == false) return;
+
+                // Add Actor in root transform
+                thisTarget.AddComponentInRoot<Actor>();
+
+                // Move Component To Up
+                ComponentUtility.MoveComponentUp(thisTarget);
+            }
+        }
+
         public override void OnInspectorGUI()
         {
             State thisTarget = (State)target;
 
-            // Checking for a single instance in children and destroy duplicates
-            if (thisTarget.gameObject.CheckSingleInstanceOnObject<State>() == false) return;
-
-            // Check Presenter
-            Presenter presenter = thisTarget.gameObject.GetComponent<Presenter>();
-            if (presenter == null)
+            // Draw in Edit mode
+            if (Application.isPlaying == false)
             {
-                Inspector.DrawModelBox("<Presenter> - is not found", BoxStyle.Error);
+                base.OnInspectorGUI();
+                
+                Inspector.DrawInfoBox("UPDATE THE PRESENTER, ACTIVATOR, DEACTIVATOR");
+                
                 return;
             }
 
-            if (Application.isPlaying)
-            {
-                Inspector.DrawHeader(thisTarget.Name);
-                Inspector.DrawHeader(thisTarget.Type.ToString(), 12);
+            // Draw in Play mode
+            string info = thisTarget.IsCurrentState ? "ACTIVE" : "WAITING";
+            BoxStyle style = thisTarget.IsCurrentState ? BoxStyle.Active : BoxStyle.Default;
 
-                Actor actor = thisTarget.gameObject.GetComponentInParent<Actor>();
-
-                if (actor.IsCurrentState(thisTarget))
-                {
-                    Inspector.DrawModelBox("State active", BoxStyle.Active);
-                }
-                else
-                {
-                    Inspector.DrawModelBox("Waiting for state activation");
-                }
-            }
-            else
-            {
-                thisTarget.Name = EditorGUILayout.TextField("Name", thisTarget.Name);
-                thisTarget.Type = (StateType)EditorGUILayout.EnumPopup("Type", thisTarget.Type);
-
-                Inspector.DrawModelBox("Update the Presenter");
-            }
+            Inspector.DrawHeader(thisTarget.Name);
+            Inspector.DrawHeader(thisTarget.Type.ToString(), 12);
+            Inspector.DrawInfoBox(info, style);
 
             EditorUtility.SetDirty(thisTarget);
         }

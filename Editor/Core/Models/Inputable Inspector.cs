@@ -16,34 +16,34 @@ namespace Actormachine.Editor
 
             if (inputController == null)
             {
-                Inspector.DrawModelBox("<InputController> - is not found", BoxStyle.Error);
+                Inspector.DrawInfoBox("<INPUTCONTROLLER> - IS NOT FOUND", BoxStyle.Error);
 
                 return;
             }
 
             if (Application.isPlaying)
             {
-                Inspector.DrawModelBox("Menu", thisTarget.MenuState == true ? BoxStyle.Active : BoxStyle.Default);
+                Inspector.DrawInfoBox("Menu", thisTarget.MenuState == true ? BoxStyle.Active : BoxStyle.Default);
 
                 // public Vector2 PointerScreenPosition;
                 // public Vector2 MoveVector;
                 // public Vector2 LookDelta;
 
-                Inspector.DrawModelBox("Option", thisTarget.OptionState == true ? BoxStyle.Active : BoxStyle.Default);
-                Inspector.DrawModelBox("Cancel", thisTarget.CancelState == true ? BoxStyle.Active : BoxStyle.Default);
-                Inspector.DrawModelBox("Motion", thisTarget.MotionState == true ? BoxStyle.Active : BoxStyle.Default);
-                Inspector.DrawModelBox("Interact", thisTarget.InteractState == true ? BoxStyle.Active : BoxStyle.Default);
+                Inspector.DrawInfoBox("Option", thisTarget.OptionState == true ? BoxStyle.Active : BoxStyle.Default);
+                Inspector.DrawInfoBox("Cancel", thisTarget.CancelState == true ? BoxStyle.Active : BoxStyle.Default);
+                Inspector.DrawInfoBox("Motion", thisTarget.MotionState == true ? BoxStyle.Active : BoxStyle.Default);
+                Inspector.DrawInfoBox("Interact", thisTarget.InteractState == true ? BoxStyle.Active : BoxStyle.Default);
 
-                Inspector.DrawModelBox("Action Left", thisTarget.ActionLeftState == true ? BoxStyle.Active : BoxStyle.Default);
-                Inspector.DrawModelBox("Action Middle", thisTarget.ActionMiddleState == true ? BoxStyle.Active : BoxStyle.Default);
-                Inspector.DrawModelBox("Action Right", thisTarget.ActionRightState == true ? BoxStyle.Active : BoxStyle.Default);
+                Inspector.DrawInfoBox("Action Left", thisTarget.ActionLeftState == true ? BoxStyle.Active : BoxStyle.Default);
+                Inspector.DrawInfoBox("Action Middle", thisTarget.ActionMiddleState == true ? BoxStyle.Active : BoxStyle.Default);
+                Inspector.DrawInfoBox("Action Right", thisTarget.ActionRightState == true ? BoxStyle.Active : BoxStyle.Default);
 
-                Inspector.DrawModelBox("Control", thisTarget.ControlState == true ? BoxStyle.Active : BoxStyle.Default);
-                Inspector.DrawModelBox("Shift", thisTarget.ShiftState == true ? BoxStyle.Active : BoxStyle.Default);
+                Inspector.DrawInfoBox("Control", thisTarget.ControlState == true ? BoxStyle.Active : BoxStyle.Default);
+                Inspector.DrawInfoBox("Shift", thisTarget.ShiftState == true ? BoxStyle.Active : BoxStyle.Default);
             }
             else
             {
-                Inspector.DrawModelBox("Receive input data");
+                Inspector.DrawInfoBox("RECEIVE INPUT DATA");
             }
         }
     }

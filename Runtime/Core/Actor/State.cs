@@ -17,11 +17,11 @@ namespace Actormachine
 
         private Actor _actor;
 
-        public override void Initiation() 
+        public override void Initiate() 
         {
             Bootstrap.Create<BootstrapActor>();
 
-            _actor = GetComponentInRoot<Actor>();
+            _actor = AddComponentInRoot<Actor>();
 
             _activators = new List<Activator>();
             _deactivators = new List<Deactivator>();
@@ -32,14 +32,35 @@ namespace Actormachine
             foreach (Presenter controller in GetComponents<Presenter>()) _presenters.Add(controller); 
         }
 
-        // Actor Methods
-        public bool ActorIsFree => _actor.IsFree;
+        public bool IsCurrentState => _actor.IsCurrentState(this);
 
+        // Activator Loop
+        public void ActivatorLoop()
+        {
+            if (_activators.Count > 0)
+            {
+                foreach (Activator activator in _activators) activator.UpdateLoop();
+
+                return;
+            }
+
+            if (_actor.IsFree)
+            {
+                _actor.Activate(this);
+            }
+        }
+
+        public void DeactivatorLoop()
+        {
+            foreach (Deactivator deactivator in _deactivators) deactivator.UpdateLoop();
+        }
+
+        // Actor Methods
         public void Activate()
         {
             int amountOfReady = 0;
 
-            foreach (Activator activator in _activators) amountOfReady += activator.IsReady ? 1 : 0;
+            foreach (Activator activator in _activators) amountOfReady += activator.IsAvailable ? 1 : 0;
 
             if (amountOfReady == _activators.Count)
             {
@@ -48,17 +69,6 @@ namespace Actormachine
         }
 
         public void Deactivate() => _actor.Deactivate(this);
-
-        // Activator Loop
-        public void ActivatorLoop()
-        {
-            foreach (Activator activator in _activators) activator.UpdateLoop();
-        }
-
-        public void DeactivatorLoop()
-        {
-            foreach (Deactivator deactivator in _deactivators) deactivator.UpdateLoop();
-        }
 
         // Presenter Loop
         public void Enter()
@@ -82,7 +92,12 @@ namespace Actormachine
         }
     }
 
-    public abstract class StateBehaviour : ActorBehaviour
+    /// <summary> 
+    /// Do not use the standard Update, FixedUpdate methods,
+    /// instead use the overrides UpdateLoop, FixedUpdateLoop methods
+    /// </summary>
+    [RequireComponent(typeof(State))]
+    public abstract class Presenter : ActorBehaviour
     {
         private State _state;
 
@@ -94,19 +109,7 @@ namespace Actormachine
         }
 
         public string StateName => _state.Name;
-        public bool ActorIsFree => _state.ActorIsFree;
-        public void Activate() => _state.Activate();
-        public void Deactivate() => _state.Deactivate();
-    }
 
-    /// <summary> 
-    /// Do not use the standard Update, FixedUpdate methods,
-    /// instead use the overrides UpdateLoop, FixedUpdateLoop methods
-    /// </summary>
-    [RequireComponent(typeof(State))]
-    [RequireComponent(typeof(Activator))]
-    public abstract class Presenter : StateBehaviour
-    {
         /// <summary> Called once when "Presenter" starts running. </summary>
         public virtual void Enter() { }
 
@@ -118,5 +121,60 @@ namespace Actormachine
 
         /// <summary> Called once when "Presenter" stops running. </summary>
         public virtual void Exit() { }
+    }
+
+    /// <summary> To activate the Presenters. </summary>
+    public abstract class Activator : ActorBehaviour
+    {
+        private bool _currentAvailable = false;
+        private bool _previousAvailable = false;
+
+        private State _state;
+
+        private new void Awake()
+        {
+            base.Awake();
+
+            _state = GetComponent<State>();
+        }
+
+        // State Methods
+        public bool IsAvailable => _currentAvailable;
+
+        public void SetAvailable(bool value)
+        {
+            _currentAvailable = value;
+
+            if (_previousAvailable != _currentAvailable)
+            {
+                if (_currentAvailable == true)
+                {
+                    _state.Activate();
+                }
+            }
+
+            _previousAvailable = _currentAvailable;
+        }
+
+        /// <summary> Called in Update to check to activate Presenter. </summary>
+        public abstract void UpdateLoop();
+    }
+
+    /// <summary> To deactivate the Presenters. </summary>
+    public abstract class Deactivator : ActorBehaviour
+    {
+        private State _state;
+
+        private new void Awake()
+        {
+            base.Awake();
+
+            _state = GetComponent<State>();
+        }
+
+        public void Deactivate() => _state.Deactivate();
+
+        /// <summary> Called in Update to check to deactivate Presenter. </summary>
+        public abstract void UpdateLoop();
     }
 }

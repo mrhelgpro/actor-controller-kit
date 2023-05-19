@@ -11,10 +11,10 @@ namespace Actormachine
 	/// </summary>
 	public class BootstrapCamera : Bootstrap
 	{
-		public override void Initiation()
+		public override void Initiate()
         {
 			// Finds or creates a Camera
-			Camera camera = FindAnyObjectByType<Camera>();
+			Camera camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 
 			if (camera == null)
 			{
@@ -55,7 +55,6 @@ namespace Actormachine
 
 			// Check Single Instance
 			BootstrapExtantion.IsSingleInstanceOnScene<BootstrapCamera>();
-			BootstrapExtantion.IsSingleInstanceOnScene<Camera>();
 			BootstrapExtantion.IsSingleInstanceOnScene<CinemachineBrain>();
 			BootstrapExtantion.IsSingleInstanceOnScene<ActorVirtualCamera>();
 		}

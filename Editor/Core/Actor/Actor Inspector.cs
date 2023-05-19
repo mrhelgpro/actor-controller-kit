@@ -24,11 +24,8 @@ namespace Actormachine.Editor
                 //Give all child objects the "Actror" layer
                 thisTarget.SetActorLayer(thisTarget.transform);
 
-
                 // Move Component To Root
-                Component component = thisTarget;
-                ComponentUtility.MoveComponentUp(component);
-
+                ComponentUtility.MoveComponentUp(thisTarget);
                 moveToRootTransform();
             }
         }
@@ -37,26 +34,34 @@ namespace Actormachine.Editor
         {
             thisTarget = (Actor)target;
 
-            if (Application.isPlaying)
+            // Draw in Edit mode
+            if (Application.isPlaying == false)
             {
-                Inspector.DrawHeader(thisTarget.Name);
+                base.OnInspectorGUI();
 
-                // Check State Machine
-                List<State> statesList = thisTarget.GetStatesList;
+                initiateChildObjects();
 
-                foreach (State state in statesList)
-                {
-                    bool isStateActive = thisTarget.IsCurrentState(state) == true;
-                    BoxStyle style = isStateActive == true ? BoxStyle.Active : BoxStyle.Default;
-                    Inspector.DrawModelBox(state.gameObject.name, style);
-                }
-
-                EditorUtility.SetDirty(target);
+                return;
             }
-            else
+
+            // Draw in Play mode
+            Inspector.DrawHeader(thisTarget.Name);
+
+            foreach (State state in thisTarget.GetStatesList)
             {
-                thisTarget.Name = EditorGUILayout.TextField("Name", thisTarget.Name);
+                BoxStyle style = state.IsCurrentState == true ? BoxStyle.Active : BoxStyle.Default;
+                Inspector.DrawInfoBox(state.gameObject.name + " (" + state.Name + ")", style);
             }
+
+            EditorUtility.SetDirty(target);
+        }
+
+        /// <summary> Initions all child objects. </summary>
+        private void initiateChildObjects()
+        {
+            ActorBehaviour[] actorBehaviours = thisTarget.GetComponentsInChildren<ActorBehaviour>();
+
+            foreach (ActorBehaviour actorBehaviour in actorBehaviours) actorBehaviour.Initiate();
         }
 
         /// <summary> Checks that the Actor is always on Root Transform. </summary>

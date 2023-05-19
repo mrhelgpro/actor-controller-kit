@@ -15,28 +15,21 @@ namespace Actormachine.Editor
 
 			if (BootstrapExtantion.IsSingleInstanceOnScene<BootstrapCamera>() == false)
 			{
-				Inspector.DrawModelBox("<CameraBootstrap> should be a single", BoxStyle.Warning);
-
-				error = true;
-			}
-
-			if (BootstrapExtantion.IsSingleInstanceOnScene<Camera>() == false)
-			{
-				Inspector.DrawModelBox("<Camera> should be a single", BoxStyle.Warning);
+				Inspector.DrawInfoBox("<CameraBootstrap> should be a single", BoxStyle.Warning);
 
 				error = true;
 			}
 
 			if (BootstrapExtantion.IsSingleInstanceOnScene<CinemachineBrain>() == false)
 			{
-				Inspector.DrawModelBox("<CinemachineBrain> should be a single", BoxStyle.Warning);
+				Inspector.DrawInfoBox("<CinemachineBrain> should be a single", BoxStyle.Warning);
 
 				error = true;
 			}
 
 			if (BootstrapExtantion.IsSingleInstanceOnScene<ActorVirtualCamera>() == false)
 			{
-				Inspector.DrawModelBox("<ActorVirtualCamera> should be a single", BoxStyle.Warning);
+				Inspector.DrawInfoBox("<ActorVirtualCamera> should be a single", BoxStyle.Warning);
 
 				error = true;
 			}
@@ -44,7 +37,7 @@ namespace Actormachine.Editor
 			// Draw a Inspector
 			if (error == false)
 			{
-				Inspector.DrawHeader("CameraBootstrap");
+				Inspector.DrawHeader("Camera Bootstrap");
 
 				// Show Main Camera
 				CinemachineBrain mainCamera = FindAnyObjectByType<CinemachineBrain>();

@@ -19,13 +19,13 @@ namespace Actormachine.Editor
             // Draw a Warning	
             if (BootstrapExtantion.IsSingleInstanceOnScene<BootstrapActor>() == false)
             {
-                Inspector.DrawModelBox("<ActorBootstrap> should be a single", BoxStyle.Warning);
+                Inspector.DrawInfoBox("<ACTORBOOTSTRAP> SHOULD BE A SINGLE", BoxStyle.Warning);
 
                 return;
             }
 
             // Draw a Inspector
-            Inspector.DrawHeader("ActorBootstrap");
+            Inspector.DrawHeader("Actor Bootstrap");
 
             if (BootstrapActor.GetActors.Count > 0)
             {

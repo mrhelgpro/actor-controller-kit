@@ -10,7 +10,7 @@ namespace Actormachine.Editor
     {
         public override void OnInspectorGUI()
         {
-            Inspector.DrawModelBox("Controls speed");
+            Inspector.DrawInfoBox("CONTROLS SPEED");
         }
     }
 }

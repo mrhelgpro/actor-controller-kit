@@ -5,8 +5,9 @@ namespace Actormachine
     public sealed class InputPlayerController : InputController
     {
         public enum MoveMode { Input, Target, Both }
-        public MoveMode MoveDirectionMode = MoveMode.Input;
         public enum TargetMode { LeftAction, MiddleAction, RightAction }
+
+        public MoveMode MoveDirectionMode = MoveMode.Input;
         public TargetMode InputTargetMode = TargetMode.LeftAction;
 
         public LayerMask TargetRequiredLayers;
@@ -16,7 +17,7 @@ namespace Actormachine
         private Transform _cameraTransform;
         private InputActions _inputActions;
 
-        public override void Initiation()
+        public override void Initiate()
         {
             Bootstrap.Create<BootstrapCamera>();
 
@@ -130,11 +131,11 @@ namespace Actormachine
             }
             else if (MoveDirectionMode == MoveMode.Target)
             {
-                if (_targetPosition.IsTargetExists)
+                if (_targetPosition.IsExists)
                 {
-                    if (_targetPosition.GetHorizontalDistance > 0.1f)
+                    if (_targetPosition.GetDistanceHorizontal > 0.1f)
                     {
-                        inputable.MoveVector = _targetPosition.GetHorizontalDirection;
+                        inputable.MoveVector = _targetPosition.GetDirectionHorizontal;
 
                         return;
                     }
@@ -145,11 +146,11 @@ namespace Actormachine
             }
             else
             {
-                if (_targetPosition.IsTargetExists)
+                if (_targetPosition.IsExists)
                 {
-                    if (_targetPosition.GetHorizontalDistance > 0.1f)
+                    if (_targetPosition.GetDistanceHorizontal > 0.1f)
                     {
-                        inputable.MoveVector = _targetPosition.GetHorizontalDirection;
+                        inputable.MoveVector = _targetPosition.GetDirectionHorizontal;
 
                         return;
                     }

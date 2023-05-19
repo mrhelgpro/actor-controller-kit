@@ -39,20 +39,20 @@ namespace Actormachine
         private PhysicsMaterial2D _materialOnTheGround;
         private PhysicsMaterial2D _materialInTheAir;
 
-        public override void Initiation()
+        public override void Initiate()
         {
-            // Get components using "GetComponentInRoot" to create them on <Actor>
-            _inputable = GetComponentInRoot<Inputable>();
-            _animatorable = GetComponentInRoot<Animatorable>();
-            _movable = GetComponentInRoot<Movable>();
-            _positionable = GetComponentInRoot<Positionable2D>();
+            // Using "AddComponentInRoot" to add or get comppnent on the Root
+            _inputable = AddComponentInRoot<Inputable>();
+            _animatorable = AddComponentInRoot<Animatorable>();
+            _movable = AddComponentInRoot<Movable>();
+            _positionable = AddComponentInRoot<Positionable2D>();
 
-            _groundCollider = GetComponentInRoot<CircleCollider2D>();
+            _groundCollider = AddComponentInRoot<CircleCollider2D>();
             _groundCollider.isTrigger = false;
             _groundCollider.radius = 0.25f;
             _groundCollider.offset = new Vector2(0, _groundCollider.radius);
 
-            _rigidbody = GetComponentInRoot<Rigidbody2D>();
+            _rigidbody = AddComponentInRoot<Rigidbody2D>();
             _rigidbody.bodyType = RigidbodyType2D.Kinematic;
 
             _materialInTheAir = Resources.Load<PhysicsMaterial2D>("Physic2D/Player In The Air");

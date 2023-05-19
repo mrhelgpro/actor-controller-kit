@@ -8,7 +8,7 @@ namespace Actormachine
 
         public static List<Actor> GetActors => _actorList;
 
-        public override void Initiation()
+        public override void Initiate()
         {
             // Update all Actors    
             findAllActors();

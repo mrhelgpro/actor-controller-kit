@@ -16,6 +16,51 @@ namespace Actormachine.Editor
         private static Color Green = new Color(0.50f, 0.80f, 0.50f, 1f);
         private static Color LightGreen = new Color(0.85f, 0.95f, 0.85f, 1f);
 
+        ///<summary> Checking for a single instance on Scene. </summary>
+        public static bool CheckSingleInstanceOnScene<T>() where T : Component
+        {
+            T requireComponent = GameObject.FindAnyObjectByType<T>();
+
+            if (requireComponent == null)
+            {
+                DrawInfoBox("<" + typeof(T).ToString() + "> is not found", BoxStyle.Error);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        ///<summary> Checking for a single instance on gameObject and destroy duplicates. </summary>
+        public static bool CheckSingleInstanceOnObject<T>(this GameObject gameObject) where T : Component
+        {
+            if (gameObject.IsSingleInstanceOnObject<T>() == false)
+            {
+                T[] requireComponent = gameObject.GetComponents<T>();
+
+                GameObject.DestroyImmediate(requireComponent[1]);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        ///<summary> Checking for a single instance in children and destroy duplicates. </summary>
+        public static bool CheckSingleInstanceInChildren<T>(this GameObject gameObject) where T : Component
+        {
+            if (gameObject.IsSingleInstanceInChildren<T>() == false)
+            {
+                T[] requireComponent = gameObject.GetComponentsInChildren<T>();
+
+                GameObject.DestroyImmediate(requireComponent[1]);
+
+                return false;
+            }
+
+            return true;
+        }
+
         public static void ShowLink(MonoBehaviour monoScript)
         {
             // Show script Link
@@ -85,52 +130,7 @@ namespace Actormachine.Editor
             }
         }
 
-        ///<summary> Checking for a single instance on Scene. </summary>
-        public static bool CheckSingleInstanceOnScene<T>() where T : Component
-        {
-            T requireComponent = GameObject.FindAnyObjectByType<T>();
-
-            if (requireComponent == null)
-            {
-                DrawModelBox("<" + typeof(T).ToString() + "> is not found", BoxStyle.Error);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        ///<summary> Checking for a single instance on gameObject and destroy duplicates. </summary>
-        public static bool CheckSingleInstanceOnObject<T>(this GameObject gameObject) where T : Component
-        {
-            if (gameObject.IsSingleInstanceOnObject<T>() == false)
-            {
-                T[] requireComponent = gameObject.GetComponents<T>();
-
-                GameObject.DestroyImmediate(requireComponent[1]);
-
-                return false;
-            }
-
-            return true;
-        }
-
-        ///<summary> Checking for a single instance in children and destroy duplicates. </summary>
-        public static bool CheckSingleInstanceInChildren<T>(this GameObject gameObject) where T : Component
-        {
-            if (gameObject.IsSingleInstanceInChildren<T>() == false)
-            {
-                T[] requireComponent = gameObject.GetComponentsInChildren<T>();
-
-                GameObject.DestroyImmediate(requireComponent[1]);
-
-                return false;
-            }
-
-            return true;
-        }
-
-        public static void DrawModelBox(string info, BoxStyle boxStyle = BoxStyle.Default)
+        public static void DrawInfoBox(string info, BoxStyle boxStyle = BoxStyle.Default)
         {
             Color backgroundColor = Gray;
             Color textColor = Dark;

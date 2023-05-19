@@ -6,10 +6,10 @@ namespace Actormachine
     /// <summary> Checks or creates all required components. </summary>
     public abstract class Bootstrap : MonoBehaviour
     {
-        private void Awake() => Initiation();
+        private void Awake() => Initiate();
 
         /// <summary> In Play Mode it is called once when Awake, in Edit Mode it is called constantly as an Update. </summary>
-        public abstract void Initiation();
+        public abstract void Initiate();
 
         /// <summary> Create the required <see cref="Bootstrap"/> to get all the dependent components. </summary>
         public static T Create<T>() where T : Bootstrap
@@ -33,7 +33,6 @@ namespace Actormachine
                 currentBootstrap = parentBootstrap.gameObject.AddComponent<T>();
 
                 currentBootstrap.transform.SetAsFirstSibling();
-                EditorGUIUtility.PingObject(currentBootstrap.gameObject);
             }
 
             currentBootstrap.transform.name = "Bootstrap";

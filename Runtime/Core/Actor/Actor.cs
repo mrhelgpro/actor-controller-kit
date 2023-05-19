@@ -19,6 +19,11 @@ namespace Actormachine
             BootstrapActor.AddActor(this);
         }
 
+        /*
+        private void Update() => UpdateLoop();
+        private void FixedUpdate() => FixedUpdateLoop();
+        */
+
         public void UpdateLoop()
         {
             foreach (State state in _statesList)

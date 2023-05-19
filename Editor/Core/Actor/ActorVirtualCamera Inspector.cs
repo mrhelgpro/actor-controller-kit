@@ -21,11 +21,11 @@ namespace Actormachine.Editor
 
             if (thisTarget.IsLock == true)
             {
-                Inspector.DrawModelBox("Locked", BoxStyle.Warning);
+                Inspector.DrawInfoBox("LOCKED", BoxStyle.Warning);
             }
             else
             {
-                Inspector.DrawModelBox("Edited in the Presenter");
+                Inspector.DrawInfoBox("EDITED IN THE PRESENTER");
             }
         }
     }

@@ -12,10 +12,8 @@ namespace Actormachine.Editor
         {
             AnimatorPresenter thisTarget = (AnimatorPresenter)target;
 
-            if (thisTarget.Controller == null)
-            {
-                Inspector.DrawModelBox("You need to add an AnimatorController", BoxStyle.Error);
-            }
+            string info = thisTarget.Controller == null ? "PLAYS ANIMATION" : "SWITCHES TO - " + thisTarget.Controller.name;
+            Inspector.DrawInfoBox(info);
 
             base.OnInspectorGUI();
         }

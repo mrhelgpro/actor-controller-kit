@@ -13,10 +13,14 @@ namespace Actormachine
 
             Collider collider = GetComponent<Collider>();
             
-            if (collider)
+            if (collider == null)
             {
-                collider.isTrigger = true;
+                Debug.LogWarning("<Collider> is not found");    
+
+                return;
             }
+
+            collider.isTrigger = true;
         }
 #endif
 

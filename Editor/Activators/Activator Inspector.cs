@@ -8,37 +8,38 @@ namespace Actormachine.Editor
     [CanEditMultipleObjects]
     public class ActivatorInspector : ActorBehaviourInspector
     {
-        public void DrawActivator()
+        public override void OnInspectorGUI()
         {
             Activator thisTarget = (Activator)target;
 
-            // Check Presenter
-            Presenter presenter = thisTarget.gameObject.GetComponent<Presenter>();
-            if (presenter == null)
+            if (Application.isPlaying == false)
             {
-                Inspector.DrawModelBox("<Presenter> - is not found", BoxStyle.Error);
-                return;
+                Inspector.DrawInfoBox("ACTIVATES THE PRESENTER");
             }
-        }
+            else
+            {
+                string info = thisTarget.IsAvailable ? "AVAILABLE" : "WAITING";
+                BoxStyle style = thisTarget.IsAvailable ? BoxStyle.Active : BoxStyle.Default;
+                Inspector.DrawInfoBox(info, style);
+            }
 
-        public override void OnInspectorGUI()
-        {
-            DrawActivator();
-
-            Inspector.DrawModelBox("Activated by free");
+            base.OnInspectorGUI();
         }
     }
 
     [ExecuteInEditMode]
     [CustomEditor(typeof(ActivatorByInput))]
+    [CanEditMultipleObjects]
     public class ActivatorByInputInspector : ActivatorInspector
     {
-        public override void OnInspectorGUI()
-        { 
-            DrawActivator();
+        public override void OnInspectorGUI() => base.OnInspectorGUI();
+    }
 
-            DrawPropertiesExcluding(serializedObject, "m_Script");
-            serializedObject.ApplyModifiedProperties();
-        }
+    [ExecuteInEditMode]
+    [CustomEditor(typeof(ActivatorByInteraction))]
+    [CanEditMultipleObjects]
+    public class ActivatorByInteractionInspector : ActivatorInspector
+    {
+        public override void OnInspectorGUI() => base.OnInspectorGUI();
     }
 }

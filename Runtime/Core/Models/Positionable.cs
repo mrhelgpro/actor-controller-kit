@@ -23,6 +23,7 @@ namespace Actormachine
 
         protected LayerMask groundLayer;
         protected int layerMask;
+        protected float radiusGroundCheck = 0.2f;
 
         private void Start()
         {
@@ -51,12 +52,12 @@ namespace Actormachine
 
         protected virtual void GroundCheck()
         {
-            IsGrounded = Physics.CheckSphere(RootTransform.position, 0.2f, groundLayer);
+            IsGrounded = Physics.CheckSphere(RootTransform.position, radiusGroundCheck * 0.75f, groundLayer);
         }
 
         protected virtual void SurfaceCheck()
         {
-            float offsetHeight = 0.25f;
+            float offsetHeight = radiusGroundCheck;
             float length = 2.0f;
             RaycastHit hit;
             Vector3 origin = new Vector3(RootTransform.position.x, RootTransform.position.y + offsetHeight, RootTransform.position.z);
@@ -70,7 +71,7 @@ namespace Actormachine
         protected virtual void ObstacleCheck()
         {
             float offsetHeight = 0.25f;
-            float length = 0.35f;
+            float length = 0.25f;
             RaycastHit hit;
             Vector3 origin = new Vector3(RootTransform.position.x, RootTransform.position.y + offsetHeight, RootTransform.position.z);
             Physics.Raycast(origin, RootTransform.TransformDirection(Vector3.forward), out hit, length);
@@ -81,16 +82,16 @@ namespace Actormachine
 
         protected virtual void AbyssCheck()
         {
-            float offsetHeight = 0.25f;    
-            float length = 1.125f + offsetHeight;
+            float offsetHeight = 0.25f;
+            float length = 3.125f + offsetHeight;
             float offsetForward = 0.25f;
-            float edgeDistance = 0.125f + offsetHeight;
+            float edgeDistance = 0.5f + offsetHeight;
             RaycastHit hit;
             Vector3 origin = new Vector3(RootTransform.position.x, RootTransform.position.y + offsetHeight, RootTransform.position.z) + (RootTransform.TransformDirection(Vector3.forward) * offsetForward);
             Physics.Raycast(origin, Vector3.down, out hit, length);
 
-            IsAbyss = hit.collider == null;
-            IsEdge = hit.collider == null ? false : IsGrounded ? hit.distance > edgeDistance : false;
+            IsAbyss = IsGrounded == false ? false : hit.collider == null;
+            IsEdge = IsGrounded == false ? false : hit.collider != null && hit.distance > edgeDistance;//hit.collider == null ? false : IsGrounded ? hit.distance > edgeDistance : false;
         }
     }
 }

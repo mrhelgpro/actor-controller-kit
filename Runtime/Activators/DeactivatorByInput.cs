@@ -9,26 +9,13 @@ namespace Actormachine
 
         [Tooltip("The event when the controller will be deactivated")]
         public Mode DeactivateMode = Mode.None;
+        public InputableCompare InputableCompare;
 
-        // KEYBOARD            X-BOX             DUALSHOCK       GAMEPAD
-        public bool Option;          // Q                   Y                 Triangle        North
-        public bool Cancel;          // Backspace / C       B                 Circle          East
-        public bool Motion;          // Space               A                 Cross           South
-        public bool Interact;        // E                   X                 Square          West
+        private Inputable _inputable;
 
-        public bool ActionLeft;      // Left Mouse          Right Bumper      R1              Right Shoulder
-        public bool ActionMiddle;    // Middle Mouse
-        public bool ActionRight;     // Right Mouse         Right Trigger     R2              Right Trigger
-
-        public bool Control;         // Left Ctrl           Left Trigget      L2              Left Trigget
-        public bool Shift;           // Left Shift          Left Bumper       L1              Left Shoulder
-
-        protected Inputable inputable;
-
-        public override void Initiation()
+        public override void Initiate()
         {
-            // Get components using "GetComponentInRoot" to create them on <Actor>
-            inputable = GetComponentInRoot<Inputable>();
+            _inputable = AddComponentInRoot<Inputable>();
         }
 
         private bool _isRepeatedPressing = false;
@@ -37,14 +24,14 @@ namespace Actormachine
         {
             if (DeactivateMode == Mode.RepeatedPressing)
             {
-                if (_isButtonPress == false)
+                if (InputableCompare.IsEquals(_inputable) == false)
                 {
                     _isRepeatedPressing = true;
                 }
 
                 if (_isRepeatedPressing == true)
                 {
-                    if (_isButtonPress == true)
+                    if (InputableCompare.IsEquals(_inputable) == true)
                     {
                         Deactivate();
 
@@ -54,30 +41,10 @@ namespace Actormachine
             }
             else if (DeactivateMode == Mode.ActiveWhileHolding)
             {
-                if (_isButtonPress == false)
+                if (InputableCompare.IsEquals(_inputable) == false)
                 {
                     Deactivate();
                 }
-            }
-        }
-
-        private bool _isButtonPress
-        {
-            get
-            {
-                if (Option == true && inputable.OptionState == false) return false;
-                if (Cancel == true && inputable.CancelState == false) return false;
-                if (Motion == true && inputable.MotionState == false) return false;
-                if (Interact == true && inputable.InteractState == false) return false;
-
-                if (ActionLeft == true && inputable.ActionLeftState == false) return false;
-                if (ActionMiddle == true && inputable.ActionMiddleState == false) return false;
-                if (ActionRight == true && inputable.ActionRightState == false) return false;
-
-                if (Control == true && inputable.ControlState == false) return false;
-                if (Shift == true && inputable.ShiftState == false) return false;
-
-                return true;
             }
         }
     }

@@ -26,8 +26,5 @@ namespace Actormachine
         // Change Value
         public void ChangeSpeed(float value) => _speedScale += value;
         public void ChangeGravity(float value) => _gravityScale += value;
-
-        // SetValue
-
     }
 }

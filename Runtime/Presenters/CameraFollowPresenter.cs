@@ -15,13 +15,13 @@ namespace Actormachine
         private Inputable _inputable;
         private ActorVirtualCamera _actorVirtualCamera;
 
-        public override void Initiation()
+        public override void Initiate()
         {
             // Check Bootstrap
             Bootstrap.Create<BootstrapCamera>();
-            
-            // Get components using "GetComponentInRoot" to create them on <Actor>
-            _inputable = GetComponentInRoot<Inputable>();
+
+            // Using "AddComponentInRoot" to add or get comppnent on the Root
+            _inputable = AddComponentInRoot<Inputable>();
             _actorVirtualCamera = FindAnyObjectByType<ActorVirtualCamera>();
 
             // Check Required Component

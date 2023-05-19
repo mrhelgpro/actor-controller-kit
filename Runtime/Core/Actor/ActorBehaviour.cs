@@ -13,14 +13,14 @@ namespace Actormachine
             RootTransform = FindRootTransform;
             ThisTransform = transform;
 
-            Initiation();
+            Initiate();
         }
 
         /// <summary> In Play Mode it is called once when Awake, in Edit Mode it is called constantly as an Update. </summary>
-        public virtual void Initiation() { }
+        public virtual void Initiate() { }
 
-        /// <summary> Returns or creates the required component on the Actor. </summary>
-        public T GetComponentInRoot<T>() where T : Component
+        /// <summary> Add or Get the component on the Root. </summary>
+        public T AddComponentInRoot<T>() where T : Component
         {
             GameObject root = FindRootTransform.gameObject;
 

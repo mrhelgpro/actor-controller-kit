@@ -9,17 +9,17 @@ namespace Actormachine
         private Animatorable _animatorable;
 
         // Presenter Methods
-        public override void Initiation()
+        public override void Initiate()
         {
-            _animatorable = GetComponentInRoot<Animatorable>();
-
-            if (Controller == null)
-            {
-                Debug.LogWarning(gameObject.name + " - You need to add an AnimatorController");
-            }
+            // Using "AddComponentInRoot" to add or get comppnent on the Root    
+            _animatorable = AddComponentInRoot<Animatorable>();
         }
 
-        public override void Enter() => _animatorable.Enter(Controller);
+        public override void Enter()
+        {
+            _animatorable.Enter(Controller);
+            _animatorable.Play(StateName);
+        }
 
         public override void Exit() => _animatorable.Exit();
     }

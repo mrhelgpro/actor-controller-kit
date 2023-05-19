@@ -24,15 +24,15 @@ namespace Actormachine
         // Unity Components
         private NavMeshAgent _navMeshAgent;
 
-        public override void Initiation()
+        public override void Initiate()
         {
-            // Get components using "GetComponentInRoot" to create them on <Actor>
-            _inputable = GetComponentInRoot<Inputable>();
-            _animatorable = GetComponentInRoot<Animatorable>();
-            _movable = GetComponentInRoot<Movable>();
-            _positionable = GetComponentInRoot<Positionable>();
+            // Using "AddComponentInRoot" to add or get comppnent on the Root
+            _inputable = AddComponentInRoot<Inputable>();
+            _animatorable = AddComponentInRoot<Animatorable>();
+            _movable = AddComponentInRoot<Movable>();
+            _positionable = AddComponentInRoot<Positionable>();
 
-            _navMeshAgent = GetComponentInRoot<NavMeshAgent>();
+            _navMeshAgent = AddComponentInRoot<NavMeshAgent>();
             _navMeshAgent.updateRotation = false;
         }
 

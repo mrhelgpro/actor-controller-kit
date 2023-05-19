@@ -1,9 +1,15 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
+public enum ActionTime { Enter, Exit }
 
 namespace Actormachine
 {
-    public class GrabberPresenter : Presenter
+    public class ThrowerPresenter : Presenter
     {
+        public ActionTime ActionTime = ActionTime.Enter;
+
         // Model Components
         private Interactable _interactable;
 

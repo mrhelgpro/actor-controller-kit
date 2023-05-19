@@ -14,20 +14,21 @@ namespace Actormachine.Editor
 
             if (Application.isPlaying == false)
             {
-                Inspector.DrawModelBox("Ñhecks position data");
+                Inspector.DrawInfoBox("CHECK POSITION DATA");
             }
             else
             {
-                Inspector.DrawModelBox("Ground: " + thisTarget.SurfaceType, thisTarget.IsGrounded ? BoxStyle.Active : BoxStyle.Default);
-                Inspector.DrawModelBox("Obstacle: " + (thisTarget.ObstacleTransform == null ? "None" : thisTarget.ObstacleTransform.name), thisTarget.IsObstacle ? BoxStyle.Active : BoxStyle.Default);
-                Inspector.DrawModelBox("Edge", thisTarget.IsEdge ? BoxStyle.Active : BoxStyle.Default);
-                Inspector.DrawModelBox("Abyss", thisTarget.IsAbyss ? BoxStyle.Active : BoxStyle.Default);
+                Inspector.DrawInfoBox("GROUND: " + thisTarget.SurfaceType, thisTarget.IsGrounded ? BoxStyle.Active : BoxStyle.Default);
+                Inspector.DrawInfoBox("OBSTACLE: " + (thisTarget.ObstacleTransform == null ? "None" : thisTarget.ObstacleTransform.name), thisTarget.IsObstacle ? BoxStyle.Active : BoxStyle.Default);
+                Inspector.DrawInfoBox("EDGE", thisTarget.IsEdge ? BoxStyle.Active : BoxStyle.Default);
+                Inspector.DrawInfoBox("ABYSS", thisTarget.IsAbyss ? BoxStyle.Active : BoxStyle.Default);
             }
         }
     }
 
     [ExecuteInEditMode]
     [CustomEditor(typeof(Positionable2D))]
+    [CanEditMultipleObjects]
     public class Positionable2DInspector : PositionableInspector
     {
         public override void OnInspectorGUI()

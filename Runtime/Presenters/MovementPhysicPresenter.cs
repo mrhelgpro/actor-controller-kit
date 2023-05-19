@@ -37,22 +37,19 @@ namespace Actormachine
         private PhysicMaterial _materialInTheAir;
 
         // Presenter Methods
-        public override void Initiation() 
+        public override void Initiate() 
         {
-            // Get components using "GetComponentInRoot" to create them on <Actor>
-            _inputable = GetComponentInRoot<Inputable>();
-            _animatorable = GetComponentInRoot<Animatorable>();
-            _movable = GetComponentInRoot<Movable>();
-            _positionable = GetComponentInRoot<Positionable>();
+            // Using "AddComponentInRoot" to add or get comppnent on the Root
+            _inputable = AddComponentInRoot<Inputable>();
+            _animatorable = AddComponentInRoot<Animatorable>();
+            _movable = AddComponentInRoot<Movable>();
+            _positionable = AddComponentInRoot<Positionable>();
 
-            _groundCollider = GetComponentInRoot<SphereCollider>();
-            _groundCollider.isTrigger = false;
-            _groundCollider.radius = 0.25f;
-            _groundCollider.center = new Vector3(0, _groundCollider.radius, 0);
+            _groundCollider = AddComponentInRoot<SphereCollider>();
+            setParametersCollider();
 
-            _rigidbody = GetComponentInRoot<Rigidbody>();
-            _rigidbody.useGravity = false;
-            _rigidbody.isKinematic = true;
+            _rigidbody = AddComponentInRoot<Rigidbody>();
+            setParametersRigidbody();
 
             _materialInTheAir = Resources.Load<PhysicMaterial>("Physic/Player In The Air");
             _materialOnTheGround = Resources.Load<PhysicMaterial>("Physic/Player On The Ground");
@@ -60,27 +57,15 @@ namespace Actormachine
 
         public override void Enter()
         {
-            _groundCollider.isTrigger = false;
-            _groundCollider.radius = 0.25f;
-            _groundCollider.center = new Vector3(0, _groundCollider.radius, 0);
-
-            //_currentVelocity = Vector3.zero;
-            _rigidbody.mass = 1;
-            _rigidbody.drag = 0;
-            _rigidbody.angularDrag = 0.05f;
-            _rigidbody.useGravity = false;
-            _rigidbody.isKinematic = false;
-            _rigidbody.interpolation = RigidbodyInterpolation.None;
-            _rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
-            _rigidbody.constraints = RigidbodyConstraints.None;
-            _rigidbody.freezeRotation = true;
-            _rigidbody.velocity = Vector3.zero;
+            setParametersCollider();
+            setParametersRigidbody();
         }
 
         public override void UpdateLoop()
         {
+            setParametersMaterial();
+
             jumpLoop();
-            materialLoop();
         }
 
         public override void FixedUpdateLoop()
@@ -170,9 +155,30 @@ namespace Actormachine
             }
         }
 
-        private void materialLoop()
+        private void setParametersMaterial()
         {
             _groundCollider.material = _positionable.IsGrounded && _positionable.IsObstacle == false ? _materialOnTheGround : _materialInTheAir;
+        }
+
+        private void setParametersCollider()
+        {
+            _groundCollider.isTrigger = false;
+            _groundCollider.radius = 0.2f;
+            _groundCollider.center = new Vector3(0, _groundCollider.radius, 0);
+        }
+
+        private void setParametersRigidbody()
+        {
+            _rigidbody.mass = 1;
+            _rigidbody.drag = 0;
+            _rigidbody.angularDrag = 0.05f;
+            _rigidbody.useGravity = false;
+            _rigidbody.isKinematic = false;
+            _rigidbody.interpolation = RigidbodyInterpolation.None;
+            _rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+            _rigidbody.constraints = RigidbodyConstraints.None;
+            _rigidbody.freezeRotation = true;
+            _rigidbody.velocity = Vector3.zero;
         }
     }
 }
