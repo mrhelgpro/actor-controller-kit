@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Actormachine
 {
     /// <summary> Model - to control the Animator. </summary>
-    public class Animatorable : ActorBehaviour
+    public class Animatorable : ModelBehaviour
     {          
         // Parameters
         private float _speed = 0;
@@ -51,13 +51,6 @@ namespace Actormachine
                     _animator.SetFloat("DirectionZ", _direction.z);
                 }
             }
-        }
-
-        public RuntimeAnimatorController Controller
-        { 
-            get => _animator.runtimeAnimatorController;
-
-            set => _animator.runtimeAnimatorController = value;
         }
 
         public void Enter(RuntimeAnimatorController nextController)

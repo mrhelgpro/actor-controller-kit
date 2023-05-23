@@ -4,7 +4,7 @@ namespace Actormachine
 {
     public sealed class ActivatorByInteraction : Activator
     {
-        public string TargetTag = "Any";
+        public string TargetTag = "Player";
 
         // Model Components
         private Interactable _interactable;
@@ -12,11 +12,11 @@ namespace Actormachine
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            TargetTag = TargetTag == "" ? "Any" : TargetTag;
+            TargetTag = TargetTag == "" ? "Player" : TargetTag;
         }
 #endif
 
-        public override void Initiate()
+        public override void Enable()
         {
             // Using "AddComponentInRoot" to add or get comppnent on the Root
             _interactable = AddComponentInRoot<Interactable>();
@@ -24,17 +24,7 @@ namespace Actormachine
 
         public override void UpdateLoop()
         {
-            if (_interactable.Target.IsExists)
-            {
-                if (TargetTag == "Any" ? true : _interactable.Target.IsTag(TargetTag))
-                {
-                    SetAvailable(true);
 
-                    return;
-                }
-            }
-
-            SetAvailable(false);
         }
     }
 }

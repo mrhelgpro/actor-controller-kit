@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Actormachine
 {
     /// <summary> Model - for speed control. </summary>
-    public class Movable : ActorBehaviour
+    public class Movable : ModelBehaviour
     {
         // Movable Fields
         private float _speedScale = 1;

@@ -9,14 +9,11 @@ namespace Actormachine
         private Animatorable _animatorable;
 
         // Presenter Methods
-        public override void Initiate()
+        public override void Enter()
         {
             // Using "AddComponentInRoot" to add or get comppnent on the Root    
             _animatorable = AddComponentInRoot<Animatorable>();
-        }
 
-        public override void Enter()
-        {
             _animatorable.Enter(Controller);
             _animatorable.Play(StateName);
         }

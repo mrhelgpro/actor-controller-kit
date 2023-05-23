@@ -17,13 +17,6 @@ namespace Actormachine
         private Transform _cameraTransform;
         private InputActions _inputActions;
 
-        public override void Initiate()
-        {
-            Bootstrap.Create<BootstrapCamera>();
-
-            gameObject.tag = "Player";
-        }
-
         private new void Awake()
         {
             base.Awake();

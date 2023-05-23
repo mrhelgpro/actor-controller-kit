@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Actormachine
 {
     /// <summary> Model - to receive input data. </summary>
-    public class Inputable : ActorBehaviour
+    public class Inputable : ModelBehaviour
     {
         // KEYBOARD            X-BOX             DUALSHOCK       GAMEPAD
         public bool MenuState;                          // Escape
@@ -76,6 +76,11 @@ namespace Actormachine
 
             inputable = AddComponentInRoot<Inputable>();
         }
+    }
+
+    public interface IInputConteroller
+    { 
+        // TODO
     }
 
     /// <summary> Extensions for the input system. </summary>

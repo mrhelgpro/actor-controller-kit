@@ -27,7 +27,7 @@ namespace Actormachine
         private Inputable _inputable;
         private Animatorable _animatorable;
 
-        public override void Initiate()
+        public override void Enter()
         {
             // Using "AddComponentInRoot" to add or get comppnent on the Root
             _cameraTransform = Camera.main.transform;

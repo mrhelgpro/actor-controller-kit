@@ -19,8 +19,8 @@ namespace Actormachine.Editor
                 return;
             }
 
-            string info = thisTarget.Target.IsExists ? thisTarget.Target.GetName : "None";
-            BoxStyle style = thisTarget.Target.IsExists ? BoxStyle.Active : BoxStyle.Default;
+            string info = thisTarget.Target == null ? "None" : thisTarget.Target.name;
+            BoxStyle style = thisTarget.Target == null ? BoxStyle.Default : BoxStyle.Active;
 
             Inspector.DrawInfoBox(info, style);
         }

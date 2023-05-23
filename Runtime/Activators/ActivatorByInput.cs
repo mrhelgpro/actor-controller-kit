@@ -8,14 +8,15 @@ namespace Actormachine
         
         private Inputable _inputable;
 
-        public override void Initiate()
+        public override void Enable()
         {
+            // Using "AddComponentInRoot" to add or get comppnent on the Root
             _inputable = AddComponentInRoot<Inputable>();
         }
 
         public override void UpdateLoop()
         {
-            SetAvailable(InputableCompare.IsEquals(_inputable));
+            SetActive(InputableCompare.IsEquals(_inputable));
         }
     }
 }

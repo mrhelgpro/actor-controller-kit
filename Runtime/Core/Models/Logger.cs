@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public class Logger : ActorBehaviour
+    public class Logger : ModelBehaviour
     {
         public float Height;
         public float Speed;

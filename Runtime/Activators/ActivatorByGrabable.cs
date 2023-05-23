@@ -6,8 +6,9 @@ namespace Actormachine
     {
         // Model Components
         private Interactable _interactable;
+        private int _countGrabbable;
 
-        public override void Initiate()
+        public override void Enable()
         {
             // Using "AddComponentInRoot" to add or get comppnent on the Root
             _interactable = AddComponentInRoot<Interactable>();
@@ -15,7 +16,7 @@ namespace Actormachine
 
         public override void UpdateLoop()
         {
-
+            SetActive(_countGrabbable > 0);
         }
 
         private void OnTriggerEnter(Collider collider)
@@ -24,17 +25,24 @@ namespace Actormachine
 
             if (grabbable)
             {
-                _interactable.SetTarget(grabbable.transform);
+                if (_interactable.IsExists(collider.transform) == false)
+                {
+                    _interactable.Add(collider.transform);
+                    _countGrabbable++;
+                }
             }
         }
 
         private void OnTriggerExit(Collider collider)
         {
-            if (_interactable.Target.IsExists)
+            Grabbable grabbable = collider.GetComponent<Grabbable>();
+
+            if (grabbable)
             {
-                if (collider.transform == _interactable.Target.GetTransform)
+                if (_interactable.IsExists(collider.transform))
                 {
-                    _interactable.Target.Clear();
+                    _interactable.Remove(collider.transform);
+                    _countGrabbable--;
                 }
             }
         }

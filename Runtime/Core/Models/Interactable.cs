@@ -1,19 +1,41 @@
+using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace Actormachine
 {
-    public class Interactable : ActorBehaviour
+    public class Interactable : ModelBehaviour
     {
-        public Target Target;
+        public Transform Target;
 
-        public void SetTarget(Transform target)
+        private List<Transform> _targets = new List<Transform>();
+        public bool IsExists(Transform target) => _targets.Exists(t => t == target);
+
+        public void Add(Transform target)
         {
-            Target = new Target(RootTransform, target);
+            _targets.Add(target);
         }
 
-        public void SetTarget(Transform target, Vector3 position)
+        public void Remove(Transform target)
         {
-            Target = new Target(RootTransform, target, position);
+            _targets.Remove(target);
         }
+
+        public void SetTargetByType<T>() where T : ModelBehaviour
+        {
+            foreach (Transform target in _targets)
+            {
+                if (target.GetComponent<T>() == null) break;
+
+                Target = target;
+
+                return;
+            }
+        }
+
+        public void SetNearestTargetByType<T>() where T : ModelBehaviour
+        {
+            //TODO
+        }     
     }
 }

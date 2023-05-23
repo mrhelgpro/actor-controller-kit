@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public class Grabbable : MonoBehaviour
+    public class Grabbable : ModelBehaviour
     {
-
+        // It's just a marker
     }
 }

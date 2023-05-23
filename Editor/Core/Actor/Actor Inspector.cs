@@ -21,8 +21,8 @@ namespace Actormachine.Editor
                 // Checking for a single instance in children and destroy duplicates
                 if (thisTarget.gameObject.CheckSingleInstanceInChildren<Actor>() == false) return;
 
-                //Give all child objects the "Actror" layer
-                thisTarget.SetActorLayer(thisTarget.transform);
+                //Give object the "Actror" layer
+                thisTarget.gameObject.layer = LayerMask.NameToLayer("Actor");
 
                 // Move Component To Root
                 ComponentUtility.MoveComponentUp(thisTarget);
@@ -39,8 +39,6 @@ namespace Actormachine.Editor
             {
                 base.OnInspectorGUI();
 
-                initiateChildObjects();
-
                 return;
             }
 
@@ -49,19 +47,11 @@ namespace Actormachine.Editor
 
             foreach (State state in thisTarget.GetStatesList)
             {
-                BoxStyle style = state.IsCurrentState == true ? BoxStyle.Active : BoxStyle.Default;
+                BoxStyle style = state.IsActive == true ? BoxStyle.Active : BoxStyle.Default;
                 Inspector.DrawInfoBox(state.gameObject.name + " (" + state.Name + ")", style);
             }
 
             EditorUtility.SetDirty(target);
-        }
-
-        /// <summary> Initions all child objects. </summary>
-        private void initiateChildObjects()
-        {
-            ActorBehaviour[] actorBehaviours = thisTarget.GetComponentsInChildren<ActorBehaviour>();
-
-            foreach (ActorBehaviour actorBehaviour in actorBehaviours) actorBehaviour.Initiate();
         }
 
         /// <summary> Checks that the Actor is always on Root Transform. </summary>

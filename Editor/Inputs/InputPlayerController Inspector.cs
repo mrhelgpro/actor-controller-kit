@@ -12,6 +12,8 @@ namespace Actormachine
         {
             InputPlayerController thisTarget = (InputPlayerController)target;
 
+            thisTarget.gameObject.tag = "Player";
+
             // Show Enum Mode
             if (thisTarget.MoveDirectionMode == InputPlayerController.MoveMode.Input)
             {

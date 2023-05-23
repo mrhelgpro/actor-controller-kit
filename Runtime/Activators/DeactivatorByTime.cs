@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Actormachine
@@ -10,6 +8,8 @@ namespace Actormachine
 
         private float _timer = 0;
 
+        public override void Enable() { }
+
         public override void UpdateLoop()
         {
             _timer += Time.deltaTime;
@@ -17,7 +17,7 @@ namespace Actormachine
             if (_timer >= Duration)
             {
                 Deactivate();
-                _timer = 0;
+                _timer = 0; // FIXED IT!!!!!!!!!!!!!!!!!!!!!!!!!!!
             }
         }
     }

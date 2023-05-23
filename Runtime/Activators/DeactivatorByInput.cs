@@ -5,16 +5,17 @@ namespace Actormachine
     /// <summary> To deactivate the Presenters. </summary>
     public class DeactivatorByInput : Deactivator
     {
-        public enum Mode { None, RepeatedPressing, ActiveWhileHolding }
+        public enum Mode { Hold, Press }
 
         [Tooltip("The event when the controller will be deactivated")]
-        public Mode DeactivateMode = Mode.None;
+        public Mode DeactivateMode = Mode.Hold;
         public InputableCompare InputableCompare;
 
         private Inputable _inputable;
 
-        public override void Initiate()
+        public override void Enable()
         {
+            // Using "AddComponentInRoot" to add or get comppnent on the Root
             _inputable = AddComponentInRoot<Inputable>();
         }
 
@@ -22,7 +23,7 @@ namespace Actormachine
 
         public override void UpdateLoop()
         {
-            if (DeactivateMode == Mode.RepeatedPressing)
+            if (DeactivateMode == Mode.Press)
             {
                 if (InputableCompare.IsEquals(_inputable) == false)
                 {
@@ -39,7 +40,7 @@ namespace Actormachine
                     }
                 }
             }
-            else if (DeactivateMode == Mode.ActiveWhileHolding)
+            else if (DeactivateMode == Mode.Hold)
             {
                 if (InputableCompare.IsEquals(_inputable) == false)
                 {

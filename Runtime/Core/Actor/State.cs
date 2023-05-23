@@ -3,36 +3,55 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public enum StateType { Controller, Interaction, Forced, Irreversible, Required };
+    public enum StatePriority { Free, Prepare, Action };
 
     /// <summary> State to update Presenters. </summary>
     public sealed class State : ActorBehaviour
     {
-        public string Name = "Controller";
-        public StateType Type = StateType.Controller;
+        public string Name = "State";
+        public StatePriority Priority = StatePriority.Free;
 
         private List<Activator> _activators = new List<Activator>();
         private List<Deactivator> _deactivators = new List<Deactivator>();
         private List<Presenter> _presenters = new List<Presenter>();
 
+        private bool _isEnable = false;
+        private bool _isActive = false;
+
         private Actor _actor;
 
-        public override void Initiate() 
-        {
-            Bootstrap.Create<BootstrapActor>();
+        public bool IsEnabled => _isEnable;
+        public bool IsActive => _isActive;
 
-            _actor = AddComponentInRoot<Actor>();
+        public void Enable()
+        {
+            _isEnable = true;
+
+            _actor = GetComponentInParent<Actor>();
 
             _activators = new List<Activator>();
             _deactivators = new List<Deactivator>();
             _presenters = new List<Presenter>();
 
-            foreach (Activator activator in GetComponents<Activator>()) _activators.Add(activator);
-            foreach (Deactivator deactivator in GetComponents<Deactivator>()) _deactivators.Add(deactivator);
-            foreach (Presenter controller in GetComponents<Presenter>()) _presenters.Add(controller); 
+            foreach (Activator activator in GetComponents<Activator>())
+            {
+                _activators.Add(activator);
+                activator.Enable();
+            }
+
+            foreach (Deactivator deactivator in GetComponents<Deactivator>())
+            {
+                _deactivators.Add(deactivator);
+                deactivator.Enable();
+            }
+
+            foreach (Presenter controller in GetComponents<Presenter>()) _presenters.Add(controller);
         }
 
-        public bool IsCurrentState => _actor.IsCurrentState(this);
+        public void Disanable()
+        {
+            _isEnable = false;
+        }
 
         // Activator Loop
         public void ActivatorLoop()
@@ -44,7 +63,7 @@ namespace Actormachine
                 return;
             }
 
-            if (_actor.IsFree)
+            if (Priority == StatePriority.Free)
             {
                 _actor.Activate(this);
             }
@@ -73,6 +92,8 @@ namespace Actormachine
         // Presenter Loop
         public void Enter()
         {
+            _isActive = true;
+
             foreach (Presenter controller in _presenters) controller.Enter();
         }
 
@@ -89,7 +110,23 @@ namespace Actormachine
         public void Exit()
         {
             foreach (Presenter controller in _presenters) controller.Exit();
+
+            _isActive = false;
         }
+    }
+
+    public abstract class StateBehaviour : ActorBehaviour
+    {
+        protected State state;
+
+        private new void Awake()
+        {
+            base.Awake();
+
+            state = GetComponent<State>();
+        }
+
+        public abstract void Enable();
     }
 
     /// <summary> 
@@ -99,16 +136,13 @@ namespace Actormachine
     [RequireComponent(typeof(State))]
     public abstract class Presenter : ActorBehaviour
     {
-        private State _state;
-
-        private new void Awake()
+        protected State state;                 // FIXED IT
+        private new void Awake()               // FIXED IT
         {
-            base.Awake();
-
-            _state = GetComponent<State>();
+            base.Awake();                      // FIXED IT
+            state = GetComponent<State>();     // FIXED IT
         }
-
-        public string StateName => _state.Name;
+        public string StateName => state.Name; // FIXED IT
 
         /// <summary> Called once when "Presenter" starts running. </summary>
         public virtual void Enter() { }
@@ -124,24 +158,15 @@ namespace Actormachine
     }
 
     /// <summary> To activate the Presenters. </summary>
-    public abstract class Activator : ActorBehaviour
+    public abstract class Activator : StateBehaviour
     {
         private bool _currentAvailable = false;
         private bool _previousAvailable = false;
 
-        private State _state;
-
-        private new void Awake()
-        {
-            base.Awake();
-
-            _state = GetComponent<State>();
-        }
-
         // State Methods
         public bool IsAvailable => _currentAvailable;
 
-        public void SetAvailable(bool value)
+        public void SetActive(bool value)
         {
             _currentAvailable = value;
 
@@ -149,7 +174,7 @@ namespace Actormachine
             {
                 if (_currentAvailable == true)
                 {
-                    _state.Activate();
+                    state.Activate();
                 }
             }
 
@@ -161,18 +186,9 @@ namespace Actormachine
     }
 
     /// <summary> To deactivate the Presenters. </summary>
-    public abstract class Deactivator : ActorBehaviour
+    public abstract class Deactivator : StateBehaviour
     {
-        private State _state;
-
-        private new void Awake()
-        {
-            base.Awake();
-
-            _state = GetComponent<State>();
-        }
-
-        public void Deactivate() => _state.Deactivate();
+        public void Deactivate() => state.Deactivate();
 
         /// <summary> Called in Update to check to deactivate Presenter. </summary>
         public abstract void UpdateLoop();

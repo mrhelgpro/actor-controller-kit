@@ -39,7 +39,8 @@ namespace Actormachine
         private PhysicsMaterial2D _materialOnTheGround;
         private PhysicsMaterial2D _materialInTheAir;
 
-        public override void Initiate()
+        // Presenter Methods
+        public override void Enter()
         {
             // Using "AddComponentInRoot" to add or get comppnent on the Root
             _inputable = AddComponentInRoot<Inputable>();
@@ -53,18 +54,6 @@ namespace Actormachine
             _groundCollider.offset = new Vector2(0, _groundCollider.radius);
 
             _rigidbody = AddComponentInRoot<Rigidbody2D>();
-            _rigidbody.bodyType = RigidbodyType2D.Kinematic;
-
-            _materialInTheAir = Resources.Load<PhysicsMaterial2D>("Physic2D/Player In The Air");
-            _materialOnTheGround = Resources.Load<PhysicsMaterial2D>("Physic2D/Player On The Ground");
-        }
-
-        public override void Enter()
-        {
-            _groundCollider.isTrigger = false;
-            _groundCollider.radius = 0.25f;
-            _groundCollider.offset = new Vector2(0, _groundCollider.radius);
-
             _rigidbody.velocity = Vector2.zero;
             _rigidbody.bodyType = RigidbodyType2D.Dynamic;
             _rigidbody.simulated = true;
@@ -75,6 +64,9 @@ namespace Actormachine
             _rigidbody.gravityScale = 1;
             _rigidbody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
             _rigidbody.freezeRotation = true;
+
+            _materialInTheAir = Resources.Load<PhysicsMaterial2D>("Physic2D/Player In The Air");
+            _materialOnTheGround = Resources.Load<PhysicsMaterial2D>("Physic2D/Player On The Ground");
         }
 
         public override void UpdateLoop()

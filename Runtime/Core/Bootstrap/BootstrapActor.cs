@@ -3,11 +3,16 @@ using System.Collections.Generic;
 namespace Actormachine
 {
     public sealed class BootstrapActor : Bootstrap
-    {
+    { 
         private static List<Actor> _actorList = new List<Actor>();
 
         public static List<Actor> GetActors => _actorList;
 
+        public override void Initiate()
+        { 
+            // FIXED IT!!!!!!!!!!!!!!!!!!!!!
+        }
+        /*
         public override void Initiate()
         {
             // Update all Actors    
@@ -59,5 +64,6 @@ namespace Actormachine
                 _actorList.Add(actor);
             }
         }
+        */
     }
 }

@@ -64,8 +64,7 @@ namespace Actormachine.Editor
 
                     foreach (Actor actor in actors)
                     {
-                        ButtonStyle buttonStyle = actor.IsFree ? ButtonStyle.Default : mainStyle;
-                        Inspector.DrawLinkButton(actor.Name, actor.gameObject, buttonStyle);
+                        Inspector.DrawLinkButton(actor.Name, actor.gameObject, mainStyle);
                     }
 
                     EditorGUILayout.Space(16);
@@ -81,8 +80,7 @@ namespace Actormachine.Editor
                 {
                     foreach (Actor actor in actors)
                     {
-                        ButtonStyle buttonStyle = actor.IsFree ? ButtonStyle.Default : mainStyle;
-                        Inspector.DrawLinkButton(actor.Name, actor.gameObject, buttonStyle);
+                        Inspector.DrawLinkButton(actor.Name, actor.gameObject, ButtonStyle.Default);
                     }
                 }
                 GUILayout.EndVertical();

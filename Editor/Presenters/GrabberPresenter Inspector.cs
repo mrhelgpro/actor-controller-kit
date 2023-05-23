@@ -4,9 +4,9 @@ using UnityEditor;
 namespace Actormachine.Editor
 {
     [ExecuteInEditMode]
-    [CustomEditor(typeof(GrabberPresenter))]
+    [CustomEditor(typeof(InteractionPresenter))]
     [CanEditMultipleObjects]
-    public class GrabberPresenterInspector : ActorBehaviourInspector
+    public class InteractionPresenterInspector : ActorBehaviourInspector
     {
         public override void OnInspectorGUI()
         {

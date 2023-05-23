@@ -37,7 +37,7 @@ namespace Actormachine
         private PhysicMaterial _materialInTheAir;
 
         // Presenter Methods
-        public override void Initiate() 
+        public override void Enter()
         {
             // Using "AddComponentInRoot" to add or get comppnent on the Root
             _inputable = AddComponentInRoot<Inputable>();
@@ -53,12 +53,6 @@ namespace Actormachine
 
             _materialInTheAir = Resources.Load<PhysicMaterial>("Physic/Player In The Air");
             _materialOnTheGround = Resources.Load<PhysicMaterial>("Physic/Player On The Ground");
-        }
-
-        public override void Enter()
-        {
-            setParametersCollider();
-            setParametersRigidbody();
         }
 
         public override void UpdateLoop()

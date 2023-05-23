@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Actormachine
 {
     /// <summary> Model - to get the position data. </summary>
-    public class Positionable : ActorBehaviour
+    public class Positionable : ModelBehaviour
     {
         // Surface
         public bool IsGrounded = false;

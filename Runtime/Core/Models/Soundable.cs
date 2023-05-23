@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public class Soundable : ActorBehaviour
+    public class Soundable : ModelBehaviour
     {
         public void OnFootstep()
         {

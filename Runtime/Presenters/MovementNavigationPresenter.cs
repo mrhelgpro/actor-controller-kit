@@ -24,7 +24,8 @@ namespace Actormachine
         // Unity Components
         private NavMeshAgent _navMeshAgent;
 
-        public override void Initiate()
+        // Presenter Methods
+        public override void Enter()
         {
             // Using "AddComponentInRoot" to add or get comppnent on the Root
             _inputable = AddComponentInRoot<Inputable>();
@@ -34,11 +35,6 @@ namespace Actormachine
 
             _navMeshAgent = AddComponentInRoot<NavMeshAgent>();
             _navMeshAgent.updateRotation = false;
-        }
-
-        public override void Enter()
-        {
-            _currentVelocity = Vector3.zero;
             _navMeshAgent.agentTypeID = 0;
             _navMeshAgent.baseOffset = 0;
             _navMeshAgent.speed = 2f;

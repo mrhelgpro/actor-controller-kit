@@ -14,15 +14,10 @@ namespace Actormachine
         private Interactable _interactable;
 
         // Presenter Methods
-        public override void Initiate()
-        {
-            // Get components using "GetComponentInRoot" to create them on <Actor>
-            _interactable = AddComponentInRoot<Interactable>();
-        }
-
         public override void Enter()
         {
-
+            // Using "AddComponentInRoot" to add or get comppnent on the Root    
+            _interactable = AddComponentInRoot<Interactable>();
         }
 
         public override void Exit()
