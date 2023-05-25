@@ -16,8 +16,6 @@ namespace Actormachine
         private Vector3 _currentDirection = Vector3.zero;
         private Vector3 _currentVelocity = Vector3.zero;
         private Vector3 _currentForce = Vector3.zero;
-        private Vector3 _lerpDirection = Vector3.zero;
-        private float _currentSpeed = 0;
         private float _currentGravity = 1;
 
         // Jump Fields
@@ -42,18 +40,24 @@ namespace Actormachine
         // Presenter Methods
         public override void Enter()
         {
-            // Using "AddComponentInRoot" to add or get comppnent on the Root
+            // Get Resources
+            _materialInTheAir = Resources.Load<PhysicsMaterial2D>("Physic2D/Player In The Air");
+            _materialOnTheGround = Resources.Load<PhysicsMaterial2D>("Physic2D/Player On The Ground");
+
+            // Add or Get comppnent in the Root
             _inputable = AddComponentInRoot<Inputable>();
             _animatorable = AddComponentInRoot<Animatorable>();
             _movable = AddComponentInRoot<Movable>();
             _positionable = AddComponentInRoot<Positionable2D>();
-
             _groundCollider = AddComponentInRoot<CircleCollider2D>();
+            _rigidbody = AddComponentInRoot<Rigidbody2D>();
+
+            // Set Collider Parementers
             _groundCollider.isTrigger = false;
-            _groundCollider.radius = 0.25f;
+            _groundCollider.radius = 0.2f;
             _groundCollider.offset = new Vector2(0, _groundCollider.radius);
 
-            _rigidbody = AddComponentInRoot<Rigidbody2D>();
+            // Set Movement Parementers
             _rigidbody.velocity = Vector2.zero;
             _rigidbody.bodyType = RigidbodyType2D.Dynamic;
             _rigidbody.simulated = true;
@@ -64,35 +68,29 @@ namespace Actormachine
             _rigidbody.gravityScale = 1;
             _rigidbody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
             _rigidbody.freezeRotation = true;
-
-            _materialInTheAir = Resources.Load<PhysicsMaterial2D>("Physic2D/Player In The Air");
-            _materialOnTheGround = Resources.Load<PhysicsMaterial2D>("Physic2D/Player On The Ground");
         }
 
         public override void UpdateLoop()
         {
-            float maxSpeed = _inputable.ShiftState ? MoveShift : MoveSpeed;
-
-            _currentSpeed = _movable.GetSpeed(maxSpeed);
-            _currentGravity = _movable.GetGravity(Gravity);
-            _currentDirection = _positionable.GetDirection(_inputable.MoveVector);
-
-            _lerpDirection = Vector3.Lerp(_lerpDirection, _currentDirection, Time.deltaTime * Rate);
-            _currentVelocity = new Vector3(_lerpDirection.x, _currentDirection.y, _lerpDirection.z) * _currentSpeed;
-
-            _animatorable.Play(_positionable.IsGrounded ? StateName : "Fall");
-            _animatorable.Speed = _currentVelocity.magnitude;
-            //_animatorable.SetFloat("Speed", _currentVelocity.magnitude);
-
             jumpLoop();
-            materialLoop();
+
+            _groundCollider.sharedMaterial = _positionable.IsGrounded && _positionable.IsObstacle == false ? _materialOnTheGround : _materialInTheAir;
         }
 
         public override void FixedUpdateLoop()
         {
+            // Set Movement Parameters    
+            float speed = _inputable.ShiftState ? MoveShift : MoveSpeed;
+
+            _currentGravity = _movable.GetGravity(Gravity);
+            _currentDirection = _positionable.GetDirection(_inputable.MoveVector);
+
+            _currentVelocity = _movable.GetVelocity(_currentDirection, speed, Time.fixedDeltaTime * Rate);
+
             _rigidbody.gravityScale = _currentGravity;
             _rigidbody.velocity = new Vector2(_currentVelocity.x * 51.0f * Time.fixedDeltaTime, _rigidbody.velocity.y);
 
+            // Set Jump Parameters
             if (_currentForce.magnitude > 0)
             {
                 _rigidbody.velocity = Vector2.zero;
@@ -100,18 +98,25 @@ namespace Actormachine
 
                 _currentForce = Vector3.zero;
             }
+
+            // Set Animation Parameters
+            _animatorable.Speed = _currentVelocity.magnitude;
+            _animatorable.Grounded = _positionable.IsGrounded;
         }
 
         public override void Exit()
         {
+            // Set Movement Parameters 
             _currentDirection = Vector3.zero;
-            _currentVelocity = Vector3.zero;
             _currentForce = Vector3.zero;
-            _lerpDirection = Vector3.zero;
 
             _rigidbody.MovePosition(_rigidbody.position);
             _rigidbody.constraints = RigidbodyConstraints2D.None;
             _rigidbody.velocity = Vector3.zero;
+
+            // Set Animation Parameters
+            _animatorable.Speed = 1;
+            _animatorable.Grounded = true;
         }
 
         private void jumpLoop()
@@ -163,11 +168,6 @@ namespace Actormachine
                     _isLevitationPressed = true;
                 }
             }
-        }
-
-        private void materialLoop()
-        {
-            _groundCollider.sharedMaterial = _positionable.IsGrounded && _positionable.IsObstacle == false ? _materialOnTheGround : _materialInTheAir;
         }
     }
 }

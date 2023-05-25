@@ -84,7 +84,7 @@ namespace Actormachine
         {
             float offsetHeight = 0.25f;
             float length = 3.125f + offsetHeight;
-            float offsetForward = 0.25f;
+            float offsetForward = 0.35f;
             float edgeDistance = 0.5f + offsetHeight;
             RaycastHit hit;
             Vector3 origin = new Vector3(RootTransform.position.x, RootTransform.position.y + offsetHeight, RootTransform.position.z) + (RootTransform.TransformDirection(Vector3.forward) * offsetForward);

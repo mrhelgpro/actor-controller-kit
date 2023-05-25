@@ -5,15 +5,11 @@ namespace Actormachine
     /// <summary> All classes that are part of the Actor must inherit from this class. </summary>
     public abstract class ActorBehaviour : MonoBehaviour
     {
-        public Transform RootTransform { get; private set; }
         public Transform ThisTransform { get; private set; }
 
         protected void Awake()
         {
-            RootTransform = FindRootTransform;
             ThisTransform = transform;
-
-            //Initiate();
         }
 
         /// <summary> In Play Mode it is called once when Awake, in Edit Mode it is called constantly as an Update. </summary>

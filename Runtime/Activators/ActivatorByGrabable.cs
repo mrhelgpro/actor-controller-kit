@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Actormachine
@@ -5,18 +6,30 @@ namespace Actormachine
     public class ActivatorByGrabable : Activator
     {
         // Model Components
-        private Interactable _interactable;
-        private int _countGrabbable;
-
-        public override void Enable()
-        {
-            // Using "AddComponentInRoot" to add or get comppnent on the Root
-            _interactable = AddComponentInRoot<Interactable>();
-        }
-
+        private List<Transform> _targets = new List<Transform>();
+        
+        public bool IsExists(Transform target) => _targets.Exists(t => t == target);
+        
         public override void UpdateLoop()
         {
-            SetActive(_countGrabbable > 0);
+            SetActive(_targets.Count > 0);
+        }
+
+        public override void Enter()
+        {
+            Transform target = _targets[0];
+
+            _targets.Remove(target);
+
+            target.parent = ThisTransform.parent;
+            target.localPosition = Vector3.zero;
+            target.localEulerAngles = Vector3.zero;
+
+            State[] states = target.GetComponentsInChildren<State>();
+
+            foreach (State state in states) state.Enable();
+
+            state.Deactivate();
         }
 
         private void OnTriggerEnter(Collider collider)
@@ -25,10 +38,9 @@ namespace Actormachine
 
             if (grabbable)
             {
-                if (_interactable.IsExists(collider.transform) == false)
+                if (IsExists(collider.transform) == false)
                 {
-                    _interactable.Add(collider.transform);
-                    _countGrabbable++;
+                    _targets.Add(collider.transform);
                 }
             }
         }
@@ -39,10 +51,9 @@ namespace Actormachine
 
             if (grabbable)
             {
-                if (_interactable.IsExists(collider.transform))
+                if (IsExists(collider.transform))
                 {
-                    _interactable.Remove(collider.transform);
-                    _countGrabbable--;
+                    _targets.Remove(collider.transform);
                 }
             }
         }

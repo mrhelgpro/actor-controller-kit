@@ -21,16 +21,19 @@ namespace Actormachine
             _targets.Remove(target);
         }
 
-        public void SetTargetByType<T>() where T : ModelBehaviour
+        public Transform GetTargetByType<T>() where T : ModelBehaviour
         {
             foreach (Transform target in _targets)
             {
-                if (target.GetComponent<T>() == null) break;
+                if (target.GetComponent<T>())
+                {
+                    _targets.Remove(target);
 
-                Target = target;
-
-                return;
+                    return target;
+                }
             }
+
+            return null;
         }
 
         public void SetNearestTargetByType<T>() where T : ModelBehaviour

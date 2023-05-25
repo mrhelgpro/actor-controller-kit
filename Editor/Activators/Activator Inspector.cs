@@ -42,4 +42,20 @@ namespace Actormachine.Editor
     {
         public override void OnInspectorGUI() => base.OnInspectorGUI();
     }
+
+    [ExecuteInEditMode]
+    [CustomEditor(typeof(ActivatorByGrabable))]
+    [CanEditMultipleObjects]
+    public class ActivatorByGrabableInspector : ActivatorInspector
+    {
+        public override void OnInspectorGUI() => base.OnInspectorGUI();
+    }
+
+    [ExecuteInEditMode]
+    [CustomEditor(typeof(ActivatorByDisposable))]
+    [CanEditMultipleObjects]
+    public class ActivatorByDisposableInspector : ActivatorInspector
+    {
+        public override void OnInspectorGUI() => base.OnInspectorGUI();
+    }
 }

@@ -31,12 +31,14 @@ namespace Actormachine.Editor
             State thisTarget = (State)target;
 
             // Check Actor
-            if (thisTarget.IsEnabled == false)
+            Actor actor = thisTarget.GetComponentInParent<Actor>();
+
+            if (actor == null || thisTarget.gameObject.activeSelf == false)
             {
                 base.OnInspectorGUI();
 
                 Inspector.DrawInfoBox("DISABLED", BoxStyle.Warning);
-                
+
                 return;
             }
 
@@ -54,8 +56,7 @@ namespace Actormachine.Editor
             string info = thisTarget.IsActive ? "ACTIVE" : "WAITING";
             BoxStyle style = thisTarget.IsActive ? BoxStyle.Active : BoxStyle.Default;
 
-            Inspector.DrawHeader(thisTarget.Name);
-            Inspector.DrawHeader(thisTarget.Priority.ToString(), 12);
+            Inspector.DrawHeader(thisTarget.Priority.ToString());
             Inspector.DrawInfoBox(info, style);
 
             EditorUtility.SetDirty(thisTarget);

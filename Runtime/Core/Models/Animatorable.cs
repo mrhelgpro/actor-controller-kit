@@ -1,13 +1,18 @@
+using System.Collections.Generic;
+using System;
 using UnityEngine;
+using UnityEngine.Animations;
 
 namespace Actormachine
 {
+
     /// <summary> Model - to control the Animator. </summary>
     public class Animatorable : ModelBehaviour
-    {          
+    {
         // Parameters
         private float _speed = 0;
         private Vector3 _direction = Vector3.zero;
+        private bool _grounded = false;
         private string _previousName = "None";
 
         private RuntimeAnimatorController _previousController;
@@ -53,6 +58,21 @@ namespace Actormachine
             }
         }
 
+        public bool Grounded
+        {
+            get => _grounded;
+
+            set
+            {
+                _grounded = value;
+
+                if (_animator)
+                {
+                    _animator.SetBool("Grounded", _grounded);
+                }
+            }
+        }
+
         public void Enter(RuntimeAnimatorController nextController)
         {
             if (nextController == null)
@@ -78,29 +98,73 @@ namespace Actormachine
             _previousName = "Exit";
         }
 
-        public void Play(string name, float fade = 0.025f)
+        public void Play(string name, float speed = 1)
         {
             if (_animator)
             {
                 if (name != _previousName)
                 {
-                    Debug.Log(name);
+                    float previousLength = GetCurrentLength();
+                    float nextLength = GetNextLength(name, speed);
+                    float length = (previousLength + nextLength) / 2;
+                    float fade = 0.1f / length * speed * speed;
+
+                    // Debug.Log("Pre: " + _previousName + " - " + previousLength + ", Next: " + name + " - " + nextLength + ", Fade: " + fade + ", Speed: " + speed);
+
                     _animator.CrossFade(name, fade, 0, 0);
-                    _animator.speed = 1;
+                    _animator.speed = speed;
                     _previousName = name;
                 }
             }
         }
 
         public void Stop()
+        {   
+            _previousName = "Stop";
+        }
+
+        private float GetClipLength(AnimationClip clip) => clip.length;
+
+        private float GetCurrentLength()
         {
-            if (_animator)
+            // Try get by current Clip Info
+            AnimatorClipInfo[] currentClipInfo = _animator.GetCurrentAnimatorClipInfo(0);
+
+            if (currentClipInfo.Length > 0)
             {
-                _animator.speed = 0;
-                _animator.SetFloat("Speed", 0);
+                AnimationClip clip = currentClipInfo[0].clip;
+
+                if (clip != null)
+                {
+                    float length = GetClipLength(clip);
+
+                    return (length == 0 ? 1 : length) / _animator.speed;
+                }
             }
 
-            _previousName = "Stop";
+            return 1;
+        }
+
+        private float GetNextLength(string name, float speed)
+        {
+            // Try get by name
+            AnimationClip[] animationClips = _animator.runtimeAnimatorController.animationClips;
+            
+            foreach (AnimationClip clip in animationClips)
+            {
+                if (clip.name == name)
+                {
+                    return GetClipLength(clip) / speed;
+                }
+            }
+
+            // Try to predict by Parameters
+            if (speed == 1)
+            {
+                return Speed > 0.1f ? 1 : 8;
+            }
+
+            return 1 / speed;
         }
     }
 }

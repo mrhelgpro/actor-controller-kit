@@ -10,44 +10,71 @@ namespace Actormachine
 
         // State Machine
         private State _currentState = null;
+        private State _defaultState = null;
         private List<State> _currentStates = new List<State>();
         private List<State> _addingToStates = new List<State>();
         private List<State> _removeStates = new List<State>();
 
+        // Default methods
         private void Start()
         {
-            foreach (State state in GetComponentsInChildren<State>())
-            {
-                _currentStates.Add(state);
-                state.Enable();
-            }
+            // Enable States
+            foreach (State state in GetComponentsInChildren<State>()) state.Enable();
         }
 
         private void FixedUpdate()
         {
+            // FixedUpdates State after Enter
             _currentState?.FixedUpdateLoop();
         }
 
         private void Update()
         {
+            // Updates the Activator if State is not activated
             foreach (State state in _currentStates)
             {
                 if (IsCurrentState(state) == false) state.ActivatorLoop();
             }
 
+            // Updates State after Enter
             _currentState?.UpdateLoop();
+
+            // Updates Deactivator if State is active
             _currentState?.DeactivatorLoop();
         }
 
         private void LateUpdate()
         {
+            // Add and Remove States
             foreach (State item in _addingToStates) _currentStates.Add(item);
+
             foreach (State item in _removeStates) _currentStates.Remove(item);
 
             _addingToStates.Clear();
             _removeStates.Clear();
+
+            // Set default State if current State is null
+            if (_currentState == null)
+            {
+                if (_defaultState == null)
+                {
+                    foreach (State state in _currentStates)
+                    {
+                        if (state.Priority == StatePriority.Default)
+                        {
+                            Activate(state);
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    Activate(_defaultState);
+                }
+            }
         }
 
+        // State machine methods
         public void Add(State state)
         {
             if (isExists(state) == false)
@@ -60,14 +87,15 @@ namespace Actormachine
         {
             if (isExists(state) == true)
             {
-                _removeStates.Remove(state);
+                _removeStates.Add(state);
             }
         }
 
         /// <summary> 
-        /// Check the Actions list for a ready-made Action
-        /// If you find an equal GameObject Name, execute this Action
-        /// If you don't find an equal Action, create a new one.
+        /// Activates the state by priority. 
+        /// "Default" - can only be activated if current priority is Default.
+        /// "Prepare" - can be activated if current priority is Default or Prepare.
+        /// "Action" - can be activated by any other priority.
         /// </summary>
         public void Activate(State state)
         {
@@ -75,51 +103,49 @@ namespace Actormachine
             {
                 if (isReady(state))
                 {
-                    _currentState?.Exit();
+                    // Deactivate previous State, and call Exit
+                    State exitState = _currentState;
+                    _currentState = null;
+                    exitState?.Exit();
+
+                    // Activate next State, and call Enter
                     _currentState = state;
-                    _currentState.Enter();
+                    state.Enter();
+
+                    // Set State as Default
+                    if (state.Priority == StatePriority.Default)
+                    {
+                        _defaultState = state;
+                    }
                 }
             }
         }
 
-        /// <summary> At the end of the Action, remove it from the Actor. </summary>
+        /// <summary> Deactivates State, and default State . </summary>
         public void Deactivate(State state)
         {
             if (state == _currentState)
             {
-                _currentState.Exit();
+                // Deactivate default State
+                if (state == _defaultState)
+                {
+                    _defaultState = null;
+                }
+
+                // Deactivate current State, and call Exit
+                State exitState = _currentState;
                 _currentState = null;
+                exitState?.Exit();
             }
         }
 
-        public List<State> GetStatesList => _currentStates;
+        public List<State> GetStatesList => _currentStates;    
         public bool IsCurrentState(State state) => _currentState == null ? false : state == _currentState;
-
-        // If the Action is free, we can activate any other state
-        // If the Action is of type Controller, we can replace it with any type other than Controller
-        // If the Action is of a different type, only the Cancel type can replace it 
-        private bool isReady(State state)
+        private bool isExists(State state)
         {
-            if (_currentState == null)
+            foreach (State stateInList in _currentStates)
             {
-                return true;
-            }
-            else
-            {
-                if (state.Priority == StatePriority.Free)
-                {
-                    return false;
-                }
-
-                if (state.Priority == StatePriority.Prepare)
-                {
-                    if (_currentState.Priority != StatePriority.Action)
-                    {
-                        return true;
-                    }
-                }
-
-                if (state.Priority == StatePriority.Action)
+                if (stateInList == state)
                 {
                     return true;
                 }
@@ -128,11 +154,37 @@ namespace Actormachine
             return false;
         }
 
-        private bool isExists(State checkedState)
+        private bool isReady(State state)
         {
-            foreach (State state in _currentStates)
+            // If the Actor is free, we can activate any other State
+            if (_currentState == null)
             {
-                if (state == checkedState)
+                return true;
+            }
+            else
+            {
+                // Default can only be activated if current priority is Default
+                if (state.Priority == StatePriority.Default)
+                {
+                    if (_currentState.Priority == StatePriority.Default)
+                    {
+                        return true;
+                    }
+
+                    return false;
+                }
+
+                // Prepare can be activated if current priority is Default or Prepare
+                if (state.Priority == StatePriority.Prepare)
+                {
+                    if (_currentState.Priority != StatePriority.Action)
+                    {
+                        return true;
+                    }
+                }
+
+                // Action can be activated by any other priority
+                if (state.Priority == StatePriority.Action)
                 {
                     return true;
                 }

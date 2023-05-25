@@ -6,8 +6,6 @@ namespace Actormachine
     {
         public State State;
 
-        public override void Enable() { }
-
         public override void UpdateLoop()
         {
             if (State == null)

@@ -39,31 +39,39 @@ namespace Actormachine
         // Presenter Methods
         public override void Enter()
         {
-            // Using "AddComponentInRoot" to add or get comppnent on the Root
+            // Get Resources
+            _materialInTheAir = Resources.Load<PhysicMaterial>("Physic/Player In The Air");
+            _materialOnTheGround = Resources.Load<PhysicMaterial>("Physic/Player On The Ground");
+
+            // Add or Get comppnent in the Root
             _inputable = AddComponentInRoot<Inputable>();
             _animatorable = AddComponentInRoot<Animatorable>();
             _movable = AddComponentInRoot<Movable>();
             _positionable = AddComponentInRoot<Positionable>();
-
             _groundCollider = AddComponentInRoot<SphereCollider>();
-            setParametersCollider();
-
             _rigidbody = AddComponentInRoot<Rigidbody>();
-            setParametersRigidbody();
 
-            _materialInTheAir = Resources.Load<PhysicMaterial>("Physic/Player In The Air");
-            _materialOnTheGround = Resources.Load<PhysicMaterial>("Physic/Player On The Ground");
-        }
+            // Set Collider Parementers
+            _groundCollider.isTrigger = false;
+            _groundCollider.radius = 0.2f;
+            _groundCollider.center = new Vector3(0, _groundCollider.radius, 0);
 
-        public override void UpdateLoop()
-        {
-            setParametersMaterial();
-
-            jumpLoop();
+            // Set Movement Parementers
+            _rigidbody.mass = 1;
+            _rigidbody.drag = 0;
+            _rigidbody.angularDrag = 0.05f;
+            _rigidbody.useGravity = false;
+            _rigidbody.isKinematic = false;
+            _rigidbody.interpolation = RigidbodyInterpolation.None;
+            _rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+            _rigidbody.constraints = RigidbodyConstraints.None;
+            _rigidbody.freezeRotation = true;
+            _rigidbody.velocity = Vector3.zero;
         }
 
         public override void FixedUpdateLoop()
         {
+            // Set Movement Parameters    
             float speed = _inputable.ShiftState ? MoveShift : MoveSpeed;
 
             _currentGravity = _movable.GetGravity(Gravity);
@@ -71,22 +79,32 @@ namespace Actormachine
 
             _currentVelocity = _movable.GetVelocity(_currentDirection, speed, Time.fixedDeltaTime * Rate);
 
-            _animatorable.Play(_positionable.IsGrounded ? StateName : "Fall");
-            _animatorable.Speed = _currentVelocity.magnitude;
-
             _rigidbody.MovePosition(_rigidbody.position + _currentVelocity * Time.fixedDeltaTime);
             _rigidbody.AddForce(Physics.gravity * _currentGravity, ForceMode.Acceleration);
 
+            // Set Jump Parameters
             if (_currentForce.magnitude > 0)
             {
                 _rigidbody.velocity = Vector3.zero;
                 _rigidbody.AddForce(_currentForce, ForceMode.Impulse);
                 _currentForce = Vector3.zero;
             }
+
+            // Set Animation Parameters
+            _animatorable.Speed = _currentVelocity.magnitude;
+            _animatorable.Grounded = _positionable.IsGrounded;
+        }
+
+        public override void UpdateLoop()
+        {
+            jumpLoop();
+
+            _groundCollider.material = _positionable.IsGrounded && _positionable.IsObstacle == false ? _materialOnTheGround : _materialInTheAir;
         }
 
         public override void Exit()
         {
+            // Set Movement Parameters 
             _currentDirection = Vector3.zero;
             _currentForce = Vector3.zero;
             
@@ -95,9 +113,12 @@ namespace Actormachine
             _rigidbody.constraints = RigidbodyConstraints.None;
             _rigidbody.useGravity = false;
             _rigidbody.isKinematic = true;
+
+            // Set Animation Parameters
+            //_animatorable.Speed = 0;
+            _animatorable.Grounded = true;
         }
 
-        // Movement Methods
         private void jumpLoop()
         {
             // Input Jump
@@ -147,32 +168,6 @@ namespace Actormachine
                     _isLevitationPressed = true;
                 }
             }
-        }
-
-        private void setParametersMaterial()
-        {
-            _groundCollider.material = _positionable.IsGrounded && _positionable.IsObstacle == false ? _materialOnTheGround : _materialInTheAir;
-        }
-
-        private void setParametersCollider()
-        {
-            _groundCollider.isTrigger = false;
-            _groundCollider.radius = 0.2f;
-            _groundCollider.center = new Vector3(0, _groundCollider.radius, 0);
-        }
-
-        private void setParametersRigidbody()
-        {
-            _rigidbody.mass = 1;
-            _rigidbody.drag = 0;
-            _rigidbody.angularDrag = 0.05f;
-            _rigidbody.useGravity = false;
-            _rigidbody.isKinematic = false;
-            _rigidbody.interpolation = RigidbodyInterpolation.None;
-            _rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
-            _rigidbody.constraints = RigidbodyConstraints.None;
-            _rigidbody.freezeRotation = true;
-            _rigidbody.velocity = Vector3.zero;
         }
     }
 }

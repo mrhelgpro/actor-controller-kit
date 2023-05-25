@@ -12,7 +12,6 @@ namespace Actormachine
         // Move Fields
         private Vector3 _currentDirection = Vector3.zero;
         private Vector3 _currentVelocity = Vector3.zero;
-        private Vector3 _lerpDirection = Vector3.zero;
         private float _currentSpeed = 0;
 
         // Model Components
@@ -24,16 +23,21 @@ namespace Actormachine
         // Unity Components
         private NavMeshAgent _navMeshAgent;
 
+        private Transform _rootTransform;
+
         // Presenter Methods
         public override void Enter()
         {
-            // Using "AddComponentInRoot" to add or get comppnent on the Root
+            _rootTransform = FindRootTransform;
+
+            // Add or Get comppnent in the Root
             _inputable = AddComponentInRoot<Inputable>();
             _animatorable = AddComponentInRoot<Animatorable>();
             _movable = AddComponentInRoot<Movable>();
             _positionable = AddComponentInRoot<Positionable>();
-
             _navMeshAgent = AddComponentInRoot<NavMeshAgent>();
+
+            // Set Movement Parementers
             _navMeshAgent.updateRotation = false;
             _navMeshAgent.agentTypeID = 0;
             _navMeshAgent.baseOffset = 0;
@@ -50,36 +54,36 @@ namespace Actormachine
             _navMeshAgent.updateRotation = false;
         }
 
-        public override void UpdateLoop()
+        public override void FixedUpdateLoop()
         {
+            // Set Movement Parameters 
             float maxSpeed = _inputable.ShiftState ? MoveShift : MoveSpeed;
 
             _currentSpeed = _movable.GetSpeed(maxSpeed);
             _currentDirection = _positionable.GetDirection(_inputable.MoveVector);
 
-            _lerpDirection = Vector3.Lerp(_lerpDirection, _currentDirection, Time.deltaTime * Rate);
-            _currentVelocity = new Vector3(_lerpDirection.x, _currentDirection.y, _lerpDirection.z) * _currentSpeed;
-
-            _animatorable.Play(_positionable.IsGrounded ? StateName : "Fall");
-            _animatorable.Speed = _currentVelocity.magnitude;
-        }
-
-        public override void FixedUpdateLoop()
-        {
             _navMeshAgent.speed = _currentSpeed;
             _navMeshAgent.acceleration = Rate * 2;
-            _navMeshAgent.SetDestination(RootTransform.position + _currentDirection.normalized);
+            _navMeshAgent.SetDestination(_rootTransform.position + _currentDirection.normalized);
+
+            // Set Animation Parameters
+            _animatorable.Speed = _currentVelocity.magnitude;
+            _animatorable.Grounded = _positionable.IsGrounded;
         }
 
         public override void Exit()
         {
+            // Set Movement Parameters
             _currentDirection = Vector3.zero;
             _currentVelocity = Vector3.zero;
-            _lerpDirection = Vector3.zero;
 
             _navMeshAgent.speed = 0;
             _navMeshAgent.acceleration = 0;
-            _navMeshAgent.SetDestination(RootTransform.position);
+            _navMeshAgent.SetDestination(_rootTransform.position);
+
+            // Set Animation Parameters
+            _animatorable.Speed = 1;
+            _animatorable.Grounded = true;
         }
     }
 }

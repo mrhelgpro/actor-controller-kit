@@ -10,6 +10,7 @@ namespace Actormachine
         private float _gravityScale = 1;
 
         private Vector3 _lerpDirection = Vector3.zero;
+        private float _velocityMagnitude = 0;
 
         // Return Value
         public float GetSpeed(float value) => (_speedScale < 0 ? 0 : _speedScale) * value;
@@ -20,8 +21,13 @@ namespace Actormachine
 
             _lerpDirection = Vector3.Lerp(_lerpDirection, direction, deltaTime);
 
-            return new Vector3(_lerpDirection.x, direction.y, _lerpDirection.z) * currentSpeed;
+            Vector3 velocity = new Vector3(_lerpDirection.x, direction.y, _lerpDirection.z) * currentSpeed;
+
+            _velocityMagnitude = velocity.magnitude;
+
+            return velocity;
         }
+        public float GetVelocityMagnitude => _velocityMagnitude;
 
         // Change Value
         public void ChangeSpeed(float value) => _speedScale += value;

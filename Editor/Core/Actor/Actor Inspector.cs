@@ -48,7 +48,7 @@ namespace Actormachine.Editor
             foreach (State state in thisTarget.GetStatesList)
             {
                 BoxStyle style = state.IsActive == true ? BoxStyle.Active : BoxStyle.Default;
-                Inspector.DrawInfoBox(state.gameObject.name + " (" + state.Name + ")", style);
+                Inspector.DrawInfoBox(state.gameObject.name, style);
             }
 
             EditorUtility.SetDirty(target);
