@@ -2,13 +2,13 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public class DeactivatorByTime : Deactivator
+    public class DeactivatorByTime : Deactivator, IActiveState, IExitState
     {
         public float Duration = 1;
 
         private float _timer = 0;
 
-        public override void UpdateLoop()
+        public void OnActiveState()
         {
             _timer += Time.deltaTime;
 
@@ -18,7 +18,7 @@ namespace Actormachine
             }
         }
 
-        public override void Exit()
+        public void OnExitState()
         {
             _timer = 0;
         }

@@ -5,115 +5,89 @@ namespace Actormachine
 {
     public enum StatePriority { Default, Prepare, Action };
 
-    /// <summary> State to update Presenters. </summary>
-    public class State : ActorBehaviour
+    public sealed class State : ActorBehaviour
     {
+        public bool IsActive { get; private set; } = false;
+
         public StatePriority Priority = StatePriority.Default;
 
-        private List<Activator> _activators = new List<Activator>();
-        private List<Deactivator> _deactivators = new List<Deactivator>();
-        private List<Presenter> _presenters = new List<Presenter>();
+        // State interfaces
+        private List<IInactiveState> _inactiveStates = new List<IInactiveState>();
+        private List<IEnterState> _enterStates = new List<IEnterState>();
+        private List<IActiveState> _activeStates = new List<IActiveState>();
+        private List<IFixedActiveState> _fixedActiveStates = new List<IFixedActiveState>();
+        private List<IExitState> _exitStates = new List<IExitState>();
+        private List<IDisableState> _disableStates = new List<IDisableState>();
 
-        private bool _isActive = false;
+        private Actor _actor = null;
 
-        private Actor _actor;
+        // Actor Methods
+        public void Activate() => _actor.Activate(this);
+        public void Deactivate() => _actor.Deactivate(this);
 
-        public bool IsActive => _isActive;
-
-        public virtual void Enable()
+        // State Methods
+        public void OnEnableState()
         {
-            _activators = new List<Activator>();
-            _deactivators = new List<Deactivator>();
-            _presenters = new List<Presenter>();
+            // Clear lists
+            _inactiveStates.Clear();
+            _enterStates.Clear();
+            _activeStates.Clear();
+            _fixedActiveStates.Clear();
+            _exitStates.Clear();
+            _disableStates.Clear();
 
             _actor = GetComponentInParent<Actor>();
 
             _actor.Add(this);
 
-            // Add Components
-            foreach (Activator activator in GetComponents<Activator>()) _activators.Add(activator);
-            foreach (Deactivator deactivator in GetComponents<Deactivator>()) _deactivators.Add(deactivator);
-            foreach (Presenter controller in GetComponents<Presenter>()) _presenters.Add(controller);
+            // Add interfaces
+            foreach (IInactiveState state in GetComponents<IInactiveState>()) _inactiveStates.Add(state);
+            foreach (IEnterState state in GetComponents<IEnterState>()) _enterStates.Add(state);
+            foreach (IActiveState state in GetComponents<IActiveState>()) _activeStates.Add(state);
+            foreach (IFixedActiveState state in GetComponents<IFixedActiveState>()) _fixedActiveStates.Add(state);
+            foreach (IExitState state in GetComponents<IExitState>()) _exitStates.Add(state);
+            foreach (IDisableState state in GetComponents<IDisableState>()) _disableStates.Add(state);
 
-            // Enable State Components
-            foreach (StateComponent stateComponent in GetComponents<StateComponent>()) stateComponent.Enable();
+            // Enable interfaces
+            foreach (IEnableState state in GetComponents<IEnableState>()) state.OnEnableState();
         }
-
-        public void Disable()
+        public void OnInactiveState()
         {
+            foreach (IInactiveState state in _inactiveStates) state.OnInactiveState();
+        }
+        public void OnEnterState()
+        {
+            IsActive = true;
+
+            foreach (IEnterState state in _enterStates) state.OnEnterState();
+        }
+        public void OnActiveState()
+        {
+            foreach (IActiveState state in _activeStates) state.OnActiveState();
+        }
+        public void OnFixedActiveState()
+        {
+            foreach (IFixedActiveState state in _fixedActiveStates) state.OnFixedActiveState();
+        }
+        public void OnExitState()
+        {
+            foreach (IExitState state in _exitStates) state.OnExitState();
+
+            IsActive = false;
+        }
+        public void OnDisableState()
+        {
+            foreach (IDisableState state in _disableStates) state.OnDisableState();
+
             _actor.Remove(this);
-
-            _activators = new List<Activator>();
-            _deactivators = new List<Deactivator>();
-            _presenters = new List<Presenter>();
-
             _actor = null;
-        }
 
-        // Actor Methods
-        public void Activate()
-        {
-            int amountOfReady = 0;
-
-            foreach (Activator activator in _activators) amountOfReady += activator.IsAvailable ? 1 : 0;
-
-            if (amountOfReady == _activators.Count)
-            {
-                _actor.Activate(this);
-            }
-        }
-
-        public void Deactivate()
-        {
-            _actor.Deactivate(this);
-        }
-
-        /// <summary> Updates the Activator if State is not activated. </summary>
-        public void ActivatorLoop()
-        {
-            foreach (Activator activator in _activators) activator.UpdateLoop();
-        }
-
-        /// <summary> Updates Deactivator if State is active. </summary>
-        public void DeactivatorLoop()
-        {
-            foreach (Deactivator deactivator in _deactivators) deactivator.UpdateLoop();
-        }
-
-        // Presenter Loop
-        public void Enter()
-        {
-            _isActive = true;
-
-            foreach (Presenter controller in _presenters) controller.Enter();
-
-            foreach (Activator activator in _activators)
-            {
-                activator.SetActive(true);
-                activator.Enter();
-            } 
-        }
-
-        public void UpdateLoop()
-        {
-            foreach (Presenter controller in _presenters) controller.UpdateLoop();
-        }
-
-        public void FixedUpdateLoop()
-        {
-            foreach (Presenter controller in _presenters) controller.FixedUpdateLoop();
-        }
-
-        public void Exit()
-        {
-            foreach (Presenter controller in _presenters) controller.Exit();
-            foreach (Deactivator deactivator in _deactivators) deactivator.Exit();
-            
-            _isActive = false;
+            IsActive = false;
         }
     }
 
-    public abstract class StateComponent : ActorBehaviour
+    [RequireComponent(typeof(State))]
+    public abstract class StateBehaviour : ActorBehaviour
     {
         protected State state;
 
@@ -123,37 +97,20 @@ namespace Actormachine
 
             state = GetComponent<State>();
         }
-
-        public virtual void Enable() { }
-    }
-
-    /// <summary> 
-    /// Do not use the standard Update, FixedUpdate methods,
-    /// instead use the overrides UpdateLoop, FixedUpdateLoop methods
-    /// </summary>
-    [RequireComponent(typeof(State))]
-    public abstract class Presenter : StateComponent
-    {
-        /// <summary> Called once when "Presenter" starts running. </summary>
-        public virtual void Enter() { }
-
-        /// <summary> FixedUpdates State after Enter. </summary>
-        public virtual void FixedUpdateLoop() { }
-
-        /// <summary> Updates State after Enter. </summary>
-        public virtual void UpdateLoop() { }
-
-        /// <summary> Called once when "Presenter" stops running. </summary>
-        public virtual void Exit() { }
     }
 
     /// <summary> To activate if State is not activated. </summary>
-    public abstract class Activator : StateComponent
+    public abstract class Activator : StateBehaviour, IEnterState
     {
         private bool _currentAvailable = false;
-        public bool IsAvailable => _currentAvailable;
+        public bool IsAvailable() => _currentAvailable;
 
-        public void SetActive(bool value)
+        public void OnEnterState()
+        {
+            _currentAvailable = true;
+        }
+
+        public void TryActive(bool value)
         {
             if (value != _currentAvailable)
             {
@@ -161,20 +118,69 @@ namespace Actormachine
 
                 if (_currentAvailable == true)
                 {
-                    state.Activate();
+                    checkAllAvailable();
                 }
             }
         }
 
-        public abstract void UpdateLoop();
-        public virtual void Enter() { }
+        private void checkAllAvailable()
+        {
+            int amountOfAvailable = 0;
+
+            Activator[] activators = GetComponents<Activator>();
+
+            foreach (Activator activator in activators) amountOfAvailable += activator.IsAvailable() ? 1 : 0;
+
+            if (amountOfAvailable == activators.Length) state.Activate();
+        }
     }
 
     /// <summary> To deactivate if State is active. </summary>
-    public abstract class Deactivator : StateComponent
+    public abstract class Deactivator : StateBehaviour
     {
         public void Deactivate() => state.Deactivate();
-        public abstract void UpdateLoop();
-        public virtual void Exit() { }
+    }
+
+    // State Interfaces
+    public interface IEnableState
+    {
+        public void OnEnableState();
+    }
+
+    public interface IInactiveState
+    {
+        public void OnInactiveState();
+    }
+
+    public interface IEnterState
+    {
+        public void OnEnterState();
+    }
+
+    public interface IActiveState
+    {
+        public void OnActiveState();
+    }
+
+    public interface IFixedActiveState
+    {
+        public void OnFixedActiveState();
+    }
+
+    public interface IExitState
+    {
+        public void OnExitState();
+    }
+
+    public interface IDisableState
+    {
+        public void OnDisableState();
+    }
+
+    /// <summary> Mark for the ability to interact. </summary>
+    public interface IInteractable
+    {
+        /// <summary> Checks if the object is available for interaction. </summary>
+        public bool IsAvailable(Transform rootTransform);
     }
 }

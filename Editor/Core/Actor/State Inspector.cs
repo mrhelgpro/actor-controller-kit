@@ -47,7 +47,7 @@ namespace Actormachine.Editor
             {
                 base.OnInspectorGUI();
 
-                Inspector.DrawInfoBox("UPDATE THE PRESENTER, ACTIVATOR, DEACTIVATOR");
+                Inspector.DrawInfoBox("UPDATE THE STATE INTERFACES");
                 
                 return;
             }

@@ -61,7 +61,7 @@ namespace Actormachine.Editor
                 {
                     CinemachineExtantion.SwitchPriority(FindAnyObjectByType<ActorVirtualCamera>().GetComponent<CinemachineVirtualCameraBase>());
 
-                    thisTarget.Enter();
+                    thisTarget.OnEnterState();
                 }
             }
         }

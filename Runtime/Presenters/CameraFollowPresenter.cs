@@ -4,7 +4,7 @@ namespace Actormachine
 {
     public enum InputOrbitMode { Free, LeftHold, MiddleHold, RightHold, Lock }
     
-    public sealed class CameraFollowPresenter : Presenter
+    public sealed class CameraFollowPresenter : StateBehaviour, IEnterState, IActiveState
     {
         // Model Parameters
         public Transform Follow;
@@ -16,7 +16,7 @@ namespace Actormachine
         private ActorVirtualCamera _actorVirtualCamera;
 
         // Presenter Methods
-        public override void Enter()
+        public void OnEnterState()
         {
             // Check Bootstrap
             Bootstrap.Create<BootstrapCamera>(); //REDESIGN THIS!!!!!!!!!!!!!!!!!!
@@ -46,7 +46,7 @@ namespace Actormachine
             }
         }
 
-        public override void UpdateLoop()
+        public void OnActiveState()
         {
             if (_actorVirtualCamera.IsLock == false)
             {

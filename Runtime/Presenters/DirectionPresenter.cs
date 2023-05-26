@@ -5,7 +5,7 @@ namespace Actormachine
     public enum LookMode { LookToCamera, LookToPointer, LookToStick }
     public enum RotateMode { None, RotateToMovement, RotateToLook, Flip2D }
 
-    public sealed class DirectionPresenter : Presenter
+    public sealed class DirectionPresenter : StateBehaviour, IEnterState, IActiveState
     {
         public LookMode LookMode = LookMode.LookToCamera;
         public RotateMode RotateMode = RotateMode.RotateToMovement;
@@ -29,7 +29,7 @@ namespace Actormachine
 
         private Transform _rootTransform;
 
-        public override void Enter()
+        public void OnEnterState()
         {
             _rootTransform = FindRootTransform;
 
@@ -39,7 +39,7 @@ namespace Actormachine
             _animatorable = AddComponentInRoot<Animatorable>();
         }
 
-        public override void UpdateLoop()
+        public void OnActiveState()
         {
             _cameraDirection = _cameraTransform.forward.normalized;
             _bodyDirection = _rootTransform.TransformDirection(Vector3.forward).normalized;

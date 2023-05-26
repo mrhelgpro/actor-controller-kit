@@ -19,35 +19,31 @@ namespace Actormachine
         private void Start()
         {
             // Enable States
-            foreach (State state in GetComponentsInChildren<State>()) state.Enable();
+            foreach (State state in GetComponentsInChildren<State>()) state.OnEnableState();
         }
 
         private void FixedUpdate()
         {
             // FixedUpdates State after Enter
-            _currentState?.FixedUpdateLoop();
+            _currentState?.OnFixedActiveState();
         }
 
         private void Update()
         {
-            // Updates the Activator if State is not activated
+            // Updates the OnInactiveState() if State is not activated
             foreach (State state in _currentStates)
             {
-                if (IsCurrentState(state) == false) state.ActivatorLoop();
+                if (IsCurrentState(state) == false) state.OnInactiveState();
             }
 
-            // Updates State after Enter
-            _currentState?.UpdateLoop();
-
             // Updates Deactivator if State is active
-            _currentState?.DeactivatorLoop();
+            _currentState?.OnActiveState();
         }
 
         private void LateUpdate()
         {
             // Add and Remove States
             foreach (State item in _addingToStates) _currentStates.Add(item);
-
             foreach (State item in _removeStates) _currentStates.Remove(item);
 
             _addingToStates.Clear();
@@ -106,11 +102,11 @@ namespace Actormachine
                     // Deactivate previous State, and call Exit
                     State exitState = _currentState;
                     _currentState = null;
-                    exitState?.Exit();
+                    exitState?.OnExitState();
 
                     // Activate next State, and call Enter
                     _currentState = state;
-                    state.Enter();
+                    state.OnEnterState();
 
                     // Set State as Default
                     if (state.Priority == StatePriority.Default)
@@ -135,7 +131,7 @@ namespace Actormachine
                 // Deactivate current State, and call Exit
                 State exitState = _currentState;
                 _currentState = null;
-                exitState?.Exit();
+                exitState?.OnExitState();
             }
         }
 

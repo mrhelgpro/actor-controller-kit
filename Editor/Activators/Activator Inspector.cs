@@ -18,8 +18,8 @@ namespace Actormachine.Editor
             }
             else
             {
-                string info = thisTarget.IsAvailable ? "AVAILABLE" : "WAITING";
-                BoxStyle style = thisTarget.IsAvailable ? BoxStyle.Active : BoxStyle.Default;
+                string info = thisTarget.IsAvailable() ? "AVAILABLE" : "WAITING";
+                BoxStyle style = thisTarget.IsAvailable() ? BoxStyle.Active : BoxStyle.Default;
                 Inspector.DrawInfoBox(info, style);
             }
 
@@ -39,22 +39,6 @@ namespace Actormachine.Editor
     [CustomEditor(typeof(ActivatorByInteraction))]
     [CanEditMultipleObjects]
     public class ActivatorByInteractionInspector : ActivatorInspector
-    {
-        public override void OnInspectorGUI() => base.OnInspectorGUI();
-    }
-
-    [ExecuteInEditMode]
-    [CustomEditor(typeof(ActivatorByGrabable))]
-    [CanEditMultipleObjects]
-    public class ActivatorByGrabableInspector : ActivatorInspector
-    {
-        public override void OnInspectorGUI() => base.OnInspectorGUI();
-    }
-
-    [ExecuteInEditMode]
-    [CustomEditor(typeof(ActivatorByDisposable))]
-    [CanEditMultipleObjects]
-    public class ActivatorByDisposableInspector : ActivatorInspector
     {
         public override void OnInspectorGUI() => base.OnInspectorGUI();
     }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public sealed class Movement2DPresenter : Presenter
+    public sealed class Movement2DPresenter : StateBehaviour, IEnterState, IActiveState, IFixedActiveState, IExitState
     {
         [Range(1, 5)] public float MoveSpeed = 3f;
         [Range(1, 10)] public float MoveShift = 5f;
@@ -38,7 +38,7 @@ namespace Actormachine
         private PhysicsMaterial2D _materialInTheAir;
 
         // Presenter Methods
-        public override void Enter()
+        public void OnEnterState()
         {
             // Get Resources
             _materialInTheAir = Resources.Load<PhysicsMaterial2D>("Physic2D/Player In The Air");
@@ -70,14 +70,14 @@ namespace Actormachine
             _rigidbody.freezeRotation = true;
         }
 
-        public override void UpdateLoop()
+        public void OnActiveState()
         {
             jumpLoop();
 
             _groundCollider.sharedMaterial = _positionable.IsGrounded && _positionable.IsObstacle == false ? _materialOnTheGround : _materialInTheAir;
         }
 
-        public override void FixedUpdateLoop()
+        public void OnFixedActiveState()
         {
             // Set Movement Parameters    
             float speed = _inputable.ShiftState ? MoveShift : MoveSpeed;
@@ -104,7 +104,7 @@ namespace Actormachine
             _animatorable.Grounded = _positionable.IsGrounded;
         }
 
-        public override void Exit()
+        public void OnExitState()
         {
             // Set Movement Parameters 
             _currentDirection = Vector3.zero;

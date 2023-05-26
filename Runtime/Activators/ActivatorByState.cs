@@ -2,20 +2,20 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public class ActivatorByState : Activator
+    public class ActivatorByState : Activator, IInactiveState
     {
         public State State;
 
-        public override void UpdateLoop()
+        public void OnInactiveState()
         {
             if (State == null)
             {
-                SetActive(true);
+                TryActive(true);
 
                 return;
             }
 
-            SetActive(State.IsActive == true);
+            TryActive(State.IsActive == true);
         }
     }
 }

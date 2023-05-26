@@ -4,17 +4,17 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public class ReturnToState : Presenter
+    public class ReturnToState : StateBehaviour, IEnterState, IExitState
     {
         public State State;
         private Actor _actor;
 
-        public override void Enter()
+        public void OnEnterState()
         {
             _actor = GetComponentInParent<Actor>();
         }
 
-        public override void Exit()
+        public void OnExitState()
         {
             if (State == null)
             {

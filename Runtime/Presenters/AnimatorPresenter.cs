@@ -4,7 +4,7 @@ namespace Actormachine
 {
     public enum PlayMode { BySpeed, ByTime };
 
-    public class AnimatorPresenter : Presenter
+    public class AnimatorPresenter : StateBehaviour, IEnterState, IActiveState, IExitState
     {
         public string PlayName = "Move";
 
@@ -14,18 +14,22 @@ namespace Actormachine
         public float Duration = 1;
 
         private float _timer = 0;
+
+        private State _state;
         private Animatorable _animatorable;
 
         // Presenter Methods
-        public override void Enter()
+        public void OnEnterState()
         {
-            // Using "AddComponentInRoot" to add or get comppnent on the Root    
+            _state = GetComponent<State>();
+
+            // Add or Get comppnent in the Root
             _animatorable = AddComponentInRoot<Animatorable>();
 
             _animatorable.Enter(Controller);
         }
 
-        public override void UpdateLoop()
+        public void OnActiveState()
         {
             string playName = _animatorable.Grounded ? PlayName : "Fall";
             float speed = PlayMode == PlayMode.BySpeed ? 1 : 1 / Duration;
@@ -37,12 +41,12 @@ namespace Actormachine
 
                 if (_timer >= Duration)
                 {
-                    state.Deactivate();
+                    _state.Deactivate();
                 }
             }
         }
 
-        public override void Exit()
+        public void OnExitState()
         {
             _timer = 0;
             _animatorable.Stop();
