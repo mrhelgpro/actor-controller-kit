@@ -82,7 +82,7 @@ namespace Actormachine
 
         protected virtual void AbyssCheck()
         {
-            float offsetHeight = 0.25f;
+            float offsetHeight = 0.5f;
             float length = 3.125f + offsetHeight;
             float offsetForward = 0.35f;
             float edgeDistance = 0.5f + offsetHeight;

@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public class ActivatorByState : Activator, IInactiveState
+    public class ActivatorByState : Activator
     {
         public State State;
 
-        public void OnInactiveState()
+        public override void OnInactiveState()
         {
             if (State == null)
             {

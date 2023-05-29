@@ -19,7 +19,7 @@ namespace Actormachine
         private void Start()
         {
             // Enable States
-            foreach (State state in GetComponentsInChildren<State>()) state.OnEnableState();
+            foreach (State state in GetComponentsInChildren<State>()) Add(state);
         }
 
         private void FixedUpdate()
@@ -43,8 +43,18 @@ namespace Actormachine
         private void LateUpdate()
         {
             // Add and Remove States
-            foreach (State item in _addingToStates) _currentStates.Add(item);
-            foreach (State item in _removeStates) _currentStates.Remove(item);
+            foreach (State state in _addingToStates)
+            {
+                _currentStates.Add(state);
+
+                state.OnEnableState();
+            }
+
+            foreach (State state in _removeStates)
+            {
+                _currentStates.Remove(state);
+                state.OnDisableState();
+            }
 
             _addingToStates.Clear();
             _removeStates.Clear();
@@ -106,12 +116,15 @@ namespace Actormachine
 
                     // Activate next State, and call Enter
                     _currentState = state;
-                    state.OnEnterState();
+                    _currentState.OnEnterState();
 
                     // Set State as Default
-                    if (state.Priority == StatePriority.Default)
+                    if (_currentState != null)
                     {
-                        _defaultState = state;
+                        if (_currentState.Priority == StatePriority.Default)
+                        {
+                            _defaultState = _currentState;
+                        }
                     }
                 }
             }

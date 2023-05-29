@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public sealed class MovementNavigationPresenter : StateBehaviour, IEnterState, IFixedActiveState, IExitState
+    public sealed class MovementNavigationPresenter : Property
     {
         [Range(1, 5)] public float MoveSpeed = 3f;
         [Range(1, 10)] public float MoveShift = 5f;
@@ -26,7 +26,7 @@ namespace Actormachine
         private Transform _rootTransform;
 
         // Presenter Methods
-        public void OnEnterState()
+        public override void OnEnterState()
         {
             _rootTransform = FindRootTransform;
 
@@ -54,7 +54,7 @@ namespace Actormachine
             _navMeshAgent.updateRotation = false;
         }
 
-        public void OnFixedActiveState()
+        public override void OnFixedActiveState()
         {
             // Set Movement Parameters 
             float maxSpeed = _inputable.ShiftState ? MoveShift : MoveSpeed;
@@ -71,7 +71,7 @@ namespace Actormachine
             _animatorable.Grounded = _positionable.IsGrounded;
         }
 
-        public void OnExitState()
+        public override void OnExitState()
         {
             // Set Movement Parameters
             _currentDirection = Vector3.zero;

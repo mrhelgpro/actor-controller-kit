@@ -2,19 +2,19 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public sealed class ActivatorByInput : Activator, IEnableState, IInactiveState
+    public sealed class ActivatorByInput : Activator
     {
         public InputableCompare InputableCompare;
         
         private Inputable _inputable;
 
-        public void OnEnableState()
+        public override void OnEnableState()
         {
             // Using "AddComponentInRoot" to add or get comppnent on the Root
             _inputable = AddComponentInRoot<Inputable>();
         }
 
-        public void OnInactiveState()
+        public override void OnInactiveState()
         {
             TryActive(InputableCompare.IsEquals(_inputable));
         }

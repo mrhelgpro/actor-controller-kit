@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Actormachine
 {
     /// <summary> To deactivate the Presenters. </summary>
-    public class DeactivatorByInput : Deactivator, IEnableState, IActiveState, IExitState
+    public class DeactivatorByInput : Deactivator
     {
         public enum Mode { Hold, Down }
 
@@ -14,13 +14,13 @@ namespace Actormachine
         private bool _previousInput = false;
         private Inputable _inputable;
 
-        public void OnEnableState()
+        public override void OnEnableState()
         {
             // Add or Get comppnent in the Root
             _inputable = AddComponentInRoot<Inputable>();
         }
 
-        public void OnActiveState()
+        public override void OnActiveState()
         {
             if (DeactivateMode == Mode.Down)
             {
@@ -48,7 +48,7 @@ namespace Actormachine
             }
         }
 
-        public void OnExitState()
+        public override void OnExitState()
         {
             _previousInput = false;
         }

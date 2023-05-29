@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public sealed class Movement2DPresenter : StateBehaviour, IEnterState, IActiveState, IFixedActiveState, IExitState
+    public sealed class MovementPhysicPresenter : Property
     {
         [Range(1, 5)] public float MoveSpeed = 3f;
         [Range(1, 10)] public float MoveShift = 5f;
@@ -31,53 +31,48 @@ namespace Actormachine
         private Positionable _positionable;
 
         // Unity Components
-        private Rigidbody2D _rigidbody;
-        private CircleCollider2D _groundCollider;
+        private Rigidbody _rigidbody;
+        private SphereCollider _groundCollider;
+        private PhysicMaterial _materialOnTheGround;
+        private PhysicMaterial _materialInTheAir;
 
-        private PhysicsMaterial2D _materialOnTheGround;
-        private PhysicsMaterial2D _materialInTheAir;
-
-        // Presenter Methods
-        public void OnEnterState()
+        public override void OnEnableState()
         {
             // Get Resources
-            _materialInTheAir = Resources.Load<PhysicsMaterial2D>("Physic2D/Player In The Air");
-            _materialOnTheGround = Resources.Load<PhysicsMaterial2D>("Physic2D/Player On The Ground");
+            _materialInTheAir = Resources.Load<PhysicMaterial>("Physic/Player In The Air");
+            _materialOnTheGround = Resources.Load<PhysicMaterial>("Physic/Player On The Ground");
 
             // Add or Get comppnent in the Root
             _inputable = AddComponentInRoot<Inputable>();
             _animatorable = AddComponentInRoot<Animatorable>();
             _movable = AddComponentInRoot<Movable>();
-            _positionable = AddComponentInRoot<Positionable2D>();
-            _groundCollider = AddComponentInRoot<CircleCollider2D>();
-            _rigidbody = AddComponentInRoot<Rigidbody2D>();
+            _positionable = AddComponentInRoot<Positionable>();
+            _groundCollider = AddComponentInRoot<SphereCollider>();
+            _rigidbody = AddComponentInRoot<Rigidbody>();
+        }
 
+        // Presenter Methods
+        public override void OnEnterState()
+        {
             // Set Collider Parementers
             _groundCollider.isTrigger = false;
             _groundCollider.radius = 0.2f;
-            _groundCollider.offset = new Vector2(0, _groundCollider.radius);
+            _groundCollider.center = new Vector3(0, _groundCollider.radius, 0);
 
             // Set Movement Parementers
-            _rigidbody.velocity = Vector2.zero;
-            _rigidbody.bodyType = RigidbodyType2D.Dynamic;
-            _rigidbody.simulated = true;
-            _rigidbody.useAutoMass = false;
             _rigidbody.mass = 1;
             _rigidbody.drag = 0;
             _rigidbody.angularDrag = 0.05f;
-            _rigidbody.gravityScale = 1;
-            _rigidbody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+            _rigidbody.useGravity = false;
+            _rigidbody.isKinematic = false;
+            _rigidbody.interpolation = RigidbodyInterpolation.None;
+            _rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+            _rigidbody.constraints = RigidbodyConstraints.None;
             _rigidbody.freezeRotation = true;
+            _rigidbody.velocity = Vector3.zero;
         }
 
-        public void OnActiveState()
-        {
-            jumpLoop();
-
-            _groundCollider.sharedMaterial = _positionable.IsGrounded && _positionable.IsObstacle == false ? _materialOnTheGround : _materialInTheAir;
-        }
-
-        public void OnFixedActiveState()
+        public override void OnFixedActiveState()
         {
             // Set Movement Parameters    
             float speed = _inputable.ShiftState ? MoveShift : MoveSpeed;
@@ -87,15 +82,14 @@ namespace Actormachine
 
             _currentVelocity = _movable.GetVelocity(_currentDirection, speed, Time.fixedDeltaTime * Rate);
 
-            _rigidbody.gravityScale = _currentGravity;
-            _rigidbody.velocity = new Vector2(_currentVelocity.x * 51.0f * Time.fixedDeltaTime, _rigidbody.velocity.y);
+            _rigidbody.MovePosition(_rigidbody.position + _currentVelocity * Time.fixedDeltaTime);
+            _rigidbody.AddForce(Physics.gravity * _currentGravity, ForceMode.Acceleration);
 
             // Set Jump Parameters
             if (_currentForce.magnitude > 0)
             {
-                _rigidbody.velocity = Vector2.zero;
-                _rigidbody.AddForce(_currentForce, ForceMode2D.Impulse);
-
+                _rigidbody.velocity = Vector3.zero;
+                _rigidbody.AddForce(_currentForce, ForceMode.Impulse);
                 _currentForce = Vector3.zero;
             }
 
@@ -104,18 +98,27 @@ namespace Actormachine
             _animatorable.Grounded = _positionable.IsGrounded;
         }
 
-        public void OnExitState()
+        public override void OnActiveState()
+        {
+            jumpLoop();
+
+            _groundCollider.material = _positionable.IsGrounded && _positionable.IsObstacle == false ? _materialOnTheGround : _materialInTheAir;
+        }
+
+        public override void OnExitState()
         {
             // Set Movement Parameters 
             _currentDirection = Vector3.zero;
             _currentForce = Vector3.zero;
-
+            
             _rigidbody.MovePosition(_rigidbody.position);
-            _rigidbody.constraints = RigidbodyConstraints2D.None;
             _rigidbody.velocity = Vector3.zero;
+            _rigidbody.constraints = RigidbodyConstraints.None;
+            _rigidbody.useGravity = false;
+            _rigidbody.isKinematic = true;
 
             // Set Animation Parameters
-            _animatorable.Speed = 1;
+            //_animatorable.Speed = 0;
             _animatorable.Grounded = true;
         }
 

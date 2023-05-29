@@ -3,24 +3,25 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public class ActivatorByInteraction : Activator, IEnableState, IInactiveState, IEnterState
+    public class ActivatorByInteraction : Activator
     {   
         private List<Transform> _targets = new List<Transform>();
+
         private Transform _rootTransform;
 
         public bool IsExists(Transform target) => _targets.Exists(t => t == target);
 
-        public void OnEnableState()
+        public override void OnEnableState()
         {
             _rootTransform = FindRootTransform;
         }
 
-        public void OnInactiveState()
+        public override void OnInactiveState()
         {
             TryActive(_targets.Count > 0);
         }
 
-        public new void OnEnterState()
+        public override void OnEnterState()
         {
             base.OnEnterState();
 
@@ -34,9 +35,9 @@ namespace Actormachine
 
             State[] states = target.GetComponentsInChildren<State>();
 
-            foreach (State state in states) state.OnEnableState();
+            foreach (State state in states) actor.Add(state);
 
-            state.Deactivate();
+            actor.Deactivate(state);
         }
 
         private void OnTriggerEnter(Collider collider)
