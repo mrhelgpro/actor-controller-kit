@@ -4,13 +4,15 @@ using UnityEditor;
 namespace Actormachine.Editor
 {
     [ExecuteInEditMode]
-    [CustomEditor(typeof(Inventoriable))]
+    [CustomEditor(typeof(Storagable))]
     [CanEditMultipleObjects]
-    public class InventoriableInspector : ActorBehaviourInspector
+    public class StoragableInspector : ActorBehaviourInspector
     {
         public override void OnInspectorGUI()
         {
-            Inspector.DrawInfoBox("INVENTORY");
+            //Inspector.DrawInfoBox("STORAGE");
+
+            base.OnInspectorGUI();
         }
     }
 }

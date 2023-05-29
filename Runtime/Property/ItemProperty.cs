@@ -4,20 +4,26 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public enum StorageType { Hide, Inventory, Hand }
-    public enum UseType { Storage, Hand }
+    public enum StorageType { HideInInventory, PrepareInSlot, TakeAndActivate }
+    public enum ActiveType { StorageType, ActiveSlot }
+    public enum ReplacementType { HideInInventory, RemoveFromInventory }
 
     public class ItemProperty : Property, IInteractable
     {
-        public StorageType StorageType = StorageType.Hide;
-        public UseType UseType = UseType.Storage;
+        public StorageType StorageType = StorageType.HideInInventory;
+        public ActiveType ActiveType = ActiveType.StorageType;
+        public ReplacementType ReplacementType = ReplacementType.RemoveFromInventory;
+        public int InventorySlotNumber = 0;
+        public int ActiveSlotNumber = 0;
 
         private List<State> _childStates = new List<State>();
 
-        private Transform _inventoryTransform;
-        private Transform _handTransform;
+        private Transform _inventorySlot;
+        private Transform _activeSlot;
 
         private bool _isTemporary = false;
+
+        private Storagable _storagable;
 
         private Collider _collider;
         private Collider2D _collider2D;
@@ -27,45 +33,51 @@ namespace Actormachine
 
         public bool IsAvailable(Transform rootTransform)
         {
-            if (StorageType == StorageType.Hand)
+            Storagable storagable = rootTransform.GetComponentInChildren<Storagable>();
+
+            if (storagable == null)
             {
-                return rootTransform.GetComponentInChildren<Handable>() != null;
+                return false;
             }
 
-            if (UseType == UseType.Hand)
+            if (StorageType == StorageType.PrepareInSlot)
             {
-                if (rootTransform.GetComponentInChildren<Handable>() == null)
-                {
-                    return false;
-                }
+                if (storagable.InventorySlots.Count <= InventorySlotNumber) return false;
             }
 
-            return rootTransform.GetComponentInChildren<Inventoriable>() != null;
+            if (ActiveType == ActiveType.ActiveSlot)
+            {
+                if (storagable.ActiveSlots.Count <= ActiveSlotNumber) return false;
+            }
+
+            return true;
         }
 
         public override void OnEnableState()
         {
+            _childStates.Clear();
             _isTemporary = false;
 
-            Inventoriable inventoriable = FindRootTransform.GetComponentInChildren<Inventoriable>();
+            _storagable = FindRootTransform.GetComponentInChildren<Storagable>();
 
-            if (inventoriable)
+            if (StorageType == StorageType.HideInInventory)
             {
-                _inventoryTransform = inventoriable.transform;
+                _inventorySlot = _storagable.transform;
             }
 
-            Handable handable = FindRootTransform.GetComponentInChildren<Handable>();
-
-            if (handable)
+            if (StorageType == StorageType.PrepareInSlot)
             {
-                _handTransform = handable.transform;
+                _inventorySlot = _storagable.GetInventorySlot(InventorySlotNumber);
+            }
+
+            if (StorageType == StorageType.TakeAndActivate || ActiveType == ActiveType.ActiveSlot)
+            {
+                _activeSlot = _storagable.GetActiveSlot(ActiveSlotNumber);
             }
 
             setPlacementInStorage();
 
-            // Child states
-            _childStates.Clear();
-
+            // Add all child States
             foreach (State state in GetComponentsInChildren<State>()) _childStates.Add(state);
 
             // Item Settings
@@ -74,12 +86,12 @@ namespace Actormachine
 
         public override void OnEnterState()
         {
-            setPlacementForUse();
+            setPlacementOnActive();
         }
 
         public override void OnInactiveState()
         {     
-            if (StorageType == StorageType.Hand)
+            if (StorageType == StorageType.TakeAndActivate)
             {
                 if (_isTemporary == false)
                 {
@@ -95,9 +107,9 @@ namespace Actormachine
             }
 
             // If child states are not active
-            if (StorageType == StorageType.Hand)
+            if (StorageType == StorageType.TakeAndActivate)
             {
-                setDisableTemporary();
+                SetDisableItem();
             }
             else
             {
@@ -110,46 +122,65 @@ namespace Actormachine
             onDisableItem();
         }
 
-        private void setDisableTemporary()
+        public void SetDisableItem(Transform parent = null)
         {
-            foreach (State state in _childStates) actor.Remove(state); //state.OnDisableState();
+            foreach (State state in _childStates) actor.Remove(state);
 
-            ThisTransform.parent = null;
+            if (parent != null)
+            {
+                ThisTransform.gameObject.SetActive(false);
+                ThisTransform.parent = _storagable.transform;
+            }
+
+            ThisTransform.parent = parent;
         }
 
         private void setPlacementInStorage()
         {
-            if (StorageType == StorageType.Hide)
+            if (StorageType == StorageType.HideInInventory)
             {
-                gameObject.SetActive(false);
-                ThisTransform.parent = _inventoryTransform;
+                SetDisableItem(_storagable.transform);
             }
-            else if (StorageType == StorageType.Inventory)
+            else if (StorageType == StorageType.PrepareInSlot)
             {
+                Transform previousItem = _storagable.GetInventoryItem(InventorySlotNumber);
+
+                if (previousItem != null && previousItem != ThisTransform)
+                {
+                    if (ReplacementType == ReplacementType.HideInInventory)
+                    {
+                        previousItem.GetComponent<ItemProperty>().SetDisableItem(_storagable.transform);
+                    }
+                    else
+                    {
+                        previousItem.GetComponent<ItemProperty>().SetDisableItem(null);
+                    }
+                }
+
                 gameObject.SetActive(true);
-                ThisTransform.parent = _inventoryTransform;
+                ThisTransform.parent = _inventorySlot;
                 ThisTransform.localPosition = Vector3.zero;
                 ThisTransform.localEulerAngles = Vector3.zero;
             }
-            else if (StorageType == StorageType.Hand)
+            else if (StorageType == StorageType.TakeAndActivate)
             {
                 gameObject.SetActive(true);
-                ThisTransform.parent = _handTransform;
+                ThisTransform.parent = _activeSlot;
                 ThisTransform.localPosition = Vector3.zero;
                 ThisTransform.localEulerAngles = Vector3.zero;
             }
         }
 
-        private void setPlacementForUse()
+        private void setPlacementOnActive()
         {
-            if (UseType == UseType.Storage)
+            if (ActiveType == ActiveType.StorageType)
             {
                 setPlacementInStorage();
             }
-            else if (UseType == UseType.Hand)
+            else if (ActiveType == ActiveType.ActiveSlot)
             {
                 gameObject.SetActive(true);
-                ThisTransform.parent = _handTransform;
+                ThisTransform.parent = _activeSlot;
                 ThisTransform.localPosition = Vector3.zero;
                 ThisTransform.localEulerAngles = Vector3.zero;
             }
