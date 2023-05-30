@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public enum StorageType { HideInInventory, PrepareInSlot, TakeAndActivate }
+    public enum StorageType { HideInStorage, AddToInventory, TakeAndActivate }
     public enum ActiveType { StorageType, ActiveSlot }
-    public enum ReplacementType { HideInInventory, RemoveFromInventory }
+    public enum ReplacementType { HideInStorage, RemoveFromInventory }
 
     public class ItemProperty : Property, IInteractable
     {
-        public StorageType StorageType = StorageType.HideInInventory;
+        public StorageType StorageType = StorageType.HideInStorage;
         public ActiveType ActiveType = ActiveType.StorageType;
         public ReplacementType ReplacementType = ReplacementType.RemoveFromInventory;
         public int InventorySlotNumber = 0;
@@ -40,7 +40,7 @@ namespace Actormachine
                 return false;
             }
 
-            if (StorageType == StorageType.PrepareInSlot)
+            if (StorageType == StorageType.AddToInventory)
             {
                 if (storagable.InventorySlots.Count <= InventorySlotNumber) return false;
             }
@@ -60,12 +60,12 @@ namespace Actormachine
 
             _storagable = FindRootTransform.GetComponentInChildren<Storagable>();
 
-            if (StorageType == StorageType.HideInInventory)
+            if (StorageType == StorageType.HideInStorage)
             {
                 _inventorySlot = _storagable.transform;
             }
 
-            if (StorageType == StorageType.PrepareInSlot)
+            if (StorageType == StorageType.AddToInventory)
             {
                 _inventorySlot = _storagable.GetInventorySlot(InventorySlotNumber);
             }
@@ -137,17 +137,17 @@ namespace Actormachine
 
         private void setPlacementInStorage()
         {
-            if (StorageType == StorageType.HideInInventory)
+            if (StorageType == StorageType.HideInStorage)
             {
                 SetDisableItem(_storagable.transform);
             }
-            else if (StorageType == StorageType.PrepareInSlot)
+            else if (StorageType == StorageType.AddToInventory)
             {
                 Transform previousItem = _storagable.GetInventoryItem(InventorySlotNumber);
 
                 if (previousItem != null && previousItem != ThisTransform)
                 {
-                    if (ReplacementType == ReplacementType.HideInInventory)
+                    if (ReplacementType == ReplacementType.HideInStorage)
                     {
                         previousItem.GetComponent<ItemProperty>().SetDisableItem(_storagable.transform);
                     }

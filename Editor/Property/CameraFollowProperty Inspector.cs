@@ -13,13 +13,12 @@ namespace Actormachine.Editor
         {
             // Draw a Inspector
             CameraFollowProperty thisTarget = (CameraFollowProperty)target;
-
+            
             // Check Follow
             thisTarget.Follow = EditorGUILayout.ObjectField("Follow", thisTarget.Follow, typeof(Transform), true) as Transform;
 
             if (thisTarget.Follow == false)
             {
-                //DrawErrorInspector("ADD A FOLLOW");
                 Inspector.DrawInfoBox("ADD A FOLLOW", BoxStyle.Error);
                 return;
             }

@@ -8,7 +8,7 @@ namespace Actormachine
     {
         public string PlayName = "Move";
 
-        public RuntimeAnimatorController Controller;
+        public AnimatorOverrideController OverrideController;
 
         public PlayMode PlayMode = PlayMode.BySpeed;
         public float Duration = 1;
@@ -23,7 +23,7 @@ namespace Actormachine
             // Add or Get comppnent in the Root
             _animatorable = AddComponentInRoot<Animatorable>();
 
-            _animatorable.Enter(Controller);
+            _animatorable.Enter(OverrideController);
         }
 
         public override void OnActiveState()
@@ -46,7 +46,7 @@ namespace Actormachine
         public override void OnExitState()
         {
             _timer = 0;
-            _animatorable.Stop();
+
             _animatorable.Exit();
         }
     }

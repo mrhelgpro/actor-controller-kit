@@ -15,7 +15,7 @@ namespace Actormachine
         private bool _grounded = false;
         private string _previousName = "None";
 
-        private RuntimeAnimatorController _previousController;
+        private AnimatorOverrideController _previousController;
 
         private Animator _animator = null;
 
@@ -73,29 +73,27 @@ namespace Actormachine
             }
         }
 
-        public void Enter(RuntimeAnimatorController nextController)
+        public void Enter(AnimatorOverrideController nextController)
         {
-            if (nextController == null)
+            if (nextController != null)
             {
-                return;
+                _previousController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
+                _animator.runtimeAnimatorController = nextController;
             }
 
-            _previousController = _animator.runtimeAnimatorController;
-            _animator.runtimeAnimatorController = nextController;
-
             _previousName = "Enter";
+            _animator.speed = 1;
         }
 
         public void Exit()
         {
-            if (_previousController == null)
+            if (_previousController != null)
             {
-                return;
+                _animator.runtimeAnimatorController = _previousController;
             }
-
-            _animator.runtimeAnimatorController = _previousController;
             
             _previousName = "Exit";
+            _animator.speed = 0;
         }
 
         public void Play(string name, float speed = 1)
@@ -120,7 +118,7 @@ namespace Actormachine
 
         public void Stop()
         {   
-            _previousName = "Stop";
+            //_previousName = "Stop";
         }
 
         private float GetClipLength(AnimationClip clip) => clip.length;

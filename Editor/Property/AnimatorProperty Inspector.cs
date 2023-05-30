@@ -12,8 +12,10 @@ namespace Actormachine.Editor
         {
             AnimatorProperty thisTarget = (AnimatorProperty)target;
 
-            thisTarget.PlayName = EditorGUILayout.TextField("Time", thisTarget.PlayName);
-            thisTarget.Controller = (RuntimeAnimatorController)EditorGUILayout.ObjectField("Controller", thisTarget.Controller, typeof(RuntimeAnimatorController), true);
+            thisTarget.PlayName = EditorGUILayout.TextField("Play Name", thisTarget.PlayName);
+
+            thisTarget.OverrideController = EditorGUILayout.ObjectField("Override Controller", thisTarget.OverrideController, typeof(AnimatorOverrideController), true) as AnimatorOverrideController;
+
             thisTarget.PlayMode = (PlayMode)EditorGUILayout.EnumPopup("Play Mode", thisTarget.PlayMode);
 
             if (thisTarget.PlayMode == PlayMode.ByTime)
