@@ -6,13 +6,13 @@ namespace Actormachine.Editor
     [ExecuteInEditMode]
     [CustomEditor(typeof(Deactivator))]
     [CanEditMultipleObjects]
-    public class DeactivatorInspector : ActorBehaviourInspector
+    public class DeactivatorInspector : ActormachineBaseInspector
     {
         public override void OnInspectorGUI()
         {
-            Inspector.DrawInfoBox("DEACTIVATES THE PRESENTER");
+            Inspector.DrawSubtitle("DEACTIVATES THE STATE");
 
-            base.OnInspectorGUI();
+            DrawBaseInspector();
         }
     }
 
@@ -21,9 +21,6 @@ namespace Actormachine.Editor
     [CanEditMultipleObjects]
     public class DeactivatorByInputInspector : DeactivatorInspector
     {
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
-        }
+        public override void OnInspectorGUI() => base.OnInspectorGUI();
     }
 }

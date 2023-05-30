@@ -4,13 +4,13 @@ using UnityEditor;
 namespace Actormachine.Editor
 {
     [ExecuteInEditMode]
-    [CustomEditor(typeof(AnimatorPresenter))]
+    [CustomEditor(typeof(AnimatorProperty))]
     [CanEditMultipleObjects]
-    public class AnimatorPresenterInspector : ActorBehaviourInspector
+    public class AnimatorPropertyInspector : ActormachineBaseInspector
     {
         public override void OnInspectorGUI()
         {
-            AnimatorPresenter thisTarget = (AnimatorPresenter)target;
+            AnimatorProperty thisTarget = (AnimatorProperty)target;
 
             thisTarget.PlayName = EditorGUILayout.TextField("Time", thisTarget.PlayName);
             thisTarget.Controller = (RuntimeAnimatorController)EditorGUILayout.ObjectField("Controller", thisTarget.Controller, typeof(RuntimeAnimatorController), true);

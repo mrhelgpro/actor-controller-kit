@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public sealed class Movement2DPresenter : Property
+    public sealed class Movement2DProperty : Property
     {
         [Range(1, 5)] public float MoveSpeed = 3f;
         [Range(1, 10)] public float MoveShift = 5f;
@@ -37,7 +37,7 @@ namespace Actormachine
         private PhysicsMaterial2D _materialOnTheGround;
         private PhysicsMaterial2D _materialInTheAir;
 
-        // Presenter Methods
+        // Property Methods
         public override void OnEnterState()
         {
             // Get Resources

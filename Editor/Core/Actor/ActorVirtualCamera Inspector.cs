@@ -6,7 +6,7 @@ namespace Actormachine.Editor
     [ExecuteInEditMode]
     [CustomEditor(typeof(ActorVirtualCamera))]
     [CanEditMultipleObjects]
-    public class ActorVirtualCameraInspector : ActorBehaviourInspector
+    public class ActorVirtualCameraInspector : ActormachineBaseInspector
     {
         public override void OnInspectorGUI()
         {

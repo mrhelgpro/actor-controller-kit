@@ -157,17 +157,11 @@ namespace Actormachine
                     }
                 }
 
-                gameObject.SetActive(true);
-                ThisTransform.parent = _inventorySlot;
-                ThisTransform.localPosition = Vector3.zero;
-                ThisTransform.localEulerAngles = Vector3.zero;
+                setPosition(_inventorySlot, true);
             }
             else if (StorageType == StorageType.TakeAndActivate)
             {
-                gameObject.SetActive(true);
-                ThisTransform.parent = _activeSlot;
-                ThisTransform.localPosition = Vector3.zero;
-                ThisTransform.localEulerAngles = Vector3.zero;
+                setPosition(_activeSlot, true);
             }
         }
 
@@ -179,11 +173,16 @@ namespace Actormachine
             }
             else if (ActiveType == ActiveType.ActiveSlot)
             {
-                gameObject.SetActive(true);
-                ThisTransform.parent = _activeSlot;
-                ThisTransform.localPosition = Vector3.zero;
-                ThisTransform.localEulerAngles = Vector3.zero;
+                setPosition(_activeSlot, true);
             }
+        }
+
+        private void setPosition(Transform parent, bool activeState)
+        {
+            gameObject.SetActive(activeState);
+            ThisTransform.parent = parent;
+            ThisTransform.localPosition = Vector3.zero;
+            ThisTransform.localEulerAngles = Vector3.zero;
         }
 
         private void onEnableItem()

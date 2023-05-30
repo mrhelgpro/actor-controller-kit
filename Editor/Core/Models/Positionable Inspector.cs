@@ -6,23 +6,11 @@ namespace Actormachine.Editor
     [ExecuteInEditMode]
     [CustomEditor(typeof(Positionable))]
     [CanEditMultipleObjects]
-    public class PositionableInspector : ActorBehaviourInspector
+    public class PositionableInspector : ActormachineBaseInspector
     {
         public override void OnInspectorGUI()
         {
-            Positionable thisTarget = (Positionable)target;
-
-            if (Application.isPlaying == false)
-            {
-                Inspector.DrawInfoBox("CHECK POSITION DATA");
-            }
-            else
-            {
-                Inspector.DrawInfoBox("GROUND: " + thisTarget.SurfaceType, thisTarget.IsGrounded ? BoxStyle.Active : BoxStyle.Default);
-                Inspector.DrawInfoBox("OBSTACLE: " + (thisTarget.ObstacleTransform == null ? "None" : thisTarget.ObstacleTransform.name), thisTarget.IsObstacle ? BoxStyle.Active : BoxStyle.Default);
-                Inspector.DrawInfoBox("EDGE", thisTarget.IsEdge ? BoxStyle.Active : BoxStyle.Default);
-                Inspector.DrawInfoBox("ABYSS", thisTarget.IsAbyss ? BoxStyle.Active : BoxStyle.Default);
-            }
+            Inspector.DrawSubtitle("CHECK POSITION DATA");
         }
     }
 

@@ -7,6 +7,7 @@ namespace Actormachine
 
     public sealed class State : ActorBehaviour
     {
+        public string Name => gameObject.name + " (" + Priority.ToString() + ")";
         public bool IsActive { get; private set; } = false;
 
         public StatePriority Priority = StatePriority.Default;
@@ -66,10 +67,14 @@ namespace Actormachine
         protected Actor actor;
         protected State state;
 
+        public Transform RootTransform { get; private set; }
+
         public void Enable()
         {
             actor = GetComponentInParent<Actor>();
             state = GetComponent<State>();
+
+            RootTransform = actor.transform;
         }
 
         public virtual void OnEnableState() { }

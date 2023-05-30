@@ -34,6 +34,10 @@ namespace Actormachine
         private void Update()
         {
             GroundCheck();
+        }
+
+        private void FixedUpdate()
+        {
             SurfaceCheck();
             ObstacleCheck();
             AbyssCheck();

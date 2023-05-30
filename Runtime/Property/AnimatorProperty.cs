@@ -4,7 +4,7 @@ namespace Actormachine
 {
     public enum PlayMode { BySpeed, ByTime };
 
-    public class AnimatorPresenter : Property
+    public class AnimatorProperty : Property
     {
         public string PlayName = "Move";
 
@@ -17,7 +17,7 @@ namespace Actormachine
 
         private Animatorable _animatorable;
 
-        // Presenter Methods
+        // Property Methods
         public override void OnEnterState()
         {
             // Add or Get comppnent in the Root

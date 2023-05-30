@@ -7,14 +7,7 @@ namespace Actormachine
     {   
         private List<Transform> _targets = new List<Transform>();
 
-        private Transform _rootTransform;
-
         public bool IsExists(Transform target) => _targets.Exists(t => t == target);
-
-        public override void OnEnableState()
-        {
-            _rootTransform = FindRootTransform;
-        }
 
         public override void OnInactiveState()
         {
@@ -53,7 +46,7 @@ namespace Actormachine
             // Checking the available IInteractable
             int amountOfAvailable = 0;
 
-            foreach (IInteractable interactable in interactables) amountOfAvailable += interactable.IsAvailable(_rootTransform) ? 1 : 0;
+            foreach (IInteractable interactable in interactables) amountOfAvailable += interactable.IsAvailable(RootTransform) ? 1 : 0;
 
             if (amountOfAvailable != interactables.Length) return;
 

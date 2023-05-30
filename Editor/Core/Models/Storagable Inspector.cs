@@ -6,13 +6,13 @@ namespace Actormachine.Editor
     [ExecuteInEditMode]
     [CustomEditor(typeof(Storagable))]
     [CanEditMultipleObjects]
-    public class StoragableInspector : ActorBehaviourInspector
+    public class StoragableInspector : ActormachineBaseInspector
     {
         public override void OnInspectorGUI()
         {
-            //Inspector.DrawInfoBox("STORAGE");
+            Inspector.DrawSubtitle("STORAGE ITEMS");
 
-            base.OnInspectorGUI();
+            DrawBaseInspector();
         }
     }
 }

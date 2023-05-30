@@ -6,11 +6,11 @@ namespace Actormachine.Editor
     [ExecuteInEditMode]
     [CustomEditor(typeof(Movable))]
     [CanEditMultipleObjects]
-    public class MovableInspector : ActorBehaviourInspector
+    public class MovableInspector : ActormachineBaseInspector
     {
         public override void OnInspectorGUI()
         {
-            Inspector.DrawInfoBox("CONTROLS SPEED");
+            Inspector.DrawSubtitle("CONTROLS SPEED");
         }
     }
 }

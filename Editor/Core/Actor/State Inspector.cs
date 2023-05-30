@@ -7,7 +7,7 @@ namespace Actormachine.Editor
     [ExecuteInEditMode]
     [CustomEditor(typeof(State))]
     [CanEditMultipleObjects]
-    public sealed class StateInspector : ActorBehaviourInspector
+    public sealed class StateInspector : ActormachineBaseInspector
     {
         private void OnEnable()
         {
@@ -47,17 +47,17 @@ namespace Actormachine.Editor
             {
                 base.OnInspectorGUI();
 
-                Inspector.DrawInfoBox("UPDATE THE STATE INTERFACES");
+                Inspector.DrawInfoBox("UPDATE THE PROPERTY");
                 
                 return;
             }
 
             // Draw in Play mode
-            string info = thisTarget.IsActive ? "ACTIVE" : "WAITING";
             BoxStyle style = thisTarget.IsActive ? BoxStyle.Active : BoxStyle.Default;
 
-            Inspector.DrawHeader(thisTarget.Priority.ToString());
-            Inspector.DrawInfoBox(info, style);
+            Inspector.DrawInfoBox(thisTarget.Name, style);
+
+            //Inspector.DrawHeader(thisTarget.Name);
 
             EditorUtility.SetDirty(thisTarget);
         }

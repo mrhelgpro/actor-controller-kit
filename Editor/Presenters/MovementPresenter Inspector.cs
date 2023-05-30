@@ -4,9 +4,9 @@ using UnityEditor;
 namespace Actormachine.Editor
 {
     [ExecuteInEditMode]
-    [CustomEditor(typeof(MovementPhysicPresenter))]
+    [CustomEditor(typeof(MovementPhysicProperty))]
     [CanEditMultipleObjects]
-    public class MovementPhysicPresenterInspector : ActorBehaviourInspector
+    public class MovementPhysicPropertyInspector : ActormachineBaseInspector
     {
         public override void OnInspectorGUI()
         {
@@ -15,9 +15,9 @@ namespace Actormachine.Editor
     }
 
     [ExecuteInEditMode]
-    [CustomEditor(typeof(MovementNavigationPresenter))]
+    [CustomEditor(typeof(MovementNavigationProperty))]
     [CanEditMultipleObjects]
-    public class MovementNavigationPresenterInspector : ActorBehaviourInspector
+    public class MovementNavigationPropertyInspector : ActormachineBaseInspector
     {
         public override void OnInspectorGUI()
         {
@@ -26,9 +26,9 @@ namespace Actormachine.Editor
     }
 
     [ExecuteInEditMode]
-    [CustomEditor(typeof(Movement2DPresenter))]
+    [CustomEditor(typeof(Movement2DProperty))]
     [CanEditMultipleObjects]
-    public class Movement2DPresenterInspector : ActorBehaviourInspector
+    public class Movement2DPropertyInspector : ActormachineBaseInspector
     {
         public override void OnInspectorGUI()
         {

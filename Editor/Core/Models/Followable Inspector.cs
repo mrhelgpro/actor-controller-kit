@@ -6,11 +6,11 @@ namespace Actormachine.Editor
     [ExecuteInEditMode]
     [CustomEditor(typeof(Followable))]
     [CanEditMultipleObjects]
-    public class FollowableInspector : ActorBehaviourInspector
+    public class FollowableInspector : ActormachineBaseInspector
     {
         public override void OnInspectorGUI()
         {
-            Inspector.DrawInfoBox("MARK FOR CAMERA");
+            Inspector.DrawSubtitle("MARK FOR CAMERA");
         }
     }
 }

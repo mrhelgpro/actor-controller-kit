@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    /// <summary> To deactivate the Presenters. </summary>
+    /// <summary> To deactivate the Propertys. </summary>
     public class DeactivatorByInput : Deactivator
     {
         public enum Mode { Hold, Down }

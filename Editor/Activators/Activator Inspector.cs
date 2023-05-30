@@ -6,24 +6,17 @@ namespace Actormachine.Editor
     [ExecuteInEditMode]
     [CustomEditor(typeof(Activator))]
     [CanEditMultipleObjects]
-    public class ActivatorInspector : ActorBehaviourInspector
+    public class ActivatorInspector : ActormachineBaseInspector
     {
         public override void OnInspectorGUI()
         {
             Activator thisTarget = (Activator)target;
 
-            if (Application.isPlaying == false)
-            {
-                Inspector.DrawInfoBox("ACTIVATES THE PRESENTER");
-            }
-            else
-            {
-                string info = thisTarget.IsAvailable() ? "AVAILABLE" : "WAITING";
-                BoxStyle style = thisTarget.IsAvailable() ? BoxStyle.Active : BoxStyle.Default;
-                Inspector.DrawInfoBox(info, style);
-            }
+            BoxStyle style = thisTarget.IsAvailable() ? BoxStyle.Active : BoxStyle.Default;
+            
+            Inspector.DrawSubtitle("ACTIVATES THE STATE", style);
 
-            base.OnInspectorGUI();
+            DrawBaseInspector();
         }
     }
 

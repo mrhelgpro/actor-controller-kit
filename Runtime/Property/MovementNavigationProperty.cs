@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public sealed class MovementNavigationPresenter : Property
+    public sealed class MovementNavigationProperty : Property
     {
         [Range(1, 5)] public float MoveSpeed = 3f;
         [Range(1, 10)] public float MoveShift = 5f;
@@ -25,7 +25,7 @@ namespace Actormachine
 
         private Transform _rootTransform;
 
-        // Presenter Methods
+        // Property Methods
         public override void OnEnterState()
         {
             _rootTransform = FindRootTransform;

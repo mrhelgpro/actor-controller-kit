@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public sealed class MovementPhysicPresenter : Property
+    public sealed class MovementPhysicProperty : Property
     {
         [Range(1, 5)] public float MoveSpeed = 3f;
         [Range(1, 10)] public float MoveShift = 5f;
@@ -51,7 +51,7 @@ namespace Actormachine
             _rigidbody = AddComponentInRoot<Rigidbody>();
         }
 
-        // Presenter Methods
+        // Property Methods
         public override void OnEnterState()
         {
             // Set Collider Parementers

@@ -6,7 +6,7 @@ namespace Actormachine.Editor
     [ExecuteInEditMode]
     [CustomEditor(typeof(Animatorable))]
     [CanEditMultipleObjects]
-    public class AnimatorableInspector : ActorBehaviourInspector
+    public class AnimatorableInspector : ActormachineBaseInspector
     {
         public override void OnInspectorGUI()
         {
@@ -16,18 +16,18 @@ namespace Actormachine.Editor
 
             if (animator == null)
             {
-                Inspector.DrawInfoBox("<ANIMATOR> - IS NOT FOUND", BoxStyle.Error);
+                Inspector.DrawSubtitle("<ANIMATOR> - IS NOT FOUND", BoxStyle.Error);
 
                 return;
             }
 
-            if (Application.isPlaying)
+            if (Application.isPlaying == true)
             {
-                Inspector.DrawInfoBox(animator.runtimeAnimatorController.name);
+                Inspector.DrawSubtitle(animator.runtimeAnimatorController.name);
             }
             else
             {
-                Inspector.DrawInfoBox("CONTROLS ANIMATIONS");
+                Inspector.DrawSubtitle("CONTROLS ANIMATIONS");
             }
         }
     }

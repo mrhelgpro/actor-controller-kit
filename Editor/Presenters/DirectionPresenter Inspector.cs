@@ -4,9 +4,9 @@ using UnityEditor;
 namespace Actormachine.Editor
 {
     [ExecuteInEditMode]
-    [CustomEditor(typeof(DirectionPresenter))]
+    [CustomEditor(typeof(DirectionProperty))]
     [CanEditMultipleObjects]
-    public class DirectionPresenterInspectorInspector : ActorBehaviourInspector
+    public class DirectionPropertyInspector : ActormachineBaseInspector
     {
         public override void OnInspectorGUI()
         {

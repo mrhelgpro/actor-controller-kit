@@ -4,7 +4,7 @@ namespace Actormachine
 {
     public enum InputOrbitMode { Free, LeftHold, MiddleHold, RightHold, Lock }
     
-    public sealed class CameraFollowPresenter : Property
+    public sealed class CameraFollowProperty : Property
     {
         // Model Parameters
         public Transform Follow;
@@ -30,7 +30,7 @@ namespace Actormachine
             // Check Required Component
             if (Follow == null)
             {
-                Followable followable = FindRootTransform.GetComponentInChildren<Followable>();
+                Followable followable = RootTransform.GetComponentInChildren<Followable>();
 
                 if (followable == null)
                 {

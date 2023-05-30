@@ -8,7 +8,7 @@ namespace Actormachine.Editor
     [ExecuteInEditMode]
     [CustomEditor(typeof(Actor))]
     [CanEditMultipleObjects]
-    public sealed class ActorInspector : ActorBehaviourInspector
+    public sealed class ActorInspector : ActormachineBaseInspector
     {
         Actor thisTarget;
 
@@ -48,7 +48,7 @@ namespace Actormachine.Editor
             foreach (State state in thisTarget.GetStatesList)
             {
                 BoxStyle style = state.IsActive == true ? BoxStyle.Active : BoxStyle.Default;
-                Inspector.DrawInfoBox(state.gameObject.name, style);
+                Inspector.DrawInfoBox(state.Name, style);
             }
 
             EditorUtility.SetDirty(target);

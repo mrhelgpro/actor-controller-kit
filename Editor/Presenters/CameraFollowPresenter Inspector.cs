@@ -5,20 +5,21 @@ using Cinemachine;
 namespace Actormachine.Editor
 {
     [ExecuteInEditMode]
-    [CustomEditor(typeof(CameraFollowPresenter))]
+    [CustomEditor(typeof(CameraFollowProperty))]
     [CanEditMultipleObjects]
-    public class CameraFollowPresenterInspector : ActorBehaviourInspector
+    public class CameraFollowPropertyInspector : ActormachineBaseInspector
     {
         public override void OnInspectorGUI()
         {
             // Draw a Inspector
-            CameraFollowPresenter thisTarget = (CameraFollowPresenter)target;
+            CameraFollowProperty thisTarget = (CameraFollowProperty)target;
 
             // Check Follow
             thisTarget.Follow = EditorGUILayout.ObjectField("Follow", thisTarget.Follow, typeof(Transform), true) as Transform;
 
             if (thisTarget.Follow == false)
             {
+                //DrawErrorInspector("ADD A FOLLOW");
                 Inspector.DrawInfoBox("ADD A FOLLOW", BoxStyle.Error);
                 return;
             }
