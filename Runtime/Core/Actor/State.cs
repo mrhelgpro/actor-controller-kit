@@ -5,6 +5,7 @@ namespace Actormachine
 {
     public enum StatePriority { Default, Prepare, Action };
 
+    [AddComponentMenu("Actormachine/Core/State")]
     public sealed class State : ActorBehaviour
     {
         public string Name => gameObject.name + " (" + Priority.ToString() + ")";

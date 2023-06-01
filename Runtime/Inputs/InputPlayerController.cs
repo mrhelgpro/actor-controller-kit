@@ -7,10 +7,13 @@ namespace Actormachine
         public enum MoveMode { Input, Target, Both }
         public enum TargetMode { LeftAction, MiddleAction, RightAction }
 
+        [Range(0, 1)] public float PointerSensitivityX = 0.5f;
+        [Range(0, 1)] public float PointerSensitivityY = 0.5f;
+
         public MoveMode MoveDirectionMode = MoveMode.Input;
         public TargetMode InputTargetMode = TargetMode.LeftAction;
 
-        public LayerMask TargetRequiredLayers;
+        public LayerMask LayerMask;
 
         private Target _targetPosition;
         private Camera _camera;
@@ -20,6 +23,11 @@ namespace Actormachine
         private new void Awake()
         {
             base.Awake();
+
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
+            PointerScreenPosition = new Vector2(Screen.width / 2, Screen.height / 2);
 
             _camera = Camera.main;
             _cameraTransform = _camera.transform;
@@ -93,20 +101,29 @@ namespace Actormachine
             {
                 RaycastHit hit;
 
-                if (Physics.Raycast(_camera.ScreenPointToRay(inputable.PointerScreenPosition), out hit))
+                if (Physics.Raycast(_camera.ScreenPointToRay(inputable.PointerScreenPosition), out hit, Mathf.Infinity, LayerMask))
                 {
-                    if ((TargetRequiredLayers.value & (1 << hit.collider.transform.gameObject.layer)) > 0)
-                    {
-                        _targetPosition = new Target(transform, hit.collider.transform, hit.point);
-                    }
+                    _targetPosition = new Target(transform, hit.collider.transform, hit.point);
                 }
             }
         }
 
         private void Update()
         {
-            inputable.PointerScreenPosition = _inputActions.Player.Pointer.ReadValue<Vector2>();
-            inputable.LookDelta = _inputActions.Player.Look.ReadValue<Vector2>();
+            // Get Look Delta
+            float x = _inputActions.Player.Look.ReadValue<Vector2>().x * PointerSensitivityX;
+            float y = _inputActions.Player.Look.ReadValue<Vector2>().y * PointerSensitivityY;
+
+            inputable.LookDelta = new Vector2(x, y);
+
+            // Get Pointer Screen Position, for Mouse and Gamepad 
+            PointerScreenPosition += Vector2.Scale(inputable.LookDelta, new Vector2(1f, -1f));
+            PointerScreenPosition = new Vector2(Mathf.Clamp(PointerScreenPosition.x, 0f, Screen.width), Mathf.Clamp(PointerScreenPosition.y, 0f, Screen.height));
+
+            inputable.PointerScreenPosition = PointerScreenPosition;
+
+            // Get Pointer Screen Position, for Mouse
+            //inputable.PointerScreenPosition = _inputActions.Player.Pointer.ReadValue<Vector2>();
 
             readMoveInput();
         }
@@ -137,7 +154,7 @@ namespace Actormachine
                     ClearTarget();
                 }
             }
-            else
+            else if (MoveDirectionMode == MoveMode.Both)
             {
                 if (_targetPosition.IsExists)
                 {

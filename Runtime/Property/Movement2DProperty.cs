@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Actormachine
 {
+    [AddComponentMenu("Actormachine/Property/Movement2D Property")]
     public sealed class Movement2DProperty : Property
     {
         [Range(1, 5)] public float MoveSpeed = 3f;

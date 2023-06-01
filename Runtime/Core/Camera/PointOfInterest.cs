@@ -3,6 +3,7 @@ using Cinemachine;
 
 namespace Actormachine
 {
+	[AddComponentMenu("Actormachine/Camera/Point Of Interest")]
 	public class PointOfInterest : DetectedByTrigger
 	{
 		[Range(20, 80)] public int FieldOfView = 60;
@@ -20,11 +21,21 @@ namespace Actormachine
 
 		private void Awake()
         {
+			// Get Components
 			_actorVirtualCamera = FindAnyObjectByType<ActorVirtualCamera>();
 			_playerVirtualCamera = _actorVirtualCamera.GetComponent<CinemachineVirtualCamera>();
 			_pointVirtualCamera = GetComponentInChildren<CinemachineVirtualCamera>();
 			_cinemachineBrain = FindAnyObjectByType<CinemachineBrain>();
 
+			// Check Error
+			if (_actorVirtualCamera == null || _playerVirtualCamera == null || _pointVirtualCamera == null || _cinemachineBrain == null)
+			{
+				gameObject.SetActive(false);
+
+				return;
+			}
+
+			// Set Parameters
 			_pointVirtualCamera.Priority = 0;
 			TargetTag = "Player";
 		}

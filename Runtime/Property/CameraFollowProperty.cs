@@ -3,7 +3,8 @@ using UnityEngine;
 namespace Actormachine
 {
     public enum InputOrbitMode { Free, LeftHold, MiddleHold, RightHold, Lock }
-    
+
+    [AddComponentMenu("Actormachine/Property/CameraFollow Property")]
     public sealed class CameraFollowProperty : Property
     {
         // Model Parameters
@@ -15,18 +16,12 @@ namespace Actormachine
         private Inputable _inputable;
         private ActorVirtualCamera _actorVirtualCamera;
 
-        public override void OnEnableState()
+        public override void OnEnterState()
         {
-            // Check Bootstrap
-            Bootstrap.Create<BootstrapCamera>(); //REDESIGN THIS!!!!!!!!!!!!!!!!!!
-
             // Add or Get comppnent in the Root
             _inputable = AddComponentInRoot<Inputable>();
             _actorVirtualCamera = FindAnyObjectByType<ActorVirtualCamera>();
-        }
 
-        public override void OnEnterState()
-        {
             // Check Required Component
             if (Follow == null)
             {
@@ -112,7 +107,7 @@ namespace Actormachine
                 {
                     if (_inputable.LookDelta.sqrMagnitude >= 0.01f)
                     {
-                        float deltaTimeMultiplier = 1.0f; // Make ckeck is Mouse or Gamepad
+                        float deltaTimeMultiplier = 0.5f; // Make ckeck is Mouse or Gamepad
 
                         _actorVirtualCamera.CurrentParameters.OrbitHorizontal += _inputable.LookDelta.x * EnterParameters.OrbitSensitivityX * deltaTimeMultiplier;
                         _actorVirtualCamera.CurrentParameters.OrbitVertical += _inputable.LookDelta.y * EnterParameters.OrbitSensitivityY * deltaTimeMultiplier;

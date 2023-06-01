@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Actormachine
 {
+    [AddComponentMenu("Actormachine/Property/MovementNavigation Property")]
     public sealed class MovementNavigationProperty : Property
     {
         [Range(1, 5)] public float MoveSpeed = 3f;

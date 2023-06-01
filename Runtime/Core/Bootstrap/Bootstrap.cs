@@ -3,48 +3,6 @@ using UnityEditor;
 
 namespace Actormachine
 {
-    /// <summary> Checks or creates all required components. </summary>
-    public abstract class Bootstrap : MonoBehaviour
-    {
-        private void Awake() => Initiate();
-
-        /// <summary> In Play Mode it is called once when Awake, in Edit Mode it is called constantly as an Update. </summary>
-        public abstract void Initiate();
-
-        /// <summary> Create the required <see cref="Bootstrap"/> to get all the dependent components. </summary>
-        public static T Create<T>() where T : Bootstrap
-        {
-            T currentBootstrap = FindAnyObjectByType<T>();
-
-            if (currentBootstrap == null)
-            {
-                Bootstrap anyBootstrap = FindAnyObjectByType<Bootstrap>();
-                Transform parentBootstrap;
-
-                if (anyBootstrap == null)
-                {
-                    parentBootstrap = new GameObject().transform;
-                }
-                else
-                {
-                    parentBootstrap = anyBootstrap.transform;
-                }
-
-                currentBootstrap = parentBootstrap.gameObject.AddComponent<T>();
-
-                currentBootstrap.transform.SetAsFirstSibling();
-            }
-
-            currentBootstrap.transform.name = "Bootstrap";
-            currentBootstrap.transform.parent = null;
-            currentBootstrap.transform.localScale = Vector3.one;
-            currentBootstrap.transform.position = Vector3.zero;
-            currentBootstrap.transform.rotation = Quaternion.identity;
-
-            return currentBootstrap;
-        }
-    }
-
     public static class BootstrapExtantion
     {
         /// <summary> 

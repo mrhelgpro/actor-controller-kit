@@ -8,9 +8,27 @@ namespace Actormachine.Editor
     [CanEditMultipleObjects]
     public class ItemPropertyInspector : ActormachineBaseInspector
     {
+        private void OnEnable()
+        {
+            ItemProperty thisTarget = (ItemProperty)target;
+
+            //Give object the "Actor" layer
+            thisTarget.gameObject.layer = LayerMask.NameToLayer("Actor");
+        }
+
         public override void OnInspectorGUI()
         {
             ItemProperty thisTarget = (ItemProperty)target;
+
+            Collider collider = thisTarget.GetComponent<Collider>();
+            Collider2D collider2D = thisTarget.GetComponent<Collider2D>();
+
+            if (collider == null && collider2D == null)
+            {
+                Inspector.DrawSubtitle("<Collider> - IS NOT FOUND", BoxStyle.Error);
+
+                return;
+            }
 
             thisTarget.StorageType = (StorageType)EditorGUILayout.EnumPopup("Storage Type", thisTarget.StorageType);
 

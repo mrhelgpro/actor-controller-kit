@@ -68,6 +68,8 @@ namespace Actormachine
     /// <summary> Parent class from which all "Input Controllers: should inherit. </summary>
     public class InputController : ActorBehaviour
     {
+        public static Vector2 PointerScreenPosition;
+
         protected Inputable inputable;
 
         protected new void Awake()

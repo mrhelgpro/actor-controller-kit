@@ -8,6 +8,7 @@ namespace Actormachine
     public enum ActiveType { StorageType, ActiveSlot }
     public enum ReplacementType { HideInStorage, RemoveFromInventory }
 
+    [AddComponentMenu("Actormachine/Property/Item Property")]
     public class ItemProperty : Property, IInteractable
     {
         public StorageType StorageType = StorageType.HideInStorage;

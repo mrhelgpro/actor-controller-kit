@@ -61,13 +61,5 @@ namespace Actormachine.Editor
             instantiate.HideChildObjects(hideInHierarchy);
             instantiate.hideFlags = notEditable ? HideFlags.NotEditable : HideFlags.None;
         }
-
-        public static void CreateBootstrap<T>() where T : Bootstrap
-        {
-            T currentBootstrap = Bootstrap.Create<T>();
-
-            currentBootstrap.transform.SetAsFirstSibling();
-            EditorGUIUtility.PingObject(currentBootstrap.gameObject);
-        }
     }
 }

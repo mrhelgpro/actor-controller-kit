@@ -14,6 +14,9 @@ namespace Actormachine
 
             thisTarget.gameObject.tag = "Player";
 
+            thisTarget.PointerSensitivityX = EditorGUILayout.Slider("Pointer Sensitivity X", thisTarget.PointerSensitivityX, 0.0f, 1f);
+            thisTarget.PointerSensitivityY = EditorGUILayout.Slider("Pointer Sensitivity Y", thisTarget.PointerSensitivityY, 0.0f, 1f);
+
             // Show Enum Mode
             if (thisTarget.MoveDirectionMode == InputPlayerController.MoveMode.Input)
             {
@@ -23,7 +26,7 @@ namespace Actormachine
             {
                 thisTarget.MoveDirectionMode = (InputPlayerController.MoveMode)EditorGUILayout.EnumPopup("Move Mode", thisTarget.MoveDirectionMode);
                 thisTarget.InputTargetMode = (InputPlayerController.TargetMode)EditorGUILayout.EnumPopup("Target Mode", thisTarget.InputTargetMode);
-                thisTarget.TargetRequiredLayers = EditorGUILayout.MaskField("Target Required Layers", thisTarget.TargetRequiredLayers, UnityEditorInternal.InternalEditorUtility.layers);
+                thisTarget.LayerMask = EditorGUILayout.MaskField("Layer Mask", thisTarget.LayerMask, UnityEditorInternal.InternalEditorUtility.layers);
             }
 
             if (GUI.changed)

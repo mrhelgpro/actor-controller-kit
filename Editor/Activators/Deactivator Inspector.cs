@@ -8,18 +8,21 @@ namespace Actormachine.Editor
     [CanEditMultipleObjects]
     public class DeactivatorInspector : ActormachineBaseInspector
     {
-        public override void OnInspectorGUI()
-        {
-            Inspector.DrawSubtitle("DEACTIVATES THE STATE");
-
-            DrawBaseInspector();
-        }
+        public override void OnInspectorGUI() => DrawBaseInspector();
     }
 
     [ExecuteInEditMode]
-    [CustomEditor(typeof(DeactivatorByInput))]
+    [CustomEditor(typeof(InputDeactivator))]
     [CanEditMultipleObjects]
-    public class DeactivatorByInputInspector : DeactivatorInspector
+    public class InputDeactivatorInspector : DeactivatorInspector
+    {
+        public override void OnInspectorGUI() => base.OnInspectorGUI();
+    }
+
+    [ExecuteInEditMode]
+    [CustomEditor(typeof(TimerDeactivator))]
+    [CanEditMultipleObjects]
+    public class TimerDeactivatorInspector : DeactivatorInspector
     {
         public override void OnInspectorGUI() => base.OnInspectorGUI();
     }

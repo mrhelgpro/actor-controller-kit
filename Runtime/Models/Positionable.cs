@@ -28,7 +28,7 @@ namespace Actormachine
         private void Start()
         {
             groundLayer = LayerMask.GetMask("Default");
-            layerMask = ~(1 << LayerMask.NameToLayer("Actor"));
+            layerMask = 1 << LayerMask.NameToLayer("Default");
         }
 
         private void Update()
@@ -65,7 +65,7 @@ namespace Actormachine
             float length = 2.0f;
             RaycastHit hit;
             Vector3 origin = new Vector3(RootTransform.position.x, RootTransform.position.y + offsetHeight, RootTransform.position.z);
-            Physics.Raycast(origin, Vector3.down, out hit, length);
+            Physics.Raycast(origin, Vector3.down, out hit, length, layerMask);
 
             SurfaceTransform = IsGrounded ? hit.transform : null;
             SurfaceType = hit.collider != null ? hit.collider.tag : "None";
@@ -78,7 +78,7 @@ namespace Actormachine
             float length = 0.25f;
             RaycastHit hit;
             Vector3 origin = new Vector3(RootTransform.position.x, RootTransform.position.y + offsetHeight, RootTransform.position.z);
-            Physics.Raycast(origin, RootTransform.TransformDirection(Vector3.forward), out hit, length);
+            Physics.Raycast(origin, RootTransform.TransformDirection(Vector3.forward), out hit, length, layerMask);
 
             IsObstacle = hit.collider == null ? false : hit.collider.isTrigger ? false : true;
             ObstacleTransform = IsObstacle ? hit.transform : null;
@@ -92,7 +92,7 @@ namespace Actormachine
             float edgeDistance = 0.5f + offsetHeight;
             RaycastHit hit;
             Vector3 origin = new Vector3(RootTransform.position.x, RootTransform.position.y + offsetHeight, RootTransform.position.z) + (RootTransform.TransformDirection(Vector3.forward) * offsetForward);
-            Physics.Raycast(origin, Vector3.down, out hit, length);
+            Physics.Raycast(origin, Vector3.down, out hit, length, layerMask);
 
             IsAbyss = IsGrounded == false ? false : hit.collider == null;
             IsEdge = IsGrounded == false ? false : hit.collider != null && hit.distance > edgeDistance;//hit.collider == null ? false : IsGrounded ? hit.distance > edgeDistance : false;

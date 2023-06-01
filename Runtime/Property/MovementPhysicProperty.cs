@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Actormachine
 {
+    [AddComponentMenu("Actormachine/Property/MovementPhysic Property")]
     public sealed class MovementPhysicProperty : Property
     {
         [Range(1, 5)] public float MoveSpeed = 3f;

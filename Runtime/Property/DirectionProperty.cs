@@ -5,6 +5,7 @@ namespace Actormachine
     public enum LookMode { LookToCamera, LookToPointer, LookToStick }
     public enum RotateMode { None, RotateToMovement, RotateToLook, Flip2D }
 
+    [AddComponentMenu("Actormachine/Property/Direction Property")]
     public sealed class DirectionProperty : Property
     {
         public LookMode LookMode = LookMode.LookToCamera;
@@ -23,12 +24,16 @@ namespace Actormachine
         private Vector3 _previousLookDirection;
         private Vector3 _previousLocalDirection;
 
+        private int _layerMask;
+
         // Model Components
         private Inputable _inputable;
         private Animatorable _animatorable;
 
         public override void OnEnableState()
         {
+            _layerMask = 1 << LayerMask.NameToLayer("Default");
+
             // Add or Get comppnent in the Root
             _cameraTransform = Camera.main.transform;
             _inputable = AddComponentInRoot<Inputable>();
@@ -69,9 +74,16 @@ namespace Actormachine
             }
             else if (LookMode == LookMode.LookToPointer)
             {
-                Vector3 mousePosition = Input.mousePosition;
-                Vector3 lookDirection = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, _cameraTransform.position.y)) - RootTransform.position;
-                _lookDirection = Vector3.ProjectOnPlane(lookDirection, Vector3.up).normalized;
+                RaycastHit hit;
+                Ray ray = Camera.main.ScreenPointToRay(_inputable.PointerScreenPosition);
+
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, _layerMask))
+                {
+                    Vector3 lookDirection = hit.point - RootTransform.position;
+                    _lookDirection = Vector3.ProjectOnPlane(lookDirection, Vector3.up).normalized;
+
+                    Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.red);
+                }
             }
             else if (LookMode == LookMode.LookToStick)
             {

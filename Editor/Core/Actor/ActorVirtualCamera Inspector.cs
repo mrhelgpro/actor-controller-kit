@@ -15,7 +15,7 @@ namespace Actormachine.Editor
             thisTarget.gameObject.hideFlags = HideFlags.NotEditable;
 
             // Draw a Warning
-            if (Inspector.CheckSingleInstanceOnScene<BootstrapCamera>()) return;
+            //if (Inspector.CheckSingleInstanceOnScene<BootstrapCamera>()) return;
 
             // Draw a Inspector
 
@@ -25,7 +25,7 @@ namespace Actormachine.Editor
             }
             else
             {
-                Inspector.DrawInfoBox("EDITED IN THE PRESENTER");
+                Inspector.DrawInfoBox("EDITED IN THE PROPERTY");
             }
         }
     }

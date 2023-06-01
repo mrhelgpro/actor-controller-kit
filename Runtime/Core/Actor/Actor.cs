@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Actormachine
 {
+    [AddComponentMenu("Actormachine/Core/Actor")]
     /// <summary> Actor is as a State Machine that controls states. </summary>
     public sealed class Actor : ActorBehaviour
     {
@@ -54,6 +55,9 @@ namespace Actormachine
             {
                 _currentStates.Remove(state);
                 state.OnDisableState();
+
+                // Deactivate default State
+                clearDefaultState(state);
             }
 
             _addingToStates.Clear();
@@ -136,10 +140,7 @@ namespace Actormachine
             if (state == _currentState)
             {
                 // Deactivate default State
-                if (state == _defaultState)
-                {
-                    _defaultState = null;
-                }
+                clearDefaultState(state);
 
                 // Deactivate current State, and call Exit
                 State exitState = _currentState;
@@ -200,6 +201,14 @@ namespace Actormachine
             }
 
             return false;
+        }
+
+        private void clearDefaultState(State state)
+        {
+            if (state == _defaultState)
+            {
+                _defaultState = null;
+            }
         }
     }
 }

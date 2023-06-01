@@ -158,8 +158,8 @@ namespace Actormachine
 
         // Third Person Follow Parameters
         public Vector3 Offset = Vector3.zero;
-        [Range(0, 5)] public float OrbitSensitivityX = 1.0f;
-        [Range(0, 5)] public float OrbitSensitivityY = 0.5f;      
+        [Range(0, 1)] public float OrbitSensitivityX = 1.0f;
+        [Range(0, 1)] public float OrbitSensitivityY = 0.5f;      
 
         // Framing Transposer Parameters
         [Range(-180, 180)] public float OrbitHorizontal;

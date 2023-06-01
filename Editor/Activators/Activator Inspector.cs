@@ -21,17 +21,33 @@ namespace Actormachine.Editor
     }
 
     [ExecuteInEditMode]
-    [CustomEditor(typeof(ActivatorByInput))]
+    [CustomEditor(typeof(InputActivator))]
     [CanEditMultipleObjects]
-    public class ActivatorByInputInspector : ActivatorInspector
+    public class InputActivatorInspector : ActivatorInspector
     {
         public override void OnInspectorGUI() => base.OnInspectorGUI();
     }
 
     [ExecuteInEditMode]
-    [CustomEditor(typeof(ActivatorByInteraction))]
+    [CustomEditor(typeof(InteractionActivator))]
     [CanEditMultipleObjects]
-    public class ActivatorByInteractionInspector : ActivatorInspector
+    public class InteractionActivatorInspector : ActivatorInspector
+    {
+        private void OnEnable()
+        {
+            InteractionActivator thisTarget = (InteractionActivator)target;
+
+            //Give object the "Ignore Raycast" layer
+            thisTarget.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+        }
+
+        public override void OnInspectorGUI() => base.OnInspectorGUI();
+    }
+
+    [ExecuteInEditMode]
+    [CustomEditor(typeof(StateActivator))]
+    [CanEditMultipleObjects]
+    public class StateActivatorInspector : ActivatorInspector
     {
         public override void OnInspectorGUI() => base.OnInspectorGUI();
     }

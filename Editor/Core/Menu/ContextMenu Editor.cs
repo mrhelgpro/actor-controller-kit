@@ -4,13 +4,6 @@ namespace Actormachine.Editor
 {
     public static class ContextMenuEditor
     {
-        // Create Bootstrap
-        [MenuItem("GameObject/Actormachine/Bootstrap/Actor", false, 0)]
-        public static void CreateBootstrapActor() => ContextMenuExtention.CreateBootstrap<BootstrapActor>();
-
-        [MenuItem("GameObject/Actormachine/Bootstrap/Camera", false, 0)]
-        public static void CreateBootstrapCamera() => ContextMenuExtention.CreateBootstrap<BootstrapCamera>();
-
         // Create a prefab from the resources folder  - Character
         [MenuItem("GameObject/Actormachine/Player/Player Third Person", false, 0)]
         public static void CreatePlayerThirdPerson() => ContextMenuExtention.CreatePrefab("Players", "Player Third Person");

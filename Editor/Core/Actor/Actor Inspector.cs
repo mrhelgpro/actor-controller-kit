@@ -27,6 +27,10 @@ namespace Actormachine.Editor
                 // Move Component To Root
                 ComponentUtility.MoveComponentUp(thisTarget);
                 moveToRootTransform();
+
+                // Set Igore Collision
+                int actorLayer = LayerMask.NameToLayer("Actor");
+                Physics.IgnoreLayerCollision(actorLayer, actorLayer);
             }
         }
 

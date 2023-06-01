@@ -11,14 +11,47 @@ namespace Actormachine.Editor
 	{
 		public override void OnInspectorGUI()
 		{
-			// Draw a Warning
-			if (Inspector.CheckSingleInstanceOnScene<BootstrapCamera>()) return;
-
-			// Draw a Inspector
 			PointOfInterest thisTarget = (PointOfInterest)target;
 
+			bool error = false;
+
+			// Check Cinemachin Brain
+			CinemachineBrain cinemachineBrain = FindAnyObjectByType<CinemachineBrain>();
+
+			if (cinemachineBrain == null)
+			{
+				Inspector.DrawSubtitle("<Cinemachine Brain> - IS NOT FOUND", BoxStyle.Error);
+
+				error = true;
+			}
+
+			// Check Actor Virtual Camera
+			ActorVirtualCamera actorVirtualCamera = FindAnyObjectByType<ActorVirtualCamera>();
+
+			if (actorVirtualCamera == null)
+			{
+				Inspector.DrawSubtitle("<Actor Virtual Camera> - IS NOT FOUND", BoxStyle.Error);
+
+				error = true;
+			}
+
+			// Check Cinemachine Virtual Camera
 			CinemachineVirtualCamera pointVirtualCamera = thisTarget.GetComponentInChildren<CinemachineVirtualCamera>();
 
+			if (pointVirtualCamera == null)
+			{
+				Inspector.DrawSubtitle("<Cinemachine Virtual Camera> - IS NOT FOUND", BoxStyle.Error);
+
+				error = true;
+			}
+
+			// Check Error
+			if (error == true)
+			{
+				return;
+			}
+
+			// Draw a Inspector
 			thisTarget.FieldOfView = EditorGUILayout.IntSlider("Field Of View", thisTarget.FieldOfView, 20, 80);
 			thisTarget.Horizontal = EditorGUILayout.Slider("Horizontal", thisTarget.Horizontal, -180, 180);
 			thisTarget.Vertical = EditorGUILayout.Slider("Vertical", thisTarget.Vertical, -90, 90);
