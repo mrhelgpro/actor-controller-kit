@@ -107,7 +107,7 @@ namespace Actormachine
                 {
                     if (_inputable.LookDelta.sqrMagnitude >= 0.01f)
                     {
-                        float deltaTimeMultiplier = 0.5f; // Make ckeck is Mouse or Gamepad
+                        float deltaTimeMultiplier = 0.25f; // Make ckeck is Mouse or Gamepad
 
                         _actorVirtualCamera.CurrentParameters.OrbitHorizontal += _inputable.LookDelta.x * EnterParameters.OrbitSensitivityX * deltaTimeMultiplier;
                         _actorVirtualCamera.CurrentParameters.OrbitVertical += _inputable.LookDelta.y * EnterParameters.OrbitSensitivityY * deltaTimeMultiplier;

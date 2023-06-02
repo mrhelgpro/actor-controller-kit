@@ -159,7 +159,7 @@ namespace Actormachine
             // Try to predict by Parameters
             if (speed == 1)
             {
-                return Speed > 0.1f ? 1 : 8;
+                return Speed > 0.1f ? 1 : 10;
             }
 
             return 1 / speed;
