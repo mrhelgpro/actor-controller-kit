@@ -11,6 +11,8 @@ namespace Actormachine.Editor
         public override void OnInspectorGUI()
         {
             Inspector.DrawSubtitle("CONTROLS SPEED");
+
+            DrawBaseInspector();
         }
     }
 }

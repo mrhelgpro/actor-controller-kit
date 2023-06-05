@@ -2,16 +2,18 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public enum PlayMode { BySpeed, ByTime };
+    public enum PlayMode { Default, Override };
+    public enum LayerMode { Default, Full, Top };
+    public enum TimeMode { Parameters, Timer };
 
     [AddComponentMenu("Actormachine/Property/AnimatorOverrider Property")]
     public class AnimatorOverriderProperty : Property
     {
-        public string PlayName = "Move";
-
         public AnimatorOverrideController OverrideController;
 
-        public PlayMode PlayMode = PlayMode.BySpeed;
+        public PlayMode PlayMode = PlayMode.Default;
+        public LayerMode LayerMode = LayerMode.Default;
+        public TimeMode TimeMode = TimeMode.Parameters;
         public float Duration = 1;
 
         private float _timer = 0;
@@ -24,16 +26,30 @@ namespace Actormachine
             // Add or Get comppnent in the Root
             _animatorable = AddComponentInRoot<Animatorable>();
 
-            _animatorable.Enter(OverrideController);
+            float speed = TimeMode == TimeMode.Parameters ? 1 : 1 / Duration;
+
+            _animatorable.Enter(OverrideController, speed);
+
+            if (LayerMode == LayerMode.Full)
+            {
+                _animatorable.SetLayerWeight(1, 1);
+                _animatorable.SetLayerWeight(2, 0);
+            }
+            else if (LayerMode == LayerMode.Top)
+            {
+                _animatorable.SetLayerWeight(2, 1);
+                _animatorable.SetLayerWeight(1, 0);
+            }
+            else
+            {
+                _animatorable.SetLayerWeight(1, 0);
+                _animatorable.SetLayerWeight(2, 0);
+            }
         }
 
         public override void OnActiveState()
         {
-            string playName = _animatorable.Grounded ? PlayName : "Fall";
-            float speed = PlayMode == PlayMode.BySpeed ? 1 : 1 / Duration;
-            _animatorable.Play(playName, speed);
-
-            if (PlayMode == PlayMode.ByTime)
+            if (TimeMode == TimeMode.Timer)
             {
                 _timer += Time.deltaTime;
 

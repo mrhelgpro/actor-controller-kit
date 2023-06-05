@@ -5,19 +5,15 @@ namespace Actormachine
     [AddComponentMenu("Actormachine/Property/Movement2D Property")]
     public sealed class Movement2DProperty : Property
     {
-        [Range(1, 5)] public float MoveSpeed = 3f;
-        [Range(1, 10)] public float MoveShift = 5f;
+        [Range(0, 1)] public float WalkScale = 1.0f;
+        [Range(0, 1)] public float RunScale = 1.0f;
+        [Range(0, 1)] public float JumpScale = 1.0f;
         [Range(1, 10)] public int Rate = 10;
-        [Range(0, 5)] public int JumpHeight = 2;
-        [Range(0, 2)] public int ExtraJumps = 0;
-        [Range(0, 1)] public float Levitation = 0f;
-        [Range(0, 2)] public float Gravity = 1f;
 
         // Move Fields
         private Vector3 _currentDirection = Vector3.zero;
         private Vector3 _currentVelocity = Vector3.zero;
         private Vector3 _currentForce = Vector3.zero;
-        private float _currentGravity = 1;
 
         // Jump Fields
         private int _jumpCounter = 0;
@@ -81,14 +77,13 @@ namespace Actormachine
         public override void OnFixedActiveState()
         {
             // Set Movement Parameters    
-            float speed = _inputable.ShiftState ? MoveShift : MoveSpeed;
+            float speed = _inputable.ShiftState ? RunScale * _movable.RunSpeed : WalkScale * _movable.WalkSpeed;
 
-            _currentGravity = _movable.GetGravity(Gravity);
             _currentDirection = _positionable.GetDirection(_inputable.MoveVector);
 
             _currentVelocity = _movable.GetVelocity(_currentDirection, speed, Time.fixedDeltaTime * Rate);
 
-            _rigidbody.gravityScale = _currentGravity;
+            _rigidbody.gravityScale = _movable.Gravity;
             _rigidbody.velocity = new Vector2(_currentVelocity.x * 51.0f * Time.fixedDeltaTime, _rigidbody.velocity.y);
 
             // Set Jump Parameters
@@ -116,7 +111,6 @@ namespace Actormachine
             _rigidbody.velocity = Vector3.zero;
 
             // Set Animation Parameters
-            _animatorable.Speed = 1;
             _animatorable.Grounded = true;
         }
 
@@ -129,7 +123,8 @@ namespace Actormachine
             {
                 if (_isLevitationPressed == true)
                 {
-                    Gravity = Gravity + Levitation;
+                    //Gravity = Gravity + Levitation;
+                    _movable.Gravity = _movable.Gravity + _movable.Levitation;
 
                     _isLevitationPressed = false;
                 }
@@ -137,7 +132,7 @@ namespace Actormachine
                 if (_positionable.IsGrounded)
                 {
                     _isJumpDone = false;
-                    _jumpCounter = ExtraJumps;
+                    _jumpCounter = _movable.ExtraJumps;
                 }
                 else
                 {
@@ -153,9 +148,10 @@ namespace Actormachine
             {
                 if (_isJumpPressed == true)
                 {
-                    _currentForce = Vector3.up * JumpHeight.HeightToForce(Gravity);
+                    _currentForce = JumpScale * Vector3.up * _movable.JumpHeight.HeightToForce(_movable.Gravity);
 
-                    Gravity = Gravity - Levitation;
+                    //Gravity = Gravity - Levitation;
+                    _movable.Gravity = _movable.Gravity - _movable.Levitation;
 
                     if (_positionable)
                     {

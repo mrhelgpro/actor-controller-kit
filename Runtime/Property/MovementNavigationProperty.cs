@@ -6,14 +6,13 @@ namespace Actormachine
     [AddComponentMenu("Actormachine/Property/MovementNavigation Property")]
     public sealed class MovementNavigationProperty : Property
     {
-        [Range(1, 5)] public float MoveSpeed = 3f;
-        [Range(1, 10)] public float MoveShift = 5f;
+        [Range(0, 1)] public float WalkScale = 1.0f;
+        [Range(0, 1)] public float RunScale = 1.0f;
         [Range(1, 10)] public int Rate = 10;
 
         // Move Fields
         private Vector3 _currentDirection = Vector3.zero;
         private Vector3 _currentVelocity = Vector3.zero;
-        private float _currentSpeed = 0;
 
         // Model Components
         private Inputable _inputable;
@@ -58,12 +57,11 @@ namespace Actormachine
         public override void OnFixedActiveState()
         {
             // Set Movement Parameters 
-            float maxSpeed = _inputable.ShiftState ? MoveShift : MoveSpeed;
+            float speed = _inputable.ShiftState ? RunScale * _movable.RunSpeed : WalkScale * _movable.WalkSpeed;
 
-            _currentSpeed = _movable.GetSpeed(maxSpeed);
             _currentDirection = _positionable.GetDirection(_inputable.MoveVector);
 
-            _navMeshAgent.speed = _currentSpeed;
+            _navMeshAgent.speed = speed;
             _navMeshAgent.acceleration = Rate * 2;
             _navMeshAgent.SetDestination(_rootTransform.position + _currentDirection.normalized);
 

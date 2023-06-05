@@ -13,12 +13,15 @@ namespace Actormachine
         [Range (1, 10)] public int Rate = 10;
 
         // Direction Fields
+        private float _rotationAngle;
+        private Vector3 _rotationDirection;
         private Vector3 _lookDirection;
         private Vector3 _cameraDirection;
         private Vector3 _bodyDirection;
 
         // Buffer Fields
         private Transform _cameraTransform;
+        private float _previousRotationAngle;
         private float _previousPositionY;
         private float _previousLookDeltaMagnitude;
         private Vector3 _previousLookDirection;
@@ -40,38 +43,50 @@ namespace Actormachine
             _animatorable = AddComponentInRoot<Animatorable>();
         }
 
+        public override void OnEnterState()
+        {
+            _rotationDirection = RootTransform.TransformDirection(Vector3.forward).normalized;
+            _previousRotationAngle = RootTransform.rotation.eulerAngles.y;
+        }
+
         public override void OnActiveState()
         {
             _cameraDirection = _cameraTransform.forward.normalized;
             _bodyDirection = RootTransform.TransformDirection(Vector3.forward).normalized;
 
+            setRotaryDirection();
             setLookDirection();
             setLocalDirection();
 
-            if (_inputable.MoveVector.magnitude > 0)
+            switch (RotateMode)
             {
-                switch (RotateMode)
-                {
-                    case RotateMode.None:
-                        RootTransform.eulerAngles = Vector3.zero;
-                        break;
+                case RotateMode.None:
+                    RootTransform.eulerAngles = Vector3.zero;
+                    break;
 
-                    case RotateMode.RotateToMovement:
-                        rotateToMovement();
-                        break;
+                case RotateMode.RotateToMovement:
+                    rotateToMovement();
+                    break;
 
-                    case RotateMode.RotateToLook:
-                        rotateToLook();
-                        break;
+                case RotateMode.RotateToLook:
+                    rotateToLook();
+                    break;
 
-                    case RotateMode.Flip2D:
-                        checkFlip();
-                        break;
-                }
+                case RotateMode.Flip2D:
+                    checkFlip();
+                    break;
             }
         }
 
         // Direction
+        private void setRotaryDirection()
+        {
+            float currentAngle = Mathf.Clamp(RootTransform.rotation.eulerAngles.y - _previousRotationAngle, -1, +1);
+            _rotationAngle = Mathf.Lerp(_rotationAngle, currentAngle, Time.deltaTime * Rate * 2);
+            _previousRotationAngle = RootTransform.rotation.eulerAngles.y;
+
+            _animatorable.Rotation = _rotationAngle;
+        }
         private void setLookDirection()
         {
             if (LookMode == LookMode.LookToCamera)
@@ -140,29 +155,35 @@ namespace Actormachine
         // Rotation
         private void rotateToLook()
         {
-            Vector3 direction = Vector3.Normalize(Vector3.Scale(Vector3.ProjectOnPlane(_lookDirection, Vector3.up), new Vector3(1, 0, 1)));
+            _rotationDirection = Vector3.Normalize(Vector3.Scale(Vector3.ProjectOnPlane(_lookDirection, Vector3.up), new Vector3(1, 0, 1)));
 
-            Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+            Quaternion targetRotation = Quaternion.LookRotation(_rotationDirection, Vector3.up);
             RootTransform.rotation = Quaternion.Slerp(RootTransform.rotation, targetRotation, Time.deltaTime * Rate);
         }
 
         private void rotateToMovement()
         {
-            Vector3 direction = new Vector3(_inputable.MoveVector.x, 0, _inputable.MoveVector.y);
+            if (_inputable.MoveVector.magnitude > 0)
+            {
+                _rotationDirection = new Vector3(_inputable.MoveVector.x, 0, _inputable.MoveVector.y);
+            }
 
-            Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+            Quaternion targetRotation = Quaternion.LookRotation(_rotationDirection, Vector3.up);
             RootTransform.rotation = Quaternion.Slerp(RootTransform.rotation, targetRotation, Time.deltaTime * Rate);
         }
 
         private void checkFlip()
         {
-            if (RootTransform.localScale.z < 0 && _inputable.MoveVector.x > 0)
+            if (_inputable.MoveVector.magnitude > 0)
             {
-                flip();
-            }
-            else if (RootTransform.localScale.z > 0 && _inputable.MoveVector.x < 0)
-            {
-                flip();
+                if (RootTransform.localScale.z < 0 && _inputable.MoveVector.x > 0)
+                {
+                    flip();
+                }
+                else if (RootTransform.localScale.z > 0 && _inputable.MoveVector.x < 0)
+                {
+                    flip();
+                }
             }
         }
 

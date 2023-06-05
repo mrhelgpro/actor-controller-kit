@@ -6,7 +6,7 @@ namespace Actormachine
     public class Positionable : ModelBehaviour
     {
         // Surface
-        public bool IsGrounded = false;
+        public bool IsGrounded = true;
         public Transform SurfaceTransform = null;
         public string SurfaceType = "None";
         public Vector3 SurfaceNormal = Vector3.zero;
