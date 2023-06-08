@@ -5,7 +5,7 @@ namespace Actormachine
 {
     [AddComponentMenu("Actormachine/Core/Actor")]
     /// <summary> Actor is as a State Machine that controls states. </summary>
-    public sealed class Actor : ActorBehaviour
+    public sealed class Actor : ActormachineComponentBase
     {
         public string Name = "Actor";
 
@@ -25,61 +25,70 @@ namespace Actormachine
 
         private void FixedUpdate()
         {
-            // FixedUpdates State after Enter
-            _currentState?.OnFixedActiveState();
+            if (Gameplay.Mode == GameMode.Play)
+            {
+                // FixedUpdates State after Enter
+                _currentState?.OnFixedActiveState();
+            }
         }
 
         private void Update()
         {
-            // Updates the OnInactiveState() if State is not activated
-            foreach (State state in _currentStates)
+            if (Gameplay.Mode == GameMode.Play)
             {
-                if (IsCurrentState(state) == false) state.OnInactiveState();
-            }
+                // Updates the OnInactiveState() if State is not activated
+                foreach (State state in _currentStates)
+                {
+                    if (IsCurrentState(state) == false) state.OnInactiveState();
+                }
 
-            // Updates Deactivator if State is active
-            _currentState?.OnActiveState();
+                // Updates Deactivator if State is active
+                _currentState?.OnActiveState();
+            }
         }
 
         private void LateUpdate()
         {
-            // Add and Remove States
-            foreach (State state in _addingToStates)
+            if (Gameplay.Mode == GameMode.Play)
             {
-                _currentStates.Add(state);
-
-                state.OnEnableState();
-            }
-
-            foreach (State state in _removeStates)
-            {
-                _currentStates.Remove(state);
-                state.OnDisableState();
-
-                // Deactivate default State
-                clearDefaultState(state);
-            }
-
-            _addingToStates.Clear();
-            _removeStates.Clear();
-
-            // Set default State if current State is null
-            if (_currentState == null)
-            {
-                if (_defaultState == null)
+                // Add and Remove States
+                foreach (State state in _addingToStates)
                 {
-                    foreach (State state in _currentStates)
+                    _currentStates.Add(state);
+
+                    state.OnEnableState();
+                }
+
+                foreach (State state in _removeStates)
+                {
+                    _currentStates.Remove(state);
+                    state.OnDisableState();
+
+                    // Deactivate default State
+                    clearDefaultState(state);
+                }
+
+                _addingToStates.Clear();
+                _removeStates.Clear();
+
+                // Set default State if current State is null
+                if (_currentState == null)
+                {
+                    if (_defaultState == null)
                     {
-                        if (state.Priority == StatePriority.Default)
+                        foreach (State state in _currentStates)
                         {
-                            Activate(state);
-                            return;
+                            if (state.Priority == StatePriority.Default)
+                            {
+                                Activate(state);
+                                return;
+                            }
                         }
                     }
-                }
-                else
-                {
-                    Activate(_defaultState);
+                    else
+                    {
+                        Activate(_defaultState);
+                    }
                 }
             }
         }

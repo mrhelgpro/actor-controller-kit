@@ -112,8 +112,8 @@ namespace Actormachine
                         _actorVirtualCamera.CurrentParameters.OrbitHorizontal += _inputable.LookDelta.x * EnterParameters.OrbitSensitivityX * deltaTimeMultiplier;
                         _actorVirtualCamera.CurrentParameters.OrbitVertical += _inputable.LookDelta.y * EnterParameters.OrbitSensitivityY * deltaTimeMultiplier;
 
-                        _actorVirtualCamera.CurrentParameters.OrbitHorizontal = ActorMathf.ClampAngle(_actorVirtualCamera.CurrentParameters.OrbitHorizontal, float.MinValue, float.MaxValue);
-                        _actorVirtualCamera.CurrentParameters.OrbitVertical = ActorMathf.ClampAngle(_actorVirtualCamera.CurrentParameters.OrbitVertical, -30, 80);
+                        _actorVirtualCamera.CurrentParameters.OrbitHorizontal = Maths.ClampAngle(_actorVirtualCamera.CurrentParameters.OrbitHorizontal, float.MinValue, float.MaxValue);
+                        _actorVirtualCamera.CurrentParameters.OrbitVertical = Maths.ClampAngle(_actorVirtualCamera.CurrentParameters.OrbitVertical, -30, 80);
                     }
                 }
             }

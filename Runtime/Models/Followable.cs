@@ -2,7 +2,8 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public class Followable : ModelBehaviour
+    [AddComponentMenu("Actormachine/Model/Followable")]
+    public class Followable : Model
     {
         // It's just a marker for the Camera
     }

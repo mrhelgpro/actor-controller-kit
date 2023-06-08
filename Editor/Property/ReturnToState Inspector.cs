@@ -6,7 +6,7 @@ namespace Actormachine.Editor
     [ExecuteInEditMode]
     [CustomEditor(typeof(ReturnToState))]
     [CanEditMultipleObjects]
-    public class ReturnToStateInspector : ActormachineBaseInspector
+    public class ReturnToStateInspector : ActormachineComponentBaseInspector
     {
         public override void OnInspectorGUI()
         {

@@ -4,9 +4,9 @@ using UnityEditor;
 namespace Actormachine.Editor
 {
     [ExecuteInEditMode]
-    [CustomEditor(typeof(ActorBehaviour))]
+    [CustomEditor(typeof(ActormachineComponentBase))]
     [CanEditMultipleObjects]
-    public class ActormachineBaseInspector : UnityEditor.Editor
+    public class ActormachineComponentBaseInspector : UnityEditor.Editor
     {
         private bool _foldoutInfo = false;
 

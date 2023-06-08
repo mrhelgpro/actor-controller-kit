@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace Actormachine
 {
-
     /// <summary> Model - to control the Animator. </summary>
-    public class Animatorable : ModelBehaviour
+    [AddComponentMenu("Actormachine/Model/Animatorable")]
+    public class Animatorable : Model
     {
         private float _speed = 0;
         private Vector3 _direction = Vector3.zero;
@@ -19,6 +19,7 @@ namespace Actormachine
             base.Awake();
 
             _animator = RootTransform.GetComponentInChildren<Animator>();
+            _animator.speed = 0;
         }
 
         // Parameters

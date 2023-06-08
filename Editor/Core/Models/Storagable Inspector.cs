@@ -6,7 +6,7 @@ namespace Actormachine.Editor
     [ExecuteInEditMode]
     [CustomEditor(typeof(Storagable))]
     [CanEditMultipleObjects]
-    public class StoragableInspector : ActormachineBaseInspector
+    public class StoragableInspector : ActormachineComponentBaseInspector
     {
         public override void OnInspectorGUI()
         {

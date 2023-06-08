@@ -6,7 +6,7 @@ namespace Actormachine
     public enum StatePriority { Default, Prepare, Action };
 
     [AddComponentMenu("Actormachine/Core/State")]
-    public sealed class State : ActorBehaviour
+    public sealed class State : ActormachineComponentBase
     {
         public string Name => gameObject.name + " (" + Priority.ToString() + ")";
         public bool IsActive { get; private set; } = false;
@@ -63,7 +63,7 @@ namespace Actormachine
     }
 
     [RequireComponent(typeof(State))]
-    public abstract class Property : ActorBehaviour
+    public abstract class Property : ActormachineComponentBase
     {
         protected Actor actor;
         protected State state;

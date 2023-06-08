@@ -1,9 +1,8 @@
 using UnityEngine;
-using Cinemachine;
 
 namespace Actormachine
 {
-    public static class ActorMathf
+    public static class Maths
     {
         public static float ClampAngle(float angle, float min, float max)
         {
@@ -46,22 +45,6 @@ namespace Actormachine
             float gravity = 0.425f * gravityScale + 0.575f;
 
             return force * gravity;
-        }
-    }
-
-    public static class CinemachineExtantion
-    {
-        public static void SwitchPriority(CinemachineVirtualCameraBase switchedVirtualCamera)
-        {
-            CinemachineBrain cinemachineBrain = GameObject.FindAnyObjectByType<CinemachineBrain>();
-
-            if (cinemachineBrain != null && cinemachineBrain.ActiveVirtualCamera != null)
-            {
-                CinemachineVirtualCameraBase currentVirtualCamera = cinemachineBrain.ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCameraBase>();
-                currentVirtualCamera.Priority = 0;
-            }
-
-            switchedVirtualCamera.Priority = 100;
         }
     }
 }

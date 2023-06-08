@@ -7,7 +7,7 @@ namespace Actormachine.Editor
     [ExecuteInEditMode]
     [CustomEditor(typeof(State))]
     [CanEditMultipleObjects]
-    public sealed class StateInspector : ActormachineBaseInspector
+    public sealed class StateInspector : ActormachineComponentBaseInspector
     {
         private void OnEnable()
         {

@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public class Storagable : ModelBehaviour
+    [AddComponentMenu("Actormachine/Model/Storagable")]
+    public class Storagable : Model
     {
         public List<Transform> InventorySlots;
         public List<Transform> ActiveSlots;

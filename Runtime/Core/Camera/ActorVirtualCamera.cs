@@ -23,7 +23,13 @@ namespace Actormachine
             VirtualCamera.Priority = 10;
         }
 
-        private void LateUpdate() => updateRotation();
+        private void LateUpdate()
+        {
+            if (Gameplay.Mode == GameMode.Play)
+            {
+                updateRotation();
+            }
+        }
 
         /// <summary> Entering with setting Camera Parameters. It is not recommended to call in Update.</summary>
         public void Enter(Transform enterFollow, CameraParameters enterParameters)

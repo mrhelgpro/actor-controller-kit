@@ -2,7 +2,8 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public class Soundable : ModelBehaviour
+    [AddComponentMenu("Actormachine/Model/Soundable")]
+    public class Soundable : Model
     {
         public void OnFootstep()
         {

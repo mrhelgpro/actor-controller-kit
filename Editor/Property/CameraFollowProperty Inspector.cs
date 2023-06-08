@@ -7,7 +7,7 @@ namespace Actormachine.Editor
     [ExecuteInEditMode]
     [CustomEditor(typeof(CameraFollowProperty))]
     [CanEditMultipleObjects]
-    public class CameraFollowPropertyInspector : ActormachineBaseInspector
+    public class CameraFollowPropertyInspector : ActormachineComponentBaseInspector
     {
         private void OnEnable()
         {
@@ -55,8 +55,8 @@ namespace Actormachine.Editor
             actorVirtualCamera.transform.SetAsFirstSibling();
 
             // Check Single Instance
-            BootstrapExtantion.IsSingleInstanceOnScene<CinemachineBrain>();
-            BootstrapExtantion.IsSingleInstanceOnScene<ActorVirtualCamera>();
+            Instance.IsSingleInstanceOnScene<CinemachineBrain>();
+            Instance.IsSingleInstanceOnScene<ActorVirtualCamera>();
 
             Followable followable = thisTarget.FindRootTransform.GetComponentInChildren<Followable>();
 
@@ -116,7 +116,7 @@ namespace Actormachine.Editor
             {
                 if (Application.isPlaying == false)
                 {
-                    CinemachineExtantion.SwitchPriority(FindAnyObjectByType<ActorVirtualCamera>().GetComponent<CinemachineVirtualCameraBase>());
+                    Cinema.SwitchPriority(FindAnyObjectByType<ActorVirtualCamera>().GetComponent<CinemachineVirtualCameraBase>());
 
                     thisTarget.OnEnterState();
                 }

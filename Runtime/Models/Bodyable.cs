@@ -2,17 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bodyable : MonoBehaviour
+namespace Actormachine
 {
-    // Start is called before the first frame update
-    void Start()
+    [AddComponentMenu("Actormachine/Model/Bodyable")]
+    public class Bodyable : Model
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

@@ -7,7 +7,7 @@ namespace Actormachine.Editor
 	[ExecuteInEditMode]
 	[CustomEditor(typeof(PointOfInterest))]
 	[CanEditMultipleObjects]
-	public class PointOfInterestInspector : ActormachineBaseInspector
+	public class PointOfInterestInspector : ActormachineComponentBaseInspector
 	{
 		public override void OnInspectorGUI()
 		{
@@ -62,7 +62,7 @@ namespace Actormachine.Editor
 
 			if (GUI.changed)
 			{
-				CinemachineExtantion.SwitchPriority(pointVirtualCamera);
+				Cinema.SwitchPriority(pointVirtualCamera);
 
 				pointVirtualCamera.transform.rotation = Quaternion.Euler(thisTarget.Vertical, thisTarget.Horizontal, 0);
 				pointVirtualCamera.transform.position = thisTarget.transform.rotation * Vector3.zero + pointVirtualCamera.Follow.transform.position;

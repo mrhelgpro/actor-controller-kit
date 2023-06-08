@@ -6,7 +6,7 @@ namespace Actormachine.Editor
     [ExecuteInEditMode]
     [CustomEditor(typeof(ItemProperty))]
     [CanEditMultipleObjects]
-    public class ItemPropertyInspector : ActormachineBaseInspector
+    public class ItemPropertyInspector : ActormachineComponentBaseInspector
     {
         private void OnEnable()
         {

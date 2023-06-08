@@ -3,7 +3,7 @@ using UnityEditor;
 
 namespace Actormachine
 {
-    public static class BootstrapExtantion
+    public static class Instance
     {
         /// <summary> 
         /// Returns "true" if there is one instance of the class on the Scene, 

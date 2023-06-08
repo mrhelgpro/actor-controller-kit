@@ -6,7 +6,7 @@ namespace Actormachine.Editor
     [ExecuteInEditMode]
     [CustomEditor(typeof(DirectionProperty))]
     [CanEditMultipleObjects]
-    public class DirectionPropertyInspector : ActormachineBaseInspector
+    public class DirectionPropertyInspector : ActormachineComponentBaseInspector
     {
         public override void OnInspectorGUI()
         {

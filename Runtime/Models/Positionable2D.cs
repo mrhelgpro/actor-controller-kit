@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Actormachine
 {
+    [AddComponentMenu("Actormachine/Model/Positionable2D")]
     public sealed class Positionable2D : Positionable
     {
         private Collision2D _groundCollision;

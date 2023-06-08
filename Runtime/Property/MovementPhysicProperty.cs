@@ -112,18 +112,7 @@ namespace Actormachine
             _rigidbody.useGravity = false;
             _rigidbody.isKinematic = true;
 
-            // Set Animation Parameters
-            _animatorable.Grounded = true;
-
-            /*
-            if (_isLevitation == true)
-            {
-                _movable.Gravity = _movable.Gravity + _movable.Levitation;
-                _isLevitation = false;
-            }
-            */
-
-            setGravity(false);
+            setLevitation(false);
         }
 
         private void jumpLoop()
@@ -132,30 +121,7 @@ namespace Actormachine
             _isJumpPressed = _inputable.MotionState;
             _movable.JumpCounter(_positionable.IsGrounded);
 
-            if (_isJumpPressed == false)
-            {
-                /*
-                if (_isLevitation == true)
-                {
-                    _movable.Gravity = _movable.Gravity + _movable.Levitation;
-                    _isLevitation = false;
-                }
-                */
-
-                setGravity(false);
-            }
-            else
-            {
-                /*
-                if (_isLevitation == false)
-                {
-                    _movable.Gravity = _movable.Gravity - _movable.Levitation;
-                    _isLevitation = true;
-                }
-                */
-
-                setGravity(true);
-            }
+            setLevitation(_isJumpPressed);
 
             if (_isJumpPressed == false)
             {
@@ -165,6 +131,7 @@ namespace Actormachine
                 }
                 else
                 {
+                    
                     if (_movable.JumpCounter(_positionable.IsGrounded) > 0)
                     {
                         _isJumpDone = false;
@@ -189,7 +156,7 @@ namespace Actormachine
             }
         }
 
-        private void setGravity(bool state)
+        private void setLevitation(bool state)
         {
             if (state == true)
             {

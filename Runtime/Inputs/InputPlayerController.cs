@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Actormachine
 {
+    [AddComponentMenu("Actormachine/Input/Input Player Controlle")]
     public sealed class InputPlayerController : InputController
     {
         public enum MoveMode { Input, Target, Both }
@@ -23,9 +24,6 @@ namespace Actormachine
         private new void Awake()
         {
             base.Awake();
-
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
 
             PointerScreenPosition = new Vector2(Screen.width / 2, Screen.height / 2);
 

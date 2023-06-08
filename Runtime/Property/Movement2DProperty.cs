@@ -111,7 +111,7 @@ namespace Actormachine
             _rigidbody.velocity = Vector3.zero;
 
             // Set Animation Parameters
-            _animatorable.Grounded = true;
+            //_animatorable.Grounded = true;
         }
 
         private void jumpLoop()

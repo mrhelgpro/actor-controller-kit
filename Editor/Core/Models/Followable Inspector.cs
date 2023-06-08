@@ -6,7 +6,7 @@ namespace Actormachine.Editor
     [ExecuteInEditMode]
     [CustomEditor(typeof(Followable))]
     [CanEditMultipleObjects]
-    public class FollowableInspector : ActormachineBaseInspector
+    public class FollowableInspector : ActormachineComponentBaseInspector
     {
         public override void OnInspectorGUI()
         {

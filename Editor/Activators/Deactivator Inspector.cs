@@ -6,7 +6,7 @@ namespace Actormachine.Editor
     [ExecuteInEditMode]
     [CustomEditor(typeof(Deactivator))]
     [CanEditMultipleObjects]
-    public class DeactivatorInspector : ActormachineBaseInspector
+    public class DeactivatorInspector : ActormachineComponentBaseInspector
     {
         public override void OnInspectorGUI() => DrawBaseInspector();
     }

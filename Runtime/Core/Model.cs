@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    public abstract class ModelBehaviour : ActorBehaviour
+    public abstract class Model : ActormachineComponentBase
     {
         public Transform RootTransform { get; private set; }
 

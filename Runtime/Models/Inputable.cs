@@ -4,7 +4,8 @@ using UnityEngine;
 namespace Actormachine
 {
     /// <summary> Model - to receive input data. </summary>
-    public class Inputable : ModelBehaviour
+    [AddComponentMenu("Actormachine/Model/Inputable")]
+    public class Inputable : Model
     {
         // KEYBOARD            X-BOX             DUALSHOCK       GAMEPAD
         public bool MenuState;                          // Escape
@@ -66,7 +67,7 @@ namespace Actormachine
     }
 
     /// <summary> Parent class from which all "Input Controllers: should inherit. </summary>
-    public class InputController : ActorBehaviour
+    public class InputController : ActormachineComponentBase
     {
         public static Vector2 PointerScreenPosition;
 

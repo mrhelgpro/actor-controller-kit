@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Actormachine
 {
     /// <summary> All classes that are part of the Actor must inherit from this class. </summary>
-    public abstract class ActorBehaviour : MonoBehaviour
+    public abstract class ActormachineComponentBase : MonoBehaviour
     {
         public Transform ThisTransform { get; private set; }
 
@@ -28,7 +28,7 @@ namespace Actormachine
         {
             get 
             {
-                ActorBehaviour actorBehaviour = this;
+                ActormachineComponentBase actormachineComponentBase = this;
 
                 Transform rootTransform = transform;
 
@@ -36,13 +36,13 @@ namespace Actormachine
                 {
                     rootTransform = rootTransform.parent;
 
-                    if (rootTransform.GetComponent<ActorBehaviour>())
+                    if (rootTransform.GetComponent<ActormachineComponentBase>())
                     {
-                        actorBehaviour = rootTransform.GetComponent<ActorBehaviour>();
+                        actormachineComponentBase = rootTransform.GetComponent<ActormachineComponentBase>();
                     }
                 }
 
-                return actorBehaviour.transform;
+                return actormachineComponentBase.transform;
             }
         }
     }

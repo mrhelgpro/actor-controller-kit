@@ -6,7 +6,7 @@ namespace Actormachine.Editor
     [ExecuteInEditMode]
     [CustomEditor(typeof(Movable))]
     [CanEditMultipleObjects]
-    public class MovableInspector : ActormachineBaseInspector
+    public class MovableInspector : ActormachineComponentBaseInspector
     {
         public override void OnInspectorGUI()
         {

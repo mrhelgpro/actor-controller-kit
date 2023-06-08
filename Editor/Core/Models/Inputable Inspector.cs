@@ -6,7 +6,7 @@ namespace Actormachine.Editor
     [ExecuteInEditMode]
     [CustomEditor(typeof(Inputable))]
     [CanEditMultipleObjects]
-    public class InputableInspector : ActormachineBaseInspector
+    public class InputableInspector : ActormachineComponentBaseInspector
     {
         Inputable thisTarget;
 
