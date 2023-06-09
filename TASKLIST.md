@@ -1,7 +1,9 @@
+- Proprty (Movment Constant)
+- Patterns (Menu)
+- Entity (State Machine)
+- Pointer, Button
 - Target -> Redesign in TargetPosition
-- Rotation to Look when Enter state
 - Add Scene Manager
-- Add Look at Target (Chanhe Look Mode) if mouse or gamepad
-- Make ckeck is Mouse or Gamepad
+- Add Look at Target
 - <Soundable> - Make footsteps sound
 - <ActivateByInput> - Add Check "Move, Look"

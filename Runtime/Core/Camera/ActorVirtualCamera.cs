@@ -8,6 +8,7 @@ namespace Actormachine
     /// A camera that only works with Player.
     /// There should be only one on the scene.
     /// </summary>
+    [AddComponentMenu("Actormachine/Camera/Actor Virtual Camera")]
     [RequireComponent(typeof(CinemachineVirtualCamera))]
     public class ActorVirtualCamera : MonoBehaviour
     {
