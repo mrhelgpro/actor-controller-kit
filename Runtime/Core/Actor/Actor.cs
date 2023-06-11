@@ -11,6 +11,7 @@ namespace Actormachine
 
         // State Machine
         private State _currentState = null;
+        private State _nextState = null;
         private State _defaultState = null;
         private List<State> _currentStates = new List<State>();
         private List<State> _addingToStates = new List<State>();

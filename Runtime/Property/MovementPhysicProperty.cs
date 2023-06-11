@@ -33,6 +33,7 @@ namespace Actormachine
         private PhysicMaterial _materialOnTheGround;
         private PhysicMaterial _materialInTheAir;
 
+        // Property Methods
         public override void OnEnableState()
         {
             // Get Resources
@@ -48,7 +49,6 @@ namespace Actormachine
             _rigidbody = AddComponentInRoot<Rigidbody>();
         }
 
-        // Property Methods
         public override void OnEnterState()
         {
             // Set Collider Parementers
@@ -67,6 +67,8 @@ namespace Actormachine
             _rigidbody.constraints = RigidbodyConstraints.None;
             _rigidbody.freezeRotation = true;
             _rigidbody.velocity = Vector3.zero;
+
+            Debug.Log("MOVE PHYS - OnEnterState()");
         }
 
         public override void OnFixedActiveState()
@@ -113,6 +115,8 @@ namespace Actormachine
             _rigidbody.isKinematic = true;
 
             setLevitation(false);
+
+            Debug.Log("MOVE PHYS - OnExitState()");
         }
 
         private void jumpLoop()
