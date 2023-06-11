@@ -52,7 +52,7 @@ namespace Actormachine
         {
             if (Gameplay.Mode == GameMode.Play)
             {
-                // Add and Remove States
+                // Add States
                 foreach (State state in _addingToStates)
                 {
                     _currentStates.Add(state);
@@ -60,6 +60,9 @@ namespace Actormachine
                     state.OnEnableState();
                 }
 
+                _addingToStates.Clear();
+
+                // Remove States
                 foreach (State state in _removeStates)
                 {
                     _currentStates.Remove(state);
@@ -69,26 +72,31 @@ namespace Actormachine
                     clearDefaultState(state);
                 }
 
-                _addingToStates.Clear();
                 _removeStates.Clear();
+
+                // Set next State
+                if (_nextState)
+                {
+                    activeState(_nextState);
+                    return;
+                }
 
                 // Set default State if current State is null
                 if (_currentState == null)
                 {
-                    if (_defaultState == null)
+                    if (_defaultState)
                     {
-                        foreach (State state in _currentStates)
-                        {
-                            if (state.Priority == StatePriority.Default)
-                            {
-                                Activate(state);
-                                return;
-                            }
-                        }
+                        activeState(_defaultState);
+                        return;
                     }
-                    else
+
+                    foreach (State state in _currentStates)
                     {
-                        Activate(_defaultState);
+                        if (state.Priority == StatePriority.Default)
+                        {
+                            activeState(state);
+                            return;
+                        }
                     }
                 }
             }
@@ -123,23 +131,7 @@ namespace Actormachine
             {
                 if (isReady(state))
                 {
-                    // Deactivate previous State, and call Exit
-                    State exitState = _currentState;
-                    _currentState = null;
-                    exitState?.OnExitState();
-
-                    // Activate next State, and call Enter
-                    _currentState = state;
-                    _currentState.OnEnterState();
-
-                    // Set State as Default
-                    if (_currentState != null)
-                    {
-                        if (_currentState.Priority == StatePriority.Default)
-                        {
-                            _defaultState = _currentState;
-                        }
-                    }
+                    _nextState = state;    
                 }
             }
         }
@@ -153,9 +145,7 @@ namespace Actormachine
                 clearDefaultState(state);
 
                 // Deactivate current State, and call Exit
-                State exitState = _currentState;
-                _currentState = null;
-                exitState?.OnExitState();
+                deactiveState();
             }
         }
 
@@ -213,12 +203,46 @@ namespace Actormachine
             return false;
         }
 
+        private void activeState(State state)
+        {
+            // Deactivate previous State, and call Exit
+            deactiveState();
+
+            // Activate next State, and call Enter
+            _currentState = state;
+            _currentState.OnEnterState();
+
+            // Set State as Default
+            setDefaultState();
+
+            _nextState = null;
+        }
+
+        private void setDefaultState()
+        {
+            if (_currentState != null)
+            {
+                if (_currentState.Priority == StatePriority.Default)
+                {
+                    _defaultState = _currentState;
+                }
+            }
+        }
+
         private void clearDefaultState(State state)
         {
             if (state == _defaultState)
             {
                 _defaultState = null;
             }
+        }
+
+        private void deactiveState()
+        {
+            // Deactivate previous State, and call Exit
+            State exitState = _currentState;
+            _currentState = null;
+            exitState?.OnExitState();
         }
     }
 }

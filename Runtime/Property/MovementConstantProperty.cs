@@ -61,13 +61,13 @@ namespace Actormachine
             _groundCollider.material = _materialInTheAir;
 
             // Set Value
-            _currentDirection = _positionable.GetDirection(_inputable.MoveVector);
+            _currentDirection = _inputable.MoveVector.magnitude > 0 ? _positionable.GetDirection(_inputable.MoveVector).normalized : RootTransform.TransformDirection(Vector3.forward).normalized;
         }
 
         public override void OnFixedActiveState()
         {
             // Set Movement Parameters    
-            _currentVelocity = _currentDirection * Force * Time.fixedDeltaTime;
+            _currentVelocity = _currentDirection * Force * Time.fixedDeltaTime * 100;
 
             _rigidbody.MovePosition(_rigidbody.position + _currentVelocity * Time.fixedDeltaTime);
             _rigidbody.AddForce(Physics.gravity * _movable.Gravity, ForceMode.Acceleration);
@@ -84,8 +84,6 @@ namespace Actormachine
 
             // Set Material Parementers
             _groundCollider.material = _materialOnTheGround;
-
-            Debug.Log("MOVE CONST - OnExitState()");
         }
     }
 }

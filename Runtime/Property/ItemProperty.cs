@@ -23,6 +23,7 @@ namespace Actormachine
         private Transform _activeSlot;
 
         private bool _isTemporary = false;
+        private bool _isEnter = false;
 
         private Storagable _storagable;
 
@@ -32,30 +33,11 @@ namespace Actormachine
         private Rigidbody2D _rigidbody2D;
         private NavMeshAgent _navMeshAgent;
 
-        public bool IsAvailable(Transform rootTransform)
-        {
-            Storagable storagable = rootTransform.GetComponentInChildren<Storagable>();
-
-            if (storagable == null)
-            {
-                return false;
-            }
-
-            if (StorageType == StorageType.AddToInventory)
-            {
-                if (storagable.InventorySlots.Count <= InventorySlotNumber) return false;
-            }
-
-            if (ActiveType == ActiveType.ActiveSlot)
-            {
-                if (storagable.ActiveSlots.Count <= ActiveSlotNumber) return false;
-            }
-
-            return true;
-        }
-
+        // Property Methods
         public override void OnEnableState()
         {
+            Debug.Log(gameObject.name + " 1.1 - OnEnableState ---------------------------");
+
             _childStates.Clear();
             _isTemporary = false;
 
@@ -88,10 +70,12 @@ namespace Actormachine
         public override void OnEnterState()
         {
             setPlacementOnActive();
+
+            _isEnter = true;
         }
 
         public override void OnInactiveState()
-        {     
+        {
             if (StorageType == StorageType.TakeAndActivate)
             {
                 if (_isTemporary == false)
@@ -99,18 +83,18 @@ namespace Actormachine
                     _isTemporary = true;
                     actor.Activate(state);
                 }
-            }
 
-            // Check if at least one child state is active
-            foreach (State state in _childStates)
-            {
-                if (state.IsActive == true) return;
-            }
+                if (_isEnter == true)
+                {
+                    // Check if at least one child state is active
+                    foreach (State state in _childStates)
+                    {
+                        if (state.IsActive == true) return;
+                    }
 
-            // If child states are not active
-            if (StorageType == StorageType.TakeAndActivate)
-            {
-                SetDisableItem();
+                    // If child states are not active
+                    SetDisableItem();
+                }
             }
             else
             {
@@ -118,8 +102,14 @@ namespace Actormachine
             }
         }
 
+        public override void OnExitState()
+        {
+            //_isEnter = false;
+        }
+
         public override void OnDisableState()
         {
+            _isEnter = false;
             onDisableItem();
         }
 
@@ -134,6 +124,29 @@ namespace Actormachine
             }
 
             ThisTransform.parent = parent;
+        }
+
+        // Item Methods
+        public bool IsAvailable(Transform rootTransform)
+        {
+            Storagable storagable = rootTransform.GetComponentInChildren<Storagable>();
+
+            if (storagable == null)
+            {
+                return false;
+            }
+
+            if (StorageType == StorageType.AddToInventory)
+            {
+                if (storagable.InventorySlots.Count <= InventorySlotNumber) return false;
+            }
+
+            if (ActiveType == ActiveType.ActiveSlot)
+            {
+                if (storagable.ActiveSlots.Count <= ActiveSlotNumber) return false;
+            }
+
+            return true;
         }
 
         private void setPlacementInStorage()

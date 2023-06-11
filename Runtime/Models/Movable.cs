@@ -12,7 +12,6 @@ namespace Actormachine
         [Range(0, 2)] public int ExtraJumps = 0;
         [Range(0, 1)] public float Levitation = 0.25f;
         [Range(0, 2)] public float Gravity = 1f;
-        public Vector3 Direction = Vector3.zero;
 
         // Buffer Fields
         private int _jumpCounter = 0;
