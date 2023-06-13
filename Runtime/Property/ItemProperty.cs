@@ -36,8 +36,6 @@ namespace Actormachine
         // Property Methods
         public override void OnEnableState()
         {
-            Debug.Log(gameObject.name + " 1.1 - OnEnableState ---------------------------");
-
             _childStates.Clear();
             _isTemporary = false;
 

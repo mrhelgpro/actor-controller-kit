@@ -1,18 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class GroundedActivator : MonoBehaviour
+namespace Actormachine
 {
-    // Start is called before the first frame update
-    void Start()
+    [AddComponentMenu("Actormachine/Activator/Grounded Activator")]
+    public class GroundedActivator : Activator
     {
-        
-    }
+        private Positionable _positionable;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public override void OnEnableState()
+        {
+            // Using "AddComponentInRoot" to add or get comppnent on the Root
+            _positionable = AddComponentInRoot<Positionable>();
+        }
+
+        public override void OnInactiveState()
+        {
+            TryActive(_positionable.IsGrounded);
+        }
     }
 }

@@ -138,11 +138,11 @@ namespace Actormachine
             Vector3 lerpLocalDirection = Vector3.Lerp(_previousLocalDirection, new Vector3(x, y, z), Time.deltaTime * Rate);
             
             // Round up the value
-            x = Mathf.Round(lerpLocalDirection.x * 1000f) / 1000f;
-            y = Mathf.Round(lerpLocalDirection.y * 1000f) / 1000f;
-            z = Mathf.Round(lerpLocalDirection.z * 1000f) / 1000f;
+            //x = Mathf.Round(lerpLocalDirection.x * 1000f) / 1000f;
+            //y = Mathf.Round(lerpLocalDirection.y * 1000f) / 1000f;
+            //z = Mathf.Round(lerpLocalDirection.z * 1000f) / 1000f;
 
-            lerpLocalDirection = new Vector3(x, y, z);
+            //lerpLocalDirection = new Vector3(x, y, z);
 
             // Get local direction
             _animatorable.Direction = _inputable.MoveVector.magnitude > 0 ? lerpLocalDirection : _animatorable.Direction;

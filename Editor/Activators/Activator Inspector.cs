@@ -51,4 +51,12 @@ namespace Actormachine.Editor
     {
         public override void OnInspectorGUI() => base.OnInspectorGUI();
     }
+
+    [ExecuteInEditMode]
+    [CustomEditor(typeof(GroundedActivator))]
+    [CanEditMultipleObjects]
+    public class GroundedActivatorInspector : ActivatorInspector
+    {
+        public override void OnInspectorGUI() => base.OnInspectorGUI();
+    }
 }

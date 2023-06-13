@@ -2,12 +2,14 @@ using UnityEngine;
 
 namespace Actormachine
 {
+    public enum CameraPresetMode { Default, Parameter }
     public enum InputOrbitMode { Free, LeftHold, MiddleHold, RightHold, Lock }
 
     [AddComponentMenu("Actormachine/Property/CameraFollow Property")]
     public sealed class CameraFollowProperty : Property
     {
         // Model Parameters
+        public CameraPresetMode Preset = CameraPresetMode.Default;
         public Transform Follow;
         public InputOrbitMode InputOrbitMode;
         public CameraParameters EnterParameters = new CameraParameters();
@@ -39,7 +41,10 @@ namespace Actormachine
 
             if (Follow)
             {
-                _actorVirtualCamera.Enter(Follow, EnterParameters);
+                if (Preset == CameraPresetMode.Parameter)
+                {
+                    _actorVirtualCamera.Enter(Follow, EnterParameters);
+                }
             }
         }
 
