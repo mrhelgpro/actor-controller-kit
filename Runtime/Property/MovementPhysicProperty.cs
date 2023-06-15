@@ -53,7 +53,7 @@ namespace Actormachine
         {
             // Set Collider Parementers
             _groundCollider.isTrigger = false;
-            _groundCollider.radius = 0.2f;
+            _groundCollider.radius = 0.1f;
             _groundCollider.center = new Vector3(0, _groundCollider.radius, 0);
 
             // Set Movement Parementers

@@ -2,12 +2,13 @@ using UnityEngine;
 
 namespace Actormachine
 {
-    [AddComponentMenu("Actormachine/Input/Input Player Controlle")]
+    [AddComponentMenu("Actormachine/Input/Input Player Controller")]
     public sealed class InputPlayerController : InputController
     {
         public enum MoveMode { Input, Target, Both }
         public enum TargetMode { LeftAction, MiddleAction, RightAction }
 
+        public GameObject Player;
         [Range(0, 1)] public float PointerSensitivityX = 0.5f;
         [Range(0, 1)] public float PointerSensitivityY = 0.5f;
 
@@ -16,7 +17,7 @@ namespace Actormachine
 
         public LayerMask LayerMask;
 
-        private Target _targetPosition;
+        //private Target _targetPosition;
         private Camera _camera;
         private Transform _cameraTransform;
         private InputActions _inputActions;
@@ -25,7 +26,16 @@ namespace Actormachine
         {
             base.Awake();
 
-            PointerScreenPosition = new Vector2(Screen.width / 2, Screen.height / 2);
+            if (Player == null)
+            {
+                gameObject.SetActive(false);
+
+                return;
+            }
+
+            inputable = Player.GetComponentInChildren<Inputable>();
+
+            Pointer.ScreenPosition = new Vector2(Screen.width / 2, Screen.height / 2);
 
             _camera = Camera.main;
             _cameraTransform = _camera.transform;
@@ -99,9 +109,9 @@ namespace Actormachine
             {
                 RaycastHit hit;
 
-                if (Physics.Raycast(_camera.ScreenPointToRay(inputable.PointerScreenPosition), out hit, Mathf.Infinity, LayerMask))
+                if (Physics.Raycast(_camera.ScreenPointToRay(Pointer.ScreenPosition), out hit, Mathf.Infinity, LayerMask))
                 {
-                    _targetPosition = new Target(transform, hit.collider.transform, hit.point);
+                    Pointer.GroundPosition = new Target(Player.transform, hit.collider.transform, hit.point);
                 }
             }
         }
@@ -115,13 +125,8 @@ namespace Actormachine
             inputable.LookDelta = new Vector2(x, y);
 
             // Get Pointer Screen Position, for Mouse and Gamepad 
-            PointerScreenPosition += Vector2.Scale(inputable.LookDelta, new Vector2(1f, -1f));
-            PointerScreenPosition = new Vector2(Mathf.Clamp(PointerScreenPosition.x, 0f, Screen.width), Mathf.Clamp(PointerScreenPosition.y, 0f, Screen.height));
-
-            inputable.PointerScreenPosition = PointerScreenPosition;
-
-            // Get Pointer Screen Position, for Mouse
-            //inputable.PointerScreenPosition = _inputActions.Player.Pointer.ReadValue<Vector2>();
+            Pointer.ScreenPosition += Vector2.Scale(inputable.LookDelta, new Vector2(1f, -1f));
+            Pointer.ScreenPosition = new Vector2(Mathf.Clamp(Pointer.ScreenPosition.x, 0f, Screen.width), Mathf.Clamp(Pointer.ScreenPosition.y, 0f, Screen.height));
 
             readMoveInput();
         }
@@ -139,11 +144,11 @@ namespace Actormachine
             }
             else if (MoveDirectionMode == MoveMode.Target)
             {
-                if (_targetPosition.IsExists)
+                if (Pointer.GroundPosition.IsExists)
                 {
-                    if (_targetPosition.GetDistanceHorizontal > 0.1f)
+                    if (Pointer.GroundPosition.GetDistanceHorizontal > 0.1f)
                     {
-                        inputable.MoveVector = _targetPosition.GetDirectionHorizontal;
+                        inputable.MoveVector = Pointer.GroundPosition.GetDirectionHorizontal;
 
                         return;
                     }
@@ -154,11 +159,11 @@ namespace Actormachine
             }
             else if (MoveDirectionMode == MoveMode.Both)
             {
-                if (_targetPosition.IsExists)
+                if (Pointer.GroundPosition.IsExists)
                 {
-                    if (_targetPosition.GetDistanceHorizontal > 0.1f)
+                    if (Pointer.GroundPosition.GetDistanceHorizontal > 0.1f)
                     {
-                        inputable.MoveVector = _targetPosition.GetDirectionHorizontal;
+                        inputable.MoveVector = Pointer.GroundPosition.GetDirectionHorizontal;
 
                         return;
                     }
@@ -170,7 +175,7 @@ namespace Actormachine
             }
         }
 
-        public void ClearTarget() => _targetPosition.Clear();
+        public void ClearTarget() => Pointer.GroundPosition.Clear();
 
         private void OnEnable() => _inputActions?.Enable();
         private void OnDisable() => _inputActions?.Disable();

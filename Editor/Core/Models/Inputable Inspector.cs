@@ -8,21 +8,8 @@ namespace Actormachine.Editor
     [CanEditMultipleObjects]
     public class InputableInspector : ActormachineComponentBaseInspector
     {
-        Inputable thisTarget;
-
         public override void OnInspectorGUI()
         {
-            thisTarget = (Inputable)target;
-            Transform root = thisTarget.FindRootTransform;
-            InputController inputController = root.gameObject.GetComponentInChildren<InputController>();
-
-            if (inputController == null)
-            {
-                Inspector.DrawSubtitle("<INPUTCONTROLLER> - IS NOT FOUND", BoxStyle.Error);
-
-                return;
-            }
-
             Inspector.DrawSubtitle("RECEIVE INPUT DATA");
         }
     }

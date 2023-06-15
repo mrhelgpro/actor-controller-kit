@@ -7,9 +7,8 @@ namespace Actormachine
     [AddComponentMenu("Actormachine/Model/Inputable")]
     public class Inputable : Model
     {
-        // KEYBOARD            X-BOX             DUALSHOCK       GAMEPAD
+                                                        // KEYBOARD            X-BOX             DUALSHOCK       GAMEPAD
         public bool MenuState;                          // Escape
-        public Vector2 PointerScreenPosition;           // Mouse Position                        Options         Start
         public Vector2 MoveVector;                      // WASD - Movement     Left Stick        Left Stick      Left Stick
         public Vector2 LookDelta;
 
@@ -68,17 +67,8 @@ namespace Actormachine
 
     /// <summary> Parent class from which all "Input Controllers: should inherit. </summary>
     public class InputController : ActormachineComponentBase
-    {
-        public static Vector2 PointerScreenPosition;
-
+    {     
         protected Inputable inputable;
-
-        protected new void Awake()
-        {
-            base.Awake();
-
-            inputable = AddComponentInRoot<Inputable>();
-        }
     }
 
     public interface IInputConteroller

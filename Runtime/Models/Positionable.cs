@@ -24,7 +24,7 @@ namespace Actormachine
 
         protected LayerMask groundLayer;
         protected int layerMask;
-        protected float radiusGroundCheck = 0.2f;
+        protected float radiusGroundCheck = 0.1f;
 
         private void Start()
         {

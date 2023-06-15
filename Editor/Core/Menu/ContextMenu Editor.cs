@@ -18,6 +18,10 @@ namespace Actormachine.Editor
         [MenuItem("GameObject/Actormachine/Camera/Point Of Interest", false, 0)]
         public static void CreatePointOfInterest() => ContextMenuExtention.CreatePrefab("Camera", "Point Of Interest", hideInHierarchy: true);
 
+        // Create a Pointer Player Viewer
+        [MenuItem("GameObject/Actormachine/Input/Pointer Player Viewer", false, 0)]
+        public static void CreatePointerPlayerViewer() => PointerPlayerViewer.Create();
+
         /*
         // If there is a selected object in the hierarchy and there are no hidden objects in it
         // If the selected object has no hidden objects, show "Hide Child Objects"
