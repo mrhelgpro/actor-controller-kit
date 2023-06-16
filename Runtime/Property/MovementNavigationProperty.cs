@@ -62,11 +62,11 @@ namespace Actormachine
             _currentDirection = _positionable.GetDirection(_inputable.MoveVector);
 
             _navMeshAgent.speed = speed;
-            _navMeshAgent.acceleration = Rate * 2;
+            _navMeshAgent.acceleration = Rate * 4;
             _navMeshAgent.SetDestination(_rootTransform.position + _currentDirection.normalized);
 
             // Set Animation Parameters
-            _animatorable.Speed = _currentVelocity.magnitude;
+            _animatorable.Speed = _navMeshAgent.velocity.magnitude;
             _animatorable.Grounded = _positionable.IsGrounded;
         }
 

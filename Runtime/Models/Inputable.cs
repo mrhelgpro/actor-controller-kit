@@ -65,12 +65,6 @@ namespace Actormachine
         }
     }
 
-    /// <summary> Parent class from which all "Input Controllers: should inherit. </summary>
-    public class InputController : ActormachineComponentBase
-    {     
-        protected Inputable inputable;
-    }
-
     public interface IInputConteroller
     { 
         // TODO

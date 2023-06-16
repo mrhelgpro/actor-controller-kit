@@ -24,79 +24,70 @@ namespace Actormachine
             foreach (State state in GetComponentsInChildren<State>()) Add(state);
         }
 
-        private void FixedUpdate()
+        protected override void GameplayFixedUpdate()
         {
-            if (Gameplay.Mode == GameMode.Play)
-            {
-                // FixedUpdates State after Enter
-                _currentState?.OnFixedActiveState();
-            }
+            // FixedUpdates State after Enter
+            _currentState?.OnFixedActiveState();
         }
 
-        private void Update()
+        protected override void GameplayUpdate()
         {
-            if (Gameplay.Mode == GameMode.Play)
+            // Updates the OnInactiveState() if State is not activated
+            foreach (State state in _currentStates)
             {
-                // Updates the OnInactiveState() if State is not activated
-                foreach (State state in _currentStates)
-                {
-                    if (IsCurrentState(state) == false) state.OnInactiveState();
-                }
-
-                // Updates Deactivator if State is active
-                _currentState?.OnActiveState();
+                if (IsCurrentState(state) == false) state.OnInactiveState();
             }
+
+            // Updates Deactivator if State is active
+            _currentState?.OnActiveState();
         }
 
-        private void LateUpdate()
+        protected override void GameplayLateUpdate()
         {
-            if (Gameplay.Mode == GameMode.Play)
+            // Add States
+            foreach (State state in _addingToStates)
             {
-                // Add States
-                foreach (State state in _addingToStates)
+                _currentStates.Add(state);
+
+                state.OnEnableState();
+            }
+
+            _addingToStates.Clear();
+
+            // Remove States
+            foreach (State state in _removeStates)
+            {
+                _currentStates.Remove(state);
+                state.OnDisableState();
+
+                // Deactivate default State
+                clearDefaultState(state);
+            }
+
+            _removeStates.Clear();
+
+            // Set next State
+            if (_nextState)
+            {
+                activeState(_nextState);
+                return;
+            }
+
+            // Set default State if current State is null
+            if (_currentState == null)
+            {
+                if (_defaultState)
                 {
-                    _currentStates.Add(state);
-
-                    state.OnEnableState();
-                }
-
-                _addingToStates.Clear();
-
-                // Remove States
-                foreach (State state in _removeStates)
-                {
-                    _currentStates.Remove(state);
-                    state.OnDisableState();
-
-                    // Deactivate default State
-                    clearDefaultState(state);
-                }
-
-                _removeStates.Clear();
-
-                // Set next State
-                if (_nextState)
-                {
-                    activeState(_nextState);
+                    activeState(_defaultState);
                     return;
                 }
 
-                // Set default State if current State is null
-                if (_currentState == null)
+                foreach (State state in _currentStates)
                 {
-                    if (_defaultState)
+                    if (state.Priority == StatePriority.Default)
                     {
-                        activeState(_defaultState);
+                        activeState(state);
                         return;
-                    }
-
-                    foreach (State state in _currentStates)
-                    {
-                        if (state.Priority == StatePriority.Default)
-                        {
-                            activeState(state);
-                            return;
-                        }
                     }
                 }
             }

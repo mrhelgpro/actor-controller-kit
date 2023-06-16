@@ -1,10 +1,19 @@
 using UnityEngine;
-using UnityEditor;
 
 namespace Actormachine
 {
     public static class Instance
     {
+        public static T AddRequiredComponent<T>(this GameObject gameObject) where T : Component
+        {
+            return gameObject.GetComponent<T>() == null ? gameObject.AddComponent<T>() : gameObject.GetComponent<T>();
+        }
+
+        public static void RemoveComponent<T>(this GameObject gameObject) where T : Component
+        {
+            if (gameObject.GetComponent<T>() != null) Object.DestroyImmediate(gameObject.GetComponent<T>());
+        }
+
         /// <summary> 
         /// Returns "true" if there is one instance of the class on the Scene, 
         /// and "false" if there is null or more than one. 

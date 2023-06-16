@@ -118,12 +118,9 @@ namespace Actormachine.Editor
                 // Update Camera Parameters
                 if (GUI.changed)
                 {
-                    if (Application.isPlaying == false)
-                    {
-                        Cinema.SwitchPriority(FindAnyObjectByType<ActorVirtualCamera>().GetComponent<CinemachineVirtualCameraBase>());
+                    Cinema.SwitchPriority(FindAnyObjectByType<ActorVirtualCamera>().GetComponent<CinemachineVirtualCameraBase>());
 
-                        thisTarget.OnEnterState();
-                    }
+                    thisTarget.OnEnterState();
                 }
             }
         }

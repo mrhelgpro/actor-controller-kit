@@ -12,6 +12,8 @@ namespace Actormachine.Editor
         {
             InputPlayerController thisTarget = (InputPlayerController)target;
 
+            if (Inspector.CheckSingleInstanceOnScene<InputPlayerController>() == false) return;
+
             if (Application.isPlaying == false)
             {
                 thisTarget.Player = EditorGUILayout.ObjectField("Player", thisTarget.Player, typeof(GameObject), true) as GameObject;

@@ -4,12 +4,16 @@ namespace Actormachine.Editor
 {
     public static class ContextMenuEditor
     {
-        // Create a prefab from the resources folder  - Character
-        [MenuItem("GameObject/Actormachine/Player/Player Third Person", false, 0)]
-        public static void CreatePlayerThirdPerson() => ContextMenuExtention.CreatePrefab("Players", "Player Third Person");
+        // Create a Input Player Viewer
+        [MenuItem("GameObject/Actormachine/Input/Input Player Viewer", false, 0)]
+        public static void CreateInputPlayerViewer() => PointerPlayerViewer.Create();
 
-        [MenuItem("GameObject/Actormachine/Player/Player Top Down", false, 0)]
-        public static void CreatePlayerTopDown() => ContextMenuExtention.CreatePrefab("Players", "Player Top Down");
+        // Create a prefab from the resources folder  - Character
+        [MenuItem("GameObject/Actormachine/Player/Player (Physic)", false, 0)]
+        public static void CreatePlayerPhysic() => ContextMenuExtention.CreatePrefab("Players", "Player (Physic)");
+
+        [MenuItem("GameObject/Actormachine/Player/Player (Navigation)", false, 0)]
+        public static void CreatePlayerNavigation() => ContextMenuExtention.CreatePrefab("Players", "Player (Navigation)");
 
         [MenuItem("GameObject/Actormachine/Player/Player Platformer 2D", false, 0)]
         public static void CreatePlayerPlatformer2D() => ContextMenuExtention.CreatePrefab("Players", "Player Platformer 2D");
@@ -17,10 +21,6 @@ namespace Actormachine.Editor
         // Create a prefab from the resources folder - Camera
         [MenuItem("GameObject/Actormachine/Camera/Point Of Interest", false, 0)]
         public static void CreatePointOfInterest() => ContextMenuExtention.CreatePrefab("Camera", "Point Of Interest", hideInHierarchy: true);
-
-        // Create a Pointer Player Viewer
-        [MenuItem("GameObject/Actormachine/Input/Pointer Player Viewer", false, 0)]
-        public static void CreatePointerPlayerViewer() => PointerPlayerViewer.Create();
 
         /*
         // If there is a selected object in the hierarchy and there are no hidden objects in it

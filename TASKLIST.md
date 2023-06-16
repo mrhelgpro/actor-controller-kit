@@ -1,4 +1,3 @@
-- Proprty (Movment Constant)
 - Patterns (Menu)
 - Entity (State Machine)
 - Pointer, Button

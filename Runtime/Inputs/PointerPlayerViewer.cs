@@ -2,11 +2,13 @@ using UnityEngine;
 
 namespace Actormachine
 {
-
-
     [AddComponentMenu("Actormachine/Input/Pointer Player Viewer")]
     public class PointerPlayerViewer : MonoBehaviour
     {
+        public PointerScreenMode PointerScreenMode;
+        public PointerGroundMode PointerGroundMode;
+        public PointerScopeMode PointerScopeMode;
+
         public GameObject PointerScreenPrefab;
         public GameObject PointerGroundPrefab;
         public GameObject PointerScopePrefab;
@@ -20,9 +22,14 @@ namespace Actormachine
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
+            Pointer.ScreenMode = PointerScreenMode;
+            Pointer.GroundMode = PointerGroundMode;
+            Pointer.ScopeMode = PointerScopeMode;
+
             // Canvas Settings
             Canvas canvas = GetComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.pixelPerfect = true;
 
             RectTransform rectTransform = GetComponent<RectTransform>();
 
@@ -56,46 +63,47 @@ namespace Actormachine
         {
             if (Pointer.ScreenMode == PointerScreenMode.Visible)
             {
+                _pointerScreen.gameObject.SetActive(true);
                 _pointerScreen.anchoredPosition = new Vector2(Pointer.ScreenPosition.x, Pointer.ScreenPosition.y);
             }
             else
             {
-                _pointerScreen.anchoredPosition = new Vector2(-100, -100);
+                _pointerScreen.gameObject.SetActive(false);
             }
 
-            setPointerGround();
-
-            if (Pointer.ScopeMode == PointerScopeMode.Visible)
-            {
-                _pointerScope.anchoredPosition = Vector2.zero;
-            }
-            else
-            {
-                _pointerScreen.anchoredPosition = new Vector2(-100, -100);
-            }
-
-            //Mouse.current.WarpCursorPosition(InputController.PointerScreenPosition);
-        }
-
-        private void setPointerGround()
-        {
             if (Pointer.GroundMode == PointerGroundMode.Visible)
             {
                 if (Pointer.GroundPosition.IsExists)
                 {
                     _pointerGround.gameObject.SetActive(true);
                     _pointerGround.position = Pointer.GroundPosition.GetPosition;
-
-                    return;
+                }
+                else
+                {
+                    _pointerGround.gameObject.SetActive(false);
                 }
             }
+            else
+            {
+                _pointerGround.gameObject.SetActive(false);
+            }
 
-            _pointerGround.gameObject.SetActive(false);
+            if (Pointer.ScopeMode == PointerScopeMode.Visible)
+            {
+                _pointerScope.gameObject.SetActive(true);
+                _pointerScope.anchoredPosition = Vector2.zero;
+            }
+            else
+            {
+                _pointerScope.gameObject.SetActive(false);
+            }
+
+            //Mouse.current.WarpCursorPosition(InputController.PointerScreenPosition);
         }
 
         public static void Create()
         {
-            GameObject instantiate = new GameObject("Pointer Player Viewer", typeof(RectTransform));
+            GameObject instantiate = new GameObject("Input Player Viewer", typeof(RectTransform));
             instantiate.transform.position = Vector3.zero;
             instantiate.transform.rotation = Quaternion.identity;
 
@@ -110,9 +118,9 @@ namespace Actormachine
 
     public static class Pointer
     {
-        [SerializeField] public static PointerScreenMode ScreenMode = PointerScreenMode.None;
-        [SerializeField] public static PointerGroundMode GroundMode = PointerGroundMode.None;
-        [SerializeField] public static PointerScopeMode ScopeMode = PointerScopeMode.None;
+        public static PointerScreenMode ScreenMode;
+        public static PointerGroundMode GroundMode;
+        public static PointerScopeMode ScopeMode;
 
         public static Vector2 ScreenPosition;
         public static Target GroundPosition;

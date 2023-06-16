@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Actormachine
 {
     [AddComponentMenu("Actormachine/Input/Input Player Controller")]
-    public sealed class InputPlayerController : InputController
+    public sealed class InputPlayerController : MonoBehaviour
     {
         public enum MoveMode { Input, Target, Both }
         public enum TargetMode { LeftAction, MiddleAction, RightAction }
@@ -17,14 +17,14 @@ namespace Actormachine
 
         public LayerMask LayerMask;
 
-        //private Target _targetPosition;
+        private Inputable _inputable;
         private Camera _camera;
         private Transform _cameraTransform;
         private InputActions _inputActions;
 
-        private new void Awake()
+        private void Awake()
         {
-            base.Awake();
+            if (Player == null) Player = GameObject.FindGameObjectWithTag("Player");
 
             if (Player == null)
             {
@@ -33,7 +33,7 @@ namespace Actormachine
                 return;
             }
 
-            inputable = Player.GetComponentInChildren<Inputable>();
+            _inputable = Player.GetComponentInChildren<Inputable>();
 
             Pointer.ScreenPosition = new Vector2(Screen.width / 2, Screen.height / 2);
 
@@ -42,20 +42,20 @@ namespace Actormachine
 
             _inputActions = new InputActions();
 
-            _inputActions.Player.Menu.performed += context => inputable.MenuState = true;
-            _inputActions.Player.Menu.canceled += context => inputable.MenuState = false;
+            _inputActions.Player.Menu.performed += context => _inputable.MenuState = true;
+            _inputActions.Player.Menu.canceled += context => _inputable.MenuState = false;
 
-            _inputActions.Player.North.performed += context => inputable.OptionState = true;
-            _inputActions.Player.North.canceled += context => inputable.OptionState = false;
+            _inputActions.Player.North.performed += context => _inputable.OptionState = true;
+            _inputActions.Player.North.canceled += context => _inputable.OptionState = false;
 
-            _inputActions.Player.East.performed += context => inputable.CancelState = true;
-            _inputActions.Player.East.canceled += context => inputable.CancelState = false;
+            _inputActions.Player.East.performed += context => _inputable.CancelState = true;
+            _inputActions.Player.East.canceled += context => _inputable.CancelState = false;
 
-            _inputActions.Player.South.performed += context => inputable.MotionState = true;
-            _inputActions.Player.South.canceled += context => inputable.MotionState = false;
+            _inputActions.Player.South.performed += context => _inputable.MotionState = true;
+            _inputActions.Player.South.canceled += context => _inputable.MotionState = false;
 
-            _inputActions.Player.West.performed += context => inputable.InteractState = true;
-            _inputActions.Player.West.canceled += context => inputable.InteractState = false;
+            _inputActions.Player.West.performed += context => _inputable.InteractState = true;
+            _inputActions.Player.West.canceled += context => _inputable.InteractState = false;
 
             _inputActions.Player.TriggerRight.performed += context => actionRight(true);
             _inputActions.Player.TriggerRight.canceled += context => actionRight(false);
@@ -66,16 +66,16 @@ namespace Actormachine
             _inputActions.Player.BumperRight.performed += context => actionLeft(true);
             _inputActions.Player.BumperRight.canceled += context => actionLeft(false);
 
-            _inputActions.Player.TriggerLeft.performed += context => inputable.ControlState = true;
-            _inputActions.Player.TriggerLeft.canceled += context => inputable.ControlState = false;
+            _inputActions.Player.TriggerLeft.performed += context => _inputable.ControlState = true;
+            _inputActions.Player.TriggerLeft.canceled += context => _inputable.ControlState = false;
 
-            _inputActions.Player.BumperLeft.performed += context => inputable.ShiftState = true;
-            _inputActions.Player.BumperLeft.canceled += context => inputable.ShiftState = false;
+            _inputActions.Player.BumperLeft.performed += context => _inputable.ShiftState = true;
+            _inputActions.Player.BumperLeft.canceled += context => _inputable.ShiftState = false;
         }
 
         private void actionMiddle(bool state)
         {
-            inputable.ActionMiddleState = state;
+            _inputable.ActionMiddleState = state;
 
             if (InputTargetMode == TargetMode.MiddleAction)
             {
@@ -85,7 +85,7 @@ namespace Actormachine
 
         private void actionLeft(bool state)
         {
-            inputable.ActionLeftState = state;
+            _inputable.ActionLeftState = state;
 
             if (InputTargetMode == TargetMode.LeftAction)
             {
@@ -95,7 +95,7 @@ namespace Actormachine
 
         private void actionRight(bool state)
         {
-            inputable.ActionRightState = state;
+            _inputable.ActionRightState = state;
 
             if (InputTargetMode == TargetMode.RightAction)
             {
@@ -122,10 +122,10 @@ namespace Actormachine
             float x = _inputActions.Player.Look.ReadValue<Vector2>().x * PointerSensitivityX;
             float y = _inputActions.Player.Look.ReadValue<Vector2>().y * PointerSensitivityY;
 
-            inputable.LookDelta = new Vector2(x, y);
+            _inputable.LookDelta = new Vector2(x, y);
 
             // Get Pointer Screen Position, for Mouse and Gamepad 
-            Pointer.ScreenPosition += Vector2.Scale(inputable.LookDelta, new Vector2(1f, -1f));
+            Pointer.ScreenPosition += Vector2.Scale(_inputable.LookDelta, new Vector2(1f, -1f));
             Pointer.ScreenPosition = new Vector2(Mathf.Clamp(Pointer.ScreenPosition.x, 0f, Screen.width), Mathf.Clamp(Pointer.ScreenPosition.y, 0f, Screen.height));
 
             readMoveInput();
@@ -140,7 +140,7 @@ namespace Actormachine
 
             if (MoveDirectionMode == MoveMode.Input)
             {
-                inputable.MoveVector = inputMoveVector;
+                _inputable.MoveVector = inputMoveVector;
             }
             else if (MoveDirectionMode == MoveMode.Target)
             {
@@ -148,12 +148,12 @@ namespace Actormachine
                 {
                     if (Pointer.GroundPosition.GetDistanceHorizontal > 0.1f)
                     {
-                        inputable.MoveVector = Pointer.GroundPosition.GetDirectionHorizontal;
+                        _inputable.MoveVector = Pointer.GroundPosition.GetDirectionHorizontal;
 
                         return;
                     }
 
-                    inputable.MoveVector = Vector2.zero;
+                    _inputable.MoveVector = Vector2.zero;
                     ClearTarget();
                 }
             }
@@ -163,7 +163,7 @@ namespace Actormachine
                 {
                     if (Pointer.GroundPosition.GetDistanceHorizontal > 0.1f)
                     {
-                        inputable.MoveVector = Pointer.GroundPosition.GetDirectionHorizontal;
+                        _inputable.MoveVector = Pointer.GroundPosition.GetDirectionHorizontal;
 
                         return;
                     }
@@ -171,7 +171,7 @@ namespace Actormachine
                     ClearTarget();
                 }
 
-                inputable.MoveVector = inputMoveVector;
+                _inputable.MoveVector = inputMoveVector;
             }
         }
 

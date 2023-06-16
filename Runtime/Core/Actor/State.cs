@@ -78,12 +78,25 @@ namespace Actormachine
             RootTransform = actor.transform;
         }
 
+        /// <summary> Called when the Property is enabled and starts working as part of the State. </summary>
         public virtual void OnEnableState() { }
+
+        /// <summary> Called in Update when State is not active. </summary>
         public virtual void OnInactiveState() { }
+
+        /// <summary> Called once when State is activated. </summary>
         public virtual void OnEnterState() { }
+
+        /// <summary> Called in Update when State is active. </summary>
         public virtual void OnActiveState() { }
+
+        /// <summary> Called in FixedUpdate when State is active. </summary>
         public virtual void OnFixedActiveState() { }
+
+        /// <summary> Called once when State is deactivated. </summary>
         public virtual void OnExitState() { }
+
+        /// <summary> Called when the Property is turned off and ceases to be part of the State. </summary>
         public virtual void OnDisableState() { }
     }
 

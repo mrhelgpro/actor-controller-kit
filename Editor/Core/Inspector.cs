@@ -20,16 +20,14 @@ namespace Actormachine.Editor
         ///<summary> Checking for a single instance on Scene. </summary>
         public static bool CheckSingleInstanceOnScene<T>() where T : Component
         {
-            T requireComponent = GameObject.FindAnyObjectByType<T>();
-
-            if (requireComponent == null)
+            if (Instance.IsSingleInstanceOnScene<T>() == false)
             {
-                DrawInfoBox("<" + typeof(T).ToString() + "> is not found", BoxStyle.Error);
+                DrawSubtitle("should be a single Instance on the scene", BoxStyle.Error);
 
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
         }
 
         ///<summary> Checking for a single instance on gameObject and destroy duplicates. </summary>

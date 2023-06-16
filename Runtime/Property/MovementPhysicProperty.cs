@@ -117,41 +117,44 @@ namespace Actormachine
 
         private void jumpLoop()
         {
-            // Input Jump
-            _isJumpPressed = _inputable.MotionState;
-            _movable.JumpCounter(_positionable.IsGrounded);
-
-            setLevitation(_isJumpPressed);
-
-            if (_isJumpPressed == false)
+            if (JumpScale > 0)
             {
-                if (_positionable.IsGrounded)
+                // Input Jump
+                _isJumpPressed = _inputable.MotionState;
+                _movable.JumpCounter(_positionable.IsGrounded);
+
+                setLevitation(_isJumpPressed);
+
+                if (_isJumpPressed == false)
                 {
-                    _isJumpDone = false;
-                }
-                else
-                {
-                    
-                    if (_movable.JumpCounter(_positionable.IsGrounded) > 0)
+                    if (_positionable.IsGrounded)
                     {
                         _isJumpDone = false;
-                    }                   
-                }
-            }
-
-            // Force Update
-            if (_isJumpDone == false)
-            {
-                if (_isJumpPressed == true)
-                {
-                    _currentForce = JumpScale * Vector3.up * _movable.JumpHeight.HeightToForce(_movable.Gravity);
-
-                    if (_positionable)
-                    {
-                        _movable.JumpCounter(_positionable.IsGrounded, true);
                     }
+                    else
+                    {
 
-                    _isJumpDone = true;
+                        if (_movable.JumpCounter(_positionable.IsGrounded) > 0)
+                        {
+                            _isJumpDone = false;
+                        }
+                    }
+                }
+
+                // Force Update
+                if (_isJumpDone == false)
+                {
+                    if (_isJumpPressed == true)
+                    {
+                        _currentForce = JumpScale * Vector3.up * _movable.JumpHeight.HeightToForce(_movable.Gravity);
+
+                        if (_positionable)
+                        {
+                            _movable.JumpCounter(_positionable.IsGrounded, true);
+                        }
+
+                        _isJumpDone = true;
+                    }
                 }
             }
         }

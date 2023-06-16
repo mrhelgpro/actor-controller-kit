@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Actormachine
 {
     /// <summary> All classes that are part of the Actor must inherit from this class. </summary>
-    public abstract class ActormachineComponentBase : MonoBehaviour
+    public abstract class ActormachineComponentBase : PlayComponentBase
     {
         public Transform ThisTransform { get; private set; }
 
@@ -11,9 +11,6 @@ namespace Actormachine
         {
             ThisTransform = transform;
         }
-
-        /// <summary> In Play Mode it is called once when Awake, in Edit Mode it is called constantly as an Update. </summary>
-        //public virtual void Initiate() { }
 
         /// <summary> Add or Get the component on the Root. </summary>
         public T AddComponentInRoot<T>() where T : Component
@@ -44,19 +41,6 @@ namespace Actormachine
 
                 return actormachineComponentBase.transform;
             }
-        }
-    }
-
-    public static class ActorBehaviourExtention
-    {
-        public static T AddRequiredComponent<T>(this GameObject gameObject) where T : Component
-        {
-            return gameObject.GetComponent<T>() == null ? gameObject.AddComponent<T>() : gameObject.GetComponent<T>();
-        }
-
-        public static void RemoveComponent<T>(this GameObject gameObject) where T : Component
-        {
-            if (gameObject.GetComponent<T>() != null) Object.DestroyImmediate(gameObject.GetComponent<T>());
         }
     }
 }
