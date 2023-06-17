@@ -121,7 +121,6 @@ namespace Actormachine
             {
                 // Input Jump
                 _isJumpPressed = _inputable.MotionState;
-                _movable.JumpCounter(_positionable.IsGrounded);
 
                 setLevitation(_isJumpPressed);
 
@@ -130,11 +129,12 @@ namespace Actormachine
                     if (_positionable.IsGrounded)
                     {
                         _isJumpDone = false;
+                        _movable.JumpCounter = _movable.ExtraJumps;
                     }
                     else
                     {
 
-                        if (_movable.JumpCounter(_positionable.IsGrounded) > 0)
+                        if (_movable.JumpCounter > 0)
                         {
                             _isJumpDone = false;
                         }
@@ -150,7 +150,10 @@ namespace Actormachine
 
                         if (_positionable)
                         {
-                            _movable.JumpCounter(_positionable.IsGrounded, true);
+                            if (_positionable.IsGrounded == false)
+                            {
+                                _movable.JumpCounter--;
+                            }
                         }
 
                         _isJumpDone = true;

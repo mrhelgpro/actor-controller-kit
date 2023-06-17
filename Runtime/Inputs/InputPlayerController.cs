@@ -35,7 +35,7 @@ namespace Actormachine
 
             _inputable = Player.GetComponentInChildren<Inputable>();
 
-            Pointer.ScreenPosition = new Vector2(Screen.width / 2, Screen.height / 2);
+            PointerScreen.SetPosition(new Vector2(Screen.width / 2, Screen.height / 2));
 
             _camera = Camera.main;
             _cameraTransform = _camera.transform;
@@ -109,9 +109,9 @@ namespace Actormachine
             {
                 RaycastHit hit;
 
-                if (Physics.Raycast(_camera.ScreenPointToRay(Pointer.ScreenPosition), out hit, Mathf.Infinity, LayerMask))
+                if (Physics.Raycast(_camera.ScreenPointToRay(PointerScreen.GetPosition), out hit, Mathf.Infinity, LayerMask))
                 {
-                    Pointer.GroundPosition = new Target(Player.transform, hit.collider.transform, hit.point);
+                    PointerMovement.SetPosition(hit.point);
                 }
             }
         }
@@ -125,8 +125,9 @@ namespace Actormachine
             _inputable.LookDelta = new Vector2(x, y);
 
             // Get Pointer Screen Position, for Mouse and Gamepad 
-            Pointer.ScreenPosition += Vector2.Scale(_inputable.LookDelta, new Vector2(1f, -1f));
-            Pointer.ScreenPosition = new Vector2(Mathf.Clamp(Pointer.ScreenPosition.x, 0f, Screen.width), Mathf.Clamp(Pointer.ScreenPosition.y, 0f, Screen.height));
+            Vector2 pointerScreen = PointerScreen.GetPosition + Vector2.Scale(_inputable.LookDelta, new Vector2(1f, -1f));
+
+            PointerScreen.SetPosition(pointerScreen);
 
             readMoveInput();
         }
@@ -144,11 +145,11 @@ namespace Actormachine
             }
             else if (MoveDirectionMode == MoveMode.Target)
             {
-                if (Pointer.GroundPosition.IsExists)
+                if (PointerMovement.IsActive)
                 {
-                    if (Pointer.GroundPosition.GetDistanceHorizontal > 0.1f)
+                    if (PointerMovement.GetDistanceHorizontal(Player.transform.position) > 0.1f)
                     {
-                        _inputable.MoveVector = Pointer.GroundPosition.GetDirectionHorizontal;
+                        _inputable.MoveVector = PointerMovement.GetDirectionHorizontal(Player.transform.position);
 
                         return;
                     }
@@ -159,11 +160,18 @@ namespace Actormachine
             }
             else if (MoveDirectionMode == MoveMode.Both)
             {
-                if (Pointer.GroundPosition.IsExists)
+                if (PointerMovement.IsActive)
                 {
-                    if (Pointer.GroundPosition.GetDistanceHorizontal > 0.1f)
+                    if (inputMoveVector.magnitude > 0)
                     {
-                        _inputable.MoveVector = Pointer.GroundPosition.GetDirectionHorizontal;
+                        ClearTarget();
+
+                        return;
+                    }
+
+                    if (PointerMovement.GetDistanceHorizontal(Player.transform.position) > 0.1f)
+                    {
+                        _inputable.MoveVector = PointerMovement.GetDirectionHorizontal(Player.transform.position);
 
                         return;
                     }
@@ -175,7 +183,7 @@ namespace Actormachine
             }
         }
 
-        public void ClearTarget() => Pointer.GroundPosition.Clear();
+        public void ClearTarget() => PointerMovement.Clear();
 
         private void OnEnable() => _inputActions?.Enable();
         private void OnDisable() => _inputActions?.Disable();

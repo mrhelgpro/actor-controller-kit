@@ -96,7 +96,7 @@ namespace Actormachine
             else if (LookMode == LookMode.LookToPointer)
             {
                 RaycastHit hit;
-                Ray ray = Camera.main.ScreenPointToRay(Pointer.ScreenPosition);
+                Ray ray = Camera.main.ScreenPointToRay(PointerScreen.GetPosition);
 
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, _layerMask))
                 {

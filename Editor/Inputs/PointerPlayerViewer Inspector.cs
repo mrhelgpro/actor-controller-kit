@@ -21,10 +21,6 @@ namespace Actormachine.Editor
 
             thisTarget.gameObject.AddRequiredComponent<CanvasScaler>();
             thisTarget.gameObject.AddRequiredComponent<GraphicRaycaster>();
-
-            thisTarget.PointerScreenMode = Pointer.ScreenMode;
-            thisTarget.PointerGroundMode = Pointer.GroundMode;
-            thisTarget.PointerScopeMode = Pointer.ScopeMode;
         }
 
         public override void OnInspectorGUI()
@@ -46,11 +42,16 @@ namespace Actormachine.Editor
                 thisTarget.PointerScopePrefab = Resources.Load<GameObject>("Pointer/Pointer (Scope)");
             }
 
-            DrawBaseInspector();
+            if (Application.isPlaying == false)
+            {
+                DrawBaseInspector();
 
-            Pointer.ScreenMode = thisTarget.PointerScreenMode;
-            Pointer.GroundMode = thisTarget.PointerGroundMode;
-            Pointer.ScopeMode = thisTarget.PointerScopeMode;
+                return;
+            }
+
+            EditorGUILayout.LabelField("PointerScreenMode", PointerScreen.GetMode.ToString());
+            EditorGUILayout.LabelField("PointerMovementMode", PointerMovement.GetMode.ToString());
+            EditorGUILayout.LabelField("PointerScopeMode", PointerScope.GetMode.ToString());
         }
     }
 }

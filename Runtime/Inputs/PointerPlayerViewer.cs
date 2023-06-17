@@ -5,26 +5,18 @@ namespace Actormachine
     [AddComponentMenu("Actormachine/Input/Pointer Player Viewer")]
     public class PointerPlayerViewer : MonoBehaviour
     {
-        public PointerScreenMode PointerScreenMode;
-        public PointerGroundMode PointerGroundMode;
-        public PointerScopeMode PointerScopeMode;
+        public PointerScreen.Mode PointerScreenMode = PointerScreen.Mode.None;
+        public PointerMovement.Mode PointerMovementMode = PointerMovement.Mode.None;
+        public PointerScope.Mode PointerScopeMode = PointerScope.Mode.None;
 
         public GameObject PointerScreenPrefab;
         public GameObject PointerGroundPrefab;
         public GameObject PointerScopePrefab;
 
-        private RectTransform _pointerScreen;
-        private RectTransform _pointerGround;
-        private RectTransform _pointerScope;
-
         private void Awake()
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-
-            Pointer.ScreenMode = PointerScreenMode;
-            Pointer.GroundMode = PointerGroundMode;
-            Pointer.ScopeMode = PointerScopeMode;
 
             // Canvas Settings
             Canvas canvas = GetComponent<Canvas>();
@@ -33,72 +25,15 @@ namespace Actormachine
 
             RectTransform rectTransform = GetComponent<RectTransform>();
 
-            // Pointer Screen Position
-            GameObject instantiatedPointerScreen = Instantiate(PointerScreenPrefab);
-            instantiatedPointerScreen.name = PointerScreenPrefab.name;
-            instantiatedPointerScreen.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
+            // Initiation pointers
+            PointerScreen.Create(PointerScreenPrefab, rectTransform);
+            PointerMovement.Create(PointerGroundPrefab);
+            PointerScope.Create(PointerScopePrefab, rectTransform);
 
-            _pointerScreen = instantiatedPointerScreen.GetComponent<RectTransform>();
-            _pointerScreen.SetParent(rectTransform);
-
-            // Pointer Ground Position
-            GameObject instantiatedPointerGround = Instantiate(PointerGroundPrefab);
-            instantiatedPointerGround.name = PointerGroundPrefab.name;
-            instantiatedPointerGround.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
-
-            _pointerGround = instantiatedPointerGround.GetComponent<RectTransform>();
-            _pointerGround.SetParent(null);
-
-            // Pointer Scope Position
-            GameObject instantiatedPointerScope = Instantiate(PointerScopePrefab);
-            instantiatedPointerScope.name = PointerScopePrefab.name;
-            instantiatedPointerScope.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
-
-            _pointerScope = instantiatedPointerScope.GetComponent<RectTransform>();
-            _pointerScope.SetParent(rectTransform);
-            _pointerScope.anchoredPosition = Vector2.zero;
-        }
-
-        private void Update()
-        {
-            if (Pointer.ScreenMode == PointerScreenMode.Visible)
-            {
-                _pointerScreen.gameObject.SetActive(true);
-                _pointerScreen.anchoredPosition = new Vector2(Pointer.ScreenPosition.x, Pointer.ScreenPosition.y);
-            }
-            else
-            {
-                _pointerScreen.gameObject.SetActive(false);
-            }
-
-            if (Pointer.GroundMode == PointerGroundMode.Visible)
-            {
-                if (Pointer.GroundPosition.IsExists)
-                {
-                    _pointerGround.gameObject.SetActive(true);
-                    _pointerGround.position = Pointer.GroundPosition.GetPosition;
-                }
-                else
-                {
-                    _pointerGround.gameObject.SetActive(false);
-                }
-            }
-            else
-            {
-                _pointerGround.gameObject.SetActive(false);
-            }
-
-            if (Pointer.ScopeMode == PointerScopeMode.Visible)
-            {
-                _pointerScope.gameObject.SetActive(true);
-                _pointerScope.anchoredPosition = Vector2.zero;
-            }
-            else
-            {
-                _pointerScope.gameObject.SetActive(false);
-            }
-
-            //Mouse.current.WarpCursorPosition(InputController.PointerScreenPosition);
+            // Set Visible
+            PointerScreen.SetMode(PointerScreenMode);
+            PointerMovement.SetMode(PointerMovementMode);
+            PointerScope.SetMode(PointerScopeMode);
         }
 
         public static void Create()
@@ -112,17 +47,162 @@ namespace Actormachine
         }
     }
 
-    public enum PointerScreenMode { None, Visible }
-    public enum PointerGroundMode { None, Visible }
-    public enum PointerScopeMode { None, Visible }
-
-    public static class Pointer
+    public static class PointerScreen
     {
-        public static PointerScreenMode ScreenMode;
-        public static PointerGroundMode GroundMode;
-        public static PointerScopeMode ScopeMode;
+        public enum Mode { None, Visible }
+        private static Mode _mode = Mode.Visible;
+        private static Vector2 _position;
+        private static RectTransform _transform;
 
-        public static Vector2 ScreenPosition;
-        public static Target GroundPosition;
+        // Set Values
+        public static void Create(GameObject prefab, Transform parent)
+        {
+            _transform = PointerExtention.Create(prefab, parent);
+        }
+
+        public static void SetMode(Mode mode)
+        {
+            _mode = mode;
+
+            if (_mode == Mode.None)
+            {
+                if (_transform)
+                {
+                    _transform.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                if (_transform)
+                {
+                    _transform.gameObject.SetActive(true);
+                }
+            }
+        }
+
+        public static void SetPosition(Vector3 position)
+        {
+            _position.x = Mathf.Clamp(position.x, 0f, Screen.width);
+            _position.y = Mathf.Clamp(position.y, 0f, Screen.height);
+
+            if (_mode == Mode.Visible)
+            {
+                if (_transform)
+                {
+                    _transform.anchoredPosition = new Vector2(_position.x, _position.y);
+                }
+            }
+        }
+
+        // Get Values
+        public static Mode GetMode => _mode;
+
+        public static Vector2 GetPosition => _position;
+    }
+
+    public static class PointerMovement
+    {
+        public enum Mode { None, Visible }
+        private static Mode _mode = Mode.Visible;       
+        private static Vector3 _position;
+        private static bool _isActive = false;
+        private static RectTransform _transform;
+        private static Animator _animator;
+
+        // Set Values
+        public static void Create(GameObject prefab)
+        {
+            _transform = PointerExtention.Create(prefab, null);
+
+            _animator = _transform.GetComponent<Animator>();
+        }
+
+        public static void SetMode(Mode mode) => _mode = mode;  
+
+        public static void SetPosition(Vector3 position)
+        {
+            _isActive = true;
+            _position = position;
+
+            if (_mode == Mode.Visible)
+            {
+                if (_transform)
+                {
+                    _transform.gameObject.SetActive(true);
+                    _transform.position = _position;
+                }
+
+                if (_animator) _animator.Play("Start", 0, 0);
+            } 
+        }
+
+        public static void Clear()
+        {
+            _isActive = false;
+
+            if (_transform) _transform.gameObject.SetActive(false);
+        }
+
+        // Get Values
+        public static Mode GetMode => _mode;
+        public static bool IsActive => _isActive;
+        public static Vector3 GetPosition => IsActive ? _position : Vector3.zero;
+        public static float GetDistance(Vector3 startPosition) => IsActive ? Vector3.Distance(startPosition, _position) : 0;
+        public static Vector3 GetDirection(Vector3 startPosition) => IsActive ? (_position - startPosition).normalized : Vector3.zero;
+        public static float GetDistanceHorizontal(Vector3 startPosition) => IsActive ? Vector2.Distance(new Vector2(_position.x, _position.z), new Vector2(startPosition.x, startPosition.z)) : 0;
+        public static Vector2 GetDirectionHorizontal(Vector3 startPosition) => IsActive ? new Vector2(GetDirection(startPosition).x, GetDirection(startPosition).z) : Vector3.zero;
+    }
+
+    public static class PointerScope
+    {
+        public enum Mode { None, Visible }
+        private static Mode _mode = Mode.Visible;
+        private static RectTransform _transform;
+
+        // Set Values
+        public static void Create(GameObject prefab, Transform parent)
+        {
+            _transform = PointerExtention.Create(prefab, parent);
+        }
+
+        public static void SetMode(Mode mode)
+        {
+            _mode = mode;
+
+            if (_mode == Mode.None)
+            {
+                if (_transform)
+                {
+                    _transform.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                if (_transform)
+                {
+                    _transform.gameObject.SetActive(true);
+                    _transform.anchoredPosition = Vector2.zero;
+                }
+            }
+        }
+
+        // Get Values
+        public static Mode GetMode => _mode;
+    }
+
+    public class PointerExtention
+    {
+        public static RectTransform Create(GameObject prefab, Transform parent)
+        {
+            GameObject instantiated = GameObject.Instantiate(prefab);
+            instantiated.name = prefab.name;
+            instantiated.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
+
+            RectTransform rectTransform = instantiated.GetComponent<RectTransform>();
+            rectTransform.SetParent(parent);
+            rectTransform.gameObject.SetActive(false);
+
+            return rectTransform;
+        }
     }
 }
