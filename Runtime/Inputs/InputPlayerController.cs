@@ -5,7 +5,7 @@ namespace Actormachine
     [AddComponentMenu("Actormachine/Input/Input Player Controller")]
     public sealed class InputPlayerController : MonoBehaviour
     {
-        public enum MoveMode { Input, Target, Both }
+        public enum MoveMode { Input, Target, InputAndTarget, Input2D }
         public enum TargetMode { LeftAction, MiddleAction, RightAction }
 
         public GameObject Player;
@@ -158,7 +158,7 @@ namespace Actormachine
                     ClearTarget();
                 }
             }
-            else if (MoveDirectionMode == MoveMode.Both)
+            else if (MoveDirectionMode == MoveMode.InputAndTarget)
             {
                 if (PointerMovement.IsActive)
                 {
@@ -180,6 +180,10 @@ namespace Actormachine
                 }
 
                 _inputable.MoveVector = inputMoveVector;
+            }
+            else if (MoveDirectionMode == MoveMode.Input2D)
+            {
+                _inputable.MoveVector.x = inputMove.x;
             }
         }
 

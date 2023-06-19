@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Actormachine
 {
     public enum LookMode { LookToCamera, LookToPointer, LookToStick }
-    public enum RotateMode { None, RotateToMovement, RotateToLook, Flip2D }
+    public enum RotateMode { None, RotateToMovement, RotateToLook }
 
     [AddComponentMenu("Actormachine/Property/Direction Property")]
     public sealed class DirectionProperty : Property
@@ -71,10 +71,6 @@ namespace Actormachine
                 case RotateMode.RotateToLook:
                     rotateToLook();
                     break;
-
-                case RotateMode.Flip2D:
-                    checkFlip();
-                    break;
             }
         }
 
@@ -136,13 +132,6 @@ namespace Actormachine
 
             // Calculate the lerp direction
             Vector3 lerpLocalDirection = Vector3.Lerp(_previousLocalDirection, new Vector3(x, y, z), Time.deltaTime * Rate);
-            
-            // Round up the value
-            //x = Mathf.Round(lerpLocalDirection.x * 1000f) / 1000f;
-            //y = Mathf.Round(lerpLocalDirection.y * 1000f) / 1000f;
-            //z = Mathf.Round(lerpLocalDirection.z * 1000f) / 1000f;
-
-            //lerpLocalDirection = new Vector3(x, y, z);
 
             // Get local direction
             _animatorable.Direction = _inputable.MoveVector.magnitude > 0 ? lerpLocalDirection : _animatorable.Direction;
@@ -170,29 +159,6 @@ namespace Actormachine
 
             Quaternion targetRotation = Quaternion.LookRotation(_rotationDirection, Vector3.up);
             RootTransform.rotation = Quaternion.Slerp(RootTransform.rotation, targetRotation, Time.deltaTime * Rate);
-        }
-
-        private void checkFlip()
-        {
-            if (_inputable.MoveVector.magnitude > 0)
-            {
-                if (RootTransform.localScale.z < 0 && _inputable.MoveVector.x > 0)
-                {
-                    flip();
-                }
-                else if (RootTransform.localScale.z > 0 && _inputable.MoveVector.x < 0)
-                {
-                    flip();
-                }
-            }
-        }
-
-        private void flip()
-        {
-            RootTransform.transform.eulerAngles = new Vector3(0, 90, 0);
-            Vector3 Scaler = RootTransform.localScale;
-            Scaler.z *= -1;
-            RootTransform.localScale = Scaler;
         }
     }
 }

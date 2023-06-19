@@ -12,7 +12,6 @@ namespace Actormachine
 
         // Move Fields
         private Vector3 _currentDirection = Vector3.zero;
-        private Vector3 _currentVelocity = Vector3.zero;
 
         // Model Components
         private Inputable _inputable;
@@ -23,13 +22,9 @@ namespace Actormachine
         // Unity Components
         private NavMeshAgent _navMeshAgent;
 
-        private Transform _rootTransform;
-
         // Property Methods
         public override void OnEnterState()
         {
-            _rootTransform = FindRootTransform;
-
             // Add or Get comppnent in the Root
             _inputable = AddComponentInRoot<Inputable>();
             _animatorable = AddComponentInRoot<Animatorable>();
@@ -63,7 +58,7 @@ namespace Actormachine
 
             _navMeshAgent.speed = speed;
             _navMeshAgent.acceleration = Rate * 4;
-            _navMeshAgent.SetDestination(_rootTransform.position + _currentDirection.normalized);
+            _navMeshAgent.SetDestination(RootTransform.position + _currentDirection.normalized);
 
             // Set Animation Parameters
             _animatorable.Speed = _navMeshAgent.velocity.magnitude;
@@ -74,11 +69,10 @@ namespace Actormachine
         {
             // Set Movement Parameters
             _currentDirection = Vector3.zero;
-            _currentVelocity = Vector3.zero;
 
             _navMeshAgent.speed = 0;
             _navMeshAgent.acceleration = 0;
-            _navMeshAgent.SetDestination(_rootTransform.position);
+            _navMeshAgent.SetDestination(RootTransform.position);
 
             // Set Animation Parameters
             _animatorable.Speed = 1;

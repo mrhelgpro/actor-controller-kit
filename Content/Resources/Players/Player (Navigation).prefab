@@ -2475,8 +2475,8 @@ GameObject:
   - component: {fileID: 656002888601786805}
   - component: {fileID: 656002888601786806}
   - component: {fileID: 656002888601786807}
-  - component: {fileID: 656002888601786800}
-  - component: {fileID: 656002888601786801}
+  - component: {fileID: 4750039791960862750}
+  - component: {fileID: 9139844777327129249}
   - component: {fileID: 656002888601786443}
   m_Layer: 3
   m_Name: Player (Navigation)
@@ -2556,7 +2556,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db5f0e5d6c98ec844a4407fc492bb1ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &656002888601786800
+--- !u!114 &4750039791960862750
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2565,7 +2565,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 656002888601786812}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac87edc77fc46344b85cd3b55ebb732b, type: 3}
+  m_Script: {fileID: 11500000, guid: 02b35c08196c3d340a4c9fbf71941bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsGrounded: 1
+  SurfaceTransform: {fileID: 0}
+  SurfaceType: None
+  SurfaceNormal: {x: 0, y: 0, z: 0}
+  IsObstacle: 0
+  ObstacleTransform: {fileID: 0}
+  IsEdge: 0
+  IsAbyss: 0
+--- !u!114 &9139844777327129249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656002888601786812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef767a2b49f486b4ab8d3f0281fc822b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   WalkSpeed: 5
@@ -2574,26 +2594,8 @@ MonoBehaviour:
   JumpHeight: 2
   ExtraJumps: 0
   Levitation: 0.25
---- !u!114 &656002888601786801
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 656002888601786812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b75038a94758322419ff358a2c2ba619, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IsGrounded: 0
-  SurfaceTransform: {fileID: 0}
-  SurfaceType: None
-  SurfaceNormal: {x: 0, y: 0, z: 0}
-  IsObstacle: 0
-  ObstacleTransform: {fileID: 0}
-  IsEdge: 0
-  IsAbyss: 0
+  JumpCounter: 0
+  Velocity: {x: 0, y: 0, z: 0}
 --- !u!195 &656002888601786443
 NavMeshAgent:
   m_ObjectHideFlags: 0

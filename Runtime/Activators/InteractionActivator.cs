@@ -24,8 +24,6 @@ namespace Actormachine
             _targets.Remove(target);
 
             target.parent = ThisTransform.parent; // FIXED IT!!!!
-            //target.localPosition = Vector3.zero;
-            //target.localEulerAngles = Vector3.zero;
 
             State[] states = target.GetComponentsInChildren<State>();
 

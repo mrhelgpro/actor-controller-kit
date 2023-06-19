@@ -40,7 +40,7 @@ namespace Actormachine.Editor
             thisTarget.PointerSensitivityY = EditorGUILayout.Slider("Pointer Sensitivity Y", thisTarget.PointerSensitivityY, 0.0f, 1f);
 
             // Show Enum Mode
-            if (thisTarget.MoveDirectionMode == InputPlayerController.MoveMode.Input)
+            if (thisTarget.MoveDirectionMode == InputPlayerController.MoveMode.Input || thisTarget.MoveDirectionMode == InputPlayerController.MoveMode.Input2D)
             {
                 thisTarget.MoveDirectionMode = (InputPlayerController.MoveMode)EditorGUILayout.EnumPopup("Move Mode", thisTarget.MoveDirectionMode);
             }

@@ -4,14 +4,14 @@ using UnityEditor;
 namespace Actormachine.Editor
 {
     [ExecuteInEditMode]
-    [CustomEditor(typeof(MovementPhysicProperty))]
+    [CustomEditor(typeof(MovementProperty))]
     [CanEditMultipleObjects]
-    public class MovementPhysicPropertyInspector : ActormachineComponentBaseInspector
+    public class MovementPropertyInspector : ActormachineComponentBaseInspector
     {
         public override void OnInspectorGUI()
         {
             // Draw a Inspector
-            MovementPhysicProperty thisTarget = (MovementPhysicProperty)target;
+            MovementProperty thisTarget = (MovementProperty)target;
 
             Movable movable = thisTarget.GetComponentInParent<Movable>();
 
@@ -27,28 +27,6 @@ namespace Actormachine.Editor
             thisTarget.WalkScale = Mathf.Round(thisTarget.WalkScale * 100f) / 100f;
             thisTarget.RunScale = Mathf.Round(thisTarget.RunScale * 100f) / 100f;
             thisTarget.JumpScale = Mathf.Round(thisTarget.JumpScale * 10f) / 10f;
-        }
-    }
-
-    [ExecuteInEditMode]
-    [CustomEditor(typeof(MovementNavigationProperty))]
-    [CanEditMultipleObjects]
-    public class MovementNavigationPropertyInspector : ActormachineComponentBaseInspector
-    {
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
-        }
-    }
-
-    [ExecuteInEditMode]
-    [CustomEditor(typeof(Movement2DProperty))]
-    [CanEditMultipleObjects]
-    public class Movement2DPropertyInspector : ActormachineComponentBaseInspector
-    {
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
         }
     }
 }

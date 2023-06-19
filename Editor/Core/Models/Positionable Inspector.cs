@@ -19,9 +19,14 @@ namespace Actormachine.Editor
     [CanEditMultipleObjects]
     public class Positionable2DInspector : PositionableInspector
     {
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
-        }
+        public override void OnInspectorGUI() => base.OnInspectorGUI();
+    }
+
+    [ExecuteInEditMode]
+    [CustomEditor(typeof(PositionableNavigation))]
+    [CanEditMultipleObjects]
+    public class PositionableNavigationInspector : PositionableInspector
+    {
+        public override void OnInspectorGUI() => base.OnInspectorGUI();
     }
 }

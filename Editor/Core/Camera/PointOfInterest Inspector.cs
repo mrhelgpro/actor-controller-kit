@@ -54,7 +54,7 @@ namespace Actormachine.Editor
 			// Draw a Inspector
 			thisTarget.FieldOfView = EditorGUILayout.IntSlider("Field Of View", thisTarget.FieldOfView, 20, 80);
 			thisTarget.Horizontal = EditorGUILayout.Slider("Horizontal", thisTarget.Horizontal, -180, 180);
-			thisTarget.Vertical = EditorGUILayout.Slider("Vertical", thisTarget.Vertical, -90, 90);
+			thisTarget.Vertical = EditorGUILayout.Slider("Vertical", thisTarget.Vertical, -89, 89);
 			thisTarget.Distance = EditorGUILayout.Slider("Distance", thisTarget.Distance, 1, 20);
 			thisTarget.EnterTime = EditorGUILayout.Slider("Enter Time", thisTarget.EnterTime, 0.1f, 5);
 			thisTarget.ExitTime = EditorGUILayout.Slider("Exit Time", thisTarget.ExitTime, 0.1f, 2);

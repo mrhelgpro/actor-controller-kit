@@ -25,8 +25,28 @@ namespace Actormachine.Editor
                 thisTarget.ExtraJumps = EditorGUILayout.IntSlider("Extra Jumps", thisTarget.ExtraJumps, 0, 3);
                 thisTarget.Levitation = EditorGUILayout.Slider("Levitation", thisTarget.Levitation, 0f, 1f);
             }
+        }
+    }
 
-            //DrawBaseInspector();
+    [ExecuteInEditMode]
+    [CustomEditor(typeof(Movable2D))]
+    [CanEditMultipleObjects]
+    public class Movable2DInspector : MovableInspector
+    {
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+        }
+    }
+
+    [ExecuteInEditMode]
+    [CustomEditor(typeof(MovableNavigation))]
+    [CanEditMultipleObjects]
+    public class MovableNavigationInspector : MovableInspector
+    {
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
         }
     }
 }

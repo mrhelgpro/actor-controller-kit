@@ -935,7 +935,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64008859d7f46414685993c150c71fef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Force: 3
+  Force: 5
 --- !u!114 &1091920091018134863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1646,8 +1646,8 @@ GameObject:
   - component: {fileID: 1091920091416250941}
   - component: {fileID: 1091920091416250932}
   - component: {fileID: 1091920091416250935}
-  - component: {fileID: 1091920091416250933}
   - component: {fileID: 1091920091416250937}
+  - component: {fileID: 1091920091416250933}
   - component: {fileID: 1091920091416250936}
   - component: {fileID: 1091920091416250939}
   m_Layer: 3
@@ -1728,24 +1728,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db5f0e5d6c98ec844a4407fc492bb1ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1091920091416250933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1091920091416250917}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac87edc77fc46344b85cd3b55ebb732b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WalkSpeed: 5
-  RunSpeed: 10
-  Gravity: 1
-  JumpHeight: 2
-  ExtraJumps: 0
-  Levitation: 0.25
 --- !u!114 &1091920091416250937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1758,7 +1740,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b75038a94758322419ff358a2c2ba619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsGrounded: 0
+  IsGrounded: 1
   SurfaceTransform: {fileID: 0}
   SurfaceType: None
   SurfaceNormal: {x: 0, y: 0, z: 0}
@@ -1766,6 +1748,26 @@ MonoBehaviour:
   ObstacleTransform: {fileID: 0}
   IsEdge: 0
   IsAbyss: 0
+--- !u!114 &1091920091416250933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091920091416250917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac87edc77fc46344b85cd3b55ebb732b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WalkSpeed: 3
+  RunSpeed: 5
+  Gravity: 1
+  JumpHeight: 2
+  ExtraJumps: 0
+  Levitation: 0.25
+  JumpCounter: 0
+  Velocity: {x: 0, y: 0, z: 0}
 --- !u!135 &1091920091416250936
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1773,12 +1775,12 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1091920091416250917}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 94cf69e6fcc1e824e935659b5f9a5dfe, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.2
-  m_Center: {x: 0, y: 0.2, z: 0}
+  m_Radius: 0.1
+  m_Center: {x: 0, y: 0.1, z: 0}
 --- !u!54 &1091920091416250939
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -10,7 +10,7 @@ namespace Actormachine
         protected override void GroundCheck()
         {
             bool isGroundedCollision = _groundCollision == null ? false : true;
-            bool isGroundedPhysics = Physics2D.OverlapCircle(RootTransform.position, 0.2f, groundLayer);
+            bool isGroundedPhysics = Physics2D.OverlapCircle(RootTransform.position, radiusGroundCheck * 0.75f, groundLayer);
 
             IsGrounded = IsGrounded == true ? isGroundedPhysics : isGroundedCollision && isGroundedPhysics;
         }
@@ -24,7 +24,7 @@ namespace Actormachine
         protected override void ObstacleCheck()
         {
             float offsetHeight = 0.25f;
-            float length = 0.35f;
+            float length = 0.25f;
             Vector3 origin = new Vector3(RootTransform.position.x, RootTransform.position.y + offsetHeight, RootTransform.position.z);
             Vector3 direction = RootTransform.TransformDirection(Vector3.forward);
             RaycastHit2D hit = Physics2D.Raycast(origin, direction, length, layerMask);
@@ -34,10 +34,10 @@ namespace Actormachine
 
         protected override void AbyssCheck()
         {
-            float offsetHeight = 0.25f;
-            float length = 1.125f + offsetHeight;
-            float offsetForward = 0.25f;
-            float edgeDistance = 0.125f + offsetHeight;
+            float offsetHeight = 0.5f;
+            float length = 3.125f + offsetHeight;
+            float offsetForward = 0.35f;
+            float edgeDistance = 0.5f + offsetHeight;
             Vector3 origin = new Vector3(RootTransform.position.x, RootTransform.position.y + offsetHeight, RootTransform.position.z) + (RootTransform.TransformDirection(Vector3.forward) * offsetForward);
             RaycastHit2D hit = Physics2D.Raycast(origin, Vector3.down, length, layerMask);
 
