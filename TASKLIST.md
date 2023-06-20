@@ -1,8 +1,3 @@
-- Patterns (Menu)
-- Entity (State Machine)
-- Pointer, Button
-- Target -> Redesign in TargetPosition
 - Add Scene Manager
 - Add Look at Target
-- <Soundable> - Make footsteps sound
-- <ActivateByInput> - Add Check "Move, Look"
+- <Soundable> - Make footsteps sound
