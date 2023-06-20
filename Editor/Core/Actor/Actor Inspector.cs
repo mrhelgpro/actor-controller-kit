@@ -22,7 +22,7 @@ namespace Actormachine.Editor
                 if (thisTarget.gameObject.CheckSingleInstanceInChildren<Actor>() == false) return;
 
                 //Give object the "Actror" layer
-                thisTarget.gameObject.layer = LayerMask.NameToLayer("Actor");
+                thisTarget.gameObject.SetLayer("Actor");
 
                 // Move Component To Root
                 ComponentUtility.MoveComponentUp(thisTarget);
