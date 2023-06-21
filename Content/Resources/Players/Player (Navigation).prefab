@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 656002887359163930}
   - component: {fileID: 656002887359163933}
   - component: {fileID: 656002887359163934}
-  - component: {fileID: 656002887359163932}
+  - component: {fileID: 3223267862332942214}
   - component: {fileID: 656002887359163928}
   - component: {fileID: 656002887359163929}
   m_Layer: 0
@@ -66,7 +66,7 @@ MonoBehaviour:
   LayerMode: 0
   TimeMode: 0
   Duration: 1
---- !u!114 &656002887359163932
+--- !u!114 &3223267862332942214
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -75,11 +75,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 656002887359163931}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43bcc0b738e67f941927a905ab4af401, type: 3}
+  m_Script: {fileID: 11500000, guid: 8cdd867fe72011a49b65fc52f96fb076, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   WalkScale: 1
   RunScale: 1
+  JumpScale: 1
   Rate: 10
 --- !u!114 &656002887359163928
 MonoBehaviour:
