@@ -31,12 +31,16 @@ namespace UnityEditor.AI
             m_Center = serializedObject.FindProperty("m_Center");
             m_Size = serializedObject.FindProperty("m_Size");
 
+#if !UNITY_2022_1_OR_NEWER
             NavMeshVisualizationSettings.showNavigation++;
+#endif
         }
 
         void OnDisable()
         {
+#if !UNITY_2022_1_OR_NEWER
             NavMeshVisualizationSettings.showNavigation--;
+#endif
         }
 
         Bounds GetBounds()
@@ -88,6 +92,7 @@ namespace UnityEditor.AI
         [DrawGizmo(GizmoType.NotInSelectionHierarchy | GizmoType.Pickable)]
         static void RenderBoxGizmoNotSelected(NavMeshModifierVolume navModifier, GizmoType gizmoType)
         {
+#if !UNITY_2022_1_OR_NEWER
             if (NavMeshVisualizationSettings.showNavigation > 0)
             {
                 var color = navModifier.enabled ? s_HandleColor : s_HandleColorDisabled;
@@ -104,6 +109,7 @@ namespace UnityEditor.AI
             }
 
             Gizmos.DrawIcon(navModifier.transform.position, "NavMeshModifierVolume Icon", true);
+#endif
         }
 
         void OnSceneGUI()
@@ -132,7 +138,9 @@ namespace UnityEditor.AI
             }
         }
 
+#if !UNITY_2022_1_OR_NEWER
         [MenuItem("GameObject/AI/NavMesh Modifier Volume", false, 2001)]
+#endif
         static public void CreateNavMeshModifierVolume(MenuCommand menuCommand)
         {
             var parent = menuCommand.context as GameObject;

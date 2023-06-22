@@ -36,12 +36,16 @@ namespace UnityEditor.AI
             s_SelectedID = 0;
             s_SelectedPoint = -1;
 
+#if !UNITY_2022_1_OR_NEWER
             NavMeshVisualizationSettings.showNavigation++;
+#endif
         }
 
         void OnDisable()
         {
+#if !UNITY_2022_1_OR_NEWER
             NavMeshVisualizationSettings.showNavigation--;
+#endif
         }
 
         static Matrix4x4 UnscaledLocalToWorldMatrix(Transform t)
@@ -162,6 +166,7 @@ namespace UnityEditor.AI
         [DrawGizmo(GizmoType.NotInSelectionHierarchy | GizmoType.Pickable)]
         static void RenderBoxGizmoNotSelected(NavMeshLink navLink, GizmoType gizmoType)
         {
+#if !UNITY_2022_1_OR_NEWER
             if (NavMeshVisualizationSettings.showNavigation > 0)
             {
                 var color = s_HandleColor;
@@ -181,6 +186,7 @@ namespace UnityEditor.AI
             }
 
             Gizmos.DrawIcon(navLink.transform.position, "NavMeshLink Icon", true);
+#endif
         }
 
         public void OnSceneGUI()
@@ -265,7 +271,10 @@ namespace UnityEditor.AI
             Handles.color = oldColor;
         }
 
+
+#if !UNITY_2022_1_OR_NEWER
         [MenuItem("GameObject/AI/NavMesh Link", false, 2002)]
+#endif
         static public void CreateNavMeshLink(MenuCommand menuCommand)
         {
             var parent = menuCommand.context as GameObject;
