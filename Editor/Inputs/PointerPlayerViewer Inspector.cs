@@ -9,20 +9,6 @@ namespace Actormachine.Editor
     [CanEditMultipleObjects]
     public class PointerPlayerViewerInspector : ActormachineComponentBaseInspector
     {
-        public void OnEnable()
-        {
-            PointerPlayerViewer thisTarget = (PointerPlayerViewer)target;
-
-            thisTarget.gameObject.name = "Input Player Viewer";
-
-            Canvas canvas = thisTarget.gameObject.AddRequiredComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvas.pixelPerfect = true;
-
-            thisTarget.gameObject.AddRequiredComponent<CanvasScaler>();
-            thisTarget.gameObject.AddRequiredComponent<GraphicRaycaster>();
-        }
-
         public override void OnInspectorGUI()
         {
             PointerPlayerViewer thisTarget = (PointerPlayerViewer)target;

@@ -79,14 +79,14 @@ namespace UnityEditor.AI
             m_NavMeshData = serializedObject.FindProperty("m_NavMeshData");
 #endif
 
-#if UNITY_2021_3_20
+#if !UNITY_2022_1_OR_NEWER
             NavMeshVisualizationSettings.showNavigation++;
 #endif
         }
 
         void OnDisable()
         {
-#if UNITY_2021_3_20
+#if !UNITY_2022_1_OR_NEWER
             NavMeshVisualizationSettings.showNavigation--;
 #endif
         }

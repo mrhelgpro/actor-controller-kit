@@ -1,4 +1,5 @@
 using UnityEngine;
+using Cinemachine;
 
 namespace Actormachine
 {
@@ -18,11 +19,52 @@ namespace Actormachine
         private Inputable _inputable;
         private ActorVirtualCamera _actorVirtualCamera;
 
-        public override void OnEnterState()
+        public override void OnEnableState()
         {
-            // Add or Get comppnent in the Root
-            _inputable = AddComponentInRoot<Inputable>();
-            _actorVirtualCamera = FindAnyObjectByType<ActorVirtualCamera>();
+            // Finds or creates a Camera
+            Camera camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+
+            if (camera == null)
+            {
+                GameObject instantiate = new GameObject("Main Camera", typeof(Camera), typeof(AudioListener));
+                instantiate.transform.position = new Vector3(0f, 0f, -10f);
+                instantiate.transform.rotation = Quaternion.identity;
+                camera = instantiate.GetComponent<Camera>();
+            }
+
+            camera.gameObject.name = "Main Camera (Cinemachine Brain)";
+            camera.gameObject.tag = "MainCamera";
+            camera.orthographic = false;
+            camera.transform.SetAsFirstSibling();
+
+            // Finds or creates a Cinemachine Brain
+            CinemachineBrain cinemachineBrain = FindAnyObjectByType<CinemachineBrain>();
+
+            if (cinemachineBrain == null)
+            {
+                cinemachineBrain = camera.gameObject.AddComponent<CinemachineBrain>();
+                cinemachineBrain.m_UpdateMethod = CinemachineBrain.UpdateMethod.FixedUpdate;
+                cinemachineBrain.m_BlendUpdateMethod = CinemachineBrain.BrainUpdateMethod.FixedUpdate;
+            }
+
+            // Finds or creates a Actor Virtual Camera
+            ActorVirtualCamera actorVirtualCamera = FindAnyObjectByType<ActorVirtualCamera>();
+
+            if (actorVirtualCamera == null)
+            {
+                GameObject instantiate = new GameObject("Cinemachine Virtual Camera", typeof(CinemachineVirtualCamera), typeof(ActorVirtualCamera));
+                instantiate.transform.position = new Vector3(0f, 0f, -10f);
+                instantiate.transform.rotation = Quaternion.identity;
+                instantiate.hideFlags = HideFlags.NotEditable;
+                actorVirtualCamera = instantiate.GetComponent<ActorVirtualCamera>();
+            }
+
+            actorVirtualCamera.gameObject.name = "Cinemachine Virtual Camera (Actor)";
+            actorVirtualCamera.transform.SetAsFirstSibling();
+
+            // Check Single Instance
+            Instance.IsSingleInstanceOnScene<CinemachineBrain>();
+            Instance.IsSingleInstanceOnScene<ActorVirtualCamera>();
 
             // Check Required Component
             if (Follow == null)
@@ -38,7 +80,15 @@ namespace Actormachine
                     Follow = followable.transform;
                 }
             }
+        }
 
+        public override void OnEnterState()
+        {
+            // Add or Get comppnent in the Root
+            _inputable = AddComponentInRoot<Inputable>();
+            _actorVirtualCamera = FindAnyObjectByType<ActorVirtualCamera>();
+
+            // Check Follow
             if (Follow)
             {
                 if (Preset == CameraPresetMode.Parameter)

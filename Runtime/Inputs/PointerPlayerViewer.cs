@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Actormachine
 {
@@ -41,6 +42,17 @@ namespace Actormachine
             GameObject instantiate = new GameObject("Input Player Viewer", typeof(RectTransform));
             instantiate.transform.position = Vector3.zero;
             instantiate.transform.rotation = Quaternion.identity;
+
+            Canvas canvas = instantiate.AddRequiredComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.pixelPerfect = true;
+
+#if UNITY_2022_1_OR_NEWER
+            canvas.vertexColorAlwaysGammaSpace = true;
+#endif
+
+            instantiate.AddRequiredComponent<CanvasScaler>();
+            instantiate.AddRequiredComponent<GraphicRaycaster>();
 
             instantiate.AddComponent<PointerPlayerViewer>();
             instantiate.AddComponent<InputPlayerController>();
