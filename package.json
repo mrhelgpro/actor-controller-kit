@@ -11,9 +11,9 @@
   },
   "samples": [
     {
-      "displayName": "Example scenes",
+      "displayName": "Actormachine Example Scenes",
       "description": "...",
-      "path": "Samples~"
+      "path": "Samples/Actormachine Example Scenes"
     }
   ],
   "keywords": [
