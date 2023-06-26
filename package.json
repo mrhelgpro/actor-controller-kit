@@ -1,25 +1,26 @@
 {
   "name": "com.mrhelgpro.actormachine",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "Actormachine",
   "description": "The main task of this collection is the development of game characters",
-  "unity": "2021.1",
-  "documentationUrl": "https://mrhelgpro.gitbook.io/actor-controller-kit/",
+  "unity": "2022.3",
+  "documentationUrl": "https://mrhelgpro.gitbook.io/actormachine/",
   "dependencies": {
     "com.unity.inputsystem": "1.5.0",
-    "com.unity.cinemachine": "2.8.9"
+    "com.unity.cinemachine": "2.8.9",
+    "com.unity.ai.navigation": "1.1.3"
   },
   "keywords": [
     "character",
     "controller",
-    "mvp"
+    "mvc"
   ],
   "autor": {
     "name": "Kolisnichenko Oleh",
     "email": "mrhelgpro@gmail.com"
   },
   "repository": {
-    "url": "https://github.com/mrhelgpro/actor-controller-kit",
+    "url": "https://github.com/mrhelgpro/actormachine.git",
     "type": "git"
   }
 }
