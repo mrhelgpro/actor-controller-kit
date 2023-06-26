@@ -41,7 +41,7 @@ namespace Actormachine
         public override void OnFixedActiveState()
         {
             // Set Movement Parameters    
-            float speed = _inputable.ShiftState == ButtonState.Down ? RunScale * _movable.RunSpeed : WalkScale * _movable.WalkSpeed;
+            float speed = _inputable.ShiftState ? RunScale * _movable.RunSpeed : WalkScale * _movable.WalkSpeed;
 
             _movable.Horizontal(_positionable.GetDirection(_inputable.MoveVector), speed, Rate);
 
@@ -70,7 +70,7 @@ namespace Actormachine
             if (JumpScale > 0)
             {
                 // Input Jump
-                _isJumpPressed = _inputable.MotionState == ButtonState.Down;
+                _isJumpPressed = _inputable.MotionState;
 
                 setLevitation(_isJumpPressed);
 

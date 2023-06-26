@@ -1637,15 +1637,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InputableCompare:
-    OptionState: 0
-    CancelState: 0
-    MotionState: 0
-    InteractState: 1
-    ActionLeftState: 0
-    ActionMiddleState: 0
-    ActionRightState: 0
-    ControlState: 0
-    ShiftState: 0
+    Option: 0
+    Cancel: 0
+    Motion: 0
+    Interact: 1
+    ActionLeft: 0
+    ActionMiddle: 0
+    ActionRight: 0
+    Control: 0
+    Shift: 0
 --- !u!65 &656002888003413829
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1654,17 +1654,9 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 656002888003413831}
   m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
   m_IsTrigger: 1
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 2
   m_Size: {x: 2, y: 2, z: 1.5}
   m_Center: {x: 0, y: 0, z: 0.5}
 --- !u!1 &656002888010436139

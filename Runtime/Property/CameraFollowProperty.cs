@@ -111,7 +111,7 @@ namespace Actormachine
         // Make this !!!
         private void fieldOfViewUpdate()
         {
-            if (_inputable.ActionMiddleState == ButtonState.Down)
+            if (_inputable.ActionMiddleState == true)
             {
                 if (_inputable.LookDelta.sqrMagnitude >= 0.01f)
                 {
@@ -124,7 +124,7 @@ namespace Actormachine
 
         private void distaceUpdate()
         {
-            if (_inputable.ActionMiddleState == ButtonState.Down)
+            if (_inputable.ActionMiddleState == true)
             {
                 if (_inputable.LookDelta.sqrMagnitude >= 0.01f)
                 {
@@ -147,15 +147,15 @@ namespace Actormachine
                 }
                 else if (InputOrbitMode == InputOrbitMode.LeftHold)
                 {
-                    isRotable = _inputable.ActionLeftState == ButtonState.Down;
+                    isRotable = _inputable.ActionLeftState;
                 }
                 else if (InputOrbitMode == InputOrbitMode.MiddleHold)
                 {
-                    isRotable = _inputable.ActionMiddleState == ButtonState.Down;
+                    isRotable = _inputable.ActionMiddleState;
                 }
                 else if (InputOrbitMode == InputOrbitMode.RightHold)
                 {
-                    isRotable = _inputable.ActionRightState == ButtonState.Down;
+                    isRotable = _inputable.ActionRightState;
                 }
 
                 if (isRotable == true)
