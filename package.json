@@ -1,33 +1,25 @@
 {
   "name": "com.mrhelgpro.actormachine",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "displayName": "Actormachine",
   "description": "The main task of this collection is the development of game characters",
   "unity": "2021.1",
-  "documentationUrl": "https://mrhelgpro.gitbook.io/actormachine/",
+  "documentationUrl": "https://mrhelgpro.gitbook.io/actor-controller-kit/",
   "dependencies": {
     "com.unity.inputsystem": "1.5.0",
     "com.unity.cinemachine": "2.8.9"
   },
-  "samples": [
-    {
-      "displayName": "Actormachine Example Scenes",
-      "description": "Sample scenes illustrating various ways to use Actormachine",
-      "path": "Samples/Actormachine Example Scenes"
-    }
-  ],
   "keywords": [
     "character",
     "controller",
-    "state machine",
-    "mvc"
+    "mvp"
   ],
   "autor": {
     "name": "Kolisnichenko Oleh",
     "email": "mrhelgpro@gmail.com"
   },
   "repository": {
-    "url": "https://github.com/mrhelgpro/actormachine.git",
+    "url": "https://github.com/mrhelgpro/actor-controller-kit",
     "type": "git"
   }
 }
