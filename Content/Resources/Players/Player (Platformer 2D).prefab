@@ -1416,15 +1416,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InputableCompare:
-    Option: 0
-    Cancel: 0
-    Motion: 0
-    Interact: 0
-    ActionLeft: 0
-    ActionMiddle: 0
-    ActionRight: 1
-    Control: 0
-    Shift: 0
+    OptionState: 0
+    CancelState: 0
+    MotionState: 0
+    InteractState: 0
+    ActionLeftState: 0
+    ActionMiddleState: 0
+    ActionRightState: 1
+    ControlState: 0
+    ShiftState: 0
 --- !u!114 &16599776547762065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1516,15 +1516,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DeactivateMode: 0
   InputableCompare:
-    Option: 0
-    Cancel: 0
-    Motion: 0
-    Interact: 0
-    ActionLeft: 0
-    ActionMiddle: 0
-    ActionRight: 1
-    Control: 0
-    Shift: 0
+    OptionState: 0
+    CancelState: 0
+    MotionState: 0
+    InteractState: 0
+    ActionLeftState: 0
+    ActionMiddleState: 0
+    ActionRightState: 1
+    ControlState: 0
+    ShiftState: 0
 --- !u!1 &16599776548745284
 GameObject:
   m_ObjectHideFlags: 0
@@ -3147,6 +3147,25 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 6200000, guid: 98c2d61899604dc40bb8146919e709ff, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -3170,6 +3189,12 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -3376,15 +3401,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InputableCompare:
-    Option: 0
-    Cancel: 0
-    Motion: 0
-    Interact: 1
-    ActionLeft: 0
-    ActionMiddle: 0
-    ActionRight: 0
-    Control: 0
-    Shift: 0
+    OptionState: 0
+    CancelState: 0
+    MotionState: 0
+    InteractState: 1
+    ActionLeftState: 0
+    ActionMiddleState: 0
+    ActionRightState: 0
+    ControlState: 0
+    ShiftState: 0
 --- !u!65 &16599777547684540
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3393,9 +3418,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 16599777547684542}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 1.5}
   m_Center: {x: 0, y: 0, z: 0.5}
 --- !u!1 &16599777578166273
@@ -3876,15 +3909,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InputableCompare:
-    Option: 0
-    Cancel: 0
-    Motion: 1
-    Interact: 0
-    ActionLeft: 0
-    ActionMiddle: 0
-    ActionRight: 0
-    Control: 0
-    Shift: 0
+    OptionState: 0
+    CancelState: 0
+    MotionState: 1
+    InteractState: 0
+    ActionLeftState: 0
+    ActionMiddleState: 0
+    ActionRightState: 0
+    ControlState: 0
+    ShiftState: 0
 --- !u!114 &16599777821888379
 MonoBehaviour:
   m_ObjectHideFlags: 0

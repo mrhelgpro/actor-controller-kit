@@ -42,20 +42,20 @@ namespace Actormachine
 
             _inputActions = new InputActions();
 
-            _inputActions.Player.Menu.performed += context => _inputable.MenuState = true;
-            _inputActions.Player.Menu.canceled += context => _inputable.MenuState = false;
+            _inputActions.Player.Menu.performed += context => _inputable.MenuState = ButtonState.Down;
+            _inputActions.Player.Menu.canceled += context => _inputable.MenuState = ButtonState.Up;
 
-            _inputActions.Player.North.performed += context => _inputable.OptionState = true;
-            _inputActions.Player.North.canceled += context => _inputable.OptionState = false;
+            _inputActions.Player.North.performed += context => _inputable.OptionState = ButtonState.Down;
+            _inputActions.Player.North.canceled += context => _inputable.OptionState = ButtonState.Up;
 
-            _inputActions.Player.East.performed += context => _inputable.CancelState = true;
-            _inputActions.Player.East.canceled += context => _inputable.CancelState = false;
+            _inputActions.Player.East.performed += context => _inputable.CancelState = ButtonState.Down;
+            _inputActions.Player.East.canceled += context => _inputable.CancelState = ButtonState.Up;
 
-            _inputActions.Player.South.performed += context => _inputable.MotionState = true;
-            _inputActions.Player.South.canceled += context => _inputable.MotionState = false;
+            _inputActions.Player.South.performed += context => _inputable.MotionState = ButtonState.Down;
+            _inputActions.Player.South.canceled += context => _inputable.MotionState = ButtonState.Up;
 
-            _inputActions.Player.West.performed += context => _inputable.InteractState = true;
-            _inputActions.Player.West.canceled += context => _inputable.InteractState = false;
+            _inputActions.Player.West.performed += context => _inputable.InteractState = ButtonState.Down;
+            _inputActions.Player.West.canceled += context => _inputable.InteractState = ButtonState.Up;
 
             _inputActions.Player.TriggerRight.performed += context => actionRight(true);
             _inputActions.Player.TriggerRight.canceled += context => actionRight(false);
@@ -66,16 +66,16 @@ namespace Actormachine
             _inputActions.Player.BumperRight.performed += context => actionLeft(true);
             _inputActions.Player.BumperRight.canceled += context => actionLeft(false);
 
-            _inputActions.Player.TriggerLeft.performed += context => _inputable.ControlState = true;
-            _inputActions.Player.TriggerLeft.canceled += context => _inputable.ControlState = false;
+            _inputActions.Player.TriggerLeft.performed += context => _inputable.ControlState = ButtonState.Down;
+            _inputActions.Player.TriggerLeft.canceled += context => _inputable.ControlState = ButtonState.Up;
 
-            _inputActions.Player.BumperLeft.performed += context => _inputable.ShiftState = true;
-            _inputActions.Player.BumperLeft.canceled += context => _inputable.ShiftState = false;
+            _inputActions.Player.BumperLeft.performed += context => _inputable.ShiftState = ButtonState.Down;
+            _inputActions.Player.BumperLeft.canceled += context => _inputable.ShiftState = ButtonState.Up;
         }
 
         private void actionMiddle(bool state)
         {
-            _inputable.ActionMiddleState = state;
+            _inputable.ActionMiddleState = state == true ? ButtonState.Down : ButtonState.Up;
 
             if (InputTargetMode == TargetMode.MiddleAction)
             {
@@ -85,7 +85,7 @@ namespace Actormachine
 
         private void actionLeft(bool state)
         {
-            _inputable.ActionLeftState = state;
+            _inputable.ActionLeftState = state == true ? ButtonState.Down : ButtonState.Up;
 
             if (InputTargetMode == TargetMode.LeftAction)
             {
@@ -95,7 +95,7 @@ namespace Actormachine
 
         private void actionRight(bool state)
         {
-            _inputable.ActionRightState = state;
+            _inputable.ActionRightState = state == true ? ButtonState.Down : ButtonState.Up;
 
             if (InputTargetMode == TargetMode.RightAction)
             {
