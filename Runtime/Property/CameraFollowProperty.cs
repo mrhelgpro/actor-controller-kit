@@ -69,13 +69,9 @@ namespace Actormachine
             // Check Required Component
             if (Follow == null)
             {
-                Followable followable = RootTransform.GetComponentInChildren<Followable>();
+                Followable followable = FindRootTransform.GetComponentInChildren<Followable>();
 
-                if (followable == null)
-                {
-                    Debug.LogWarning(gameObject.name + " - You need to add a Follow (Transform)");
-                }
-                else
+                if (followable)
                 {
                     Follow = followable.transform;
                 }
@@ -137,7 +133,7 @@ namespace Actormachine
 
         private void rotationUpdate()
         {
-            if (EnterParameters.CameraType == CameraType.ThirdPersonFollow)
+            if (_actorVirtualCamera.CurrentParameters.CameraType == CameraType.ThirdPersonFollow)
             {
                 bool isRotable = false;
 
